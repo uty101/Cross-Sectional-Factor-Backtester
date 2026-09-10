@@ -1,0 +1,47 @@
+# --- Data -------------------------------------------------------------
+# Raw SEC zips and price pulls are large and re-downloadable. Never
+# commit them; the manifest that records what was fetched is committed
+# instead, so a run stays reproducible without the bytes.
+data/raw/
+data/interim/
+data/processed/
+*.parquet
+*.duckdb
+*.duckdb.wal
+*.sqlite
+
+# --- Secrets ----------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- Python -----------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Notebook output --------------------------------------------------
+# Notebooks are committed, but stripped; see nbstripout in the Makefile.
+
+# --- Reports ----------------------------------------------------------
+# reports/figures/ IS committed: the four charts are a deliverable of the
+# README (brief section 8), as is specifications.csv, which supplies the
+# N in the deflated Sharpe. Only scratch renders are ignored.
+reports/scratch/
+reports/*.html
+
+# --- Office temp/lock files -------------------------------------------
+~$*
+.~lock.*
+
+# --- OS / editor ------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
