@@ -1,0 +1,14 @@
+# Normalise line endings in the repo, check out native on each platform.
+* text=auto eol=lf
+
+# Binary: never diff, never touch line endings.
+*.docx  binary
+*.xlsx  binary
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.parquet binary
+*.zip   binary
+
+# Generated CSVs of results diff more usefully without rename detection.
+*.csv   text eol=lf
