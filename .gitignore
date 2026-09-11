@@ -2,7 +2,8 @@
 # Raw SEC zips and price pulls are large and re-downloadable. Never
 # commit them; the manifest that records what was fetched is committed
 # instead, so a run stays reproducible without the bytes.
-data/raw/
+data/raw/*
+!data/raw/manifest.json
 data/interim/
 data/processed/
 *.parquet
