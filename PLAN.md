@@ -169,7 +169,7 @@ green and committed.
 | Phase | Build | Gate |
 |---|---|---|
 | **0 Scaffold** | pyproject, uv lock, ruff, pytest, Makefile, `config.toml`, empty modules with docstrings, `CLAUDE.md` with the invariants | `make check` runs green on an empty suite |
-| **1 Universe** | Wikipedia parse → `membership.parquet`, spot-check CSV | Invariant 3 test; ~500 names/month, ~1,100 unique over window; 20 spot-checks pass |
+| **1 Universe** | Wikipedia parse → `membership.parquet`, cross-check against an independent daily list, spot-check CSV | Invariant 3 test; ~500 names/month; unique names in window ≈ 820–850 (the brief's ~1,100 was high); agreement with the cross-check written down per year; 20 spot-checks pass |
 | **2 Prices** | fetch all ever-members, coverage report, monthly returns with lag | Invariant 4, 7 tests; coverage gap % known and written down |
 | **3 Momentum end to end** | `momentum_12_1` → `normalise` → `backtest` → long–short | Invariant 5, 6, 8 tests; **corr(LS, UMD) > 0.7**. If not, stop and find the leak |
 | **4 Stats** | IC, decay, FM + NW, Sharpe, DD, DSR, attribution, break-even | NW matches statsmodels on a fixture; DSR matches a worked example from the paper |

@@ -1,0 +1,6 @@
+old_ticker,new_ticker,date,row,security_then,security_now
+SATS,ECHO,2026-03-23,15,EchoStar,EchoStar
+RE,EG,2017-06-19,201,Everest Re,Everest Group
+FB,META,2013-12-23,291,Facebook,Meta Platforms
+DLPH,APTV,2012-12-21,308,Delphi Automotive,Aptiv
+IR,TT,2010-11-17,349,Ingersoll-Rand,Trane Technologies

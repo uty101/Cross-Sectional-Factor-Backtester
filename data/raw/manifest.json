@@ -1,0 +1,23 @@
+[
+  {
+    "path": "wikipedia/sp500_constituents_2026-09-11.html",
+    "url": "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies",
+    "sha256": "17d598cf54f9920daf3447bd3be1f3d07248cf037bb231d85aeeb1e202fd8944",
+    "bytes": 568288,
+    "fetched_at": "2026-09-11T11:19:31+00:00"
+  },
+  {
+    "path": "wikipedia/sp500_changes_2026-09-11.html",
+    "url": "https://en.wikipedia.org/wiki/Historical_components_of_the_S%26P_500",
+    "sha256": "6effb2a3469cdd8f4baa62128fd5a7c6cc6504c124b82a669858d9d0c2aeba9c",
+    "bytes": 1121378,
+    "fetched_at": "2026-09-11T11:19:31+00:00"
+  },
+  {
+    "path": "crosscheck/sp500_fja05680_2026-09-11.csv",
+    "url": "https://raw.githubusercontent.com/fja05680/sp500/master/S%26P%20500%20Historical%20Components%20%26%20Changes%20(Updated).csv",
+    "sha256": "36326709d46d6cd25834de5df457b16f5f96fad3a06b9beac28f7b88aa0b0d54",
+    "bytes": 5530907,
+    "fetched_at": "2026-09-11T11:27:11+00:00"
+  }
+]

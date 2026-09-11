@@ -98,3 +98,17 @@ until the previous gate is green and committed.
   The manifest that records what was fetched is.
 - Datacentre IPs get rate-limited harder than laptops by SEC and yfinance;
   prefer copying `data/raw` between machines to re-fetching.
+- Tickers: current members carry their current ticker back through
+  history, removed names the ticker they were removed under. Renames the
+  universe walk detects are in `data/interim/ticker_renames.parquet`.
+- Anything hand-verified lives in `data/checks/` with its evidence in the
+  row (`membership_overrides.csv`, `membership_spotcheck.csv`). Prefer an
+  evidenced override row to a cleverer heuristic in `src/`.
+
+## This machine
+
+- `PYTHONIOENCODING=utf-8` before any Python that prints a polars frame or
+  an em-dash; the console codepage is cp1252 and it will raise otherwise.
+- The Bash tool truncates long heredocs silently (`unexpected EOF while
+  looking for matching '`). Write files over ~150 lines with the Write tool.
+- Wikipedia needs a `User-Agent`; `raw.USER_AGENT` is set for it.

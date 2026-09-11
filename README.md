@@ -65,7 +65,7 @@ because it is more useful than any single net return.
 
 | Need | Source | Note |
 |---|---|---|
-| Universe history | Wikipedia S&P 500 changes table | Stored as membership intervals per ticker |
+| Universe history | Wikipedia constituents + changes tables | Stored as membership intervals per ticker; cross-checked month by month against the [fja05680/sp500](https://github.com/fja05680/sp500) daily list |
 | Fundamentals | SEC Financial Statement Data Sets | Quarterly zips, 2009→; **filing date is the key** |
 | Prices | yfinance, Stooq | Delisted coverage is patchy and is logged |
 | Sector map | SIC codes from EDGAR | Mapped to 11 GICS-like buckets |
@@ -73,14 +73,37 @@ because it is more useful than any single net return.
 | Risk-free | FRED DGS1MO | For excess returns |
 
 **Known limitation, stated up front:** the S&P 500 restriction is a compromise
-forced by free data — roughly 500 names per month and ~1,100 unique names over
-the window. Survivorship is handled by reconstructing membership month by
-month, but the universe is still large-cap only, and a Russell 3000 version
-would need paid coverage of delisted names.
+forced by free data — 496–504 names at every month-end and **818 unique
+names over the window** (the brief's guess of ~1,100 was high; an
+independent daily list gives 846, the gap being ticker labels). Survivorship
+is handled by reconstructing membership month by month, but the universe is
+still large-cap only, and a Russell 3000 version would need paid coverage of
+delisted names.
+
+The universe is verified rather than assumed: the reconstruction agrees with
+an independent daily list on 98.4% of universe-months, every disagreement is
+listed, and 20 changes are checked against S&P press releases. The evidence
+is in [data/checks/](data/checks/README.md).
 
 ## What did not work
 
 Kept as a first-class section, per the brief. Populated as things fail.
+
+- **Wikipedia's `Date added` column is not an index-addition date for
+  long-standing members.** Sempra "2017-03-17", T. Rowe Price "2019-07-29",
+  Dominion "2016-11-30", Humana "2012-12-10", Freeport "2011-07-01",
+  Johnson Controls "2010-08-27" — all are corporate-event dates on names
+  that had been in the index since the 1990s, and every Wikipedia-derived
+  dataset repeats them. Used as a fallback they excluded those names for up
+  to 115 months each. The rule now: trust `Date added` only before 2010,
+  where the changes table is thin; in-window, a `Date added` with no
+  changes row is adjudicated by the cross-check and the decision logged.
+- **The changes table cannot express share-class events.** Google's 2014
+  class C distribution is recorded as "GOOGL added" with no removal, so a
+  backwards walk loses Google before 2014. Names added under one ticker and
+  removed under another (UA→UAA, KORS→CPRI, JOYG→JOY) fall to an unknown
+  start and are over-included from 1900. Four hand-written override rows,
+  each with its evidence, fix these; the walk itself was not made cleverer.
 
 ## Layout
 

@@ -1,0 +1,21 @@
+row,date,ticker,event,problem
+265,2015-03-23,AGN,removed,removed while still a member going backwards: a later addition row is missing
+283,2014-05-01,UA,added,added but never removed and not a current member: 0 rename candidates by date_added
+294,2013-11-13,KORS,added,added but never removed and not a current member: 0 rename candidates by date_added
+343,2011-02-25,JOYG,added,added but never removed and not a current member: 0 rename candidates by date_added
+361,2009-11-03,PCLN,added,added but never removed and not a current member: 0 rename candidates by date_added
+370,2008-09-16,HRS,added,added but never removed and not a current member: 0 rename candidates by date_added
+374,2008-06-23,COG,added,added but never removed and not a current member: 0 rename candidates by date_added
+379,2007-10-26,JEC,added,added but never removed and not a current member: 0 rename candidates by date_added
+382,2007-09-27,TSO,added,added but never removed and not a current member: 0 rename candidates by date_added
+384,2007-08-24,LUK,added,added but never removed and not a current member: 0 rename candidates by date_added
+389,2005-11-18,T,removed,removed while still a member going backwards: a later addition row is missing
+400,1999-06-09,WLP,added,added but never removed and not a current member: 0 rename candidates by date_added
+401,1999-04-12,ACT,added,added but never removed and not a current member: 0 rename candidates by date_added
+402,1998-12-11,AN,removed,removed while still a member going backwards: a later addition row is missing
+404,1998-12-11,SUN,removed,removed while still a member going backwards: a later addition row is missing
+402,1998-12-11,FSR,added,added but never removed and not a current member: 0 rename candidates by date_added
+405,1997-06-17,CCR,added,added but never removed and not a current member: 0 rename candidates by date_added
+406,1994-09-30,MCK,removed,removed while still a member going backwards: a later addition row is missing
+406,1994-09-30,NCC,added,added but never removed and not a current member: 0 rename candidates by date_added
+407,1976-07-01,BUD,added,added but never removed and not a current member: 0 rename candidates by date_added
