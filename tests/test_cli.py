@@ -2,7 +2,7 @@ from backtester import cli
 
 
 def test_unimplemented_subcommands_say_so(capsys) -> None:
-    for argv in (["run", "--factor", "momentum"], ["report"]):
+    for argv in (["report"],):
         assert cli.main(argv) == 2
         assert "not implemented" in capsys.readouterr().err
 

@@ -11,14 +11,15 @@ import sys
 from collections.abc import Sequence
 from datetime import date
 
-from backtester import config, universe
+from backtester import benchmarks, config, prices, universe
 
 # step name -> (fetch, build). Phases add themselves here as they land.
 STEPS = {
     "universe": (lambda cfg, as_of: universe.fetch(cfg, as_of), universe.build),
+    "prices": (lambda cfg, as_of: prices.fetch(cfg, as_of), prices.build),
+    "benchmarks": (lambda cfg, as_of: benchmarks.fetch(cfg, as_of), benchmarks.build),
 }
 UNIMPLEMENTED = {
-    "run": "phase 3 (momentum end to end)",
     "report": "phase 8",
 }
 
@@ -41,18 +42,30 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     run = sub.add_parser("run", help="backtest one factor and log the specification")
     run.add_argument("--factor", required=True)
+    run.add_argument("--note", default="")
+    run.add_argument("--no-sector", action="store_true", help="plain cross-sectional z")
     sub.add_parser("report", help="charts and tables into reports/")
 
     args = parser.parse_args(argv)
     cfg = config.load(args.config)
 
     if args.command == "fetch":
-        for p in STEPS[args.step][0](cfg, args.as_of):
-            print(f"stored {p}")
+        stored = STEPS[args.step][0](cfg, args.as_of)
+        print(f"stored {len(stored)} files under data/raw")
         return 0
     if args.command == "build":
         out = STEPS[args.step][1](cfg)
         print(f"built {args.step}: {out.height} rows")
+        return 0
+
+    if args.command == "run":
+        from backtester import run as runner
+
+        res = runner.run_factor(
+            cfg, args.factor, note=args.note, sector_neutral=not args.no_sector
+        )
+        runner.save(res, cfg)
+        print(runner.summary_line(res))
         return 0
 
     print(

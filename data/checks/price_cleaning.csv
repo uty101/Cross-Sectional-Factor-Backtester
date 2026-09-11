@@ -1,0 +1,57 @@
+ticker,rule,days_dropped
+ABS,wrong entity: first price after membership ended,0
+ADCT,wrong entity: first price after membership ended,0
+ADT,wrong entity: first price after membership ended,0
+APC,wrong entity: first price after membership ended,0
+AV,wrong entity: first price after membership ended,0
+BBBY,wrong entity: first price after membership ended,0
+BEAM,wrong entity: first price after membership ended,0
+BMC,bad print: doubled or halved and reversed next day,8
+BMC,corrupt: tripled or thirded in a day inside membership,2
+BTU,wrong entity: first price after membership ended,0
+CAM,wrong entity: first price after membership ended,0
+CBE,bad print: doubled or halved and reversed next day,174
+CBE,corrupt: tripled or thirded in a day inside membership,1
+CCE,wrong entity: first price after membership ended,0
+CCK,wrong entity: first price after membership ended,0
+CFC,bad print: doubled or halved and reversed next day,71
+CPWR,bad print: doubled or halved and reversed next day,9
+CPWR,corrupt: tripled or thirded in a day inside membership,6
+CSRA,wrong entity: first price after membership ended,0
+DV,wrong entity: first price after membership ended,0
+DYN,wrong entity: first price after membership ended,0
+EMC,wrong entity: first price after membership ended,0
+EP,bad print: doubled or halved and reversed next day,1
+GLK,wrong entity: first price after membership ended,0
+GRN,wrong entity: first price after membership ended,0
+INFO,wrong entity: first price after membership ended,0
+LEG,wrong entity: first price after membership ended,0
+LIFE,wrong entity: first price after membership ended,0
+MEE,bad print: doubled or halved and reversed next day,61
+MEE,corrupt: tripled or thirded in a day inside membership,28
+MHS,wrong entity: first price after membership ended,0
+MI,wrong entity: first price after membership ended,0
+MMI,wrong entity: first price after membership ended,0
+NE,wrong entity: first price after membership ended,0
+NFX,wrong entity: first price after membership ended,0
+NSM,wrong entity: first price after membership ended,0
+PCL,wrong entity: first price after membership ended,0
+PCS,wrong entity: first price after membership ended,0
+POM,wrong entity: first price after membership ended,0
+PTV,wrong entity: first price after membership ended,0
+RSH,bad print: doubled or halved and reversed next day,1
+S,wrong entity: first price after membership ended,0
+SBNY,wrong entity: first price after membership ended,0
+SE,wrong entity: first price after membership ended,0
+SGP,wrong entity: first price after membership ended,0
+SHLD,wrong entity: first price after membership ended,0
+SLE,wrong entity: first price after membership ended,0
+SPLS,wrong entity: first price after membership ended,0
+STI,wrong entity: first price after membership ended,0
+TE,wrong entity: first price after membership ended,0
+TEG,wrong entity: first price after membership ended,0
+TIE,bad print: doubled or halved and reversed next day,88
+TIE,corrupt: tripled or thirded in a day inside membership,16
+TMC,wrong entity: first price after membership ended,0
+USL,wrong entity: first price after membership ended,0
+WB,wrong entity: first price after membership ended,0

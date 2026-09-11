@@ -1,1 +1,4 @@
 timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,winsor_lo,winsor_hi,n_deciles,start,end,sharpe_gross,sharpe_net,note
+2026-09-11T12:03:36+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3750,0.3739,phase 3 first run no-sector
+2026-09-11T12:08:20+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,phase 3 after price cleaning no-sector
+2026-09-11T12:09:00+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,phase 3 validation aligned no-sector

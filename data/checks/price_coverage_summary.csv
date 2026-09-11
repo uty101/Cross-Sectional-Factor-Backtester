@@ -1,0 +1,13 @@
+metric,value
+as_of,2026-09-10
+tickers_with_prices,631
+tickers_in_universe,858
+universe_months,100344
+priced_months,85655
+gap_pct,14.64
+gap_pct_max_month,30.85
+gap_pct_min_month,0.0
+partial_returns,66
+tickers_dropped_wrong_entity,43
+tickers_dropped_corrupt,5
+bad_prints_dropped,413
