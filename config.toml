@@ -1,0 +1,35 @@
+# The single source of truth for every knob in src/ (PLAN.md, invariant 9).
+# Sensitivity tables are produced by looping over this file, not by editing
+# code. Dates are month-ends; windows are in the units named.
+
+[window]
+start = "2010-01-31"
+end = "2026-08-31"
+
+[universe]
+index = "sp500"
+
+[portfolio]
+n_deciles = 10
+weighting = "ew"        # "ew" or "cw"
+rebalance = "M"
+lag_days = 1            # signal at close t, trade at close t + lag_days
+holding_months = 1
+
+[costs]
+base_bps = 10           # one-way, large caps
+sensitivity_bps = [5, 10, 25]
+
+[signals]
+winsor = [0.01, 0.99]
+momentum_window = [12, 1]   # months back, months skipped
+vol_window = 252            # trading days
+beta_window = 252           # trading days
+
+[fundamentals]
+asof_buffer_days = 1        # filed on or before t - buffer
+
+[paths]
+data = "data"
+reports = "reports"
+specifications = "reports/specifications.csv"

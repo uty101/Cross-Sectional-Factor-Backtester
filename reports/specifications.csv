@@ -1,0 +1,1 @@
+timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,winsor_lo,winsor_hi,n_deciles,start,end,sharpe_gross,sharpe_net,note
