@@ -208,9 +208,10 @@ def build(cfg: Config) -> None:
     pdf.h2("What the numbers mean")
     pdf.bullets(
         [
-            "Value worked (net Sharpe 0.50, Fama-MacBeth t 3.2, break-even 80 bp), driven by the sector-"
-            "neutral earnings-yield half; its 4.9% attribution alpha is the number to distrust first. "
-            "Cap-weighted it is 0.30.",
+            "Value worked (net Sharpe 0.50, Fama-MacBeth t 3.2, break-even 80 bp). Its 4.9% attribution "
+            "alpha is the number to distrust first: sector-neutral B/P alone has 4.5% (t 2.3) with an HML "
+            "loading of 0.26, so the alpha is what sector neutralisation leaves after a factor that is not "
+            "sector-neutral. Cap-weighted it is 0.30; on the well-covered months from 2015-12 it is 0.48.",
             "Momentum is marginal after costs (0.05; break-even 15 bp at 0.62 monthly turnover) and better "
             "held 3-12 months (0.18-0.23). Quality is small (0.17; 0.42 cap-weighted). Low volatility "
             "loses as a long-short: beta -0.65 (t -10.5), RMW 0.94 (t 8.2), alpha 1.1% (t 0.4) - it is a "

@@ -66,7 +66,7 @@ yfinance price files, the French zips, all in `data/raw/manifest.json`.
 `reingest=True` to `fundamentals.build` after changing `tag_map.toml`,
 otherwise new tags silently come back empty.
 
-Every backtest appends to `reports/specifications.csv`; N is 61 as of the
+Every backtest appends to `reports/specifications.csv`; N is 65 as of the
 last report. **Do not delete rows from it**, including the diagnostic runs
 and the two broken first momentum attempts; the deflated Sharpe reads it.
 
@@ -106,7 +106,7 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
 - **Validation status.** Momentum vs UMD 0.79 (pass). Value and quality as
   reported are sector-neutral composites and score 0.25 / 0.07 vs HML / RMW;
   the join is validated by `run.replicate`: B/P cap-weighted terciles vs the
-  big-cap HML leg 0.74 (0.89 from 2016). The RMW replication is 0.44 and
+  big-cap HML leg 0.74 (0.89 from 2016). The RMW replication is 0.45 and
   that is a *coverage* limit of the XBRL data before 2013, documented, not
   fixed. Do not tune the reported factors to raise these numbers.
 - **Cost convention** differs from the brief on purpose: every dollar

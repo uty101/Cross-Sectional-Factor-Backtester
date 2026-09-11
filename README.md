@@ -53,7 +53,7 @@ outsider can verify, over 2010–2026?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
 of 1; the composite's net Sharpe of 0.34 deflates to a 15% probability of
-beating the best of 61 logged trials by luck.
+beating the best of 65 logged trials by luck.
 
 ## Results
 
@@ -71,7 +71,7 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 61 is the row
+the same dispersion, adjusted for skew and kurtosis. *N* = 65 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
 every run — base, sensitivity, diagnostic, and the two broken first attempts
 at momentum — is logged. **Break-even cost** is the one-way cost at which
@@ -86,9 +86,14 @@ What the table says, factor by factor:
 - **Value** is the one that worked, and not the way the brief expected. Net
   Sharpe 0.50, Fama-MacBeth t 3.2, break-even 80 bp. Its attribution alpha
   of 4.9% (t 2.4) after Mkt, HML, UMD and RMW is the number to distrust
-  first: the reported factor is sector-neutral and half earnings yield,
-  neither of which HML is, so its HML loading is only 0.12 and the "alpha"
-  is largely the sector-neutral E/P component. Cap-weighted it drops to 0.30.
+  first. It is not the earnings-yield half: sector-neutral B/P on its own
+  has an alpha of 4.5% (t 2.3) with an HML loading of only 0.26, and
+  sector-neutral E/P 4.6% (t 1.9) with an HML loading of −0.12. The "alpha"
+  is what sector neutralisation leaves after HML, which is not
+  sector-neutral — a within-sector value premium that the French factor
+  does not price, or a data-coverage artefact in the early years; the
+  coverage split below says 0.48 on the well-covered months against 0.50
+  on all, which argues for the former. Cap-weighted it drops to 0.30.
 - **Quality** is small (net Sharpe 0.17) and 0.42 cap-weighted; accruals
   carry it, gross profitability alone is negative in this universe.
 - **Low volatility** loses 4.1% a year gross as a long–short. Its
@@ -134,7 +139,7 @@ leg correlates only 0.92 with full HML over the window).
 | Replication | vs full factor | vs big-cap leg | from 2016 |
 |---|---|---|---|
 | B/P, cap-weighted terciles | 0.65 | **0.74** | **0.89** |
-| Pre-tax income / equity, cap-weighted terciles | 0.26 | 0.44 | 0.62 |
+| Pre-tax income / FY book equity, cap-weighted terciles | 0.27 | 0.45 | 0.62 |
 
 The book-equity join clears the bar against the like-for-like series. The
 profitability replication does not, and the by-period numbers say why: it
@@ -161,8 +166,9 @@ unique names over the window (the brief's ~1,100 was high). Survivorship in
 the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
 yfinance, and that is the survivorship that remains: the "with and without"
-table in `results.md` gives every factor on the 77 months where the price
-gap is under 10%. Fundamentals coverage is 39% of members in 2010 and 86%
+table in `results.md` gives every factor on the 129 months from 2015-12
+where the price gap is under 20% — value 0.48 against 0.50 on all months,
+quality 0.34 against 0.17, momentum −0.03 against 0.05. Fundamentals coverage is 39% of members in 2010 and 86%
 in 2023. A Russell 3000 version needs paid coverage of delisted names and
 their filings.
 
@@ -204,7 +210,7 @@ Kept as a first-class section, per the brief.
   under a billion dollars is dropped and listed.
 - **`OperatingIncomeLoss` is not reported by banks or insurers**, which
   left profitability without financials and its French replication at 0.31.
-  Pre-tax income is the closest reported line and lifted it to 0.44 — still
+  Pre-tax income over fiscal-year book equity is the closest reported line and lifted it to 0.45 — still
   short, for the coverage reasons above.
 - **Value and quality do not validate against HML and RMW as reported**, and
   the fix was not to change the reported factors until they did; it was to

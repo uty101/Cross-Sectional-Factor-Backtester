@@ -238,7 +238,7 @@ def variant_table(cfg: Config, factors: list[str], tags: list[tuple[str, str]]) 
 
 
 def coverage_split_table(
-    cfg: Config, reports: list[FactorReport], max_gap_pct: float = 10.0
+    cfg: Config, reports: list[FactorReport], max_gap_pct: float = 20.0
 ) -> str:
     """Net Sharpe on all months and on the months where price coverage is good."""
     cov = pl.read_csv(
@@ -500,6 +500,8 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         cost_table(reports, [0, 5, 10, 25, 50]),
         "\n## Variants (net Sharpe)\n",
         variant_table(cfg, [r.factor for r in reports], tags),
+        "\nCap-weighted runs hold only the names with a market cap (39% of members in "
+        "2010, 86% in 2023); the equal-weighted base holds every name with a signal.\n",
         "\n## With and without the badly covered months\n",
         coverage_split_table(cfg, reports),
         "\n## Fama-MacBeth premia (per unit z, monthly) and IC information ratio\n",

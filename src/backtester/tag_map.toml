@@ -123,3 +123,12 @@ tags = [
   "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic",
   "IncomeLossBeforeIncomeTaxes",
 ]
+
+# Book equity at the fiscal year end, from the 10-K only: the period-matched
+# denominator French uses for operating profitability.
+[concept.equity_fy]
+kind = "annual_stock"
+tags = [
+  "StockholdersEquity",
+  "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+]

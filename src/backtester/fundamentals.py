@@ -39,7 +39,7 @@ MIN_CAP = 1e9
 # How old a reported period may be before the value is treated as missing:
 # an annual figure is stale 18 months after its year end (the next 10-K is
 # due within 12), a quarterly one 9 months after its quarter end.
-MAX_AGE_MONTHS = {"flow": 18, "latest_flow": 9, "stock": 9}
+MAX_AGE_MONTHS = {"flow": 18, "latest_flow": 9, "stock": 9, "annual_stock": 18}
 TAG_MAP = Path(__file__).with_name("tag_map.toml")
 
 NUM_SCHEMA = {
@@ -286,6 +286,12 @@ def monthly_panel(
                 & (pl.col("qtrs") == 4)
                 & pl.col("form").str.starts_with("10-K")
             )
+        elif spec["kind"] == "annual_stock":
+            vals = ff.filter(
+                (pl.col("concept") == concept)
+                & (pl.col("qtrs") == 0)
+                & pl.col("form").str.starts_with("10-K")
+            )
         elif spec["kind"] == "latest_flow":
             # The most recently reported period of any length: a quarter
             # from a 10-Q or a year from a 10-K.
@@ -337,15 +343,15 @@ def signal(
     if name == "operating_profitability":
         # French's RMW numerator is revenue less COGS, SG&A and interest;
         # pre-tax income is the reported line closest to that, with operating
-        # income as the fallback. Over book equity.
+        # income as the fallback. Over book equity at the same fiscal year
+        # end, as French does, with the latest quarterly equity as fallback.
+        den = pl.coalesce("equity_fy", "equity")
         return (
-            f.filter(pl.col("equity") > 0)
+            f.filter(den > 0)
             .select(
                 "month",
                 "ticker",
-                (
-                    pl.coalesce("pretax_income", "operating_income") / pl.col("equity")
-                ).alias("value"),
+                (pl.coalesce("pretax_income", "operating_income") / den).alias("value"),
             )
             .filter(pl.col("value").is_not_null())
         )
