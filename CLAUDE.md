@@ -46,18 +46,29 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # tests
+uv run pytest                              # 68 tests, ~3 s
 uv run ruff check . && uv run ruff format --check .
-uv run backtester run --factor momentum    # phase 3 onward
+uv run backtester fetch --step <universe|prices|benchmarks|fundamentals> --as-of YYYY-MM-DD
+uv run backtester build --step <same>      # raw -> interim/processed + data/checks
+uv run backtester run --factor momentum [--no-sector] [--note "..."]
+uv run backtester run-all                  # the five reported factors, base spec
+uv run backtester sensitivities            # cw, hold 3/6/12, no-sector: 25 logged runs
+uv run backtester report                   # results.md, 4 charts, methodology.pdf
 ```
 
-`make check` is the gate for every phase (lint + tests). **There is no
-`make` on this laptop**; run the two commands above instead, or install it
-with `winget install GnuWin32.Make`. The Makefile is there for CI and other
-machines.
+**All phases are built and run** (2026-09-11). The state of the data on
+disk: 70 SEC zips (2009q1-2026q2, ~2.5 GB) under `data/raw/sec`, 679
+yfinance price files, the French zips, all in `data/raw/manifest.json`.
+`data/interim/sec_num.parquet` is the cached ingest (13M rows); pass
+`reingest=True` to `fundamentals.build` after changing `tag_map.toml`,
+otherwise new tags silently come back empty.
 
-Python is pinned to 3.12 in `.python-version` for wheel coverage
-(polars, duckdb, pyarrow). 3.14 is also installed; do not let uv pick it.
+Every backtest appends to `reports/specifications.csv`; N is 61 as of the
+last report. **Do not delete rows from it**, including the diagnostic runs
+and the two broken first momentum attempts; the deflated Sharpe reads it.
+
+`make check` is the gate (lint + tests). **There is no `make` on this
+laptop**; run the two commands above instead. Python is pinned to 3.12.
 
 ---
 
@@ -67,23 +78,45 @@ Python is pinned to 3.12 in `.python-version` for wheel coverage
 config.toml              every knob; sensitivity tables loop over this
 src/backtester/
   config.py              frozen Config, load(), with_()
-  universe.py            S&P 500 membership intervals      (phase 1)
-  prices.py              daily prices, monthly returns     (phase 2)
-  benchmarks.py          French factors, FRED RF           (phase 3)
-  signals.py             raw signals + normalise()         (phases 3, 6)
-  portfolio.py           the engine; any (month,ticker,z)  (phase 3)
-  stats.py               IC, FM/NW, DSR, attribution       (phase 4)
-  fundamentals.py        SEC FSDS, first_filed, asof_join  (phase 5)
-  sectors.py             SIC -> 11 buckets                 (phase 5)
-  report.py              4 charts, results.md              (phase 8)
-  cli.py                 fetch | build | run | report
-tests/
-data/raw|interim|processed   gitignored; data/checks is committed
-reports/figures, reports/specifications.csv   committed
+  raw.py, tables.py      write-once raw store + manifest; HTML table reader
+  universe.py            S&P 500 membership, cross-check, overrides
+  prices.py              yfinance pull, three cleaning rules, monthly returns with lag
+  benchmarks.py          French factors + big-cap HML/RMW legs, FRED
+  fundamentals.py        SEC FSDS via DuckDB, first_filed, asof_join, caps
+  tag_map.toml           16 concepts, ordered XBRL tags
+  sectors.py             CIK matching by name, SIC -> 11 buckets
+  signals.py             signals, winsorise, sector z, composite
+  portfolio.py           the engine; any (month, ticker, z); spec log
+  stats.py               IC, decay, FM/NW, DSR, attribution, break-even
+  run.py                 FACTORS registry, run_factor, run_all, sensitivities, replicate
+  report.py              tables + 4 charts -> reports/results.md
+  methodology.py         the 2-page PDF from the same numbers
+  cli.py
+tests/                   one file per module; invariants named in test names
+data/raw|interim|processed   gitignored except raw/manifest.json
+data/checks/             committed evidence; README.md there lists every file
+reports/                 figures, results.md, methodology.pdf, specifications.csv
 ```
 
-Phases and their gates are in PLAN.md section 4. Do not start a phase
-until the previous gate is green and committed.
+### Things a future session should know
+
+- **Validation status.** Momentum vs UMD 0.79 (pass). Value and quality as
+  reported are sector-neutral composites and score 0.25 / 0.07 vs HML / RMW;
+  the join is validated by `run.replicate`: B/P cap-weighted terciles vs the
+  big-cap HML leg 0.74 (0.89 from 2016). The RMW replication is 0.44 and
+  that is a *coverage* limit of the XBRL data before 2013, documented, not
+  fixed. Do not tune the reported factors to raise these numbers.
+- **Cost convention** differs from the brief on purpose: every dollar
+  traded pays c, `ret_net = ret_gross - 2c * turnover`.
+- **Series stamping.** Long-short rows carry the *formation* month; anything
+  compared with a French factor is shifted one month first
+  (`stats.to_month_earned`, `run.validate`). Getting this wrong was the
+  0.04-correlation bug.
+- **Wikipedia's CIK can be a brand-new entity** (XOM); `sectors.cik_map`
+  falls back to the name when a CIK has no filings.
+- **Market cap** uses weighted-average diluted shares first; balance-sheet
+  counts are mis-scaled for some filers. Caps under $1bn are dropped
+  (`data/checks/market_cap_dropped.csv`).
 
 ---
 

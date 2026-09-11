@@ -1,5 +1,10 @@
 # Build plan
 
+> **Status 2026-09-11: all nine phases built, gated and committed.** The
+> gates that did not clear as the brief wrote them (value and quality vs
+> HML and RMW) are reported as fails with the diagnosis in the README, not
+> tuned. This file is kept as the record of the order and the contracts.
+
 The brief ([Project Outline/01_Factor_Backtester.docx](Project%20Outline/01_Factor_Backtester.docx))
 fixes *what* is built and the README fixes *what counts as done*. This file
 fixes the *order* and the *contracts between modules*, so that each phase

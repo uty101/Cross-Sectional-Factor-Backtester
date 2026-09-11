@@ -15,6 +15,15 @@ files, `membership_overrides.csv` and `membership_spotcheck.csv`.
 | `membership_crosscheck_by_year.csv` | Month-end agreement with the fja05680 daily list, per year, after label differences are removed |
 | `membership_crosscheck_aliases.csv` | Pairs of tickers that are the same security under the ticker of the day (cross-check) and the current ticker (this pipeline), found by identical month spans |
 | `membership_crosscheck_residual.csv` | What still differs after aliases. Mostly rename chains the pairing could not disambiguate (J/JEC alongside BBT/TFC on the same span) and one-month effective-date conventions |
+| `price_fetch_missing.csv` | Tickers yfinance returned nothing for, after two retries: the delisted names |
+| `price_cleaning.csv` | Per ticker: dropped as wrong entity (first print after membership ended), bad prints removed, or dropped as corrupt |
+| `price_coverage_monthly.csv` / `_summary.csv` / `_missing_tickers.csv` | Members with a price at each month-end; the gap as a share of universe-months; which names lose the most months |
+| `cik_map.csv` | Every universe ticker's CIK and how it was found: the constituents table, an exact or prefix name match to its own filings, or unmatched |
+| `tag_coverage.csv` | Per concept and fiscal year: share of universe CIKs with a 10-K value and the tag that supplied it |
+| `fundamentals_coverage.csv` | Per month: members with each concept available as-of, and with a market cap |
+| `market_cap_dropped.csv` | Names whose price x shares came out under $1bn (a units error) and were excluded |
+| `sec_amendments_by_year.csv` | 10-K/A and 10-Q/A as a share of filings: the size of the first-filed choice |
+| `sector_map_check.csv` / `_disagreements.csv` | SIC-to-sector agreement with Wikipedia's GICS on current members (84.5%), and every disagreement |
 | `membership_spotcheck.csv` | **Hand-written.** 20 rows verified against S&P press releases or contemporaneous news: ordinary additions and removals across the window, every override, and every rejected `date_added` |
 
 ## Conventions the numbers depend on

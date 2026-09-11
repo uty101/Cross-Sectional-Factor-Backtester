@@ -22,6 +22,7 @@ twelve-month build from 10-Qs is a refinement, not done here.
 from __future__ import annotations
 
 import tomllib
+import warnings
 import zipfile
 from datetime import date, timedelta
 from pathlib import Path
@@ -253,12 +254,13 @@ def asof_join(
         .sort("available")
     )
     p = panel.select("month", "cik").unique().sort("month")
-    return (
-        p.join_asof(
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")  # polars cannot check sortedness with `by`
+        joined = p.join_asof(
             v, left_on="month", right_on="available", by="cik", strategy="backward"
         )
-        .select("month", "cik", "value", "ddate", "available")
-        .rename({"ddate": "period_end", "available": "available_from"})
+    return joined.select("month", "cik", "value", "ddate", "available").rename(
+        {"ddate": "period_end", "available": "available_from"}
     )
 
 

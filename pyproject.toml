@@ -13,6 +13,7 @@ dependencies = [
     "matplotlib>=3.9",
     "requests>=2.32",
     "yfinance>=0.2.40",
+    "fpdf2>=2.8.8",
 ]
 
 [project.scripts]
@@ -48,6 +49,7 @@ select = ["E", "F", "I", "UP", "B", "W"]
 [tool.ruff.lint.per-file-ignores]
 # Markdown table rows are one line each by nature.
 "src/backtester/report.py" = ["E501"]
+"src/backtester/methodology.py" = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"

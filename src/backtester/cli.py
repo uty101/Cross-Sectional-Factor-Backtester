@@ -86,7 +86,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         from backtester import report
 
         report.build(cfg)
-        print(f"wrote {cfg.reports / 'results.md'}")
+        from backtester import methodology
+
+        methodology.build(cfg)
+        print(f"wrote {cfg.reports / 'results.md'} and methodology.pdf")
         return 0
     print(f"{args.command}: unknown", file=sys.stderr)
     return 2
