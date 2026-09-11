@@ -19,12 +19,29 @@ from backtester import portfolio, signals, universe
 from backtester.config import Config
 
 FACTORS: dict[str, dict] = {
-    "momentum": {"signals": ["momentum_12_1"], "french": "umd"},
-    "value": {"signals": ["book_to_price", "earnings_yield"], "french": "hml"},
-    "quality": {"signals": ["gross_profitability", "accruals"], "french": "rmw"},
+    "momentum": {"signals": ["momentum_12_1"], "french": "umd", "big": None},
+    "value": {
+        "signals": ["book_to_price", "earnings_yield"],
+        "french": "hml",
+        "big": "big_hml",
+    },
+    "quality": {
+        "signals": ["gross_profitability", "accruals"],
+        "french": "rmw",
+        "big": "big_rmw",
+    },
     "low_vol": {"signals": ["volatility_252"], "french": None},
     "asset_growth": {"signals": ["asset_growth"], "french": "cma"},
     "beta": {"signals": ["beta_252"], "french": None},
+    # Replications of the French construction, used only to validate the
+    # fundamentals join: one signal, no sector neutralisation, cap-weighted
+    # terciles (see run.replicate).
+    "hml_replica": {"signals": ["book_to_price"], "french": "hml", "big": "big_hml"},
+    "rmw_replica": {
+        "signals": ["operating_profitability"],
+        "french": "rmw",
+        "big": "big_rmw",
+    },
     "composite": {
         "signals": [
             "momentum_12_1",
@@ -167,6 +184,9 @@ def run_factor(
         note=(note + ("" if sector_neutral else " no-sector")).strip(),
     )
     validation = validate(result.long_short, inp.french, spec["french"])
+    big = spec.get("big")
+    if big and big in inp.french.columns:
+        validation["big"] = validate(result.long_short, inp.french, big)
     return RunResult(factor, z, result, validation)
 
 
@@ -209,8 +229,71 @@ def summary_line(res: RunResult) -> str:
     ls = res.result.long_short
     v = res.validation
     corr = "n/a" if v["corr"] is None else f"{v['corr']:.3f} vs {v['french'].upper()}"
+    if "big" in v and v["big"]["corr"] is not None:
+        corr += f", {v['big']['corr']:.3f} vs big-cap leg"
     sg, sn = portfolio._sharpe(ls["ret_gross"]), portfolio._sharpe(ls["ret_net"])
     return (
         f"{res.factor}: {ls.height} months, gross Sharpe {sg:.2f}, net {sn:.2f}, "
         f"mean turnover {ls['turnover'].mean():.2f}, corr {corr} ({v['months']} months)"
     )
+
+
+# --- the loops ----------------------------------------------------------
+
+REPORTED = ["momentum", "value", "quality", "low_vol", "composite"]
+
+
+def run_all(
+    cfg: Config, factors: list[str] = REPORTED, note: str = "base"
+) -> dict[str, RunResult]:
+    """The base specification of every reported factor, saved under its name."""
+    inp = load_inputs(cfg)
+    out = {}
+    for f in factors:
+        res = run_factor(cfg, f, inp, note=note)
+        save(res, cfg)
+        out[f] = res
+        print(summary_line(res))
+    return out
+
+
+def sensitivities(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunResult]:
+    """Weighting and holding-period variants, each one logged and saved with
+    a tag. Cost is not looped: net returns at any cost follow from gross
+    returns and turnover, and stats.sharpe_by_cost does that analytically.
+    """
+    inp = load_inputs(cfg)
+    out = {}
+    variants = [
+        ("cw", cfg.with_(weighting="cw")),
+        ("hold3", cfg.with_(holding_months=3)),
+        ("hold6", cfg.with_(holding_months=6)),
+        ("hold12", cfg.with_(holding_months=12)),
+        ("nosector", cfg),
+    ]
+    for tag, c in variants:
+        for f in factors:
+            if tag == "cw" and inp.caps is None:
+                continue
+            res = run_factor(
+                c, f, inp, note=f"sensitivity {tag}", sector_neutral=(tag != "nosector")
+            )
+            save(res, c, tag=tag)
+            out[f"{f}_{tag}"] = res
+            print(tag, summary_line(res))
+    return out
+
+
+def replicate(cfg: Config, inp: Inputs | None = None) -> dict[str, RunResult]:
+    """Validate the fundamentals join by building the French factors the
+    way French does, as nearly as this universe allows: one raw signal, no
+    sector neutralisation, cap-weighted, top third minus bottom third."""
+    inp = inp or load_inputs(cfg)
+    c = cfg.with_(weighting="cw", n_deciles=3)
+    out = {}
+    for f in ("hml_replica", "rmw_replica"):
+        res = run_factor(c, f, inp, note="French replication", sector_neutral=False)
+        save(res, c)
+        out[f] = res
+        print(summary_line(res))
+    return out

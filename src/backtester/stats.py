@@ -26,6 +26,7 @@ from scipy import stats as sps
 
 EULER_GAMMA = 0.5772156649015329
 PERIODS = 12
+MAX_HALF_LIFE = 60.0  # months
 
 
 # --- information coefficient --------------------------------------------
@@ -135,7 +136,9 @@ def ic_decay(
             p0=(max(ics[0], 1e-3), 6.0),
             maxfev=10000,
         )
-        if tau > 0 and a > 0:
+        # A fit that does not halve within five years is not a decay at
+        # these horizons; report it as none rather than as a huge number.
+        if 0 < tau * math.log(2) <= MAX_HALF_LIFE and a > 0:
             half_life = float(tau * math.log(2))
     except (RuntimeError, ValueError):
         pass

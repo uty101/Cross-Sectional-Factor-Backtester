@@ -1,0 +1,76 @@
+ticker,sic,sector,gics
+APP,7370,Information Technology,Communication Services
+DIS,7990,Consumer Discretionary,Communication Services
+GOOG,7370,Information Technology,Communication Services
+GOOGL,7370,Information Technology,Communication Services
+LYV,7900,Consumer Discretionary,Communication Services
+META,7370,Information Technology,Communication Services
+RDDT,7374,Information Technology,Communication Services
+TKO,7900,Consumer Discretionary,Communication Services
+TTD,7370,Information Technology,Communication Services
+TTWO,7372,Information Technology,Communication Services
+ABNB,7340,Industrials,Consumer Discretionary
+DASH,7389,Industrials,Consumer Discretionary
+DPZ,5140,Consumer Staples,Consumer Discretionary
+EBAY,7389,Industrials,Consumer Discretionary
+GRMN,3812,Industrials,Consumer Discretionary
+TPR,3100,Other,Consumer Discretionary
+CASY,5500,Consumer Discretionary,Consumer Staples
+KMB,2670,Materials,Consumer Staples
+BKR,3533,Industrials,Energy
+TPL,6792,Financials,Energy
+CPAY,7389,Industrials,Financials
+FDS,7370,Information Technology,Financials
+FIS,7389,Industrials,Financials
+FISV,7389,Industrials,Financials
+GPN,7389,Industrials,Financials
+JKHY,7373,Information Technology,Financials
+MA,7389,Industrials,Financials
+MCO,7320,Industrials,Financials
+MSCI,7389,Industrials,Financials
+PYPL,7389,Industrials,Financials
+SPGI,7320,Industrials,Financials
+V,7389,Industrials,Financials
+XYZ,7372,Information Technology,Financials
+CVS,5912,Consumer Staples,Health Care
+DHR,3823,Information Technology,Health Care
+TMO,3829,Information Technology,Health Care
+VEEV,7372,Information Technology,Health Care
+ADP,7374,Information Technology,Industrials
+AME,3823,Information Technology,Industrials
+BLDR,5211,Consumer Discretionary,Industrials
+CHRW,4731,Consumer Discretionary,Industrials
+CPRT,5500,Consumer Discretionary,Industrials
+CTAS,2320,Consumer Discretionary,Industrials
+DD,2821,Materials,Industrials
+EXPD,4731,Consumer Discretionary,Industrials
+FAST,5200,Consumer Discretionary,Industrials
+FTV,3823,Information Technology,Industrials
+HUBB,3670,Information Technology,Industrials
+HWM,3350,Materials,Industrials
+LDOS,7373,Information Technology,Industrials
+MMM,3841,Health Care,Industrials
+PCAR,3711,Consumer Discretionary,Industrials
+ROK,3829,Information Technology,Industrials
+RSG,4953,Utilities,Industrials
+TT,3822,Information Technology,Industrials
+VLTO,3825,Information Technology,Industrials
+VRSK,7374,Information Technology,Industrials
+VRT,3679,Information Technology,Industrials
+WM,4953,Utilities,Industrials
+ACN,7389,Industrials,Information Technology
+AKAM,7389,Industrials,Information Technology
+CDW,5961,Consumer Discretionary,Information Technology
+FICO,7389,Industrials,Information Technology
+GLW,3357,Materials,Information Technology
+IT,8741,Industrials,Information Technology
+LRCX,3559,Industrials,Information Technology
+TDY,3812,Industrials,Information Technology
+TEL,5065,Industrials,Information Technology
+ZBRA,3560,Industrials,Information Technology
+AMCR,3990,Consumer Discretionary,Materials
+BALL,3411,Industrials,Materials
+ECL,2840,Consumer Staples,Materials
+SHW,5200,Consumer Discretionary,Materials
+CSGP,7389,Industrials,Real Estate
+ATO,4924,Energy,Utilities

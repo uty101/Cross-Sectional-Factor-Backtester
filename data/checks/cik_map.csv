@@ -1,0 +1,859 @@
+ticker,cik,method,matched
+A,1090872,constituents,Agilent Technologies
+AAPL,320193,constituents,Apple Inc.
+ABBV,1551152,constituents,AbbVie
+ABNB,1559720,constituents,Airbnb
+ABT,1800,constituents,Abbott Laboratories
+ACGL,947484,constituents,Arch Capital Group
+ACN,1467373,constituents,Accenture
+ADBE,796343,constituents,Adobe Inc.
+ADI,6281,constituents,Analog Devices
+ADM,7084,constituents,Archer Daniels Midland
+ADP,8670,constituents,Automatic Data Processing
+ADSK,769397,constituents,Autodesk
+AEE,1002910,constituents,Ameren
+AEP,4904,constituents,American Electric Power
+AES,874761,constituents,AES Corporation
+AFL,4977,constituents,Aflac
+AIG,5272,constituents,American International Group
+AIZ,1267238,constituents,Assurant
+AJG,354190,constituents,Arthur J. Gallagher & Co.
+AKAM,1086222,constituents,Akamai Technologies
+ALB,915913,constituents,Albemarle Corporation
+ALGN,1097149,constituents,Align Technology
+ALL,899051,constituents,Allstate
+ALLE,1579241,constituents,Allegion
+AMAT,6951,constituents,Applied Materials
+AMCR,1748790,constituents,Amcor
+AMD,2488,constituents,Advanced Micro Devices
+AME,1037868,constituents,Ametek
+AMGN,318154,constituents,Amgen
+AMP,820027,constituents,Ameriprise Financial
+AMT,1053507,constituents,American Tower
+AMZN,1018724,constituents,Amazon
+ANET,1596532,constituents,Arista Networks
+AON,315293,constituents,Aon plc
+AOS,91142,constituents,A. O. Smith
+APA,1841666,constituents,APA Corporation
+APD,2969,constituents,Air Products
+APH,820313,constituents,Amphenol
+APO,1858681,constituents,Apollo Global Management
+APP,1751008,constituents,AppLovin
+APTV,1521332,constituents,Aptiv
+ARE,1035443,constituents,Alexandria Real Estate Equities
+ARES,1176948,constituents,Ares Management
+ATO,731802,constituents,Atmos Energy
+AVGO,1730168,constituents,Broadcom
+AVY,8818,constituents,Avery Dennison
+AWK,1410636,constituents,American Water Works
+AXON,1069183,constituents,Axon Enterprise
+AXP,4962,constituents,American Express
+AZO,866787,constituents,AutoZone
+BA,12927,constituents,Boeing
+BAC,70858,constituents,Bank of America
+BALL,9389,constituents,Ball Corporation
+BAX,10456,constituents,Baxter International
+BBY,764478,constituents,Best Buy
+BDX,10795,constituents,Becton Dickinson
+BEN,38777,constituents,Franklin Resources
+BF.B,14693,constituents,Brown–Forman
+BG,1996862,constituents,Bunge Global
+BIIB,875045,constituents,Biogen
+BKNG,1075531,constituents,Booking Holdings
+BKR,1701605,constituents,Baker Hughes
+BLDR,1316835,constituents,Builders FirstSource
+BLK,2012383,constituents,BlackRock
+BMY,14272,constituents,Bristol Myers Squibb
+BNY,1390777,constituents,BNY Mellon
+BR,1383312,constituents,Broadridge Financial Solutions
+BRK.B,1067983,constituents,Berkshire Hathaway
+BRO,79282,constituents,Brown & Brown
+BSX,885725,constituents,Boston Scientific
+BX,1393818,constituents,Blackstone Inc.
+BXP,1037540,constituents,"BXP, Inc."
+C,831001,constituents,Citigroup
+CAH,721371,constituents,Cardinal Health
+CARR,1783180,constituents,Carrier Global
+CASY,726958,constituents,Casey's
+CAT,18230,constituents,Caterpillar Inc.
+CB,896159,constituents,Chubb Limited
+CBOE,1374310,constituents,Cboe Global Markets
+CBRE,1138118,constituents,CBRE Group
+CCI,1051470,constituents,Crown Castle
+CCL,815097,constituents,Carnival Corporation
+CDNS,813672,constituents,Cadence Design Systems
+CDW,1402057,constituents,CDW Corporation
+CEG,1868275,constituents,Constellation Energy Group
+CF,1324404,constituents,CF Industries
+CFG,759944,constituents,Citizens Financial Group
+CHD,313927,constituents,Church & Dwight
+CHRW,1043277,constituents,C.H. Robinson
+CHTR,1091667,constituents,Charter Communications
+CI,1739940,constituents,Cigna
+CIEN,936395,constituents,Ciena
+CINF,20286,constituents,Cincinnati Financial
+CL,21665,constituents,Colgate-Palmolive
+CLX,21076,constituents,Clorox
+CMCSA,1166691,constituents,Comcast
+CME,1156375,constituents,CME Group
+CMG,1058090,constituents,Chipotle Mexican Grill
+CMI,26172,constituents,Cummins
+CMS,811156,constituents,CMS Energy
+CNC,1071739,constituents,Centene Corporation
+CNP,1130310,constituents,CenterPoint Energy
+COF,927628,constituents,Capital One
+COHR,820318,constituents,Coherent Corp.
+COIN,1679788,constituents,Coinbase
+COO,711404,constituents,Cooper Companies (The)
+COP,1163165,constituents,ConocoPhillips
+COR,1140859,constituents,Cencora
+COST,909832,constituents,Costco
+CPAY,1175454,constituents,Corpay
+CPRT,900075,constituents,Copart
+CPT,906345,constituents,Camden Property Trust
+CRH,849395,constituents,CRH plc
+CRL,1100682,constituents,Charles River Laboratories
+CRM,1108524,constituents,Salesforce
+CRWD,1535527,constituents,CrowdStrike
+CSCO,858877,constituents,Cisco
+CSGP,1057352,constituents,CoStar Group
+CSX,277948,constituents,CSX Corporation
+CTAS,723254,constituents,Cintas
+CTSH,1058290,constituents,Cognizant
+CTVA,1755672,constituents,Corteva
+CVNA,1690820,constituents,Carvana
+CVS,64803,constituents,CVS Health
+CVX,93410,constituents,Chevron Corporation
+D,715957,constituents,Dominion Energy
+DAL,27904,constituents,Delta Air Lines
+DASH,1792789,constituents,DoorDash
+DD,1666700,constituents,DuPont
+DDOG,1561550,constituents,Datadog
+DE,315189,constituents,Deere & Company
+DECK,910521,constituents,Deckers Brands
+DELL,1571996,constituents,Dell
+DG,29534,constituents,Dollar General
+DGX,1022079,constituents,Quest Diagnostics
+DHI,882184,constituents,D. R. Horton
+DHR,313616,constituents,Danaher Corporation
+DIS,1744489,constituents,Walt Disney Company (The)
+DLR,1297996,constituents,Digital Realty
+DLTR,935703,constituents,Dollar Tree
+DOC,765880,constituents,Healthpeak Properties
+DOV,29905,constituents,Dover Corporation
+DOW,1751788,constituents,Dow Chemical Company
+DPZ,1286681,constituents,Domino's
+DRI,940944,constituents,Darden Restaurants
+DTE,936340,constituents,DTE Energy
+DUK,1326160,constituents,Duke Energy
+DVA,927066,constituents,DaVita
+DVN,1090012,constituents,Devon Energy
+DXCM,1093557,constituents,Dexcom
+EBAY,1065088,constituents,eBay Inc.
+ECHO,1415404,constituents,EchoStar
+ECL,31462,constituents,Ecolab
+ED,1047862,constituents,Consolidated Edison
+EFX,33185,constituents,Equifax
+EG,1095073,constituents,Everest Group
+EIX,827052,constituents,Edison International
+EL,1001250,constituents,Estée Lauder Companies (The)
+ELV,1156039,constituents,Elevance Health
+EME,105634,constituents,Emcor
+EMR,32604,constituents,Emerson Electric
+EOG,821189,constituents,EOG Resources
+EQIX,1101239,constituents,Equinix
+EQT,33213,constituents,EQT Corporation
+ERIE,922621,constituents,Erie Indemnity
+ES,72741,constituents,Eversource Energy
+ESS,920522,constituents,Essex Property Trust
+ETN,1551182,constituents,Eaton Corporation
+ETR,65984,constituents,Entergy
+EVRG,1711269,constituents,Evergy
+EW,1099800,constituents,Edwards Lifesciences
+EXC,1109357,constituents,Exelon
+EXE,895126,constituents,Expand Energy
+EXPD,746515,constituents,Expeditors International
+EXPE,1324424,constituents,Expedia Group
+EXR,1289490,constituents,Extra Space Storage
+F,37996,constituents,Ford Motor Company
+FANG,1539838,constituents,Diamondback Energy
+FAST,815556,constituents,Fastenal
+FCX,831259,constituents,Freeport-McMoRan
+FDS,1013237,constituents,FactSet
+FDX,1048911,constituents,FedEx
+FE,1031296,constituents,FirstEnergy
+FERG,2011641,constituents,Ferguson Enterprises
+FFIV,1048695,constituents,"F5, Inc."
+FICO,814547,constituents,Fair Isaac
+FIS,1136893,constituents,Fidelity National Information Services
+FISV,798354,constituents,Fiserv
+FITB,35527,constituents,Fifth Third Bancorp
+FIX,1035983,constituents,Comfort Systems USA
+FLEX,866374,constituents,Flex Ltd.
+FOX,1754301,constituents,21st Century Fox
+FOXA,1754301,constituents,21st Century Fox
+FRT,34903,constituents,Federal Realty Investment Trust
+FSLR,1274494,constituents,First Solar
+FTNT,1262039,constituents,Fortinet
+FTV,1659166,constituents,Fortive
+GD,40533,constituents,General Dynamics
+GDDY,1609711,constituents,GoDaddy
+GE,40545,constituents,GE Aerospace
+GEHC,1932393,constituents,GE HealthCare
+GEN,849399,constituents,Gen Digital
+GEV,1996810,constituents,GE Vernova
+GILD,882095,constituents,Gilead Sciences
+GIS,40704,constituents,General Mills
+GL,320335,constituents,Globe Life
+GLW,24741,constituents,Corning Inc.
+GM,1467858,constituents,General Motors
+GNRC,1474735,constituents,Generac
+GOOG,1652044,constituents,Alphabet Inc. (Class C)
+GOOGL,1652044,constituents,Alphabet Inc. (Class A)
+GPC,40987,constituents,Genuine Parts Company
+GPN,1123360,constituents,Global Payments
+GRMN,1121788,constituents,Garmin
+GS,886982,constituents,Goldman Sachs
+GWW,277135,constituents,W. W. Grainger
+HAL,45012,constituents,Halliburton
+HAS,46080,constituents,Hasbro
+HBAN,49196,constituents,Huntington Bancshares
+HCA,860730,constituents,HCA Healthcare
+HD,354950,constituents,Home Depot (The)
+HIG,874766,constituents,Hartford (The)
+HII,1501585,constituents,Huntington Ingalls Industries
+HLT,1585689,constituents,Hilton Worldwide
+HON,773840,constituents,Honeywell Technologies
+HOOD,1783879,constituents,Robinhood Markets
+HPE,1645590,constituents,Hewlett Packard Enterprise
+HPQ,47217,constituents,HP Inc.
+HRL,48465,constituents,Hormel Foods
+HSIC,1000228,constituents,Henry Schein
+HST,1070750,constituents,Host Hotels & Resorts
+HSY,47111,constituents,Hershey Company (The)
+HUBB,48898,constituents,Hubbell Incorporated
+HUM,49071,constituents,Humana
+HWM,4281,constituents,Howmet Aerospace
+IBKR,1381197,constituents,Interactive Brokers
+IBM,51143,constituents,IBM
+ICE,1571949,constituents,Intercontinental Exchange
+IDXX,874716,constituents,Idexx Laboratories
+IEX,832101,constituents,IDEX Corporation
+IFF,51253,constituents,International Flavors & Fragrances
+INCY,879169,constituents,Incyte
+INTC,50863,constituents,Intel
+INTU,896878,constituents,Intuit
+INVH,1687229,constituents,Invitation Homes
+IP,51434,constituents,International Paper
+IQV,1478242,constituents,IQVIA
+IR,1699150,constituents,Ingersoll Rand
+IRM,1020569,constituents,Iron Mountain
+ISRG,1035267,constituents,Intuitive Surgical
+IT,749251,constituents,Gartner
+ITW,49826,constituents,Illinois Tool Works
+IVZ,914208,constituents,Invesco
+J,52988,constituents,Jacobs Solutions
+JBHT,728535,constituents,J.B. Hunt
+JBL,898293,constituents,Jabil Circuit
+JCI,833444,constituents,Johnson Controls
+JKHY,779152,constituents,Jack Henry & Associates
+JNJ,200406,constituents,Johnson & Johnson
+JPM,19617,constituents,JPMorgan Chase
+KDP,1418135,constituents,Keurig Dr Pepper
+KEY,91576,constituents,KeyCorp
+KEYS,1601046,constituents,Keysight Technologies
+KHC,1637459,constituents,Kraft Heinz
+KIM,879101,constituents,Kimco Realty
+KKR,1404912,constituents,KKR & Co.
+KLAC,319201,constituents,KLA Corporation
+KMB,55785,constituents,Kimberly-Clark
+KMI,1506307,constituents,Kinder Morgan
+KO,21344,constituents,Coca-Cola Company (The)
+KR,56873,constituents,Kroger
+KVUE,1944048,constituents,Kenvue
+L,60086,constituents,Loews Corporation
+LDOS,1336920,constituents,Leidos
+LEN,920760,constituents,Lennar
+LH,920148,constituents,Labcorp
+LHX,202058,constituents,L3Harris
+LII,1069202,constituents,Lennox International
+LIN,1707925,constituents,Linde plc
+LITE,1633978,constituents,Lumentum
+LLY,59478,constituents,Lilly (Eli)
+LMT,936468,constituents,Lockheed Martin
+LNT,352541,constituents,Alliant Energy
+LOW,60667,constituents,Lowe's
+LRCX,707549,constituents,Lam Research
+LULU,1397187,constituents,Lululemon Athletica
+LUV,92380,constituents,Southwest Airlines
+LVS,1300514,constituents,Las Vegas Sands
+LYB,1489393,constituents,LyondellBasell
+LYV,1335258,constituents,Live Nation Entertainment
+MA,1141391,constituents,Mastercard
+MAA,912595,constituents,Mid-America Apartment Communities
+MAR,1048286,constituents,Marriott International
+MAS,62996,constituents,Masco
+MCD,63908,constituents,McDonald's
+MCHP,827054,constituents,Microchip Technology
+MCK,927653,constituents,McKesson
+MCO,1059556,constituents,Moody's Corporation
+MDLZ,1103982,constituents,Mondelez International
+MDT,1613103,constituents,Medtronic
+MET,1099219,constituents,MetLife
+META,1326801,constituents,Meta Platforms
+MGM,789570,constituents,MGM Resorts
+MKC,63754,constituents,McCormick & Company
+MLM,916076,constituents,Martin Marietta Materials
+MMM,66740,constituents,3M
+MNST,865752,constituents,Monster Beverage
+MO,764180,constituents,Altria
+MOS,1285785,constituents,Mosaic Company (The)
+MPC,1510295,constituents,Marathon Petroleum
+MPWR,1280452,constituents,Monolithic Power Systems
+MRK,310158,constituents,Merck & Co.
+MRNA,1682852,constituents,Moderna
+MRSH,62709,constituents,Marsh McLennan
+MRVL,1835632,constituents,Marvell Technology
+MS,895421,constituents,Morgan Stanley
+MSCI,1408198,constituents,MSCI
+MSFT,789019,constituents,Microsoft
+MSI,68505,constituents,Motorola Solutions
+MTB,36270,constituents,M&T Bank
+MTD,1037646,constituents,Mettler Toledo
+MU,723125,constituents,Micron Technology
+NCLH,1513761,constituents,Norwegian Cruise Line Holdings
+NDAQ,1120193,constituents,"Nasdaq, Inc."
+NDSN,72331,constituents,Nordson Corporation
+NEE,753308,constituents,NextEra Energy
+NEM,1164727,constituents,Newmont
+NFLX,1065280,constituents,Netflix
+NI,1111711,constituents,NiSource
+NKE,320187,constituents,"Nike, Inc."
+NOC,1133421,constituents,Northrop Grumman
+NOW,1373715,constituents,ServiceNow
+NRG,1013871,constituents,NRG Energy
+NSC,702165,constituents,Norfolk Southern
+NTAP,1002047,constituents,NetApp
+NTRS,73124,constituents,Northern Trust
+NUE,73309,constituents,Nucor
+NVDA,1045810,constituents,Nvidia
+NVR,906163,constituents,"NVR, Inc."
+NWS,1564708,constituents,News Corp (Class B)
+NWSA,1564708,constituents,News Corp (Class A)
+NXPI,1413447,constituents,NXP Semiconductors
+O,726728,constituents,Realty Income
+ODFL,878927,constituents,Old Dominion
+OKE,1039684,constituents,Oneok
+OMC,29989,constituents,Omnicom Group
+ON,1097864,constituents,ON Semiconductor
+ORCL,1341439,constituents,Oracle Corporation
+ORLY,898173,constituents,O'Reilly Automotive
+OTIS,1781335,constituents,Otis Worldwide
+OXY,797468,constituents,Occidental Petroleum
+PANW,1327567,constituents,Palo Alto Networks
+PAYX,723531,constituents,Paychex
+PCAR,75362,constituents,Paccar
+PCG,1004980,constituents,Pacific Gas & Electric Company
+PEG,788784,constituents,Public Service Enterprise Group
+PEP,77476,constituents,PepsiCo
+PFE,78003,constituents,Pfizer
+PFG,1126328,constituents,Principal Financial Group
+PG,80424,constituents,Procter & Gamble
+PGR,80661,constituents,Progressive Corporation
+PH,76334,constituents,Parker Hannifin
+PHM,822416,constituents,PulteGroup
+PKG,75677,constituents,Packaging Corporation of America
+PLD,1045609,constituents,Prologis
+PLTR,1321655,constituents,Palantir Technologies
+PM,1413329,constituents,Philip Morris International
+PNC,713676,constituents,PNC Financial Services
+PNR,77360,constituents,Pentair
+PNW,764622,constituents,Pinnacle West Capital
+PODD,1145197,constituents,Insulet Corporation
+PPG,79879,constituents,PPG Industries
+PPL,922224,constituents,PPL Corporation
+PRU,1137774,constituents,Prudential Financial
+PSA,1393311,constituents,Public Storage
+PSKY,2041610,constituents,Paramount Skydance Corporation
+PSX,1534701,constituents,Phillips 66
+PTC,857005,constituents,PTC Inc.
+PWR,1050915,constituents,Quanta Services
+PYPL,1633917,constituents,PayPal
+Q,2058873,constituents,Qwest Communications
+QCOM,804328,constituents,Qualcomm
+RCL,884887,constituents,Royal Caribbean Group
+RDDT,1713445,constituents,Reddit
+REG,910606,constituents,Regency Centers
+REGN,872589,constituents,Regeneron Pharmaceuticals
+RF,1281761,constituents,Regions Financial Corporation
+RJF,720005,constituents,Raymond James Financial
+RL,1037038,constituents,Ralph Lauren Corporation
+RMD,943819,constituents,ResMed|
+ROK,1024478,constituents,Rockwell Automation
+ROL,84839,constituents,"Rollins, Inc."
+ROP,882835,constituents,Roper Technologies
+ROST,745732,constituents,Ross Stores
+RSG,1060391,constituents,Republic Services
+RTX,101829,constituents,RTX Corporation
+RVTY,31791,constituents,Revvity
+SBAC,1034054,constituents,SBA Communications
+SBUX,829224,constituents,Starbucks
+SCHW,316709,constituents,Charles Schwab Corporation
+SHW,89800,constituents,Sherwin-Williams
+SJM,91419,constituents,J.M. Smucker Company (The)
+SLB,87347,constituents,Schlumberger
+SMCI,1375365,constituents,Supermicro
+SNA,91440,constituents,Snap-on
+SNDK,2023554,constituents,SanDisk
+SNPS,883241,constituents,Synopsys
+SO,92122,constituents,Southern Company
+SOLV,1964738,constituents,Solventum
+SPG,1063761,constituents,Simon Property Group
+SPGI,64040,constituents,S&P Global
+SRE,1032208,constituents,Sempra
+STE,1757898,constituents,Steris
+STLD,1022671,constituents,Steel Dynamics
+STT,93751,constituents,State Street Corporation
+STX,1137789,constituents,Seagate Technology
+STZ,16918,constituents,Constellation Brands
+SW,2005951,constituents,Smurfit Westrock
+SWK,93556,constituents,Stanley Black & Decker
+SWKS,4127,constituents,Skyworks Solutions
+SYF,1601712,constituents,Synchrony Financial
+SYK,310764,constituents,Stryker Corporation
+SYY,96021,constituents,Sysco
+T,732717,constituents,AT&T Corporation
+TAP,24545,constituents,Molson Coors Beverage Company
+TDG,1260221,constituents,TransDigm Group
+TDY,1094285,constituents,Teledyne Technologies
+TECH,842023,constituents,Bio-Techne
+TEL,1385157,constituents,TE Connectivity
+TER,97210,constituents,Teradyne
+TFC,92230,constituents,Truist Financial
+TGT,27419,constituents,Target Corporation
+TJX,109198,constituents,TJX Companies
+TKO,1973266,constituents,TKO Group Holdings
+TMO,97745,constituents,Thermo Fisher Scientific
+TMUS,1283699,constituents,T-Mobile US
+TPL,1811074,constituents,Texas Pacific Land Corporation
+TPR,1116132,constituents,"Tapestry, Inc."
+TRGP,1389170,constituents,Targa Resources
+TRMB,864749,constituents,Trimble Inc.
+TROW,1113169,constituents,T. Rowe Price
+TRV,86312,constituents,Travelers Companies (The)
+TSCO,916365,constituents,Tractor Supply
+TSLA,1318605,constituents,"Tesla, Inc."
+TSN,100493,constituents,Tyson Foods
+TT,1466258,constituents,Trane Technologies
+TTD,1671933,constituents,Trade Desk (The)
+TTWO,946581,constituents,Take-Two Interactive
+TXN,97476,constituents,Texas Instruments
+TXT,217346,constituents,Textron
+TYL,860731,constituents,Tyler Technologies
+UAL,100517,constituents,United Airlines Holdings
+UBER,1543151,constituents,Uber
+UDR,74208,constituents,"UDR, Inc."
+UHS,352915,constituents,Universal Health Services
+ULTA,1403568,constituents,Ulta Beauty
+UNH,731766,constituents,UnitedHealth Group
+UNP,100885,constituents,Union Pacific Corporation
+UPS,1090727,constituents,United Parcel Service
+URI,1067701,constituents,United Rentals
+USB,36104,constituents,U.S. Bancorp
+V,1403161,constituents,Visa Inc.
+VEEV,1393052,constituents,Veeva Systems
+VICI,1705696,constituents,Vici Properties
+VLO,1035002,constituents,Valero Energy
+VLTO,1967680,constituents,Veralto
+VMC,1396009,constituents,Vulcan Materials Company
+VMRK,906107,constituents,Vivmark Residential
+VRSK,1442145,constituents,Verisk Analytics
+VRSN,1014473,constituents,Verisign
+VRT,1674101,constituents,Vertiv
+VRTX,875320,constituents,Vertex Pharmaceuticals
+VST,1692819,constituents,Vistra Corp.
+VTR,740260,constituents,Ventas
+VTRS,1792044,constituents,Viatris
+VZ,732712,constituents,Verizon
+WAB,943452,constituents,Wabtec
+WAT,1000697,constituents,Waters Corporation
+WBD,1437107,constituents,Warner Bros. Discovery
+WDAY,1327811,constituents,"Workday, Inc."
+WDC,106040,constituents,Western Digital
+WEC,783325,constituents,WEC Energy Group
+WELL,766704,constituents,Welltower
+WFC,72971,constituents,Wells Fargo
+WM,823768,constituents,Waste Management
+WMB,107263,constituents,Williams Companies
+WMT,104169,constituents,Walmart
+WRB,11544,constituents,W. R. Berkley Corporation
+WSM,719955,constituents,"Williams-Sonoma, Inc."
+WST,105770,constituents,West Pharmaceutical Services
+WTW,1140536,constituents,Willis Towers Watson
+WY,106535,constituents,Weyerhaeuser
+WYNN,1174922,constituents,Wynn Resorts
+XEL,72903,constituents,Xcel Energy
+XYL,1524472,constituents,Xylem Inc.
+XYZ,1512673,constituents,"Block, Inc."
+YUM,1041061,constituents,Yum! Brands
+ZBH,1136869,constituents,Zimmer Biomet
+ZBRA,877212,constituents,Zebra Technologies
+ZTS,1555280,constituents,Zoetis
+XOM,34088,constituents cik absent; name exact (spaces removed),EXXONMOBIL
+FDXF,,constituents cik absent; unmatched,FEDEX FREIGHT
+HONA,,constituents cik absent; unmatched,HONEYWELL AEROSPACE
+AAP,1158449,name exact,ADVANCE AUTO PARTS
+ABK,874501,name exact,AMBAC FINANCIAL
+ABMD,815094,name exact,ABIOMED
+ADS,1101215,name exact,ALLIANCE DATA SYSTEMS
+AKS,918160,name exact,AK STEEL
+ALK,766421,name exact,ALASKA AIR
+ALTR,768251,name exact,ALTERA
+ALXN,899866,name exact,ALEXION PHARMACEUTICALS
+AMG,1004434,name exact,AFFILIATED MANAGERS
+AMTM,2011286,name exact,AMENTUM
+ANDV,50104,name exact,ANDEAVOR
+ANF,1018840,name exact,ABERCROMBIE AND FITCH
+ANSS,1013462,name exact,ANSYS
+APC,773910,name exact,ANADARKO PETROLEUM
+APOL,929887,name exact,APOLLO EDUCATION
+ARG,804212,name exact,AIRGAS
+ATI,1018963,name exact,ALLEGHENY TECHNOLOGIES
+ATVI,718877,name exact,ACTIVISION BLIZZARD
+AVB,915912,name exact,AVALONBAY COMMUNITIES
+AVP,8868,name exact,AVON PRODUCTS
+AYE,3673,name exact,ALLEGHENY ENERGY
+AYI,1144215,name exact,ACUITY BRANDS
+BBWI,701985,name exact,BATH AND BODY WORKS
+BC,14930,name exact,BRUNSWICK
+BHF,1685040,name exact,BRIGHTHOUSE FINANCIAL
+BIG,768835,name exact,BIG LOTS
+BIO,12208,name exact,BIO RAD LABORATORIES
+BJS,864328,name exact,BJ SERVICES
+BMC,835729,name exact,BMC SOFTWARE
+BMS,11199,name exact,BEMIS
+BTU,1064728,name exact,PEABODY ENERGY
+BWA,908255,name exact,BORGWARNER
+BXLT,1620546,name exact,BAXALTA
+CAG,23217,name exact,CONAGRA BRANDS
+CAM,941548,name exact,CAMERON
+CCK,1219601,name exact,CROWN
+CE,1306830,name exact,CELANESE
+CELG,816284,name exact,CELGENE
+CEPH,873364,name exact,CEPHALON
+CERN,804753,name exact,CERNER
+CFN,1457543,name exact,CAREFUSION
+CHK,895126,name exact,CHESAPEAKE ENERGY
+CLF,764065,name exact,CLIFFS NATURAL RESOURCES
+CMA,28412,name exact,COMERICA
+COL,1137411,name exact,ROCKWELL COLLINS
+COTY,1024305,name exact,COTY
+COV,1385187,name exact,COVIDIEN
+CPB,16732,name exact,CAMPBELL S
+CPGX,1629995,name exact,COLUMBIA PIPELINE
+CPRI,1530721,name exact,CAPRI
+CPWR,859014,name exact,COMPUWARE
+CSC,23082,name exact,COMPUTER SCIENCES
+CSRA,1646383,name exact,CSRA
+CTLT,1596783,name exact,CATALENT
+CTRA,858470,name exact,COTERRA ENERGY
+CTXS,877890,name exact,CITRIX SYSTEMS
+CVG,1062047,name exact,CONVERGYS
+CVH,1054833,name exact,COVENTRY HEALTH CARE
+CXO,1358071,name exact,CONCHO RESOURCES
+DAY,1725057,name exact,DAYFORCE
+DF,931336,name exact,DEAN FOODS
+DISCA,1437107,name exact,DISCOVERY
+DISCK,1437107,name exact,DISCOVERY
+DISH,1001082,name exact,DISH NETWORK
+DNB,1799208,name exact,DUN AND BRADSTREET
+DNR,945764,name exact,DENBURY RESOURCES
+DO,949039,name exact,DIAMOND OFFSHORE DRILLING
+DPS,1418135,name exact,DR PEPPER SNAPPLE
+DRE,783280,name exact,DUKE REALTY
+DV,730464,name exact,DEVRY
+DXC,1688568,name exact,DXC TECHNOLOGY
+EA,712515,name exact,ELECTRONIC ARTS
+EK,31235,name exact,EASTMAN KODAK
+EMC,790070,name exact,EMC
+EMN,915389,name exact,EASTMAN CHEMICAL
+ENPH,1463101,name exact,ENPHASE ENERGY
+EP,1066107,name exact,EL PASO
+EPAM,1352010,name exact,EPAM SYSTEMS
+ESV,314808,name exact,ENSCO
+ETSY,1370637,name exact,ETSY
+FBHS,1519751,name exact,FORTUNE BRANDS HOME AND SECURITY
+FDC,883980,name exact,FIRST DATA
+FHN,36966,name exact,FIRST HORIZON
+FL,850209,name exact,FOOT LOCKER
+FLIR,354908,name exact,FLIR SYSTEMS
+FLR,1124198,name exact,FLUOR
+FLS,30625,name exact,FLOWSERVE
+FLT,1175454,name exact,FLEETCOR TECHNOLOGIES
+FMC,37785,name exact,FMC
+FOSL,883569,name exact,FOSSIL
+FRX,38074,name exact,FOREST LABORATORIES
+FTI,1681459,name exact,TECHNIPFMC
+FTR,20520,name exact,FRONTIER COMMUNICATIONS
+GENZ,732485,name exact,GENZYME
+GGP,1496048,name exact,GGP
+GMCR,909954,name exact,KEURIG GREEN MOUNTAIN
+GME,1326380,name exact,GAMESTOP
+GNW,1276520,name exact,GENWORTH FINANCIAL
+GPS,39911,name exact,GAP
+GR,42542,name exact,GOODRICH
+HAR,800459,name exact,HARMAN
+HBI,1359841,name exact,HANESBRANDS
+HCBK,921847,name exact,HUDSON CITY BANCORP
+HES,4447,name exact,HESS
+HFC,48039,name exact,HOLLYFRONTIER
+HOG,793952,name exact,HARLEY DAVIDSON
+HOLX,859737,name exact,HOLOGIC
+HP,46765,name exact,HELMERICH AND PAYNE
+HRB,12659,name exact,H AND R BLOCK
+HSP,1274057,name exact,HOSPIRA
+IGT,353944,name exact,GAME TECHNOLOGY
+ILMN,1110803,name exact,ILLUMINA
+INFO,1598014,name exact,IHS MARKIT
+IPGP,1111928,name exact,IPG PHOTONICS
+ITT,216228,name exact,ITT
+JEF,96223,name exact,JEFFERIES FINANCIAL
+JNPR,1043604,name exact,JUNIPER NETWORKS
+JNS,1065865,name exact,JANUS CAPITAL
+JNY,874016,name exact,JONES APPAREL
+JOY,801898,name exact,JOY GLOBAL
+JWN,72333,name exact,NORDSTROM
+K,55067,name exact,KELLANOVA
+KBH,795266,name exact,KB HOME
+KG,1047699,name exact,KING PHARMACEUTICALS
+KMX,1170010,name exact,CARMAX
+KSU,54480,name exact,KANSAS CITY SOUTHERN
+LEG,58492,name exact,LEGGETT AND PLATT
+LIFE,1073431,name exact,LIFE TECHNOLOGIES
+LKQ,1065696,name exact,LKQ
+LLL,1039101,name exact,L3 TECHNOLOGIES
+LM,704051,name exact,LEGG MASON
+LNC,59558,name exact,LINCOLN NATIONAL
+LUMN,18926,name exact,LUMEN TECHNOLOGIES
+LVLT,794323,name exact,LEVEL 3 COMMUNICATIONS
+LW,1679273,name exact,LAMB WESTON
+M,794367,name exact,MACY S
+MAC,912242,name exact,MACERICH
+MAT,63276,name exact,MATTEL
+MBC,1941365,name exact,MASTERBRAND
+MBI,814585,name exact,MBIA
+MDP,65011,name exact,MEREDITH
+MEE,37748,name exact,MASSEY ENERGY
+MHS,1170650,name exact,MEDCO HEALTH SOLUTIONS
+MI,1399315,name exact,MARSHALL AND ILSLEY
+MKTX,1278021,name exact,MARKETAXESS
+MMI,1495569,name exact,MOTOROLA MOBILITY
+MNK,1567892,name exact,MALLINCKRODT
+MOH,1179929,name exact,MOLINA HEALTHCARE
+MOLX,67472,name exact,MOLEX
+MON,1110783,name exact,MONSANTO
+MRO,101778,name exact,MARATHON OIL
+MUR,717423,name exact,MURPHY OIL
+MWW,1020416,name exact,MONSTER WORLDWIDE
+MXIM,743316,name exact,MAXIM INTEGRATED PRODUCTS
+NAVI,1593538,name exact,NAVIENT
+NBL,72207,name exact,NOBLE ENERGY
+NBR,1163739,name exact,NABORS
+NCR,70866,name exact,NCR
+NFX,912750,name exact,NEWFIELD EXPLORATION
+NKTR,906709,name exact,NEKTAR THERAPEUTICS
+NLSN,1492633,name exact,NIELSEN
+NOV,1021860,name exact,NOV
+NOVL,758004,name exact,NOVELL
+NSM,70530,name exact,NATIONAL SEMICONDUCTOR
+NVLS,836106,name exact,NOVELLUS SYSTEMS
+NWL,814453,name exact,NEWELL BRANDS
+NYT,71691,name exact,YORK TIMES
+NYX,1368007,name exact,NYSE EURONEXT
+ODP,800240,name exact,OFFICE DEPOT
+OGN,1821825,name exact,ORGANON AND
+OMX,12978,name exact,OFFICEMAX
+PBCT,1378946,name exact,PEOPLE S UNITED FINANCIAL
+PBI,78814,name exact,PITNEY BOWES
+PCL,849213,name exact,PLUM CREEK TIMBER
+PCP,79958,name exact,PRECISION CASTPARTS
+PDCO,891024,name exact,PATTERSON
+PENN,921738,name exact,PENN ENTERTAINMENT
+PETM,863157,name exact,PETSMART
+PGN,1094093,name exact,PROGRESS ENERGY
+PLL,75829,name exact,PALL
+POM,1135971,name exact,PEPCO
+POOL,945841,name exact,POOL
+PTV,1089976,name exact,PACTIV
+PVH,78239,name exact,PVH
+PXD,1038357,name exact,PIONEER NATURAL RESOURCES
+QEP,1108827,name exact,QEP RESOURCES
+QRVO,1604778,name exact,QORVO
+QTRN,1478242,name exact,QUINTILES TRANSNATIONAL
+R,85961,name exact,RYDER SYSTEM
+RAD,84129,name exact,RITE AID
+RAI,1275283,name exact,REYNOLDS AMERICAN
+RDC,85408,name exact,ROWAN
+RHI,315213,name exact,ROBERT HALF
+RHT,1087423,name exact,RED HAT
+RIG,1451505,name exact,TRANSOCEAN
+RRC,315852,name exact,RANGE RESOURCES
+RSH,96289,name exact,RADIOSHACK
+RTN,1047122,name exact,RAYTHEON
+RX,1595262,name exact,IMS HEALTH
+S,101830,name exact,SPRINT NEXTEL
+SAI,1336920,name exact,SAIC
+SCG,754737,name exact,SCANA
+SE,1373835,name exact,SPECTRA ENERGY
+SEE,1012100,name exact,SEALED AIR
+SGP,310158,name exact,SCHERING PLOUGH
+SHLD,1310067,name exact,SEARS
+SIAL,90185,name exact,SIGMA ALDRICH
+SIG,832988,name exact,SIGNET JEWELERS
+SII,721083,name exact,SMITH
+SIVB,719739,name exact,SVB FINANCIAL
+SLE,23666,name exact,SARA LEE
+SLG,1040971,name exact,SL GREEN REALTY
+SLM,1032033,name exact,SLM
+SNI,1430602,name exact,SCRIPPS NETWORKS INTERACTIVE
+SOLS,2064953,name exact,SOLSTICE ADVANCED MATERIALS
+SPLS,791519,name exact,STAPLES
+SRCL,861878,name exact,STERICYCLE
+STI,750556,name exact,SUNTRUST BANKS
+STJ,203077,name exact,ST JUDE MEDICAL
+STR,751652,name exact,QUESTAR
+SVU,95521,name exact,SUPERVALU
+SWN,7332,name exact,SOUTHWESTERN ENERGY
+SWY,86144,name exact,SAFEWAY
+TDC,816761,name exact,TERADATA
+TE,350563,name exact,TECO ENERGY
+TEG,916863,name exact,INTEGRYS ENERGY
+TFX,96943,name exact,TELEFLEX
+TGNA,39899,name exact,TEGNA
+THC,70318,name exact,TENET HEALTHCARE
+TIE,1011657,name exact,TITANIUM METALS
+TIF,98246,name exact,TIFFANY AND
+TLAB,317771,name exact,TELLABS
+TRB,726513,name exact,TRIBUNE MEDIA
+TRIP,1526520,name exact,TRIPADVISOR
+TSG,1597033,name exact,SABRE
+TWC,1377013,name exact,TIME WARNER CABLE
+TWTR,1418091,name exact,TWITTER
+TWX,1105705,name exact,TIME WARNER
+UAA,1336917,name exact,UNDER ARMOUR
+UNM,5513,name exact,UNUM
+URBN,912615,name exact,URBAN OUTFITTERS
+VAR,203527,name exact,VARIAN MEDICAL SYSTEMS
+VIAB,1339947,name exact,VIACOM
+VNT,1786842,name exact,VONTIER
+WBA,1618921,name exact,WALGREENS BOOTS ALLIANCE
+WFM,865436,name exact,WHOLE FOODS MARKET
+WFR,945436,name exact,MEMC ELECTRONIC MATERIALS
+WHR,106640,name exact,WHIRLPOOL
+WLTW,1140536,name exact,WILLIS TOWERS WATSON
+WPX,1518832,name exact,WPX ENERGY
+WU,1365135,name exact,WESTERN UNION
+WYN,1361658,name exact,WYNDHAM WORLDWIDE
+X,1163302,name exact,UNITED STATES STEEL
+XEC,1168054,name exact,CIMAREX ENERGY
+XL,875159,name exact,XL
+XLNX,743988,name exact,XILINX
+XRAY,818479,name exact,DENTSPLY SIRONA
+XTO,868809,name exact,XTO ENERGY
+YHOO,1011006,name exact,YAHOO
+JCP,1166126,name exact (spaces removed),JCPENNEY
+KSS,885639,name exact (spaces removed),KOHLS
+VFC,103379,name exact (spaces removed),VF
+CVC,1053112,name prefix,CABLEVISION SYSTEMS
+DFS,1393612,name prefix,DISCOVER FINANCIAL
+ETFC,1015780,name prefix,E TRADE
+FDO,34408,name prefix,FAMILY DOLLAR
+FII,1056288,name prefix,FEDERATED INVESTORS
+FRC,1143834,name prefix,FIRST REPUBLIC
+GT,42582,name prefix,GOODYEAR TIRE
+JDSU,912093,name prefix,JDS UNIPHASE
+LLTC,791907,name prefix,LINEAR TECHNOLOGY
+MJN,1452575,name prefix,MEAD JOHNSON
+RRD,29669,name prefix,RR DONNELLEY
+UA,1336917,name prefix,UNDER ARMOUR
+ZION,109380,name prefix,ZIONS BANCORPORATION
+AA,,unmatched,ALCOA
+AAL,,unmatched,AMERICAN AIRLINES
+ABS,,unmatched,ALBERTSONS
+ACAS,,unmatched,AMERICAN CAPITAL
+ACE,,unmatched,CHUBB
+ADCT,,unmatched,ADC TELECOMMUNICATIONS
+ADT,,unmatched,ADT
+AET,,unmatched,AETNA
+AGN,,unmatched,ALLERGAN
+AIV,,unmatched,AIMCO
+AN,,unmatched,AMOCO
+ANR,,unmatched,ALPHA NATURAL RESOURCES
+ARNC,,unmatched,ARCONIC
+AV,,unmatched,AVAYA
+BBBY,,unmatched,BED BATH AND BEYOND
+BCR,,unmatched,CR BARD
+BEAM,,unmatched,SUNTORY GLOBAL SPIRITS
+BHI,,unmatched,BAKER HUGHES
+BRCM,,unmatched,BROADCOM
+BS,,unmatched,BETHLEHEM STEEL
+CA,,unmatched,CA TECHNOLOGIES
+CBE,,unmatched,COOPER
+CCE,,unmatched,COCA COLA
+CDAY,,unmatched,CERIDIAN
+CFC,,unmatched,COUNTRYWIDE FINANCIAL
+CMCSK,,unmatched,COMCAST SERIES K
+CNX,,unmatched,CONSOL ENERGY
+CTX,,unmatched,CENTEX
+CZR,,unmatched,CAESARS ENTERTAINMENT
+DJ,,unmatched,DOW JONES
+DTV,,unmatched,DIRECTV
+DWDP,,unmatched,DUPONT
+DYN,,unmatched,DYNEGY
+ENDP,,unmatched,ENDO
+ESRX,,unmatched,EXPRESS SCRIPTS
+EVHC,,unmatched,ENVISION HEALTHCARE
+FNM,,unmatched,FANNIE MAE
+FRE,,unmatched,FREDDIE MAC
+GAS,,unmatched,NICOR GAS
+GHC,,unmatched,GRAHAM
+GLK,,unmatched,GREAT LAKES CHEMICAL
+GRA,,unmatched,WR GRACE
+GRN,,unmatched,GENERAL RE
+HNG,,unmatched,HOUSTON NATURAL GAS
+HNZ,,unmatched,HEINZ
+HOT,,unmatched,STARWOOD HOTELS AND RESORTS
+HPH,,unmatched,HARNISCHFEGER
+IPG,,unmatched,INTERPUBLIC
+KFT,,unmatched,KRAFT FOODS
+KRFT,,unmatched,KRAFT FOODS
+KSE,,unmatched,KEYSPAN
+LDW,,unmatched,LAIDLAW
+LEH,,unmatched,LEHMAN BROTHERS
+LO,,unmatched,LORILLARD TOBACCO
+LSI,,unmatched,LSI
+LXK,,unmatched,LEXMARK
+MFE,,unmatched,MCAFEE
+MHK,,unmatched,MOHAWK
+MIL,,unmatched,MILLIPORE
+MTCH,,unmatched,MATCH
+NE,,unmatched,NOBLE
+OI,,unmatched,OWENS ILLINOIS
+PAYC,,unmatched,PAYCOM
+PCS,,unmatched,METROPCS
+PRGO,,unmatched,PERRIGO
+SBL,,unmatched,SYMBOL TECHNOLOGIES
+SBNY,,unmatched,SIGNATURE BANK
+SEDG,,unmatched,SOLAREDGE
+SLR,,unmatched,SOLECTRON
+SMS,,unmatched,SHARED MEDICAL SYSTEMS
+SUN,,unmatched,SUNAMERICA
+TMC,,unmatched,TIMES MIRROR
+TSS,,unmatched,TSYS
+TYC,,unmatched,TYCO
+USL,,unmatched,USLIFE
+VNO,,unmatched,VORNADO REALTY
+WB,,unmatched,WACHOVIA BANK
+WCG,,unmatched,WELLCARE
+WIN,,unmatched,WINDSTREAM COMMUNICATIONS
+XRX,,unmatched,XEROX

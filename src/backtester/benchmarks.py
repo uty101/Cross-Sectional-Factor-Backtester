@@ -26,6 +26,11 @@ from backtester.config import Config
 FRENCH_BASE = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
 FIVE_FACTORS = "F-F_Research_Data_5_Factors_2x3_CSV.zip"
 MOMENTUM = "F-F_Momentum_Factor_CSV.zip"
+# The six size x B/M and size x profitability portfolios: their big-cap
+# legs (BIG HiBM - BIG LoBM, BIG HiOP - BIG LoOP) are the like-for-like
+# comparison for a large-cap universe, since HML and RMW are half small-cap.
+SIX_BM = "6_Portfolios_2x3_CSV.zip"
+SIX_OP = "6_Portfolios_ME_OP_2x3_CSV.zip"
 FRED_DGS1MO = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS1MO"
 
 _MONTHLY_ROW = re.compile(r"^\s*(\d{6})\s*,")
@@ -41,6 +46,12 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
             root, f"french/{MOMENTUM[:-4]}_{as_of}.zip", FRENCH_BASE + MOMENTUM
         ),
         raw.fetch_to_raw(root, f"fred/DGS1MO_{as_of}.csv", FRED_DGS1MO),
+        raw.fetch_to_raw(
+            root, f"french/{SIX_BM[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_BM
+        ),
+        raw.fetch_to_raw(
+            root, f"french/{SIX_OP[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_OP
+        ),
     ]
 
 
@@ -102,6 +113,25 @@ def build(cfg: Config) -> pl.DataFrame:
         _read_zip_csv(raw.latest(root, f"french/{MOMENTUM[:-4]}_*.zip"))
     )
     french = five.join(mom.select("month", "umd"), on="month", how="left").sort("month")
+    six_bm = parse_french_monthly(
+        _read_zip_csv(raw.latest(root, f"french/{SIX_BM[:-4]}_*.zip"))
+    )
+    six_op = parse_french_monthly(
+        _read_zip_csv(raw.latest(root, f"french/{SIX_OP[:-4]}_*.zip"))
+    )
+    french = french.join(
+        six_bm.select(
+            "month", (pl.col("big_hibm") - pl.col("big_lobm")).alias("big_hml")
+        ),
+        on="month",
+        how="left",
+    ).join(
+        six_op.select(
+            "month", (pl.col("big_hiop") - pl.col("big_loop")).alias("big_rmw")
+        ),
+        on="month",
+        how="left",
+    )
     as_of = french["month"].max()
     interim = cfg.data / "interim"
     french.with_columns(pl.lit(as_of).alias("as_of")).write_parquet(

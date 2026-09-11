@@ -4800,5 +4800,523 @@
     "sha256": "defdb2f97198e1e00e191dcf79b2a9070b8e1f62b235322a60fb291af1f826cb",
     "bytes": 507811,
     "fetched_at": "2026-09-11T12:00:27+00:00"
+  },
+  {
+    "path": "sec/2009q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2009q1.zip",
+    "sha256": "181327faaa37c2a3b47cb6727004960b762954d908697b252d12bea245b9d26e",
+    "bytes": 13540,
+    "fetched_at": "2026-09-11T12:14:43+00:00"
+  },
+  {
+    "path": "sec/2009q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2009q2.zip",
+    "sha256": "09d38a3fdea044be2728488ecb000fef8b5220fda805c601d2337afd1da333a8",
+    "bytes": 144894,
+    "fetched_at": "2026-09-11T12:14:43+00:00"
+  },
+  {
+    "path": "sec/2009q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2009q3.zip",
+    "sha256": "dca07de82a7c40d28108cd3ba4fbce4225a9c5bd2bd9deea7167ff4992c8ddfa",
+    "bytes": 3544077,
+    "fetched_at": "2026-09-11T12:14:44+00:00"
+  },
+  {
+    "path": "sec/2009q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2009q4.zip",
+    "sha256": "ad23b114ecb430c3a05ee2f2be799e966a67591ef098c44311b2f1f632d3ea82",
+    "bytes": 4050938,
+    "fetched_at": "2026-09-11T12:14:44+00:00"
+  },
+  {
+    "path": "sec/2010q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2010q1.zip",
+    "sha256": "2a4db2340ab1662d5135d7e17be1a58352c5959017350f0ef2174135f9996125",
+    "bytes": 5311282,
+    "fetched_at": "2026-09-11T12:14:44+00:00"
+  },
+  {
+    "path": "sec/2010q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2010q2.zip",
+    "sha256": "25f416b020fd3e62a67dbf8c6522c9f239e716099b61cf5d05a59a91ffdef1f1",
+    "bytes": 3994236,
+    "fetched_at": "2026-09-11T12:14:45+00:00"
+  },
+  {
+    "path": "sec/2010q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2010q3.zip",
+    "sha256": "52014faf614ca0d7b8040e364f5b3e99f28d5e96b711aa922b490056e2c1d7b5",
+    "bytes": 13745950,
+    "fetched_at": "2026-09-11T12:14:46+00:00"
+  },
+  {
+    "path": "sec/2010q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2010q4.zip",
+    "sha256": "3dc43a8559cba9e1a9bb5a283a99e1fdfd2b0eaa7a9460887d5b4c70d69cef63",
+    "bytes": 14679781,
+    "fetched_at": "2026-09-11T12:14:46+00:00"
+  },
+  {
+    "path": "sec/2011q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2011q1.zip",
+    "sha256": "e63b781a5e57e55d68e110a06d3f697e942a60e17f093bbdc1a16ac7152a7df5",
+    "bytes": 19615544,
+    "fetched_at": "2026-09-11T12:14:47+00:00"
+  },
+  {
+    "path": "sec/2011q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2011q2.zip",
+    "sha256": "10a6f98f14d2a341e938a379ea32beb4857b01d59facf04e6e7b3c68558a95d1",
+    "bytes": 15001310,
+    "fetched_at": "2026-09-11T12:14:48+00:00"
+  },
+  {
+    "path": "sec/2011q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2011q3.zip",
+    "sha256": "43b9beb243c6686a29df5cf817ed2cb3a7c86a7398bbc56e2fb4d0cf4784ac28",
+    "bytes": 57941919,
+    "fetched_at": "2026-09-11T12:14:51+00:00"
+  },
+  {
+    "path": "sec/2011q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2011q4.zip",
+    "sha256": "0f674f68094cc65c83da3c142775dcfd091250e293783c3e8211ee4e97bc083f",
+    "bytes": 64306658,
+    "fetched_at": "2026-09-11T12:14:54+00:00"
+  },
+  {
+    "path": "sec/2012q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2012q1.zip",
+    "sha256": "42ed1a5ecac978d4338bd51cd4bc15bf60cc821291eea492f8172fc4e803d5f6",
+    "bytes": 85474601,
+    "fetched_at": "2026-09-11T12:14:59+00:00"
+  },
+  {
+    "path": "sec/2012q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2012q2.zip",
+    "sha256": "0dbb10aa316c674f07849a28e67a25a0a59bd6ef2bc214cd1800c8a2d2a05df6",
+    "bytes": 80075771,
+    "fetched_at": "2026-09-11T12:15:03+00:00"
+  },
+  {
+    "path": "sec/2012q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2012q3.zip",
+    "sha256": "a5b705fab7948837fc890d820c2b809d4afdb0ff1836129ad5a16127275f0ebf",
+    "bytes": 89608234,
+    "fetched_at": "2026-09-11T12:15:07+00:00"
+  },
+  {
+    "path": "sec/2012q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2012q4.zip",
+    "sha256": "af6629de7547f5d75c85abf170550b9466768071fcd419d5fdf1a1d026436e98",
+    "bytes": 95805256,
+    "fetched_at": "2026-09-11T12:15:12+00:00"
+  },
+  {
+    "path": "sec/2013q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2013q1.zip",
+    "sha256": "329f4e3e40c0351001037ad1dea3fd28c07100f6f6d6d64d5998ea01b060a790",
+    "bytes": 99173442,
+    "fetched_at": "2026-09-11T12:15:15+00:00"
+  },
+  {
+    "path": "sec/2013q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2013q2.zip",
+    "sha256": "7cc764386ea9cb01d62e1a9f4fac38dc9c741e96886a953ddaad2def4eb489c7",
+    "bytes": 96917655,
+    "fetched_at": "2026-09-11T12:15:22+00:00"
+  },
+  {
+    "path": "sec/2013q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2013q3.zip",
+    "sha256": "c9134387b650a9194f14b3f832f16aa1a72255c20a0e0b954001a643933cc849",
+    "bytes": 98355005,
+    "fetched_at": "2026-09-11T12:15:27+00:00"
+  },
+  {
+    "path": "sec/2013q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2013q4.zip",
+    "sha256": "7781ac25ddbd4f6eb8eb85e838656181fb06e8bc16b1dd5efccb9e21f8f5baa7",
+    "bytes": 92335773,
+    "fetched_at": "2026-09-11T12:15:37+00:00"
+  },
+  {
+    "path": "sec/2014q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2014q1.zip",
+    "sha256": "bf55481c6e0088fb45e8efeb2d8de6912a9c3533da918376a24ca5f84144680f",
+    "bytes": 102843522,
+    "fetched_at": "2026-09-11T12:15:43+00:00"
+  },
+  {
+    "path": "sec/2014q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2014q2.zip",
+    "sha256": "ab03600231a08369a980a31dde8bb78b6cd49f56d39ab7b90ca5bc0cfd52aa7f",
+    "bytes": 85032839,
+    "fetched_at": "2026-09-11T12:15:47+00:00"
+  },
+  {
+    "path": "sec/2014q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2014q3.zip",
+    "sha256": "4d10510a2f17a6da8012d83f66bed7fbb434bca2529f7b2a92043c522d2c52b1",
+    "bytes": 87408142,
+    "fetched_at": "2026-09-11T12:15:54+00:00"
+  },
+  {
+    "path": "sec/2014q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2014q4.zip",
+    "sha256": "c82395b7df380a95b30d652784372a5439dea9ed750d89784822bb643cbc4930",
+    "bytes": 87639973,
+    "fetched_at": "2026-09-11T12:15:58+00:00"
+  },
+  {
+    "path": "sec/2015q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2015q1.zip",
+    "sha256": "baa9e434480b8299593b781e8156f855e0c4548677329f166f495cbae287e52e",
+    "bytes": 98944359,
+    "fetched_at": "2026-09-11T12:16:05+00:00"
+  },
+  {
+    "path": "sec/2015q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2015q2.zip",
+    "sha256": "d3cac325930af6ef145d26fb7e035d7933e900ce174a11adaabb33abd87fbfa1",
+    "bytes": 78908272,
+    "fetched_at": "2026-09-11T12:16:07+00:00"
+  },
+  {
+    "path": "sec/2015q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2015q3.zip",
+    "sha256": "9301fa2e346aa6b3a48a36cafab80d1aab5d7970e60bfd168d53ba852a4deca9",
+    "bytes": 82751989,
+    "fetched_at": "2026-09-11T12:16:10+00:00"
+  },
+  {
+    "path": "sec/2015q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2015q4.zip",
+    "sha256": "1723b41ef2a1d3ea6595f6052ef229a80e03cd183391ca9e297a894f9e589d83",
+    "bytes": 83007568,
+    "fetched_at": "2026-09-11T12:16:14+00:00"
+  },
+  {
+    "path": "sec/2016q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2016q1.zip",
+    "sha256": "5c89a6badede1b47ab540913c7484795c7fc4c2a4672ac601b34b8c0afe5a698",
+    "bytes": 95470843,
+    "fetched_at": "2026-09-11T12:16:19+00:00"
+  },
+  {
+    "path": "sec/2016q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2016q2.zip",
+    "sha256": "e91daef1f83ab3a6a7a25425f1f09ac6c100be8e42ac7a54e539e1b0c303449c",
+    "bytes": 73848835,
+    "fetched_at": "2026-09-11T12:16:26+00:00"
+  },
+  {
+    "path": "sec/2016q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2016q3.zip",
+    "sha256": "4d014b8ee4476887aba067c59bfef967d4b12c905d4b1b3f89e8ff7ff7310156",
+    "bytes": 71116399,
+    "fetched_at": "2026-09-11T12:16:29+00:00"
+  },
+  {
+    "path": "sec/2016q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2016q4.zip",
+    "sha256": "b8a9550c386ea95eefcc95fc3b3c19f2b1428c0a7f46d5d547a671c3f9284e26",
+    "bytes": 79400707,
+    "fetched_at": "2026-09-11T12:16:33+00:00"
+  },
+  {
+    "path": "sec/2017q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2017q1.zip",
+    "sha256": "ffb6989983c4c9f87e2f39166b20e4a21f024f0fe1adccc199e08da5fc94a915",
+    "bytes": 92433981,
+    "fetched_at": "2026-09-11T12:16:40+00:00"
+  },
+  {
+    "path": "sec/2017q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2017q2.zip",
+    "sha256": "63a590d7deaac8f82d22f08cb2ada46f199341ecc7e7a8a0a7d6a181cec1d53b",
+    "bytes": 71429748,
+    "fetched_at": "2026-09-11T12:16:45+00:00"
+  },
+  {
+    "path": "sec/2017q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2017q3.zip",
+    "sha256": "5aa58d799c4fb3f5f98974eb713696d1aebe747a01a794e7ac58517631b5735d",
+    "bytes": 74356472,
+    "fetched_at": "2026-09-11T12:16:48+00:00"
+  },
+  {
+    "path": "sec/2017q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2017q4.zip",
+    "sha256": "be03bfd71f356a7f53d82a40ee907bb51aec4f61d6ce97f059f2df785bc37658",
+    "bytes": 76051784,
+    "fetched_at": "2026-09-11T12:16:55+00:00"
+  },
+  {
+    "path": "sec/2018q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2018q1.zip",
+    "sha256": "f7f0083d28779ff373cd097ded88d5408eae9cc178f89014ca3ed8b24dc84185",
+    "bytes": 93176693,
+    "fetched_at": "2026-09-11T12:16:59+00:00"
+  },
+  {
+    "path": "sec/2018q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2018q2.zip",
+    "sha256": "99daaf8af1fb1ba94b100613536d9dbee5e9a356f0736190963a3a68af623d54",
+    "bytes": 91972487,
+    "fetched_at": "2026-09-11T12:17:03+00:00"
+  },
+  {
+    "path": "sec/2018q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2018q3.zip",
+    "sha256": "30030056223c456d5cb7a42722ffa990345fda12deb5cfff723b1ae47dc9bf8d",
+    "bytes": 87202498,
+    "fetched_at": "2026-09-11T12:17:08+00:00"
+  },
+  {
+    "path": "sec/2018q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2018q4.zip",
+    "sha256": "ecc103d0979dacdf6cfcc7f0b2273f7b6046c41a3aa7f2e2aacfb8ccd45bc122",
+    "bytes": 62895777,
+    "fetched_at": "2026-09-11T12:17:11+00:00"
+  },
+  {
+    "path": "sec/2019q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2019q1.zip",
+    "sha256": "49f6f0a00b6f1792d22893a3e261f7a329377048eb826079f1a16c7895b76d9d",
+    "bytes": 95895180,
+    "fetched_at": "2026-09-11T12:17:18+00:00"
+  },
+  {
+    "path": "sec/2019q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2019q2.zip",
+    "sha256": "765e42efd43687b4ac4ea59c83213857a52dca0a4bd5c490034bd5bea2b6fac3",
+    "bytes": 90155728,
+    "fetched_at": "2026-09-11T12:17:23+00:00"
+  },
+  {
+    "path": "sec/2019q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2019q3.zip",
+    "sha256": "4c57e36f04b54a2b9917537e12974cba68353f765affbf168bd506478780e13e",
+    "bytes": 89829588,
+    "fetched_at": "2026-09-11T12:17:26+00:00"
+  },
+  {
+    "path": "sec/2019q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2019q4.zip",
+    "sha256": "1f997c123b6d2fe892eeca0a5f12687e718ab5ae031f148b4a5d82f2689daec3",
+    "bytes": 98753299,
+    "fetched_at": "2026-09-11T12:17:31+00:00"
+  },
+  {
+    "path": "sec/2020q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2020q1.zip",
+    "sha256": "48ed9834c66d565c21130d087eae941b25770e2d7cc8351d17652612289fcd67",
+    "bytes": 96584608,
+    "fetched_at": "2026-09-11T12:17:34+00:00"
+  },
+  {
+    "path": "sec/2020q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2020q2.zip",
+    "sha256": "bd796ea10c88e21205da013f9c3f6a20b2b14d3de94f0075e9f529e0ef9a3543",
+    "bytes": 82008710,
+    "fetched_at": "2026-09-11T12:17:39+00:00"
+  },
+  {
+    "path": "sec/2020q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2020q3.zip",
+    "sha256": "6a402070d4b1f12db0d2256533b38705735684ecb58bc12ce53a61dd12abe26e",
+    "bytes": 87582976,
+    "fetched_at": "2026-09-11T12:17:42+00:00"
+  },
+  {
+    "path": "sec/2020q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2020q4.zip",
+    "sha256": "7cabec2c9b90511983623e6db3869b24c7a894466bd409f060a8da32790ae68e",
+    "bytes": 89811373,
+    "fetched_at": "2026-09-11T12:17:46+00:00"
+  },
+  {
+    "path": "sec/2021q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2021q1.zip",
+    "sha256": "6a776a9fa3d974476101efa9a4bfc531b7cdc2763abd45a6f70dd240a223843b",
+    "bytes": 97900752,
+    "fetched_at": "2026-09-11T12:17:51+00:00"
+  },
+  {
+    "path": "sec/2021q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2021q2.zip",
+    "sha256": "528b91432896eba74661c20481edb327809f3a0bf00e01d81821fe8e6078bc33",
+    "bytes": 90864175,
+    "fetched_at": "2026-09-11T12:17:57+00:00"
+  },
+  {
+    "path": "sec/2021q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2021q3.zip",
+    "sha256": "0fae2ceb149c0fe7e83b35b19157f910c864dee7e25d5ecf8b93dc42ee261b99",
+    "bytes": 97252395,
+    "fetched_at": "2026-09-11T12:18:02+00:00"
+  },
+  {
+    "path": "sec/2021q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2021q4.zip",
+    "sha256": "30d21449c0488e71dfb88ba8f85644a0e72194864e95111b3c1c120b3514c594",
+    "bytes": 102642081,
+    "fetched_at": "2026-09-11T12:18:06+00:00"
+  },
+  {
+    "path": "sec/2022q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2022q1.zip",
+    "sha256": "2ebeef77727a383f878bc28ff22498fd292a8dbab04216877b4b130ca00c1520",
+    "bytes": 103669919,
+    "fetched_at": "2026-09-11T12:18:11+00:00"
+  },
+  {
+    "path": "sec/2022q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2022q2.zip",
+    "sha256": "8939a4cafeabf7c94bde48be0e8c444f6332e4a9663698a89242eddd1036d27e",
+    "bytes": 97089251,
+    "fetched_at": "2026-09-11T12:18:19+00:00"
+  },
+  {
+    "path": "sec/2022q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2022q3.zip",
+    "sha256": "4bbfdc953177acf1a430a9f0a624dd8244bc81292d42872107d0446d06167c26",
+    "bytes": 97589396,
+    "fetched_at": "2026-09-11T12:18:27+00:00"
+  },
+  {
+    "path": "sec/2022q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2022q4.zip",
+    "sha256": "83bdc7a9545479eb64d118688c888ba8e7554ebc774f3ab8a8b0cc1decb87f28",
+    "bytes": 111091525,
+    "fetched_at": "2026-09-11T12:18:34+00:00"
+  },
+  {
+    "path": "sec/2023q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2023q1.zip",
+    "sha256": "479638c1be4088fa2ae42d2947468913eaff5ad0f093c412ba4340af8a8f791e",
+    "bytes": 113974946,
+    "fetched_at": "2026-09-11T12:18:42+00:00"
+  },
+  {
+    "path": "sec/2023q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2023q2.zip",
+    "sha256": "f028f1e8d24313e7619aa87c7c683a459452e7e81a8e5ba72d7ce39ddf62bda9",
+    "bytes": 116914392,
+    "fetched_at": "2026-09-11T12:18:49+00:00"
+  },
+  {
+    "path": "sec/2023q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2023q3.zip",
+    "sha256": "f075d721dde4393dabd49c1746578294ada4665ec29c85c2b3184f44f6f09187",
+    "bytes": 117776944,
+    "fetched_at": "2026-09-11T12:18:57+00:00"
+  },
+  {
+    "path": "sec/2023q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2023q4.zip",
+    "sha256": "ad23c5505e59b7305e16bfebb8bb839476689330b85a3e1ce216f809b18d1521",
+    "bytes": 120272357,
+    "fetched_at": "2026-09-11T12:19:03+00:00"
+  },
+  {
+    "path": "sec/2024q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2024q1.zip",
+    "sha256": "94c7894b00903f8ff7186c4250ba1c1daa1bde8b3a0b26fae68f72608b2ffc9b",
+    "bytes": 124336804,
+    "fetched_at": "2026-09-11T12:19:11+00:00"
+  },
+  {
+    "path": "sec/2024q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2024q2.zip",
+    "sha256": "698796e9f0946501d3dc74e7696a6c8c71cf32b66026e053722a784236b37761",
+    "bytes": 119119954,
+    "fetched_at": "2026-09-11T12:19:19+00:00"
+  },
+  {
+    "path": "sec/2024q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2024q3.zip",
+    "sha256": "b1823f2d65189f0d5ecbb1968d683c59df762129ae1b23bda0394093a69e0da9",
+    "bytes": 118280418,
+    "fetched_at": "2026-09-11T12:19:30+00:00"
+  },
+  {
+    "path": "sec/2024q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2024q4.zip",
+    "sha256": "9a2cbbaf39c94aa642b33d512f4def92b198d3bfd12d2267bcd27abe55b9902d",
+    "bytes": 122932548,
+    "fetched_at": "2026-09-11T12:19:39+00:00"
+  },
+  {
+    "path": "sec/2025q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2025q1.zip",
+    "sha256": "4386e7057cc216b6fc729d8f957998acb831d29be7b16f6d8ed0f6b1ab74eba5",
+    "bytes": 127765057,
+    "fetched_at": "2026-09-11T12:19:47+00:00"
+  },
+  {
+    "path": "sec/2025q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2025q2.zip",
+    "sha256": "81bf19bdb5606d5ee0164a8de8b7e96d5546170e42e59bcbf95b652ca83ac5d7",
+    "bytes": 78973768,
+    "fetched_at": "2026-09-11T12:19:54+00:00"
+  },
+  {
+    "path": "sec/2025q3.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2025q3.zip",
+    "sha256": "ebe25fa74c3655f4738ed9eb144af3953c3981c80f57d74829fb9ad68b114710",
+    "bytes": 127842298,
+    "fetched_at": "2026-09-11T12:19:59+00:00"
+  },
+  {
+    "path": "sec/2025q4.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2025q4.zip",
+    "sha256": "2b36ac3850c022cf19edd882e31c3c453c7666677b9fdd2e1f7748fdb5768c6e",
+    "bytes": 65830170,
+    "fetched_at": "2026-09-11T12:20:10+00:00"
+  },
+  {
+    "path": "sec/2026q1.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2026q1.zip",
+    "sha256": "d18c01c615da8f5cd46273b0dacaeee5b1163f4089171da0f84153a5f3c362f6",
+    "bytes": 85259424,
+    "fetched_at": "2026-09-11T12:20:14+00:00"
+  },
+  {
+    "path": "sec/2026q2.zip",
+    "url": "https://www.sec.gov/files/dera/data/financial-statement-data-sets/2026q2.zip",
+    "sha256": "d7c815395cd420cfbe09b29dbae73a45406c5d0652d5ae1859ae11ea2e22df77",
+    "bytes": 60419016,
+    "fetched_at": "2026-09-11T12:20:21+00:00"
+  },
+  {
+    "path": "french/6_Portfolios_2x3_2026-09-11.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_2x3_CSV.zip",
+    "sha256": "0b3f5ed2cb70809cbbc16cbb34355c5873b1076375bf45e3e6c6ddd9c5cb3e9c",
+    "bytes": 149252,
+    "fetched_at": "2026-09-11T12:37:21+00:00"
+  },
+  {
+    "path": "french/6_Portfolios_ME_OP_2x3_2026-09-11.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_ME_OP_2x3_CSV.zip",
+    "sha256": "f96cdb010130d9991479f18fe9a8cafddefbce1c2038e0c5629587223efc06d5",
+    "bytes": 105808,
+    "fetched_at": "2026-09-11T12:37:22+00:00"
+  },
+  {
+    "path": "french/6_Portfolios_2x3_CSV_2026-09-11.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_2x3_CSV.zip",
+    "sha256": "0b3f5ed2cb70809cbbc16cbb34355c5873b1076375bf45e3e6c6ddd9c5cb3e9c",
+    "bytes": 149252,
+    "fetched_at": "2026-09-11T12:45:46+00:00"
+  },
+  {
+    "path": "french/6_Portfolios_ME_OP_2x3_CSV_2026-09-11.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_ME_OP_2x3_CSV.zip",
+    "sha256": "f96cdb010130d9991479f18fe9a8cafddefbce1c2038e0c5629587223efc06d5",
+    "bytes": 105808,
+    "fetched_at": "2026-09-11T12:45:46+00:00"
   }
 ]

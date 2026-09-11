@@ -1,0 +1,125 @@
+# XBRL tags for each concept, in priority order: within a filing the first
+# tag present wins. Companies report the same concept under different tags
+# (and change over the years), so the list is ordered and the coverage per
+# concept per year is committed in data/checks/tag_coverage.csv.
+#
+# kind = "flow"  income or cash-flow item; annual value from a 10-K (qtrs 4)
+# kind = "stock" balance-sheet or share count; latest 10-K or 10-Q (qtrs 0)
+
+[concept.assets]
+kind = "stock"
+tags = ["Assets"]
+
+[concept.equity]
+kind = "stock"
+tags = [
+  "StockholdersEquity",
+  "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+]
+
+[concept.liabilities]
+kind = "stock"
+tags = ["Liabilities"]
+
+[concept.current_assets]
+kind = "stock"
+tags = ["AssetsCurrent"]
+
+[concept.current_liabilities]
+kind = "stock"
+tags = ["LiabilitiesCurrent"]
+
+[concept.cash]
+kind = "stock"
+tags = [
+  "CashAndCashEquivalentsAtCarryingValue",
+  "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+]
+
+[concept.shares]
+kind = "stock"
+tags = [
+  "EntityCommonStockSharesOutstanding",
+  "CommonStockSharesOutstanding",
+]
+
+[concept.net_income]
+kind = "flow"
+tags = [
+  "NetIncomeLoss",
+  "ProfitLoss",
+  "NetIncomeLossAvailableToCommonStockholdersBasic",
+]
+
+[concept.revenue]
+kind = "flow"
+tags = [
+  "Revenues",
+  "RevenueFromContractWithCustomerExcludingAssessedTax",
+  "SalesRevenueNet",
+  "RevenueFromContractWithCustomerIncludingAssessedTax",
+  "SalesRevenueGoodsNet",
+  "RevenuesNetOfInterestExpense",
+]
+
+[concept.cogs]
+kind = "flow"
+tags = [
+  "CostOfRevenue",
+  "CostOfGoodsAndServicesSold",
+  "CostOfGoodsSold",
+  "CostOfServices",
+  "CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization",
+]
+
+[concept.gross_profit]
+kind = "flow"
+tags = ["GrossProfit"]
+
+[concept.operating_income]
+kind = "flow"
+tags = ["OperatingIncomeLoss"]
+
+[concept.cfo]
+kind = "flow"
+tags = [
+  "NetCashProvidedByUsedInOperatingActivities",
+  "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
+]
+
+[concept.capex]
+kind = "flow"
+tags = [
+  "PaymentsToAcquirePropertyPlantAndEquipment",
+  "PaymentsToAcquireProductiveAssets",
+]
+
+[concept.depreciation]
+kind = "flow"
+tags = [
+  "DepreciationDepletionAndAmortization",
+  "DepreciationAndAmortization",
+  "DepreciationAmortizationAndAccretionNet",
+]
+
+# Fallback share count for market cap: the diluted weighted average over
+# the latest reported period (10-Q quarter or 10-K year), taken whenever
+# the balance-sheet count is missing or reported only by share class.
+[concept.shares_wavg]
+kind = "latest_flow"
+tags = [
+  "WeightedAverageNumberOfDilutedSharesOutstanding",
+  "WeightedAverageNumberOfSharesOutstandingBasic",
+]
+
+# Pre-tax income: revenue less all operating costs and interest, which is
+# closer to French's operating profitability than OperatingIncomeLoss (that
+# tag is before interest and is not reported by banks or insurers at all).
+[concept.pretax_income]
+kind = "flow"
+tags = [
+  "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+  "IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments",
+  "IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic",
+  "IncomeLossBeforeIncomeTaxes",
+]

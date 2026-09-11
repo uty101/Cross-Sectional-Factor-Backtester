@@ -11,17 +11,19 @@ import sys
 from collections.abc import Sequence
 from datetime import date
 
-from backtester import benchmarks, config, prices, universe
+from backtester import benchmarks, config, fundamentals, prices, universe
 
 # step name -> (fetch, build). Phases add themselves here as they land.
 STEPS = {
     "universe": (lambda cfg, as_of: universe.fetch(cfg, as_of), universe.build),
     "prices": (lambda cfg, as_of: prices.fetch(cfg, as_of), prices.build),
     "benchmarks": (lambda cfg, as_of: benchmarks.fetch(cfg, as_of), benchmarks.build),
+    "fundamentals": (
+        lambda cfg, as_of: fundamentals.fetch(cfg, as_of),
+        fundamentals.build,
+    ),
 }
-UNIMPLEMENTED = {
-    "report": "phase 8",
-}
+UNIMPLEMENTED: dict[str, str] = {}
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -45,6 +47,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     run.add_argument("--note", default="")
     run.add_argument("--no-sector", action="store_true", help="plain cross-sectional z")
     sub.add_parser("report", help="charts and tables into reports/")
+    sub.add_parser("run-all", help="base run of every reported factor")
+    sub.add_parser("sensitivities", help="weighting and holding-period variants")
 
     args = parser.parse_args(argv)
     cfg = config.load(args.config)
@@ -68,11 +72,23 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(runner.summary_line(res))
         return 0
 
-    print(
-        f"{args.command}: not implemented yet ({UNIMPLEMENTED[args.command]}); "
-        f"config loaded for {cfg.start} to {cfg.end}",
-        file=sys.stderr,
-    )
+    if args.command == "run-all":
+        from backtester import run as runner
+
+        runner.run_all(cfg)
+        return 0
+    if args.command == "sensitivities":
+        from backtester import run as runner
+
+        runner.sensitivities(cfg)
+        return 0
+    if args.command == "report":
+        from backtester import report
+
+        report.build(cfg)
+        print(f"wrote {cfg.reports / 'results.md'}")
+        return 0
+    print(f"{args.command}: unknown", file=sys.stderr)
     return 2
 
 
