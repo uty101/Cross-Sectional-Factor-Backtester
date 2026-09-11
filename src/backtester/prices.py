@@ -140,6 +140,10 @@ def build_daily(raw_root: Path, tickers: list[str]) -> pl.DataFrame:
 
 BAD_PRINT = 2.0  # a day that doubles or halves the price and reverses next day
 CORRUPT = 3.0  # a remaining tripling or thirding in a day is not a price
+NO_HISTORY = (
+    "no history inside membership: first print after removal "
+    "(reused symbol or delisting stub)"
+)
 
 
 def _ratio(col: str = "adj_close") -> pl.Expr:
@@ -158,8 +162,9 @@ def clean_daily(
     entirely. Delisted series also carry bad prints (TIE at 11,700 on a
     month-end in 2011, real price 19). So:
 
-    1. wrong entity  the first price is after the name's last membership
-                     day -> the whole ticker is dropped
+    1. no history    the first print is after the name's last membership
+                     day: a reused symbol, or the few-row stub yfinance keeps
+                     for a recent delisting -> the whole ticker is dropped
     2. bad print     a day that at least doubles or halves the price and
                      reverses by at least as much the next day -> that day
                      is dropped
@@ -181,7 +186,7 @@ def clean_daily(
         .filter(~pl.col("current") & (pl.col("first_px") > pl.col("m_end")))
         .select(
             "ticker",
-            pl.lit("wrong entity: first price after membership ended").alias("rule"),
+            pl.lit(NO_HISTORY).alias("rule"),
             pl.lit(0, dtype=pl.Int64).alias("days_dropped"),
         )
     )
@@ -505,8 +510,8 @@ def build(cfg: Config) -> pl.DataFrame:
         "gap_pct_max_month": per_month["gap_pct"].max(),
         "gap_pct_min_month": per_month["gap_pct"].min(),
         "partial_returns": monthly["partial"].sum(),
-        "tickers_dropped_wrong_entity": clean_log.filter(
-            pl.col("rule").str.starts_with("wrong")
+        "tickers_dropped_no_history": clean_log.filter(
+            pl.col("rule").str.starts_with("no history")
         ).height,
         "tickers_dropped_corrupt": clean_log.filter(
             pl.col("rule").str.starts_with("corrupt")

@@ -153,6 +153,6 @@ def test_clean_daily_applies_the_three_rules() -> None:
     assert sorted(cleaned["ticker"].unique()) == ["GLITCH", "GOOD"]
     assert cleaned.filter(pl.col("ticker") == "GLITCH").height == 29
     rules = dict(zip(log["ticker"], log["rule"], strict=True))
-    assert rules["REUSED"].startswith("wrong entity")
+    assert rules["REUSED"].startswith("no history")
     assert rules["GLITCH"].startswith("bad print")
     assert rules["CORRUPT"].startswith("corrupt")

@@ -20,9 +20,9 @@ def test_asof_join_excludes_filing_after_signal_date() -> None:
     )
     out = fx.asof_join(_panel(), v, buffer_days=1).sort("month")
     got = dict(zip(out["month"], out["value"], strict=True))
-    assert got[date(2020, 1, 31)] == 100.0   # only FY2018 exists
-    assert got[date(2020, 2, 29)] == 100.0   # filed today: NOT available yet
-    assert got[date(2020, 3, 31)] == 200.0   # filed 02-29 + 1 day <= 03-31
+    assert got[date(2020, 1, 31)] == 100.0  # only FY2018 exists
+    assert got[date(2020, 2, 29)] == 100.0  # filed today: NOT available yet
+    assert got[date(2020, 3, 31)] == 200.0  # filed 02-29 + 1 day <= 03-31
 ```
 
 [tests/test_fundamentals.py](tests/test_fundamentals.py). Every fundamental

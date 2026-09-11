@@ -130,7 +130,7 @@ def build(cfg: Config) -> None:
             "is excluded.",
             f"Prices: yfinance daily adjusted closes. Delisted names are largely absent: {gap:.1f}% of "
             "universe-months have no price, 31% in 2010 falling to 0% today. yfinance's series for reused "
-            "symbols are dropped by three logged rules (wrong entity, bad print, corrupt series).",
+            "symbols are dropped by three logged rules (no history inside membership, bad print, corrupt series).",
             "Benchmarks: Ken French's factors and the six size x B/M and size x profitability portfolios, "
             "whose big-cap legs are the like-for-like comparison for a large-cap universe.",
         ]
