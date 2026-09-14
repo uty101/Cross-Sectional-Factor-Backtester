@@ -46,6 +46,8 @@ class Config:
     # text
     text_similarity: str
     text_min_words: int
+    # validation: factor -> minimum correlation with its benchmark
+    validation: tuple[tuple[str, float], ...]
     # paths
     data: Path
     reports: Path
@@ -105,6 +107,7 @@ def load(path: str | Path = "config.toml") -> Config:
     portfolio, costs = raw["portfolio"], raw["costs"]
     signals, fundamentals, paths = raw["signals"], raw["fundamentals"], raw["paths"]
     text = raw["text"]
+    validation = raw.get("validation", {})
 
     return Config(
         start=date.fromisoformat(window["start"]),
@@ -127,6 +130,7 @@ def load(path: str | Path = "config.toml") -> Config:
         asof_buffer_days=int(fundamentals["asof_buffer_days"]),
         text_similarity=text["similarity"],
         text_min_words=int(text["min_words"]),
+        validation=tuple((k, float(v)) for k, v in validation.items()),
         data=Path(paths["data"]),
         reports=Path(paths["reports"]),
         specifications=Path(paths["specifications"]),

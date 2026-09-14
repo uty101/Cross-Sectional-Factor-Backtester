@@ -33,6 +33,18 @@ asof_buffer_days = 1        # filed on or before t - buffer
 similarity = "cosine"       # "cosine" (term counts) or "jaccard" (word sets)
 min_words = 1000            # a shorter 10-K is a wrapper round an exhibit; treated as missing
 
+[validation]
+# Minimum correlation of each long-short series with its benchmark
+# (BUILD_PLAN 8.1). momentum/value/quality vs UMD/HML/RMW are the brief's
+# bar; the replicas are the single-signal French constructions; beta is
+# against AQR's BAB. A miss is reported, never tuned away (CLAUDE.md).
+momentum = 0.70
+value = 0.70
+quality = 0.70
+hml_replica = 0.60
+rmw_replica = 0.60
+beta = 0.50
+
 [paths]
 data = "data"
 reports = "reports"

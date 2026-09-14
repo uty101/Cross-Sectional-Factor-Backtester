@@ -517,4 +517,7 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
     ]
     text = "\n".join(md)
     (cfg.reports / "results.md").write_text(text, encoding="utf-8", newline="\n")
+    from backtester.run import validation_table as validation_csv
+
+    validation_csv(cfg, inp).write_csv(cfg.reports / "validation.csv")
     return text

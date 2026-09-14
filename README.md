@@ -52,8 +52,8 @@ outsider can verify, over 2010–2026?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the composite's net Sharpe of 0.34 deflates to a 14% probability of
-beating the best of 76 logged trials by luck.
+of 1; the composite's net Sharpe of 0.34 deflates to a 13% probability of
+beating the best of 77 logged trials by luck.
 
 ## Results
 
@@ -64,15 +64,15 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Momentum 12-1 | 2.2% | 0.7% | 15.8% | 0.05 | 0.01 | −56% | 0.62 | 0.007 | 0.6 | 15 bp |
-| Value (B/P, E/P) | 5.3% | 4.6% | 9.2% | 0.50 | 0.34 | −22% | 0.28 | 0.011 | 1.4 | 80 bp |
-| Quality (GP/A, accruals) | 2.1% | 1.4% | 8.5% | 0.17 | 0.04 | −24% | 0.26 | 0.009 | 1.5 | 33 bp |
+| Value (B/P, E/P) | 5.3% | 4.6% | 9.2% | 0.50 | 0.31 | −22% | 0.28 | 0.011 | 1.4 | 80 bp |
+| Quality (GP/A, accruals) | 2.1% | 1.4% | 8.5% | 0.17 | 0.03 | −24% | 0.26 | 0.009 | 1.5 | 33 bp |
 | Low volatility | −4.1% | −4.7% | 18.9% | −0.25 | 0.00 | −71% | 0.24 | 0.003 | 0.2 | none (loses gross) |
-| Composite | 5.9% | 5.0% | 14.5% | 0.34 | 0.14 | −28% | 0.40 | 0.018 | 1.9 | 62 bp |
+| Composite | 5.9% | 5.0% | 14.5% | 0.34 | 0.13 | −28% | 0.40 | 0.018 | 1.9 | 62 bp |
 | 10-K text similarity | 0.8% | 0.1% | 7.3% | 0.01 | 0.01 | −29% | 0.31 | 0.003 | 0.6 | 11 bp |
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 76 is the row
+the same dispersion, adjusted for skew and kurtosis. *N* = 77 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
 every run — base, sensitivity, diagnostic, and the two broken first attempts
 at momentum — is logged. **Break-even cost** is the one-way cost at which
@@ -135,6 +135,7 @@ The pipeline is considered wrong until the long–short series clear this:
 | Momentum long–short | French **UMD** | > 0.7 | **0.79** pass (0.85 without sector neutralisation) |
 | Value long–short | French **HML** | > 0.7 | 0.25 fail as reported; see below |
 | Quality long–short | French **RMW** | > 0.7 | 0.07 fail as reported; see below |
+| Low beta long–short | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
 
 The reported value and quality factors are sector-neutral composites of two
 signals each, and HML and RMW are neither, so their correlation was never
@@ -184,6 +185,10 @@ their filings.
 
 Every hand-verified thing lives in [data/checks/](data/checks/README.md)
 with its evidence in the row.
+
+The thresholds live in `config.toml [validation]` and every row above is
+recomputed into [reports/validation.csv](reports/validation.csv) by
+`backtester report`, pass or fail.
 
 ## What did not work
 
@@ -272,7 +277,7 @@ what each of those commits changed, from its body, below a marker.
 
 ```bash
 uv sync
-uv run pytest                                   # 101 tests
+uv run pytest                                   # 102 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11

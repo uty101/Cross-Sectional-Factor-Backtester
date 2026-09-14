@@ -32,7 +32,7 @@ FACTORS: dict[str, dict] = {
     },
     "low_vol": {"signals": ["volatility_252"], "french": None},
     "asset_growth": {"signals": ["asset_growth"], "french": "cma"},
-    "beta": {"signals": ["beta_252"], "french": None},
+    "beta": {"signals": ["beta_252"], "french": "bab"},  # AQR, not French
     # Year-on-year similarity of the 10-K text (Cohen, Malloy and Nguyen
     # 2020): long the names whose filing did not change. No French factor
     # to validate against; attribution on the five is the check.
@@ -117,12 +117,16 @@ def load_inputs(cfg: Config) -> Inputs:
         if (interim / "text_similarity.parquet").exists()
         else None
     )
+    french = pl.read_parquet(interim / "french_monthly.parquet")
+    if (interim / "aqr_bab.parquet").exists():
+        bab = pl.read_parquet(interim / "aqr_bab.parquet").select("month", "bab")
+        french = french.join(bab, on="month", how="left")
     return Inputs(
         cfg,
         pl.read_parquet(interim / "membership.parquet"),
         monthly,
         pl.read_parquet(processed / "returns_daily.parquet"),
-        pl.read_parquet(interim / "french_monthly.parquet"),
+        french,
         sectors,
         fundamentals,
         caps,
@@ -328,3 +332,49 @@ def replicate(cfg: Config, inp: Inputs | None = None) -> dict[str, RunResult]:
         out[f] = res
         print(summary_line(res))
     return out
+
+
+def validation_table(cfg: Config, inp: Inputs | None = None) -> pl.DataFrame:
+    """Frame[series, benchmark, correlation, months, threshold, passed] for
+    every factor in config.toml [validation] with a saved base run, from
+    the saved long-short series (BUILD_PLAN 8.1). Written to
+    reports/validation.csv by the report; a miss stays a miss."""
+    inp = inp or load_inputs(cfg)
+    rows = []
+    for factor, threshold in cfg.validation:
+        path = cfg.data / "processed" / f"long_short_{factor}.parquet"
+        bench = FACTORS[factor]["french"]
+        if not path.exists() or bench is None or bench not in inp.french.columns:
+            rows.append(
+                {
+                    "series": factor,
+                    "benchmark": bench,
+                    "correlation": None,
+                    "months": 0,
+                    "threshold": threshold,
+                    "passed": False,
+                }
+            )
+            continue
+        v = validate(pl.read_parquet(path), inp.french, bench)
+        rows.append(
+            {
+                "series": factor,
+                "benchmark": bench,
+                "correlation": None if v["corr"] is None else round(v["corr"], 4),
+                "months": v["months"],
+                "threshold": threshold,
+                "passed": v["corr"] is not None and v["corr"] >= threshold,
+            }
+        )
+    return pl.DataFrame(
+        rows,
+        schema={
+            "series": pl.Utf8,
+            "benchmark": pl.Utf8,
+            "correlation": pl.Float64,
+            "months": pl.Int64,
+            "threshold": pl.Float64,
+            "passed": pl.Boolean,
+        },
+    )

@@ -50,3 +50,10 @@ def test_config_hash_is_stable_and_sensitive(repo_root: Path) -> None:
     assert config.config_hash(a) == config.config_hash(b)
     assert len(config.config_hash(a)) == 12
     assert config.config_hash(a) != config.config_hash(a.with_(base_bps=25.0))
+
+
+def test_validation_thresholds_come_from_config(repo_root: Path) -> None:
+    cfg = config.load(repo_root / "config.toml")
+    v = dict(cfg.validation)
+    assert v["momentum"] == 0.70 and v["beta"] == 0.50
+    assert set(v) >= {"momentum", "value", "quality", "hml_replica", "rmw_replica"}

@@ -90879,5 +90879,47 @@
     "sha256": "26602b2fd871aa1815bdc33fa234308f9c82f0ee6b939d16b2e2b9b1b4bfdaef",
     "bytes": 797931,
     "fetched_at": "2026-09-14T14:15:55+00:00"
+  },
+  {
+    "path": "french/F-F_Research_Data_5_Factors_2x3_CSV_2026-09-14.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip",
+    "sha256": "b8653b411cc5e28917e7ef643bb42f6d2d3703f84bc170eb6ae38d5267c65807",
+    "bytes": 11948,
+    "fetched_at": "2026-09-14T14:21:41+00:00"
+  },
+  {
+    "path": "french/F-F_Momentum_Factor_CSV_2026-09-14.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip",
+    "sha256": "7ee14e892b0f7044902fdbc4e25cfaf175b73d4eda0ae6f4a0354a4433afe065",
+    "bytes": 5596,
+    "fetched_at": "2026-09-14T14:21:41+00:00"
+  },
+  {
+    "path": "fred/DGS1MO_2026-09-14.csv",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS1MO",
+    "sha256": "691c3076290536e8008e3cb9f070355a29d3beb14b26986e9992ff8e969a6d50",
+    "bytes": 103780,
+    "fetched_at": "2026-09-14T14:21:42+00:00"
+  },
+  {
+    "path": "french/6_Portfolios_2x3_CSV_2026-09-14.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_2x3_CSV.zip",
+    "sha256": "0b3f5ed2cb70809cbbc16cbb34355c5873b1076375bf45e3e6c6ddd9c5cb3e9c",
+    "bytes": 149252,
+    "fetched_at": "2026-09-14T14:21:43+00:00"
+  },
+  {
+    "path": "french/6_Portfolios_ME_OP_2x3_CSV_2026-09-14.zip",
+    "url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_ME_OP_2x3_CSV.zip",
+    "sha256": "f96cdb010130d9991479f18fe9a8cafddefbce1c2038e0c5629587223efc06d5",
+    "bytes": 105808,
+    "fetched_at": "2026-09-14T14:21:44+00:00"
+  },
+  {
+    "path": "aqr/bab_monthly_2026-09-14.xlsx",
+    "url": "https://images.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Betting-Against-Beta-Equity-Factors-Monthly.xlsx",
+    "sha256": "5047a28a17512449de92ef87b533da53737a1dae2e2a15ebbd12446ac9ec2bd3",
+    "bytes": 2500092,
+    "fetched_at": "2026-09-14T14:21:47+00:00"
   }
 ]

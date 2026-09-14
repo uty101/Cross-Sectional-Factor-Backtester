@@ -32,7 +32,7 @@ and this directory is the plan's `decisions/`.
 | 3.3 | winsorise, sector z | done | `signals.normalise` |
 | 3.4 | deciles, weights, drift, turnover, lag | done | `portfolio.*`, invariants 4 and 6 tested |
 | 3.5 | IC, perf, break-even, cost curve | done | `stats.ic_series/ic_summary/sharpe/max_drawdown/breakeven_cost/sharpe_by_cost` |
-| 3.6 | French factors, AQR BAB | adapt | French + big-cap legs + FRED done; **no AQR BAB** |
+| 3.6 | French factors, AQR BAB | done 2026-09-14 | `benchmarks.parse_aqr_bab`, `data/interim/aqr_bab.parquet`, USA column |
 | 3.7 | end-to-end run, UMD > 0.70 | done | 0.79 (0.85 no-sector); `run.run_factor`, `cli` |
 | 4.1 | SEC zips, manifest, rate limit | done | `fundamentals.fetch`, 70 zips |
 | 4.2 | DuckDB load | done | `fundamentals.ingest_quarter` (DuckDB `read_csv`), cached to parquet rather than a persistent `.duckdb` |
@@ -48,7 +48,7 @@ and this directory is the plan's `decisions/`.
 | 6.3 | momentum regression baseline | done 2026-09-14 | `tests/fixtures/momentum_baseline.json` = 0.7934; `test_regression.py` within 0.05 and above 0.70 |
 | 7.1–7.5 | FM, NW, decay, DSR, attribution | done | `stats.py`; NW cross-checked against statsmodels in tests; DSR worked example |
 | 7.6 | wire into results | done | `report.py` tables |
-| 8.1 | validation table with thresholds file | adapt | thresholds in README/`report.py`; **no `validation.yaml`**, no BAB row |
+| 8.1 | validation table with thresholds file | done 2026-09-14 | `config.toml [validation]`, `run.validation_table` -> `reports/validation.csv`; beta vs BAB 0.42 (fail, reported) |
 | 8.2 | delisting sensitivity `drop` / `terminal −30%` | adapt | coverage split (= `drop`) done; **no `terminal` mode** |
 | 8.3 | weighting gap on SMB | new | |
 | 8.4 | what-did-not-work generated from spec log + git log | done 2026-09-14 | `research_log.py`, `backtester research-log`; README keeps the interpretation |

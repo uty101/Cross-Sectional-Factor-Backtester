@@ -32,6 +32,13 @@ MOMENTUM = "F-F_Momentum_Factor_CSV.zip"
 SIX_BM = "6_Portfolios_2x3_CSV.zip"
 SIX_OP = "6_Portfolios_ME_OP_2x3_CSV.zip"
 FRED_DGS1MO = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS1MO"
+# AQR's betting-against-beta factor, monthly, by country; the USA column
+# is the benchmark for the beta factor (BUILD_PLAN 3.6 / 8.1). AQR
+# reconstructs the whole history on each update, so pulls are date-stamped.
+AQR_BAB = (
+    "https://images.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/"
+    "Betting-Against-Beta-Equity-Factors-Monthly.xlsx"
+)
 
 _MONTHLY_ROW = re.compile(r"^\s*(\d{6})\s*,")
 
@@ -52,7 +59,28 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
         raw.fetch_to_raw(
             root, f"french/{SIX_OP[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_OP
         ),
+        raw.fetch_to_raw(root, f"aqr/bab_monthly_{as_of}.xlsx", AQR_BAB),
     ]
+
+
+def parse_aqr_bab(path: Path, country: str = "USA") -> pl.DataFrame:
+    """Frame[month, bab] from the 'BAB Factors' sheet: the DATE header row
+    names the countries; values are already decimal monthly returns."""
+    sheet = pl.read_excel(path, sheet_name="BAB Factors", has_header=False)
+    first = sheet.get_column(sheet.columns[0])
+    header_at = next(i for i, v in enumerate(first) if v == "DATE")
+    names = [str(v) for v in sheet.row(header_at)]
+    col = sheet.columns[names.index(country)]
+    return (
+        sheet.slice(header_at + 1)
+        .select(
+            pl.col(sheet.columns[0]).str.strptime(pl.Date, "%m/%d/%Y").alias("month"),
+            pl.col(col).cast(pl.Float64, strict=False).alias("bab"),
+        )
+        .drop_nulls()
+        .with_columns(pl.col("month").dt.month_end())
+        .sort("month")
+    )
 
 
 def parse_french_monthly(text: str) -> pl.DataFrame:
@@ -141,4 +169,12 @@ def build(cfg: Config) -> pl.DataFrame:
     fred.with_columns(pl.lit(fred["date"].max()).alias("as_of")).write_parquet(
         interim / "fred_dgs1mo.parquet"
     )
+    try:
+        bab = parse_aqr_bab(raw.latest(root, "aqr/bab_monthly_*.xlsx"))
+    except FileNotFoundError:
+        print("no AQR BAB file fetched; the beta factor has no benchmark")
+    else:
+        bab.with_columns(pl.lit(bab["month"].max()).alias("as_of")).write_parquet(
+            interim / "aqr_bab.parquet"
+        )
     return french
