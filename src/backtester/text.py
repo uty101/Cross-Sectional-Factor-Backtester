@@ -47,10 +47,11 @@ import html
 import json
 import math
 import re
+import threading
 import time
 import zipfile
 from collections import Counter
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from datetime import date, datetime
 from pathlib import Path
 
@@ -196,10 +197,35 @@ def primary_documents(submissions: list[dict]) -> dict[str, str]:
     return out
 
 
+class _Throttle:
+    """One request at a time across every thread, REQUEST_INTERVAL apart:
+    the SEC's limit is per requester, not per connection."""
+
+    def __init__(self) -> None:
+        self.lock = threading.Lock()
+        self.next_at = 0.0
+
+    def wait(self) -> None:
+        with self.lock:
+            now = time.monotonic()
+            if now < self.next_at:
+                time.sleep(self.next_at - now)
+                now = time.monotonic()
+            self.next_at = now + REQUEST_INTERVAL
+
+
+_THROTTLE = _Throttle()
+_STORE_LOCK = threading.Lock()  # the manifest is read-modify-write
+
+
 def _get(session, url: str, timeout: int = 120):
-    time.sleep(REQUEST_INTERVAL)
-    r = session.get(url, headers={"User-Agent": SEC_USER_AGENT}, timeout=timeout)
-    return r
+    _THROTTLE.wait()
+    return session.get(url, headers={"User-Agent": SEC_USER_AGENT}, timeout=timeout)
+
+
+def _store(root: Path, rel: str, content: bytes, url: str) -> Path:
+    with _STORE_LOCK:
+        return raw.store_raw(root, rel, content, url)
 
 
 def _submissions(session, root: Path, cik: int, stamp: str) -> list[dict]:
@@ -213,7 +239,7 @@ def _submissions(session, root: Path, cik: int, stamp: str) -> list[dict]:
         if r.status_code == 404:
             return []
         r.raise_for_status()
-        raw.store_raw(root, rel, r.content, SUBMISSIONS + name)
+        _store(root, rel, r.content, SUBMISSIONS + name)
     main = json.loads((root / rel).read_bytes())
     pages.append(main)
     for extra in main.get("filings", {}).get("files", []):
@@ -221,56 +247,80 @@ def _submissions(session, root: Path, cik: int, stamp: str) -> list[dict]:
         if not (root / rel_x).exists():
             r = _get(session, SUBMISSIONS + extra["name"])
             r.raise_for_status()
-            raw.store_raw(root, rel_x, r.content, SUBMISSIONS + extra["name"])
+            _store(root, rel_x, r.content, SUBMISSIONS + extra["name"])
         pages.append(json.loads((root / rel_x).read_bytes()))
     return pages
 
 
-def fetch(cfg: Config, as_of: date, limit: int | None = None) -> list[Path]:
+def _fetch_cik(
+    session, root: Path, cik: int, rows: list[dict], stamp: str
+) -> tuple[list[Path], list[dict]]:
+    """Every missing document of one CIK; returns (stored, missing)."""
+    stored, missing = [], []
+    docs = None  # the submissions page is requested only when a document is missing
+    for r in rows:
+        existing = _existing(root, cik, r["adsh"])
+        if existing is not None:
+            continue
+        if docs is None:
+            docs = primary_documents(_submissions(session, root, cik, stamp))
+        name = docs.get(r["adsh"])
+        if not name:
+            missing.append({**r, "reason": "not in submissions API"})
+            continue
+        url = doc_url(cik, r["adsh"], name)
+        resp = _get(session, url)
+        if resp.status_code != 200:
+            missing.append({**r, "reason": f"HTTP {resp.status_code}"})
+            continue
+        body = gzip.compress(resp.content, mtime=0)
+        stored.append(_store(root, doc_path(cik, r["adsh"], name), body, url))
+    return stored, missing
+
+
+def fetch(
+    cfg: Config, as_of: date, limit: int | None = None, workers: int = 6
+) -> list[Path]:
     """The primary document of every original 10-K of every universe CIK.
 
     Resumable: a document already on disk is never requested again. The
     document name comes from the submissions API (one page per CIK, plus
     overflow pages for heavy filers), stored alongside. Filings the API
     does not list are written to ``data/checks/text_fetch_missing.csv``.
+    CIKs are fetched ``workers`` at a time behind one shared throttle, so
+    the request rate is the same as a single thread's and the wall clock
+    is not the sum of the latencies.
     """
     import requests
 
     root = cfg.data / "raw"
     ciks = pl.read_parquet(cfg.data / "interim" / "sectors.parquet").select("cik")
     index = first_filed(filings(cfg)).join(ciks.unique(), on="cik", how="inner")
+    if limit is not None:
+        index = index.head(limit)
     stamp = as_of.isoformat()
     session = requests.Session()
+    groups = [
+        (cik, g.to_dicts()) for (cik,), g in index.group_by("cik", maintain_order=True)
+    ]
     stored: list[Path] = []
     missing: list[dict] = []
-    n = 0
-    for (cik,), group in index.group_by("cik", maintain_order=True):
-        rows = group.to_dicts()
-        docs = None  # the submissions page is requested only when a document is missing
-        for r in rows:
-            if limit is not None and n >= limit:
-                return stored
-            existing = _existing(root, cik, r["adsh"])
-            if existing is not None:
-                stored.append(existing)
-                continue
-            if docs is None:
-                docs = primary_documents(_submissions(session, root, cik, stamp))
-            name = docs.get(r["adsh"])
-            if not name:
-                missing.append({**r, "reason": "not in submissions API"})
-                continue
-            url = doc_url(cik, r["adsh"], name)
-            resp = _get(session, url)
-            if resp.status_code != 200:
-                missing.append({**r, "reason": f"HTTP {resp.status_code}"})
-                continue
-            body = gzip.compress(resp.content, mtime=0)
-            rel = doc_path(cik, r["adsh"], name)
-            stored.append(raw.store_raw(root, rel, body, url))
-            n += 1
-            if n % 100 == 0:
-                print(f"fetched {n} documents ({datetime.now():%H:%M:%S})")
+    done = 0
+    with ThreadPoolExecutor(workers) as pool:
+        futures = [
+            pool.submit(_fetch_cik, session, root, c, rows, stamp) for c, rows in groups
+        ]
+        for f in futures:
+            s, m = f.result()
+            stored.extend(s)
+            missing.extend(m)
+            done += 1
+            if done % 25 == 0:
+                print(
+                    f"{done}/{len(groups)} CIKs, {len(stored)} new documents "
+                    f"({datetime.now():%H:%M:%S})",
+                    flush=True,
+                )
     if missing:
         checks = cfg.data / "checks"
         checks.mkdir(parents=True, exist_ok=True)
