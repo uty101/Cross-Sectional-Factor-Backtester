@@ -14,6 +14,7 @@ dependencies = [
     "requests>=2.32",
     "yfinance>=0.2.40",
     "fpdf2>=2.8.8",
+    "anthropic>=1.5.0",
 ]
 
 [project.scripts]

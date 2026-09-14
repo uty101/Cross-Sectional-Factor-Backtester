@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 83 tests, ~3 s
+uv run pytest                              # 91 tests, ~4 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -91,6 +91,7 @@ src/backtester/
   tag_map.toml           16 concepts, ordered XBRL tags
   sectors.py             CIK matching by name, SIC -> 11 buckets
   text.py                10-K primary documents from EDGAR, year-on-year similarity
+  agents/                base.run_agent harness; tools.Toolbox with the allowlists in code
   signals.py             signals, winsorise, sector z, composite
   portfolio.py           the engine; any (month, ticker, z); spec log
   stats.py               IC, decay, FM/NW, DSR, attribution, break-even
@@ -98,6 +99,7 @@ src/backtester/
   report.py              tables + 4 charts -> reports/results.md
   methodology.py         the 2-page PDF from the same numbers
   cli.py
+decisions/               agent run logs and decision records; BUILD_PLAN.md is the spec
 tests/                   one file per module; invariants named in test names
 data/raw|interim|processed   gitignored except raw/manifest.json
 data/checks/             committed evidence; README.md there lists every file

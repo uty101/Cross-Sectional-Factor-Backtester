@@ -46,3 +46,6 @@ desktop.ini
 .DS_Store
 .vscode/
 .idea/
+
+# Temporary worktrees the agent harness opens PRs from
+.agent-worktrees/
