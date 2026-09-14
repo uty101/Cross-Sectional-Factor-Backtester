@@ -182,3 +182,8 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
 - The Bash tool truncates long heredocs silently (`unexpected EOF while
   looking for matching '`). Write files over ~150 lines with the Write tool.
 - Wikipedia needs a `User-Agent`; `raw.USER_AGENT` is set for it.
+- **`data/recompute/raw` is a directory junction into the 5 GB raw
+  store.** It is gitignored; on 2026-09-14, for the minutes before that
+  line existed, one `git add -A` walked it and wrote 13,500 unreachable
+  blobs into `.git` (repacked away with `git repack -a -d`). Never `git
+  add -A` here; name the paths. If `.git` is ever gigabytes, that is why.
