@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 115 tests, ~6 s
+uv run pytest                              # 117 tests, ~6 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -62,6 +62,7 @@ uv run backtester report                   # results.md, 4 charts, methodology.p
 uv run backtester research-log             # reports/what_did_not_work.md from the spec log + git
 uv run backtester agent research_log       # needs ANTHROPIC_API_KEY and gh; logs to decisions/
 uv run dagster dev                         # assets, checks, schedules (backtester.orchestration)
+uv run python -c "from backtester import config, recompute; print(recompute.full(config.load())[1])"  # ~6 min, must match
 ```
 
 **All phases are built and run** (2026-09-11). The state of the data on
@@ -71,7 +72,7 @@ yfinance price files, the French zips, all in `data/raw/manifest.json`.
 `reingest=True` to `fundamentals.build` after changing `tag_map.toml`,
 otherwise new tags silently come back empty.
 
-Every backtest appends to `reports/specifications.csv`; N is 131 as of the
+Every backtest appends to `reports/specifications.csv`; N is 185 as of the
 last report. Each row carries `config_hash` and `git_commit` (blank for
 rows logged before 2026-09-14; not backfilled). **Do not delete rows from it**, including the diagnostic runs
 and the two broken first momentum attempts; the deflated Sharpe reads it.
@@ -122,6 +123,12 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   fixed. Do not tune the reported factors to raise these numbers.
 - **Cost convention** differs from the brief on purpose: every dollar
   traded pays c, `ret_net = ret_gross - 2c * turnover`.
+- **The full recompute must match to 1e-10 before a report is trusted.**
+  `recompute.full` rebuilds everything under `data/recompute/` (raw via a
+  junction, hand-written checks copied in, spec rows to its own log) and
+  compares. Both nondeterminism sources found on 2026-09-14 are fixed
+  (override rows as inputs; the `latest_flow` quarter-wins rule); a new
+  one is a bug, and the drift agent's job.
 - **A month thinner than `min_names` (50) forms no portfolio.** January
   2010 had 15–23 names with fundamentals; the text factor's first four
   months had 2–5. Their "returns" were single stocks. Found by the 4σ

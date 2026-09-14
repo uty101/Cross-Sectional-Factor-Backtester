@@ -252,3 +252,34 @@ def test_ttm_is_available_only_when_every_input_was_filed() -> None:
     t = fx.ttm(ff)
     row = t.filter(pl.col("qtrs") == 1).row(0, named=True)
     assert row["value"] == 110.0 and row["filed"] == date(2020, 6, 1)
+
+
+def test_latest_flow_prefers_the_quarter_when_a_10k_reports_both(repo_root) -> None:
+    # A 10-K carries shares_wavg for the year (qtrs 4) and the fourth
+    # quarter (qtrs 1) at the same date and filing; the quarter wins.
+    from backtester import config
+
+    cfg = config.load(repo_root / "config.toml")
+    num = pl.DataFrame(
+        [
+            {**_row, "qtrs": 4, "value": 1000.0, "adsh": "k"},
+            {**_row, "qtrs": 1, "value": 900.0, "adsh": "k"},
+        ]
+    )
+    ciks = pl.DataFrame({"ticker": ["A"], "cik": [1]})
+    panel = fx.monthly_panel(cfg, num, ciks, [date(2020, 6, 30)])
+    assert panel["shares_wavg"][0] == 900.0
+
+
+_row = {
+    "cik": 1,
+    "concept": "shares_wavg",
+    "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+    "ddate": date(2019, 12, 31),
+    "filed": date(2020, 2, 20),
+    "form": "10-K",
+    "fy": 2019,
+    "fp": "FY",
+    "sic": 1,
+    "name": "A",
+}

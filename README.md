@@ -52,8 +52,8 @@ outsider can verify, over 2010–2026?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the composite's net Sharpe of 0.32 deflates to a 7% probability of
-beating the best of 131 logged trials by luck.
+of 1; the composite's net Sharpe of 0.32 deflates to a 5% probability of
+beating the best of 185 logged trials by luck.
 
 ## Results
 
@@ -63,16 +63,16 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Momentum 12-1 | 2.2% | 0.7% | 15.8% | 0.05 | 0.01 | −56% | 0.62 | 0.007 | 0.6 | 15 bp |
-| Value (B/P, E/P) | 5.1% | 4.4% | 9.1% | 0.49 | 0.22 | −21% | 0.27 | 0.011 | 1.4 | 79 bp |
-| Quality (GP/A, accruals) | 1.9% | 1.3% | 8.5% | 0.16 | 0.02 | −24% | 0.25 | 0.009 | 1.5 | 32 bp |
+| Momentum 12-1 | 2.2% | 0.7% | 15.8% | 0.05 | 0.00 | −56% | 0.62 | 0.007 | 0.6 | 15 bp |
+| Value (B/P, E/P) | 5.1% | 4.4% | 9.1% | 0.48 | 0.17 | −22% | 0.27 | 0.011 | 1.4 | 79 bp |
+| Quality (GP/A, accruals) | 1.9% | 1.3% | 8.5% | 0.16 | 0.01 | −24% | 0.25 | 0.009 | 1.5 | 32 bp |
 | Low volatility | −4.1% | −4.7% | 18.9% | −0.25 | 0.00 | −71% | 0.24 | 0.003 | 0.2 | none (loses gross) |
-| Composite | 5.6% | 4.6% | 14.4% | 0.32 | 0.07 | −28% | 0.39 | 0.018 | 1.9 | 59 bp |
+| Composite | 5.5% | 4.6% | 14.4% | 0.32 | 0.05 | −28% | 0.39 | 0.018 | 1.9 | 59 bp |
 | 10-K text similarity | −0.1% | −0.8% | 5.7% | −0.15 | 0.00 | −27% | 0.30 | 0.003 | 0.6 | none (loses gross) |
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 131 is the row
+the same dispersion, adjusted for skew and kurtosis. *N* = 185 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
 every run — base, sensitivity, diagnostic, and the two broken first attempts
 at momentum — is logged. **Break-even cost** is the one-way cost at which
@@ -85,7 +85,7 @@ What the table says, factor by factor:
   Holding for 3–12 months instead of 1 raises the net Sharpe to 0.18–0.23
   by cutting turnover, at the price of tracking UMD less closely.
 - **Value** is the one that worked, and not the way the brief expected. Net
-  Sharpe 0.49, Fama-MacBeth t 3.2, break-even 79 bp. Its attribution alpha
+  Sharpe 0.48, Fama-MacBeth t 3.2, break-even 79 bp. Its attribution alpha
   of 4.7% (t 2.3) after Mkt, HML, UMD and RMW is the number to distrust
   first. It is not the earnings-yield half: sector-neutral B/P on its own
   has an alpha of 4.5% (t 2.3) with an HML loading of only 0.26, and
@@ -93,7 +93,7 @@ What the table says, factor by factor:
   is what sector neutralisation leaves after HML, which is not
   sector-neutral — a within-sector value premium that the French factor
   does not price, or a data-coverage artefact in the early years; the
-  coverage split below says 0.49 on the well-covered months against 0.49
+  coverage split below says 0.49 on the well-covered months against 0.48
   on all, which argues for the former. Cap-weighted it drops to 0.29.
 - **Quality** is small (net Sharpe 0.16) and 0.41 cap-weighted; accruals
   carry it, gross profitability alone is negative in this universe.
@@ -186,7 +186,7 @@ the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
 yfinance, and that is the survivorship that remains: the "with and without"
 table in `results.md` gives every factor on the 129 months from 2015-12
-where the price gap is under 20% — value 0.49 against 0.49 on all months,
+where the price gap is under 20% — value 0.49 against 0.48 on all months,
 quality 0.34 against 0.16, momentum −0.03 against 0.05. Fundamentals coverage is 39% of members in 2010 and 86%
 in 2023. A Russell 3000 version needs paid coverage of delisted names and
 their filings.
@@ -279,7 +279,7 @@ what each of those commits changed, from its body, below a marker.
   Built as BUILD_PLAN step 4.5 (`fundamentals.ttm`: YTD + last annual −
   prior-year YTD, stamped with the latest of the three filing dates) and
   run as logged sensitivities: value with TTM earnings yield nets 0.45
-  against 0.49 annual and correlates 0.24 with HML against 0.25; quality
+  against 0.48 annual and correlates 0.24 with HML against 0.25; quality
   with TTM gross profit and accruals nets 0.06 against 0.16 and
   correlates 0.09 with RMW against 0.07. Coverage is 79.2% of
   member-months against 79.7%. The reported factors keep the annual
@@ -292,8 +292,20 @@ what each of those commits changed, from its body, below a marker.
   on one stock. The 4σ anomaly detector built for the triage agent
   (BUILD_PLAN 11.5) surfaced it. `config.toml [portfolio] min_names = 50`
   now forms no portfolio in a month thinner than that; every affected
-  specification was re-run and logged (N 83 → 131), and the DSRs in the
-  table fell with N as they should.
+  specification was re-run and logged, and the DSRs in the table fell
+  with N as they should.
+- **The full recompute found the pipeline was not deterministic, twice.**
+  BUILD_PLAN 10.4 rebuilds every table from `data/raw` beside the
+  incremental copy and compares to 1e-10. Its first run differed in 27
+  tables. Two causes: the recompute tree lacked the hand-written override
+  rows (`data/checks/membership_overrides.csv` is an *input* to the
+  universe walk, and is now copied in), and `asof_join` broke ties
+  between two filings available on the same day by sort order — a 10-K
+  carries the year's and the fourth quarter's average share count at one
+  date, and which one became market cap was luck. The rule is now the
+  shorter, more recent window; it moved value's net Sharpe from 0.49 to
+  0.48 and 820 share counts. Every specification was re-run (N 131 →
+  185). The second run matched to 1e-10, and the job runs weekly.
 - **One specification row is mislabelled, and it stays.** Row 94 says
   "sensitivity jaccard" and is a cosine run: `raw_signal` read the scorer
   from the inputs' config rather than the run's, so a shared `Inputs`
@@ -315,7 +327,7 @@ what each of those commits changed, from its body, below a marker.
 
 ```bash
 uv sync
-uv run pytest                                   # 115 tests
+uv run pytest                                   # 117 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11

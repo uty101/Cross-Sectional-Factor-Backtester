@@ -57,7 +57,7 @@ and this directory is the plan's `decisions/`.
 | 9.3 | methodology PDF via pandoc | done | `methodology.py` via fpdf2; no pandoc on this machine |
 | 10.1, 10.2, 10.5 | Dagster assets, schedules, asset checks | done 2026-09-14 | `backtester.orchestration.definitions`: 20 assets, 5 checks (all green on the current data; validation reported as WARN), 4 schedules. Path is `src/backtester/orchestration/`, not `orchestration/` (ruling 3) |
 | 10.3 | incremental compute | declined | every factor recomputes in under a minute; one code path keeps 10.4 honest. Owner can overrule |
-| 10.4 | full recompute check | new | needs the `asof_join` tie fix in §5 first |
+| 10.4 | full recompute check | done 2026-09-14 | `recompute.full`, weekly Dagster job, failure -> drift agent; first run found two nondeterminism sources, both fixed; matches to 1e-10 |
 | 11.1–11.2 | harness, research-log agent | done 2026-09-14 | `agents/base.py`, `agents/tools.py`, `agents/research_log.py`; **no real logged run yet: no API key or gh on this machine** |
 | 11.3–11.7 | reporting, tag-map, triage, universe-change, drift agents | done 2026-09-14 | one module each under `agents/`, wiring tests on a scripted model; the 4σ detector found the thin-month defect on first use; no live runs (no API key on this machine) |
 | 11.8 | sensors + CI | done 2026-09-14 | four Dagster sensors route results/success/failure/4σ to the agent jobs; `.github/workflows/ci.yml` runs the gate, the tag-map guard (`scripts/check_tag_map.py`) and the spot-check |
@@ -144,7 +144,7 @@ output, stop) is adopted from here on.
 
 ## 5. Observations for later phases
 
-- `asof_join` picks nondeterministically between two filings of the same
-  CIK with the same availability date (unstable sort on `available`). It
-  moved one name's market cap in two months of 2018 on a rebuild. Harmless
-  now; phase 10.4's full-recompute check will need it fixed first.
+- `asof_join` picked nondeterministically between two filings of the same
+  CIK with the same availability date. Fixed 2026-09-14: stable sort, and
+  for `latest_flow` concepts the quarter beats the year at the same date.
+  It was not harmless: 820 share counts and 0.01 of value's Sharpe.

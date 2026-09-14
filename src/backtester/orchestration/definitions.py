@@ -378,6 +378,27 @@ def drift_op(context: OpExecutionContext, config: AgentEvent) -> None:
     context.log.info(rec["final_output"])
 
 
+@op
+def full_recompute_op(context: OpExecutionContext) -> None:
+    """10.4: rebuild everything from raw beside the incremental tables and
+    compare; a difference fails the run and the drift agent picks it up."""
+    from backtester import recompute
+
+    ok, report = recompute.full(cfg())
+    context.log.info(report)
+    if not ok:
+        raise RuntimeError("full recompute does not match the incremental tables")
+
+
+@job
+def full_recompute():
+    full_recompute_op()
+
+
+# Sunday, after the price refresh.
+schedules.append(ScheduleDefinition(job=full_recompute, cron_schedule="0 8 * * 0"))
+
+
 @job
 def research_log_agent():
     research_log_op()
@@ -428,11 +449,23 @@ def pipeline_green(context):
     return RunRequest(run_key=context.dagster_run.run_id)
 
 
-@run_failure_sensor(monitored_jobs=[full_job, sec_job, universe_job, prices_job])
+@run_failure_sensor(
+    monitored_jobs=[full_job, sec_job, universe_job, prices_job, full_recompute]
+)
 def pipeline_failed(context):
-    """11.5 / 11.4 / 11.6: route a failure to the agent that handles it."""
+    """11.4 / 11.5 / 11.6 / 11.7: route a failure to the agent that handles it."""
     text = context.failure_event.message or ""
     run = context.dagster_run
+    if run.job_name == full_recompute.name:
+        latest = sorted((ROOT / "decisions" / "drift").glob("*.md"))
+        yield RunRequest(
+            job_name=drift_agent.name,
+            run_key=run.run_id,
+            run_config=_event(
+                "drift_op", latest[-1].relative_to(ROOT).as_posix() if latest else ""
+            ),
+        )
+        return
     if run.job_name == universe_job.name:
         yield RunRequest(
             job_name=universe_change_agent.name,
@@ -512,6 +545,7 @@ defs = Definitions(
         sec_job,
         benchmarks_job,
         full_job,
+        full_recompute,
         research_log_agent,
         reporting_agent,
         triage_agent,

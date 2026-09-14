@@ -49,3 +49,4 @@ desktop.ini
 
 # Temporary worktrees the agent harness opens PRs from
 .agent-worktrees/
+data/recompute/

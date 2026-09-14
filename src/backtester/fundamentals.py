@@ -343,7 +343,11 @@ def asof_join(
             (pl.col("filed") + timedelta(days=buffer_days)).alias("available")
         )
         .select("cik", "available", "ddate", pl.col(value_col).alias("value"))
-        .sort("available")
+        # Two filings can become available on the same day (a 10-K and a
+        # 10-Q, or a re-filing); the asof join takes the last row in sort
+        # order, so the order must be a rule, not the sort's whim: the
+        # later period wins, and the sort is stable.
+        .sort(["available", "ddate", "value"], maintain_order=True)
     )
     p = panel.select("month", "cik").unique().sort("month")
     with warnings.catch_warnings():
@@ -455,9 +459,17 @@ def monthly_panel(
             )
         elif spec["kind"] == "latest_flow":
             # The most recently reported period of any length: a quarter
-            # from a 10-Q or a year from a 10-K.
-            vals = ff.filter(
-                (pl.col("concept") == concept) & pl.col("qtrs").is_in([1, 4])
+            # from a 10-Q or a year from a 10-K. A 10-K reports both the
+            # annual average and the fourth quarter's at the same date;
+            # the quarter is the shorter, more recent window and wins.
+            # Before this was a sort tie, and it moved value's net Sharpe
+            # by 0.03 (recompute check, 2026-09-14).
+            vals = (
+                ff.filter((pl.col("concept") == concept) & pl.col("qtrs").is_in([1, 4]))
+                .sort("qtrs")
+                .unique(
+                    subset=["cik", "ddate", "filed"], keep="first", maintain_order=True
+                )
             )
         else:
             vals = ff.filter((pl.col("concept") == concept) & (pl.col("qtrs") == 0))

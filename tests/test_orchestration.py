@@ -28,7 +28,11 @@ def test_definitions_load_with_every_asset_and_check() -> None:
     check_assets = {c.asset_key.to_user_string() for c in graph.asset_check_keys}
     assert check_assets <= keys
     assert len(list(graph.asset_check_keys)) == 5
-    assert {j.name for j in d.defs.jobs} >= {"refresh_prices", "full_pipeline"}
+    assert {j.name for j in d.defs.jobs} >= {
+        "refresh_prices",
+        "full_pipeline",
+        "full_recompute",
+    }
 
 
 def test_dependencies_follow_the_data_flow() -> None:
