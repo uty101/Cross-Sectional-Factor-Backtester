@@ -583,7 +583,7 @@ def apply_overrides(intervals: pl.DataFrame, overrides: pl.DataFrame) -> pl.Data
 
     Each row of ``data/checks/membership_overrides.csv`` is one interval
     with a reason and the evidence for it. A row whose (ticker, end)
-    matches an existing interval corrects that interval's start — the case
+    matches an existing interval corrects that interval's start, the case
     of a name added under an old ticker and removed under a new one, where
     the walk cannot place the addition and the start falls to unknown.
     Any other row is appended. Overrides never delete: they can only put

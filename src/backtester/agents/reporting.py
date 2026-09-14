@@ -33,9 +33,9 @@ validation.csv). If nothing changed, say so in one sentence."""
 
 USER = """Steps:
 1. read_file("reports/results.md") and read_file("reports/validation.csv").
-2. run_script("previous_results") — results.md as it was about a month ago
+2. run_script("previous_results"): results.md as it was about a month ago
    (empty if there is no earlier version).
-3. run_script("spec_rows_since") — specification rows added since then.
+3. run_script("spec_rows_since"): specification rows added since then.
 4. Write the note per the rules.
 5. write_decision("note_{ym}.md", <note>), then open_pr(
    branch="monthly-note-{ym}", title="Monthly note {ym}",

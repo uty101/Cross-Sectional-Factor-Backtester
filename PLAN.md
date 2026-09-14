@@ -23,7 +23,7 @@ named next to it, and the test is written before the code it guards.
 
 | # | Invariant | Test |
 |---|---|---|
-| 1 | A fundamental used at month-end *t* was **filed** on or before *t − 1 day*. Joined as-of `filed`, never `period_end`. | `test_asof_join_excludes_filing_after_signal_date` — plants a filing dated *t* and asserts it is excluded; dated *t − 2* and asserts it is used |
+| 1 | A fundamental used at month-end *t* was **filed** on or before *t − 1 day*. Joined as-of `filed`, never `period_end`. | `test_asof_join_excludes_filing_after_signal_date`: plants a filing dated *t* and asserts it is excluded; dated *t − 2* and asserts it is used |
 | 2 | Restatements do not rewrite history: for a given (company, concept, period) the **first-filed** value wins. | `test_first_filed_value_beats_later_amendment` |
 | 3 | A ticker is in the cross-section at *t* only if it was an index member on *t*. | `test_member_absent_outside_interval` |
 | 4 | Signal at month-end *t* is traded at the close of the **next trading day** and earns nothing before then. | `test_execution_lag_skips_first_day` |
@@ -37,7 +37,7 @@ named next to it, and the test is written before the code it guards.
 
 ## 1. Tooling
 
-Proposed, not yet decided — see §6.
+Proposed, not yet decided; see §6.
 
 - **uv** for env and lockfile; Python 3.12 pinned in `.python-version`.
 - **polars** for every frame in `src/`; **DuckDB** only inside `fundamentals.py`
@@ -81,7 +81,7 @@ data/processed/
         v
 reports/
   figures/chart{1..4}_<factor>.png     committed
-  specifications.csv                    committed — the N
+  specifications.csv                    committed: the N
   results.md                            table pasted into README
   methodology.pdf                       the 2-pager recruiters forward
 ```
@@ -92,7 +92,7 @@ reports/
 
 Every module exposes a small number of pure functions on polars frames.
 The engine (`portfolio.py`) must accept **any** signal frame in the shape
-`(month, ticker, z)` — that is the reuse contract for projects 2 and 7.
+`(month, ticker, z)`: that is the reuse contract for projects 2 and 7.
 
 ### `config.py`
 Loads `config.toml` into a frozen dataclass. One source of truth for:
@@ -103,26 +103,26 @@ Loads `config.toml` into a frozen dataclass. One source of truth for:
 ### `universe.py`
 - `parse_wikipedia_changes(html) -> Frame[ticker, added, removed, reason]`
 - `build_membership(changes, current_members) -> Frame[ticker, start, end]`
-  — walk backwards from today's constituents applying removals/additions.
+  walks backwards from today's constituents applying removals/additions.
 - `members_at(membership, date) -> list[str]`
 - Spot-check file `data/checks/membership_spotcheck.csv`: 20 changes verified
   against press releases (brief §10). Committed.
 
 ### `prices.py`
-- `fetch(ticker, source) -> raw csv` — yfinance first, Stooq fallback.
+- `fetch(ticker, source) -> raw csv`: yfinance first, Stooq fallback.
 - `build_daily(raw_dir) -> prices_daily.parquet`
 - `monthly_returns(daily, lag_days) -> returns_monthly`
 - `coverage_report(membership, daily) -> Frame[month, n_members, n_priced, gap_pct]`
-  — the delisted-name gap as a % of universe-months, reported in README.
+  gives the delisted-name gap as a % of universe-months, reported in README.
 
 ### `fundamentals.py`
-- `ingest_quarter(zip) -> DuckDB` — `sub`, `num`, `tag`, `pre` loaded raw.
-- `tag_map.toml` — the ~15 concepts each mapped to an ordered list of XBRL
+- `ingest_quarter(zip) -> DuckDB`: `sub`, `num`, `tag`, `pre` loaded raw.
+- `tag_map.toml`: the ~15 concepts each mapped to an ordered list of XBRL
   tags; coverage per concept per year is a committed table
   (`data/checks/tag_coverage.csv`).
-- `first_filed(num) -> Frame` — dedupe on (cik, concept, period_end, qtrs),
+- `first_filed(num) -> Frame`: dedupe on (cik, concept, period_end, qtrs),
   keep min `filed`.
-- `asof_join(panel, fundamentals, buffer_days=1) -> Frame` — **the** join.
+- `asof_join(panel, fundamentals, buffer_days=1) -> Frame`: **the** join.
   Written once, tested first, used everywhere.
 - `ttm(...)` and `latest_balance(...)` helpers for flow vs stock concepts.
 
@@ -135,10 +135,10 @@ Each signal is `f(inputs) -> Frame[month, ticker, value]`:
 `book_to_price`, `earnings_yield`, `momentum_12_1`, `gross_profitability`,
 `accruals`, `asset_growth`, `volatility_252`, `beta`.
 Then one normaliser: `normalise(raw, sectors, winsor) -> Frame[month, ticker, z]`
-— winsorise at the config percentiles, demean within sector, divide by sector
+winsorises at the config percentiles, demeans within sector, divides by sector
 std. `composite(zs) -> z` averages and re-standardises.
 
-### `portfolio.py` — the engine
+### `portfolio.py`, the engine
 - `assign_deciles(z, n) -> Frame[month, ticker, decile]`
 - `weights(deciles, caps, weighting) -> Frame[month, ticker, w]`
 - `drift(w, daily_returns) -> w_minus`
@@ -178,7 +178,7 @@ green and committed.
 | **2 Prices** | fetch all ever-members, coverage report, monthly returns with lag | Invariant 4, 7 tests; coverage gap % known and written down |
 | **3 Momentum end to end** | `momentum_12_1` → `normalise` → `backtest` → long–short | Invariant 5, 6, 8 tests; **corr(LS, UMD) > 0.7**. If not, stop and find the leak |
 | **4 Stats** | IC, decay, FM + NW, Sharpe, DD, DSR, attribution, break-even | NW matches statsmodels on a fixture; DSR matches a worked example from the paper |
-| **5 Fundamentals** | SEC ingest via DuckDB, tag map, first-filed, `asof_join`, sectors | **Invariant 1, 2 tests** — the headline tests for the README; tag coverage table committed |
+| **5 Fundamentals** | SEC ingest via DuckDB, tag map, first-filed, `asof_join`, sectors | **Invariant 1, 2 tests**, the headline tests for the README; tag coverage table committed |
 | **6 Value, quality, low vol** | remaining signals, composite | corr with HML > 0.7, RMW > 0.7; low vol attribution shows the beta/duration story |
 | **7 Sensitivities** | cost 5/10/25, EW vs CW, rebalance frequency from half-life | one config loop, no rewrite; `specifications.csv` has every row |
 | **8 Report** | four charts, results table, validation table, "What did not work", methodology PDF | README results table filled from `results.md`; no number typed by hand |
@@ -216,7 +216,7 @@ From the brief §10, with the response decided up front rather than mid-crisis.
    package (`src/backtester/universe.py`) makes `uv run` and tests cleaner
    and keeps the same file names. Proposed: package.
 2. **polars throughout, or pandas with DuckDB for SEC only?** Proposed:
-   polars throughout — one frame type in `src/`, pandas at the edges.
+   polars throughout: one frame type in `src/`, pandas at the edges.
 3. **Market cap for cap-weighting.** Shares outstanding from SEC
    `dei:EntityCommonStockSharesOutstanding` (point-in-time, consistent with
    the rest) versus yfinance (easy, not point-in-time). Proposed: SEC, with

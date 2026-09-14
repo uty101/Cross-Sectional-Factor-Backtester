@@ -39,7 +39,7 @@ A monthly-rebalanced factor backtester that treats **data honesty as the
 deliverable, not the returns**. It takes point-in-time fundamentals from SEC
 filings, a reconstructed historical universe, and daily prices, and produces
 decile and long–short portfolios for value, momentum, quality and low
-volatility — with costs, turnover and statistical tests on top. The engine
+volatility, with costs, turnover and statistical tests on top. The engine
 takes any `(month, ticker, z)` frame, so a new signal is a dictionary entry.
 
 ## The question
@@ -74,8 +74,8 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 that the net Sharpe exceeds the expected maximum of *N* random trials with
 the same dispersion, adjusted for skew and kurtosis. *N* = 185 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
-every run — base, sensitivity, diagnostic, and the two broken first attempts
-at momentum — is logged. **Break-even cost** is the one-way cost at which
+every run is logged: base, sensitivity, diagnostic, and the two broken
+first attempts at momentum. **Break-even cost** is the one-way cost at which
 the mean net return is zero.
 
 What the table says, factor by factor:
@@ -91,7 +91,7 @@ What the table says, factor by factor:
   has an alpha of 4.5% (t 2.3) with an HML loading of only 0.26, and
   sector-neutral E/P 4.6% (t 1.9) with an HML loading of −0.12. The "alpha"
   is what sector neutralisation leaves after HML, which is not
-  sector-neutral — a within-sector value premium that the French factor
+  sector-neutral: a within-sector value premium that the French factor
   does not price, or a data-coverage artefact in the early years; the
   coverage split below says 0.49 on the well-covered months against 0.48
   on all, which argues for the former. Cap-weighted it drops to 0.29.
@@ -105,15 +105,15 @@ What the table says, factor by factor:
   12-month hold is fragile to its calendar: dropping the thin January 2010
   formation (below) moved the annual rebalance from January to February and
   took quality's 12-month Sharpe from 0.23 to 0.05 and the composite's from
-  0.64 to 0.52 — a hold that long has only sixteen rebalances to average
+  0.64 to 0.52. A hold that long has only sixteen rebalances to average
   over.
-- **10-K text similarity** — long the names whose annual report changed
-  least year on year, Cohen, Malloy and Nguyen's "Lazy Prices" — earns
+- **10-K text similarity**, long the names whose annual report changed
+  least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
   nothing here: −0.1% gross, −0.8% net, alpha 0.0% (t 0.0), R² 0.04 on the
   four French factors, so it is at least not a repackaging of them. Jaccard
   instead of cosine gives 0.03 net; every variant is within ±0.2 of zero.
   Its first four months had two to five names and one of them printed +18%
-  on a single stock — the anomaly detector caught it, and the 50-name
+  on a single stock. The anomaly detector caught it, and the 50-name
   minimum cross-section (below) now removes such months for every factor.
   The paper's effect sits in small caps and in the short leg, and
   this is an S&P 500 long-short over 2010-2026. It is in the table because
@@ -128,7 +128,7 @@ Four charts, from [reports/figures/](reports/figures/):
 
 Signal decay: momentum's IC halves in about 15 months on the exponential
 fit but is small at every horizon; value, quality and the composite do not
-decay within 12 months at all — their IC at h=12 is as high as at h=1 —
+decay within 12 months at all (their IC at h=12 is as high as at h=1),
 which is why holding them for 6–12 months costs nothing in return and
 saves most of the turnover. The full tables, including net Sharpe at 0, 5,
 10, 25 and 50 bp, the cap-weighted and holding-period variants, and the
@@ -148,8 +148,8 @@ The pipeline is considered wrong until the long–short series clear this:
 The reported value and quality factors are sector-neutral composites of two
 signals each, and HML and RMW are neither, so their correlation was never
 going to reach 0.7 and it is not the test of the join. The test of the join
-is to build French's factor the way French does — one raw signal, no sector
-neutralisation, cap-weighted top third minus bottom third — and compare it
+is to build French's factor the way French does (one raw signal, no sector
+neutralisation, cap-weighted top third minus bottom third) and compare it
 with the **big-cap half** of his factor, which he also publishes, because HML
 and RMW are half small-cap and this universe has none (French's own big-cap
 leg correlates only 0.92 with full HML over the window).
@@ -180,13 +180,13 @@ years, not a join error, and it is left as a fail rather than tuned.
 | 10-K text | EDGAR primary documents, indexed from the FSDS `sub.txt` | One gzip per original 10-K; **filing date is the SEC's**; scored by cosine/Jaccard against the prior year's filing (Cohen, Malloy and Nguyen 2020). Not company websites: no timestamp, restatements overwrite in place, delisted names vanish. Not transcripts: not filed, no point-in-time archive without a vendor. No language model: a model trained after the filing knows the outcome (invariant 10) |
 
 **Known limitations, stated up front.** The S&P 500 restriction is a
-compromise forced by free data — 496–504 names at every month-end and 818
+compromise forced by free data: 496–504 names at every month-end and 818
 unique names over the window (the brief's ~1,100 was high). Survivorship in
 the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
 yfinance, and that is the survivorship that remains: the "with and without"
 table in `results.md` gives every factor on the 129 months from 2015-12
-where the price gap is under 20% — value 0.49 against 0.48 on all months,
+where the price gap is under 20%: value 0.49 against 0.48 on all months,
 quality 0.34 against 0.16, momentum −0.03 against 0.05. Fundamentals coverage is 39% of members in 2010 and 86%
 in 2023. A Russell 3000 version needs paid coverage of delisted names and
 their filings.
@@ -215,7 +215,7 @@ what each of those commits changed, from its body, below a marker.
 
 - **Wikipedia's `Date added` column is not an index-addition date for
   long-standing members.** Sempra "2017", T. Rowe Price "2019", Dominion
-  "2016", Humana "2012", Freeport "2011", Johnson Controls "2010" — all are
+  "2016", Humana "2012", Freeport "2011", Johnson Controls "2010": all are
   corporate-event dates on names in the index since the 1990s, and every
   Wikipedia-derived dataset repeats them. Trusted only before 2010; in-window
   it is adjudicated by the cross-check and each decision logged.
@@ -243,8 +243,8 @@ what each of those commits changed, from its body, below a marker.
   `company_tickers.json` as the primary CIK source (BUILD_PLAN 4.6)
   first re-pointed twelve removed names: S to SentinelOne instead of
   Sprint, DV to DoubleVerify instead of DeVry, TMC to The Metals Company
-  instead of Times Mirror. It now applies to current members only —
-  500 of 500, all agreeing with Wikipedia's CIK — and removed names keep
+  instead of Times Mirror. It now applies to current members only,
+  500 of 500, all agreeing with Wikipedia's CIK, and removed names keep
   the name match. Every method is in `data/checks/cik_map.csv`.
 - **A few large filers report the balance-sheet share count in the wrong
   units** (RTX, CMG), and Berkshire reports class-A equivalents against a
@@ -252,7 +252,7 @@ what each of those commits changed, from its body, below a marker.
   under a billion dollars is dropped and listed.
 - **`OperatingIncomeLoss` is not reported by banks or insurers**, which
   left profitability without financials and its French replication at 0.31.
-  Pre-tax income over fiscal-year book equity is the closest reported line and lifted it to 0.48 — still
+  Pre-tax income over fiscal-year book equity is the closest reported line and lifted it to 0.48, still
   short, for the coverage reasons above.
 - **Value and quality do not validate against HML and RMW as reported**, and
   the fix was not to change the reported factors until they did; it was to
@@ -300,7 +300,7 @@ what each of those commits changed, from its body, below a marker.
   tables. Two causes: the recompute tree lacked the hand-written override
   rows (`data/checks/membership_overrides.csv` is an *input* to the
   universe walk, and is now copied in), and `asof_join` broke ties
-  between two filings available on the same day by sort order — a 10-K
+  between two filings available on the same day by sort order: a 10-K
   carries the year's and the fourth quarter's average share count at one
   date, and which one became market cap was luck. The rule is now the
   shorter, more recent window; it moved value's net Sharpe from 0.49 to
@@ -310,14 +310,14 @@ what each of those commits changed, from its body, below a marker.
   "sensitivity jaccard" and is a cosine run: `raw_signal` read the scorer
   from the inputs' config rather than the run's, so a shared `Inputs`
   silently kept the base knob. Fixed and tested; the correct Jaccard run
-  is row 131, whose note points back to "row 130" — miscounted when it
+  is row 131, whose note points back to "row 130", miscounted when it
   was written. Neither row is edited: the log is append-only, and this
   paragraph is the correction.
 - **A terminal delisting return changes nothing either.** BUILD_PLAN 8.2's
   `terminal` convention (−30% in the month after a removed name's last
-  print, `config.toml [delisting]`) applies to nine names in the window —
-  the rest either kept trading after removal or have no prices at all —
-  and moves every factor's net Sharpe by at most 0.01. The nine are in
+  print, `config.toml [delisting]`) applies to nine names in the window;
+  the rest either kept trading after removal or have no prices at all. It
+  moves every factor's net Sharpe by at most 0.01. The nine are in
   `data/checks/delisting_terminal.csv`; all were acquired, none failed,
   so −30% is the wrong sign for every one of them and is kept as the
   conservative convention the plan specifies. The real delisting gap is
@@ -363,6 +363,6 @@ data/checks/                   committed evidence, one file per question
 reports/figures, reports/results.md, reports/specifications.csv, reports/methodology.pdf
 ```
 
-Build order was momentum first — it needs no fundamentals — validated
+Build order was momentum first, since it needs no fundamentals, validated
 against UMD before the SEC data was touched. [PLAN.md](PLAN.md) has the
 phases and gates.

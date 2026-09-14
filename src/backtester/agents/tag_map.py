@@ -6,7 +6,7 @@ Trigger: the fundamentals coverage check fails, or a new quarter brings
 tags that match a concept's keywords. For each under-covered concept it
 queries the ingested SEC rows for the universe CIKs that report nothing
 under the mapped tags, finds what they report the concept under, and
-proposes additions to ``tag_map.toml`` — one line of rationale each —
+proposes additions to ``tag_map.toml``, one line of rationale each,
 as a pull request. It is the one agent allowed to put a file under
 ``src/`` in a PR, and only that file; CI reruns coverage on the PR and
 fails it if any concept's coverage fell (11.8).

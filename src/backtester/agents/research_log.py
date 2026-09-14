@@ -47,9 +47,9 @@ Rules, in order of precedence:
    one-line decision saying so and open no pull request."""
 
 USER = """Steps:
-1. run_script("research_log") — the generated table with the marker at the end.
-2. run_script("git_log") — the last 200 commits with bodies.
-3. read_file("reports/what_did_not_work.md") — the current file, to keep
+1. run_script("research_log"): the generated table with the marker at the end.
+2. run_script("git_log"): the last 200 commits with bodies.
+3. read_file("reports/what_did_not_work.md"): the current file, to keep
    anything already below the marker that is still accurate.
 4. Write the section below the marker per the rules.
 5. write_decision("what_did_not_work_draft.md", <full file>).

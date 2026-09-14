@@ -1,13 +1,13 @@
-# BUILD_PLAN.md against the repo as it stands — 2026-09-14
+# BUILD_PLAN.md against the repo as it stands, 2026-09-14
 
 `BUILD_PLAN.md` was written for an empty repository. This file maps every
 step of it to what already exists, so the plan can be worked as a delta
 rather than a rebuild. Status codes:
 
-- **done** — built, tested, and in `git log`; the name differs from the plan
-- **adapt** — built; the plan asks for a specific addition on top
-- **new** — not built
-- **decline** — conflicts with a documented, validated decision; see §2
+- **done**: built, tested, and in `git log`; the name differs from the plan
+- **adapt**: built; the plan asks for a specific addition on top
+- **new**: not built
+- **decline**: conflicts with a documented, validated decision; see §2
 
 Names on the right are the repo's. Package is `backtester`, config is
 `config.toml`, evidence lives in `data/checks/` (the plan's `manifests/`),
@@ -61,7 +61,7 @@ and this directory is the plan's `decisions/`.
 | 11.1–11.2 | harness, research-log agent | done 2026-09-14 | `agents/base.py`, `agents/tools.py`, `agents/research_log.py`; **no real logged run yet: no API key or gh on this machine** |
 | 11.3–11.7 | reporting, tag-map, triage, universe-change, drift agents | done 2026-09-14 | one module each under `agents/`, wiring tests on a scripted model; the 4σ detector found the thin-month defect on first use; no live runs (no API key on this machine) |
 | 11.8 | sensors + CI | done 2026-09-14 | four Dagster sensors route results/success/failure/4σ to the agent jobs; `.github/workflows/ci.yml` runs the gate, the tag-map guard (`scripts/check_tag_map.py`) and the spot-check |
-| — | 10-K text factor, invariant 10 | done, not in plan | `text.py`, added 2026-09-14 |
+| (none) | 10-K text factor, invariant 10 | done, not in plan | `text.py`, added 2026-09-14 |
 
 ## 2. Where the plan and the repo disagree
 
@@ -85,8 +85,8 @@ be computed over a spec log whose `sharpe_net` column mixes the two.
 
 In the FSDS, `prevrpt = 1` marks a filing that was *later* amended. A
 filter of `prevrpt = 0` together with excluding `/A` forms drops both the
-original and the amendment, so a restated period has no value at all —
-and, worse, it uses knowledge of the future (that an amendment would
+original and the amendment, so a restated period has no value at all.
+Worse, it uses knowledge of the future (that an amendment would
 come) to decide what the past could see. That is a lookahead. The repo's
 rule is first-filed wins (invariant 2, `test_first_filed_value_beats_later_amendment`),
 which keeps the original. **Recommendation: do not apply; the plan's
@@ -112,28 +112,28 @@ a test instead. **Recommendation: add the equality test, keep the paste.**
 
 Each is one plan step, gated, committed, pushed, per the plan's rule 1.
 
-1. **0.2/0.3** — `config_hash` and `git_commit` columns on the spec log
+1. **0.2/0.3**: `config_hash` and `git_commit` columns on the spec log
    (append to the existing 16; N stays the row count).
-1a. **11.1** — the agent harness (owner's ruling 5: sooner).
-1b. **11.2** — the research-log agent, on the spec log and git log.
-2. **4.5** — TTM flows from 10-Qs; value and quality get `_ttm` variants
+1a. **11.1**: the agent harness (owner's ruling 5: sooner).
+1b. **11.2**: the research-log agent, on the spec log and git log.
+2. **4.5**: TTM flows from 10-Qs; value and quality get `_ttm` variants
    as logged sensitivities, the reported factors unchanged unless the
    owner says so.
-3. **4.6** — `company_tickers.json` as the primary CIK map, name match
+3. **4.6**: `company_tickers.json` as the primary CIK map, name match
    as fallback, agreement logged in `data/checks/cik_map.csv`.
-4. **5.5** — runtime guard in `normalise`: any frame carrying `filed`
+4. **5.5**: runtime guard in `normalise`: any frame carrying `filed`
    must satisfy `filed + buffer <= month`.
-5. **6.3** — stored momentum baseline and a regression test.
-6. **3.6/8.1** — AQR BAB and the `beta_252` validation row;
+5. **6.3**: stored momentum baseline and a regression test.
+6. **3.6/8.1**: AQR BAB and the `beta_252` validation row;
    `validation` thresholds moved into `config.toml`.
-7. **8.2** — delisting `terminal` mode (−30% on the last print).
-8. **8.3** — weighting gap regression on SMB.
-9. **8.4** — generated `what_did_not_work.md` from the spec log and git log.
-10. **9.1** — FRED `USREC` recession shading.
-11. **2.1** — a second price source, once one that serves a script is
+7. **8.2**: delisting `terminal` mode (−30% on the last print).
+8. **8.3**: weighting gap regression on SMB.
+9. **8.4**: generated `what_did_not_work.md` from the spec log and git log.
+10. **9.1**: FRED `USREC` recession shading.
+11. **2.1**: a second price source, once one that serves a script is
     found (Stooq does not).
-12. **10.x** — Dagster.
-13. **11.x** — agents.
+12. **10.x**: Dagster.
+13. **11.x**: agents.
 
 ## 4. Plan rules that already hold, for the record
 
