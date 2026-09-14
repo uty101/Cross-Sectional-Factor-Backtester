@@ -90921,5 +90921,12 @@
     "sha256": "5047a28a17512449de92ef87b533da53737a1dae2e2a15ebbd12446ac9ec2bd3",
     "bytes": 2500092,
     "fetched_at": "2026-09-14T14:21:47+00:00"
+  },
+  {
+    "path": "fred/USREC_2026-09-14.csv",
+    "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=USREC",
+    "sha256": "de2b859e0cd8cb1c56f74bbc2b16b1f8bab4f882e5b8a9d83dfb58c3aa10dad9",
+    "bytes": 26816,
+    "fetched_at": "2026-09-14T14:28:51+00:00"
   }
 ]

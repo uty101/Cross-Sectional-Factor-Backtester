@@ -32,6 +32,9 @@ MOMENTUM = "F-F_Momentum_Factor_CSV.zip"
 SIX_BM = "6_Portfolios_2x3_CSV.zip"
 SIX_OP = "6_Portfolios_ME_OP_2x3_CSV.zip"
 FRED_DGS1MO = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS1MO"
+FRED_USREC = (
+    "https://fred.stlouisfed.org/graph/fredgraph.csv?id=USREC"  # NBER, monthly 0/1
+)
 # AQR's betting-against-beta factor, monthly, by country; the USA column
 # is the benchmark for the beta factor (BUILD_PLAN 3.6 / 8.1). AQR
 # reconstructs the whole history on each update, so pulls are date-stamped.
@@ -44,22 +47,21 @@ _MONTHLY_ROW = re.compile(r"^\s*(\d{6})\s*,")
 
 
 def fetch(cfg: Config, as_of: date) -> list[Path]:
+    """Every benchmark file, date-stamped; one already stored under this
+    date is kept, not re-requested (invariant 7 refuses to overwrite)."""
     root = cfg.data / "raw"
+    wanted = [
+        (f"french/{FIVE_FACTORS[:-4]}_{as_of}.zip", FRENCH_BASE + FIVE_FACTORS),
+        (f"french/{MOMENTUM[:-4]}_{as_of}.zip", FRENCH_BASE + MOMENTUM),
+        (f"fred/DGS1MO_{as_of}.csv", FRED_DGS1MO),
+        (f"fred/USREC_{as_of}.csv", FRED_USREC),
+        (f"french/{SIX_BM[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_BM),
+        (f"french/{SIX_OP[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_OP),
+        (f"aqr/bab_monthly_{as_of}.xlsx", AQR_BAB),
+    ]
     return [
-        raw.fetch_to_raw(
-            root, f"french/{FIVE_FACTORS[:-4]}_{as_of}.zip", FRENCH_BASE + FIVE_FACTORS
-        ),
-        raw.fetch_to_raw(
-            root, f"french/{MOMENTUM[:-4]}_{as_of}.zip", FRENCH_BASE + MOMENTUM
-        ),
-        raw.fetch_to_raw(root, f"fred/DGS1MO_{as_of}.csv", FRED_DGS1MO),
-        raw.fetch_to_raw(
-            root, f"french/{SIX_BM[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_BM
-        ),
-        raw.fetch_to_raw(
-            root, f"french/{SIX_OP[:-4]}_{as_of}.zip", FRENCH_BASE + SIX_OP
-        ),
-        raw.fetch_to_raw(root, f"aqr/bab_monthly_{as_of}.xlsx", AQR_BAB),
+        root / rel if (root / rel).exists() else raw.fetch_to_raw(root, rel, url)
+        for rel, url in wanted
     ]
 
 
@@ -132,6 +134,23 @@ def parse_fred(text: str) -> pl.DataFrame:
     ).drop_nulls()
 
 
+def recessions(usrec: pl.DataFrame) -> list[tuple[date, date]]:
+    """(first month, last month) of every NBER recession in a USREC frame
+    (date, rate_pct with 1 = recession)."""
+    out: list[tuple[date, date]] = []
+    start = prev = None
+    for d, v in zip(usrec["date"], usrec["rate_pct"], strict=True):
+        if v == 1 and start is None:
+            start = d
+        elif v != 1 and start is not None:
+            out.append((start, prev))
+            start = None
+        prev = d
+    if start is not None:
+        out.append((start, prev))
+    return out
+
+
 def build(cfg: Config) -> pl.DataFrame:
     root = cfg.data / "raw"
     five = parse_french_monthly(
@@ -169,6 +188,16 @@ def build(cfg: Config) -> pl.DataFrame:
     fred.with_columns(pl.lit(fred["date"].max()).alias("as_of")).write_parquet(
         interim / "fred_dgs1mo.parquet"
     )
+    try:
+        usrec = parse_fred(
+            raw.latest(root, "fred/USREC_*.csv").read_text(encoding="utf-8")
+        )
+    except FileNotFoundError:
+        print("no USREC file fetched; charts shade the 2020 recession only")
+    else:
+        usrec.with_columns(pl.lit(usrec["date"].max()).alias("as_of")).write_parquet(
+            interim / "fred_usrec.parquet"
+        )
     try:
         bab = parse_aqr_bab(raw.latest(root, "aqr/bab_monthly_*.xlsx"))
     except FileNotFoundError:

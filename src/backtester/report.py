@@ -37,7 +37,26 @@ LABELS = {
 # Categorical slots, fixed order, validated (dataviz skill). Text stays ink.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#7a5cd6"]
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#e6e5e1"
-RECESSIONS = [(date(2020, 2, 1), date(2020, 4, 30))]  # NBER, inside the window
+# The fallback when FRED USREC has not been fetched; otherwise every NBER
+# recession in the window is read from data/interim/fred_usrec.parquet.
+RECESSIONS = [(date(2020, 2, 1), date(2020, 4, 30))]
+
+
+def recession_spans(cfg: Config) -> list[tuple[date, date]]:
+    from backtester.benchmarks import recessions
+
+    p = cfg.data / "interim" / "fred_usrec.parquet"
+    if not p.exists():
+        return RECESSIONS
+    spans = recessions(pl.read_parquet(p).select("date", "rate_pct"))
+    in_window = [
+        (a, pl.Series([b]).dt.month_end()[0])  # FRED stamps the first of the month
+        for a, b in spans
+        if b >= cfg.start and a <= cfg.end
+    ]
+    return in_window or RECESSIONS
+
+
 HORIZONS = [1, 2, 3, 6, 12]
 COST_GRID = list(range(0, 101, 1))
 
@@ -322,7 +341,12 @@ def chart_deciles(reports: list[FactorReport], path) -> None:
     plt.close(fig)
 
 
-def chart_rolling_ic(reports: list[FactorReport], path, window: int = 36) -> None:
+def chart_rolling_ic(
+    reports: list[FactorReport],
+    path,
+    window: int = 36,
+    spans: list[tuple[date, date]] = RECESSIONS,
+) -> None:
     import matplotlib
 
     matplotlib.use("Agg")
@@ -351,7 +375,7 @@ def chart_rolling_ic(reports: list[FactorReport], path, window: int = 36) -> Non
                 textcoords="offset points",
                 va="center",
             )
-    for a, b in RECESSIONS:
+    for a, b in spans:
         ax.axvspan(a, b, color=GRID, alpha=0.8, linewidth=0)
     ax.axhline(0, color=INK2, linewidth=0.8)
     ax.set_title(
@@ -470,7 +494,9 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
     figs = cfg.reports / "figures"
     figs.mkdir(parents=True, exist_ok=True)
     chart_deciles(reports, figs / "chart1_deciles.png")
-    chart_rolling_ic(reports, figs / "chart2_rolling_ic.png")
+    chart_rolling_ic(
+        reports, figs / "chart2_rolling_ic.png", spans=recession_spans(cfg)
+    )
     chart_decay(reports, figs / "chart3_ic_decay.png")
     chart_cost(reports, figs / "chart4_sharpe_vs_cost.png")
 

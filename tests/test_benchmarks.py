@@ -41,3 +41,22 @@ def test_fred_missing_values_are_dropped() -> None:
     df = benchmarks.parse_fred("DATE,DGS1MO\n2020-01-01,.\n2020-01-02,1.53\n")
     assert df["date"].to_list() == [date(2020, 1, 2)]
     assert df["rate_pct"][0] == 1.53
+
+
+def test_recessions_are_read_as_month_spans_from_usrec() -> None:
+    from datetime import date
+
+    import polars as pl
+
+    from backtester import benchmarks
+
+    usrec = pl.DataFrame(
+        {
+            "date": [date(2020, m, 1) for m in range(1, 9)],
+            "rate_pct": [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0],
+        }
+    )
+    assert benchmarks.recessions(usrec) == [
+        (date(2020, 2, 1), date(2020, 4, 1)),
+        (date(2020, 7, 1), date(2020, 8, 1)),  # still open at the end
+    ]
