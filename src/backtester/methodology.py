@@ -140,7 +140,10 @@ def build(cfg: Config) -> None:
     pdf.bullets(
         [
             "Signals at each month-end from data available then: 12-1 momentum, book-to-price, earnings "
-            "yield, gross profit / assets, cash-flow accruals (negated), 252-day volatility (negated). "
+            "yield, gross profit / assets, cash-flow accruals (negated), 252-day volatility (negated), "
+            "and the cosine similarity of the latest 10-K text to the prior year's (Cohen, Malloy and "
+            "Nguyen 2020), from EDGAR primary documents dated by the SEC's filing date, scored without "
+            "a language model so that nothing trained after the filing can leak into the score. "
             "Winsorised at the 1st/99th percentile, z-scored within sector (SIC mapped by hand to 11 "
             "GICS-like buckets), composites averaged and re-standardised.",
             "Portfolios: ten equal-count deciles, equal-weighted (cap-weighted as a sensitivity), formed "

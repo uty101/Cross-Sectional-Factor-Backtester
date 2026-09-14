@@ -177,23 +177,32 @@ def doc_url(cik: int, adsh: str, name: str) -> str:
     return f"{ARCHIVES}{cik}/{adsh.replace('-', '')}/{name}"
 
 
-def primary_documents(submissions: list[dict]) -> dict[str, str]:
-    """adsh -> primary document name from the submissions API pages.
+def primary_documents(submissions: list[dict]) -> dict[str | tuple, tuple[str, str]]:
+    """(accession, primary document name) from the submissions API pages,
+    keyed by accession number and also by (form, filing date).
 
     The main page nests the arrays under ``filings.recent``; the overflow
     pages it names under ``filings.files`` carry the same arrays at the
-    top level.
+    top level. The second key is for the rare filing EDGAR re-numbered
+    after the FSDS recorded it (Salesforce's FY2021 10-K): same CIK,
+    same form, same SEC filing date, different accession.
     """
-    out: dict[str, str] = {}
+    out: dict[str | tuple, tuple[str, str]] = {}
     for page in submissions:
         recent = page.get("filings", {}).get("recent", page)
-        for adsh, doc in zip(
-            recent.get("accessionNumber", []),
+        n = len(recent.get("accessionNumber", []))
+        forms = recent.get("form", [""] * n)
+        dates = recent.get("filingDate", [""] * n)
+        for adsh, doc, form, filed in zip(
+            recent["accessionNumber"] if n else [],
             recent.get("primaryDocument", []),
+            forms,
+            dates,
             strict=True,
         ):
             if doc:
-                out[adsh] = doc
+                out[adsh] = (adsh, doc)
+                out.setdefault((form, filed), (adsh, doc))
     return out
 
 
@@ -264,12 +273,17 @@ def _fetch_cik(
             continue
         if docs is None:
             docs = primary_documents(_submissions(session, root, cik, stamp))
-        name = docs.get(r["adsh"])
-        if not name:
+        hit = docs.get(r["adsh"]) or docs.get((r["form"], r["filed"].isoformat()))
+        if not hit:
             missing.append({**r, "reason": "not in submissions API"})
             continue
-        url = doc_url(cik, r["adsh"], name)
-        resp = _get(session, url)
+        edgar_adsh, name = hit  # EDGAR's accession folder; the file keeps the FSDS adsh
+        url = doc_url(cik, edgar_adsh, name)
+        try:
+            resp = _get(session, url)
+        except OSError as e:  # a dropped connection is one missing document
+            missing.append({**r, "reason": f"{type(e).__name__}"})
+            continue
         if resp.status_code != 200:
             missing.append({**r, "reason": f"HTTP {resp.status_code}"})
             continue
@@ -321,12 +335,14 @@ def fetch(
                     f"({datetime.now():%H:%M:%S})",
                     flush=True,
                 )
-    if missing:
-        checks = cfg.data / "checks"
-        checks.mkdir(parents=True, exist_ok=True)
-        pl.DataFrame(missing).select(
-            "adsh", "cik", "form", "period", "filed", "reason"
-        ).write_csv(checks / "text_fetch_missing.csv")
+    # Always written: an empty file says the fetch was complete.
+    checks = cfg.data / "checks"
+    checks.mkdir(parents=True, exist_ok=True)
+    cols = ["adsh", "cik", "form", "period", "filed", "reason"]
+    schema = {**{c: FILINGS_SCHEMA[c] for c in cols[:-1]}, "reason": pl.Utf8}
+    pl.DataFrame(missing, schema=schema).select(cols).write_csv(
+        checks / "text_fetch_missing.csv"
+    )
     return stored
 
 

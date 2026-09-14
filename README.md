@@ -52,8 +52,8 @@ outsider can verify, over 2010–2026?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the composite's net Sharpe of 0.34 deflates to a 15% probability of
-beating the best of 65 logged trials by luck.
+of 1; the composite's net Sharpe of 0.34 deflates to a 14% probability of
+beating the best of 74 logged trials by luck.
 
 ## Results
 
@@ -64,14 +64,15 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Momentum 12-1 | 2.2% | 0.7% | 15.8% | 0.05 | 0.01 | −56% | 0.62 | 0.007 | 0.6 | 15 bp |
-| Value (B/P, E/P) | 5.3% | 4.6% | 9.2% | 0.50 | 0.35 | −22% | 0.28 | 0.011 | 1.4 | 80 bp |
+| Value (B/P, E/P) | 5.3% | 4.6% | 9.2% | 0.50 | 0.34 | −22% | 0.28 | 0.011 | 1.4 | 80 bp |
 | Quality (GP/A, accruals) | 2.1% | 1.4% | 8.5% | 0.17 | 0.04 | −24% | 0.26 | 0.009 | 1.5 | 33 bp |
 | Low volatility | −4.1% | −4.7% | 18.9% | −0.25 | 0.00 | −71% | 0.24 | 0.003 | 0.2 | none (loses gross) |
-| Composite | 5.9% | 5.0% | 14.5% | 0.34 | 0.15 | −28% | 0.40 | 0.018 | 1.9 | 62 bp |
+| Composite | 5.9% | 5.0% | 14.5% | 0.34 | 0.14 | −28% | 0.40 | 0.018 | 1.9 | 62 bp |
+| 10-K text similarity | 0.8% | 0.1% | 7.3% | 0.01 | 0.01 | −29% | 0.31 | 0.003 | 0.6 | 11 bp |
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 65 is the row
+the same dispersion, adjusted for skew and kurtosis. *N* = 74 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
 every run — base, sensitivity, diagnostic, and the two broken first attempts
 at momentum — is logged. **Break-even cost** is the one-way cost at which
@@ -101,6 +102,14 @@ What the table says, factor by factor:
   RMW 0.94 (t 8.2), with alpha of 1.1% (t 0.4). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
 - **Composite** (all six signals) nets 0.34, 0.64 held for 12 months.
+- **10-K text similarity** — long the names whose annual report changed
+  least year on year, Cohen, Malloy and Nguyen's "Lazy Prices" — earns
+  nothing here: 0.8% gross, 0.1% net, alpha 1.1% (t 0.6), R² 0.02 on the
+  four French factors, so it is at least not a repackaging of them. Jaccard
+  instead of cosine gives 0.05 net; cap-weighting and a 3-month hold go
+  negative. The paper's effect sits in small caps and in the short leg, and
+  this is an S&P 500 long-short over 2010-2026. It is in the table because
+  the point of building it was the data path (next section), not the return.
 
 Four charts, from [reports/figures/](reports/figures/):
 
@@ -221,6 +230,19 @@ Kept as a first-class section, per the brief.
   c·TO` with `TO = ½Σ|Δw|` and `c` one-way charges c per unit of two-way
   volume. Here every dollar bought and sold pays c: `r_net = r_gross −
   2c·TO`. Break-evens are quoted under that stricter convention.
+- **The 10-K text factor is flat, and the question that led to it was
+  answered on the way.** Asked whether company websites, transcripts and
+  annual reports would be a richer source than SEC filings: no, for the
+  backtest. A website has no filing timestamp (invariant 1), a restated
+  PDF overwrites the original in place (invariant 2), a delisted member's
+  site is gone (invariant 3), and transcripts are not filed at all. The
+  text comes from EDGAR, one primary document per original 10-K (10,339
+  of 10,339 in the index; one was re-numbered by EDGAR and found by form
+  and filing date), and is scored by two deterministic similarities. A
+  language-model score was ruled out and made invariant 10: a model
+  trained after the filing knows what happened next, and no test on the
+  timestamps would catch it. Item 1A / Item 7 extraction and the 8-K
+  earnings release are the next steps if the text route is pursued.
 - **Not done:** trailing-twelve-month flows from 10-Qs (annual 10-K values
   are used, updated at filing date); a delisting-return adjustment beyond
   closing a position at its last print.

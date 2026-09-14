@@ -258,7 +258,7 @@ def summary_line(res: RunResult) -> str:
 
 # --- the loops ----------------------------------------------------------
 
-REPORTED = ["momentum", "value", "quality", "low_vol", "composite"]
+REPORTED = ["momentum", "value", "quality", "low_vol", "composite", "text_change"]
 
 
 def run_all(

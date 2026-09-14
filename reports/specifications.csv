@@ -64,3 +64,12 @@ timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,win
 2026-09-11T15:15:46+00:00,ep_sn,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4828,0.4102,diagnostic ep_sn attribution
 2026-09-11T15:20:52+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0840,0.0620,French replication no-sector
 2026-09-11T15:20:53+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4819,0.4536,French replication no-sector
+2026-09-14T11:51:57+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1141,0.0117,base
+2026-09-14T11:51:58+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,diagnostic no-sector
+2026-09-14T11:52:16+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1141,0.0117,base
+2026-09-14T11:52:16+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0411,-0.1094,sensitivity cw
+2026-09-14T11:52:16+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1370,-0.2088,sensitivity hold3
+2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0887,0.0145,sensitivity hold6
+2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0774,0.0223,sensitivity hold12
+2026-09-14T11:52:18+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,sensitivity nosector no-sector
+2026-09-14T11:52:26+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1493,0.0485,sensitivity jaccard

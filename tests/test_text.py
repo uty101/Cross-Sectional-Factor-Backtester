@@ -211,8 +211,18 @@ def test_primary_documents_reads_both_page_shapes() -> None:
             "files": [{"name": "more.json"}],
         }
     }
-    overflow = {"accessionNumber": ["a-0", "a-x"], "primaryDocument": ["b.htm", ""]}
-    assert text.primary_documents([main, overflow]) == {"a-1": "a.htm", "a-0": "b.htm"}
+    overflow = {
+        "accessionNumber": ["a-0", "a-x"],
+        "primaryDocument": ["b.htm", ""],
+        "form": ["10-K", "10-K"],
+        "filingDate": ["2021-03-17", "2021-03-18"],
+    }
+    docs = text.primary_documents([main, overflow])
+    assert docs["a-1"] == ("a-1", "a.htm") and docs["a-0"] == ("a-0", "b.htm")
+    assert "a-x" not in docs
+    # The re-numbered-filing fallback: same form and SEC filing date gives
+    # EDGAR's accession, which is where the document actually lives.
+    assert docs[("10-K", "2021-03-17")] == ("a-0", "b.htm")
     assert text.doc_url(320193, "0000320193-23-000106", "aapl-20230930.htm") == (
         "https://www.sec.gov/Archives/edgar/data/320193/000032019323000106/"
         "aapl-20230930.htm"
