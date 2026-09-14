@@ -45,7 +45,7 @@ and this directory is the plan's `decisions/`.
 | 5.1–5.4 | value, quality, low vol, beta, composite | done | `run.FACTORS`; `beta_252` exists, not validated against BAB |
 | 5.5 | sector-neutral on, `filed + buffer <= t` assertion in normalise | done 2026-09-14 | sector-neutral on; the assertion lives in `asof_join` tests, **not as a runtime guard in `normalise`** |
 | 6.1–6.2 | full grid, cost curves | done | `run.run_all`, `sensitivities`, `stats.sharpe_by_cost` |
-| 6.3 | momentum regression baseline | new | correlation is recomputed each report; no stored baseline test |
+| 6.3 | momentum regression baseline | done 2026-09-14 | `tests/fixtures/momentum_baseline.json` = 0.7934; `test_regression.py` within 0.05 and above 0.70 |
 | 7.1–7.5 | FM, NW, decay, DSR, attribution | done | `stats.py`; NW cross-checked against statsmodels in tests; DSR worked example |
 | 7.6 | wire into results | done | `report.py` tables |
 | 8.1 | validation table with thresholds file | adapt | thresholds in README/`report.py`; **no `validation.yaml`**, no BAB row |
