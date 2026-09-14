@@ -62,8 +62,9 @@ and this directory is the plan's `decisions/`.
 ## 2. Where the plan and the repo disagree
 
 These are not naming differences. Each is a decision the repo made,
-tested, and wrote down; the plan asks for the opposite. **None of them
-was applied.** The owner decides.
+tested, and wrote down; the plan asks for the opposite. **The owner ruled
+on all four on 2026-09-14: the recommendations below stand** (recorded at
+the top of `BUILD_PLAN.md`).
 
 ### 2.1 Cost convention (Appendix: "Net return = gross − cost × turnover")
 
@@ -109,6 +110,8 @@ Each is one plan step, gated, committed, pushed, per the plan's rule 1.
 
 1. **0.2/0.3** — `config_hash` and `git_commit` columns on the spec log
    (append to the existing 16; N stays the row count).
+1a. **11.1** — the agent harness (owner's ruling 5: sooner).
+1b. **11.2** — the research-log agent, on the spec log and git log.
 2. **4.5** — TTM flows from 10-Qs; value and quality get `_ttm` variants
    as logged sensitivities, the reported factors unchanged unless the
    owner says so.

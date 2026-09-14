@@ -10,6 +10,22 @@ Copy it to the repo root as `BUILD_PLAN.md`. Then in Claude Code, say:
 
 Then `Do step 0.2 only`, and so on. Never let it do a whole phase at once.
 
+## Rulings (2026-09-14, owner)
+
+Applied against the repo as built; see `decisions/build_plan_gap_analysis.md`.
+
+1. Net return charges every dollar traded: `net = gross - 2c x turnover`
+   with turnover = 1/2 sum|dw|. The appendix line is amended below.
+2. Step 4.3's `prevrpt = 0` filter is not applied. It drops every filing
+   that was later amended, which is a lookahead; the first-filed rule
+   (invariant 2) is the rule.
+3. Package `backtester`, `config.toml`, Python 3.12 stay. Read this
+   plan's paths as the repo's.
+4. The README is pasted from `reports/results.md` by hand and a test
+   asserts the two tables are equal; it is not regenerated from a template.
+5. Order: the agent harness (11.1) and the research-log agent (11.2)
+   are built right after the spec-log hash (0.3), before Dagster.
+
 ## Global rules (apply to every step)
 
 1. One step per session. After finishing a step, run `make test`, show the output, and stop. Do not start the next step.
@@ -563,7 +579,7 @@ All agents use one harness. All agents write only to `decisions/` and to pull re
 - Signal at t uses data with `date <= t` (prices) or `filed + buffer <= t` (fundamentals).
 - Entry at the close of the first trading day after t (lag 1). Exit at the close of the first trading day after the next month end.
 - Turnover = 0.5 × Σ|w_t − w_{t−1}^{drift}|, both legs for LS.
-- Net return = gross − cost × turnover, cost in decimal.
+- Net return = gross − 2 × cost × turnover, cost in decimal (every dollar bought or sold pays cost; ruling 1).
 - Break-even cost = mean(gross) / mean(turnover), in bp.
 - IC = Spearman correlation of z at t with return from t to t+1.
 - Newey-West lag = holding_months − 1.
