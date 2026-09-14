@@ -19,7 +19,7 @@ and this directory is the plan's `decisions/`.
 |---|---|---|---|
 | 0.1 | skeleton, Makefile, pre-commit | done | `pyproject.toml` (uv, Python 3.12 pinned), `Makefile`; no pre-commit config; no `make` on this laptop (CLAUDE.md) |
 | 0.2 | config loader, `config_hash` | adapt | `config.py` frozen `Config`, `with_()`; **no `config_hash`** |
-| 0.3 | spec log with `config_hash, git_commit, config_json` | adapt | `portfolio.log_specification` writes 16 columns, N = row count (74); **no hash / commit columns**. N stays the row count: a rerun of the same config is still a trial |
+| 0.3 | spec log with `config_hash, git_commit, config_json` | done 2026-09-14 | `portfolio.log_specification` writes 16 columns, N = row count (74); **no hash / commit columns**. N stays the row count: a rerun of the same config is still a trial |
 | 0.4 | README build status | new | trivial once the plan is adopted |
 | 1.1 | Wikipedia fetch + parse, manifest | done | `universe.fetch/parse_constituents/parse_changes`; `data/raw/manifest.json` |
 | 1.2 | membership intervals, aliases, monthly | done | `universe.build_membership`, `data/checks/ticker_renames.csv`, 4 evidenced overrides; monthly counts 496–504 |
@@ -51,12 +51,13 @@ and this directory is the plan's `decisions/`.
 | 8.1 | validation table with thresholds file | adapt | thresholds in README/`report.py`; **no `validation.yaml`**, no BAB row |
 | 8.2 | delisting sensitivity `drop` / `terminal −30%` | adapt | coverage split (= `drop`) done; **no `terminal` mode** |
 | 8.3 | weighting gap on SMB | new | |
-| 8.4 | what-did-not-work generated from spec log + git log | adapt | hand-written README section; **no generator** |
+| 8.4 | what-did-not-work generated from spec log + git log | done 2026-09-14 | `research_log.py`, `backtester research-log`; README keeps the interpretation |
 | 9.1 | four charts, USREC shading | adapt | four charts done; recession shading hard-codes 2020 only, **no FRED USREC** |
 | 9.2 | README regenerated from a template | decline | see §2.4 |
 | 9.3 | methodology PDF via pandoc | done | `methodology.py` via fpdf2; no pandoc on this machine |
 | 10.x | Dagster, incremental, recompute check, asset checks | new | |
-| 11.x | agent harness + six agents, CI | new | the harness's tool allowlist is compatible with the repo as is |
+| 11.1–11.2 | harness, research-log agent | done 2026-09-14 | `agents/base.py`, `agents/tools.py`, `agents/research_log.py`; **no real logged run yet: no API key or gh on this machine** |
+| 11.3–11.8 | five more agents, sensors, CI | new | |
 | — | 10-K text factor, invariant 10 | done, not in plan | `text.py`, added 2026-09-14 |
 
 ## 2. Where the plan and the repo disagree

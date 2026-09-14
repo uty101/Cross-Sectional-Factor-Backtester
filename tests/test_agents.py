@@ -194,3 +194,38 @@ def test_tool_specs_are_valid_and_web_search_is_opt_in(repo: Path) -> None:
     sent = client.requests[0]["tools"]
     assert [t["name"] for t in sent] == ["read_file", "web_search"]
     assert sent[-1]["type"] == "web_search_20260209"
+
+
+def test_research_log_agent_wiring(
+    repo_root: Path, tmp_path: Path, monkeypatch
+) -> None:
+    # The agent gets exactly its four tools and two scripts; the scripts
+    # run the real generator and git log; a scripted model writes a draft.
+    import shutil
+
+    from backtester.agents import research_log as agent
+
+    (tmp_path / "reports").mkdir()
+    shutil.copy(repo_root / "reports" / "specifications.csv", tmp_path / "reports")
+    box = agent.toolbox(tmp_path)
+    assert sorted(box.scripts) == ["git_log", "research_log"]
+    assert [t.name for t in box.tools(agent.TOOLS)] == agent.TOOLS
+
+    client = FakeClient(
+        [
+            _use("run_script", {"name": "research_log"}, "t1"),
+            _use("write_decision", {"filename": "draft.md", "content": "x"}, "t2"),
+            _text("no changes"),
+        ]
+    )
+    # git_log needs a repository; point the generator's git at the real one.
+    from backtester import research_log as rl
+
+    real = rl.git_log
+    monkeypatch.setattr(rl, "git_log", lambda root: real(repo_root))
+    rec = agent.run(tmp_path, client=client, model="m")
+    assert rec["agent"] == "research_log" and rec["final_output"] == "no changes"
+    gen = rec["tool_calls"][0]
+    assert not gen["is_error"] and rl.MARKER in gen["output"]
+    assert (tmp_path / "decisions" / "research_log" / "draft.md").read_text() == "x"
+    assert client.requests[0]["system"] == agent.SYSTEM

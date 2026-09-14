@@ -50,6 +50,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     sub.add_parser("report", help="charts and tables into reports/")
     sub.add_parser("run-all", help="base run of every reported factor")
     sub.add_parser("sensitivities", help="weighting and holding-period variants")
+    sub.add_parser(
+        "research-log", help="reports/what_did_not_work.md from the spec log and git"
+    )
+    agent = sub.add_parser("agent", help="run one agent through the harness")
+    agent.add_argument("name", choices=["research_log"])
 
     args = parser.parse_args(argv)
     cfg = config.load(args.config)
@@ -82,6 +87,25 @@ def main(argv: Sequence[str] | None = None) -> int:
         from backtester import run as runner
 
         runner.sensitivities(cfg)
+        return 0
+    if args.command == "agent":
+        from pathlib import Path
+
+        from backtester.agents import research_log as research_log_agent
+
+        rec = {"research_log": research_log_agent.run}[args.name](Path.cwd())
+        print(
+            f"{rec['agent']}: {len(rec['tool_calls'])} tool calls, {rec['stop_reason']}"
+        )
+        print(rec["final_output"])
+        return 0
+    if args.command == "research-log":
+        from pathlib import Path
+
+        from backtester import research_log
+
+        out = research_log.build(Path.cwd(), cfg.specifications)
+        print(f"wrote {out}")
         return 0
     if args.command == "report":
         from backtester import report

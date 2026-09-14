@@ -187,7 +187,12 @@ with its evidence in the row.
 
 ## What did not work
 
-Kept as a first-class section, per the brief.
+Kept as a first-class section, per the brief. The interpretation is
+below; the facts behind it are generated: `backtester research-log`
+writes [reports/what_did_not_work.md](reports/what_did_not_work.md), one
+line per superseded or abandoned specification with the commit that
+replaced it (36 of 74 as of 2026-09-14), and the research-log agent adds
+what each of those commits changed, from its body, below a marker.
 
 - **Wikipedia's `Date added` column is not an index-addition date for
   long-standing members.** Sempra "2017", T. Rowe Price "2019", Dominion
@@ -251,7 +256,7 @@ Kept as a first-class section, per the brief.
 
 ```bash
 uv sync
-uv run pytest                                   # 91 tests
+uv run pytest                                   # 96 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11

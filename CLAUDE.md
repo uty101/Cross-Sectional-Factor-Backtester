@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 91 tests, ~4 s
+uv run pytest                              # 96 tests, ~4 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -58,6 +58,8 @@ uv run backtester run --factor momentum [--no-sector] [--note "..."]
 uv run backtester run-all                  # the five reported factors, base spec
 uv run backtester sensitivities            # cw, hold 3/6/12, no-sector: 25 logged runs
 uv run backtester report                   # results.md, 4 charts, methodology.pdf
+uv run backtester research-log             # reports/what_did_not_work.md from the spec log + git
+uv run backtester agent research_log       # needs ANTHROPIC_API_KEY and gh; logs to decisions/
 ```
 
 **All phases are built and run** (2026-09-11). The state of the data on
@@ -92,6 +94,7 @@ src/backtester/
   sectors.py             CIK matching by name, SIC -> 11 buckets
   text.py                10-K primary documents from EDGAR, year-on-year similarity
   agents/                base.run_agent harness; tools.Toolbox with the allowlists in code
+  research_log.py        what_did_not_work.md: superseded/abandoned spec rows + the commit after each
   signals.py             signals, winsorise, sector z, composite
   portfolio.py           the engine; any (month, ticker, z); spec log
   stats.py               IC, decay, FM/NW, DSR, attribution, break-even
