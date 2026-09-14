@@ -36,6 +36,8 @@ class Config:
     # costs
     base_bps: float
     sensitivity_bps: tuple[float, ...]
+    # delisting
+    delisting_terminal_return: float
     # signals
     winsor: tuple[float, float]
     momentum_window: tuple[int, int]
@@ -120,6 +122,7 @@ def load(path: str | Path = "config.toml") -> Config:
         holding_months=int(portfolio["holding_months"]),
         base_bps=float(costs["base_bps"]),
         sensitivity_bps=tuple(float(c) for c in costs["sensitivity_bps"]),
+        delisting_terminal_return=float(raw["delisting"]["terminal_return"]),
         winsor=(float(signals["winsor"][0]), float(signals["winsor"][1])),
         momentum_window=(
             int(signals["momentum_window"][0]),

@@ -20,6 +20,12 @@ holding_months = 1
 base_bps = 10           # one-way, large caps
 sensitivity_bps = [5, 10, 25]
 
+[delisting]
+# The 'terminal' sensitivity (BUILD_PLAN 8.2): a name removed from the
+# index with no price after its removal earns this in the month after its
+# last print, instead of leaving the portfolio at that print.
+terminal_return = -0.30
+
 [signals]
 winsor = [0.01, 0.99]
 momentum_window = [12, 1]   # months back, months skipped

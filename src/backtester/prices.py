@@ -524,3 +524,48 @@ def build(cfg: Config) -> pl.DataFrame:
         {"metric": list(summary), "value": [str(v) for v in summary.values()]}
     ).write_csv(checks / "price_coverage_summary.csv")
     return monthly
+
+
+def terminal_returns(
+    monthly: pl.DataFrame,
+    membership: pl.DataFrame,
+    daily: pl.DataFrame,
+    shock: float,
+    grace_days: int = 45,
+) -> tuple[pl.DataFrame, pl.DataFrame]:
+    """The 'terminal' delisting convention (BUILD_PLAN 8.2).
+
+    A name removed from the index whose last daily print is within
+    ``grace_days`` of its removal has no price after it: the position
+    cannot be closed at a later close. The base run closes it at the last
+    print (its forward return that month is null and it drops out). Here
+    the last priced month-end earns ``shock`` instead. Names that keep
+    trading after removal, and names with no prices at all, are
+    unchanged. Returns the modified frame and the list of names touched.
+    """
+    last_px = daily.group_by("ticker").agg(pl.col("date").max().alias("last_px"))
+    removed = (
+        membership.filter(pl.col("end").is_not_null())
+        .group_by("ticker")
+        .agg(pl.col("end").max())
+        .join(last_px, on="ticker", how="inner")
+        .filter(pl.col("last_px") <= pl.col("end").dt.offset_by(f"{grace_days}d"))
+    )
+    last_month = (
+        monthly.filter(pl.col("px_me").is_not_null())
+        .group_by("ticker")
+        .agg(pl.col("month").max())
+        .join(removed.select("ticker", "end", "last_px"), on="ticker", how="inner")
+    )
+    touched = last_month.select("ticker", "end", "last_px", "month").sort("end")
+    out = monthly.join(
+        last_month.select("ticker", "month", pl.lit(True).alias("_terminal")),
+        on=["ticker", "month"],
+        how="left",
+    ).with_columns(
+        pl.when(pl.col("_terminal") & pl.col("ret_fwd").is_null())
+        .then(pl.lit(shock))
+        .otherwise(pl.col("ret_fwd"))
+        .alias("ret_fwd")
+    )
+    return out.drop("_terminal"), touched

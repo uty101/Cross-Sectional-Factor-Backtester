@@ -319,6 +319,28 @@ def sensitivities(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunRe
     return out
 
 
+def delisting(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunResult]:
+    """Every reported factor under the 'terminal' delisting convention
+    (BUILD_PLAN 8.2), saved with the tag and logged. The names touched are
+    written to data/checks/delisting_terminal.csv."""
+    from backtester import prices
+
+    inp = load_inputs(cfg)
+    daily = pl.read_parquet(cfg.data / "interim" / "prices_daily.parquet")
+    monthly, touched = prices.terminal_returns(
+        inp.monthly, inp.membership, daily, cfg.delisting_terminal_return
+    )
+    touched.write_csv(cfg.data / "checks" / "delisting_terminal.csv")
+    inp.monthly = monthly
+    out = {}
+    for f in factors:
+        res = run_factor(cfg, f, inp, note="sensitivity terminal")
+        save(res, cfg, tag="terminal")
+        out[f] = res
+        print("terminal", summary_line(res))
+    return out
+
+
 def replicate(cfg: Config, inp: Inputs | None = None) -> dict[str, RunResult]:
     """Validate the fundamentals join by building the French factors the
     way French does, as nearly as this universe allows: one raw signal, no

@@ -50,13 +50,14 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 102 tests, ~4 s
+uv run pytest                              # 103 tests, ~4 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
 uv run backtester run --factor momentum [--no-sector] [--note "..."]
 uv run backtester run-all                  # the five reported factors, base spec
 uv run backtester sensitivities            # cw, hold 3/6/12, no-sector: 25 logged runs
+uv run backtester delisting                # terminal-return convention, 6 logged runs
 uv run backtester report                   # results.md, 4 charts, methodology.pdf
 uv run backtester research-log             # reports/what_did_not_work.md from the spec log + git
 uv run backtester agent research_log       # needs ANTHROPIC_API_KEY and gh; logs to decisions/
@@ -69,7 +70,7 @@ yfinance price files, the French zips, all in `data/raw/manifest.json`.
 `reingest=True` to `fundamentals.build` after changing `tag_map.toml`,
 otherwise new tags silently come back empty.
 
-Every backtest appends to `reports/specifications.csv`; N is 77 as of the
+Every backtest appends to `reports/specifications.csv`; N is 83 as of the
 last report. Each row carries `config_hash` and `git_commit` (blank for
 rows logged before 2026-09-14; not backfilled). **Do not delete rows from it**, including the diagnostic runs
 and the two broken first momentum attempts; the deflated Sharpe reads it.

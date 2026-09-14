@@ -156,3 +156,30 @@ def test_clean_daily_applies_the_three_rules() -> None:
     assert rules["REUSED"].startswith("no history")
     assert rules["GLITCH"].startswith("bad print")
     assert rules["CORRUPT"].startswith("corrupt")
+
+
+def test_terminal_return_replaces_only_the_last_print_of_a_delisted_name() -> None:
+    from backtester import prices as px
+
+    m1, m2, m3 = date(2020, 1, 31), date(2020, 2, 29), date(2020, 3, 31)
+    monthly = pl.DataFrame(
+        {
+            "month": [m1, m2, m3, m1, m2, m3],
+            "ticker": ["GONE"] * 3 + ["STAY"] * 3,
+            "px_me": [10.0, 9.0, None, 5.0, 5.5, 6.0],
+            "ret_fwd": [-0.1, None, None, 0.1, 0.09, None],
+        }
+    )
+    membership = pl.DataFrame(
+        {"ticker": ["GONE", "STAY"], "end": [date(2020, 3, 5), date(2020, 3, 5)]}
+    )
+    # GONE's last print is at its removal; STAY keeps trading afterwards.
+    daily = pl.DataFrame(
+        {"ticker": ["GONE", "STAY"], "date": [date(2020, 3, 4), date(2020, 9, 1)]}
+    )
+    out, touched = px.terminal_returns(monthly, membership, daily, -0.30)
+    assert touched["ticker"].to_list() == ["GONE"]
+    got = {(r["ticker"], r["month"]): r["ret_fwd"] for r in out.iter_rows(named=True)}
+    assert got[("GONE", m2)] == -0.30  # the last priced month earns the shock
+    assert got[("GONE", m1)] == -0.1  # earlier months untouched
+    assert got[("STAY", m3)] is None  # still trading: unchanged

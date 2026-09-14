@@ -23,6 +23,7 @@ files, `membership_overrides.csv` and `membership_spotcheck.csv`.
 | `fundamentals_coverage.csv` | Per month: members with each concept available as-of, and with a market cap |
 | `market_cap_dropped.csv` | Names whose price x shares came out under $1bn (a units error) and were excluded |
 | `sec_amendments_by_year.csv` | 10-K/A and 10-Q/A as a share of filings: the size of the first-filed choice |
+| `delisting_terminal.csv` | The removed names whose last print is within 45 days of removal: the only ones the `terminal` delisting sensitivity touches |
 | `text_coverage.csv` | Per filing year: universe 10-Ks in the FSDS index, primary documents fetched from EDGAR, documents over `min_words`, and pairs with a prior 10-K; median words |
 | `text_short_documents.csv` | 10-Ks under `min_words`: wrappers whose annual report is an exhibit. Treated as missing, not parsed further |
 | `text_fetch_missing.csv` | Filings in the index the submissions API did not list a primary document for, or that EDGAR refused |

@@ -49,7 +49,7 @@ and this directory is the plan's `decisions/`.
 | 7.1–7.5 | FM, NW, decay, DSR, attribution | done | `stats.py`; NW cross-checked against statsmodels in tests; DSR worked example |
 | 7.6 | wire into results | done | `report.py` tables |
 | 8.1 | validation table with thresholds file | done 2026-09-14 | `config.toml [validation]`, `run.validation_table` -> `reports/validation.csv`; beta vs BAB 0.42 (fail, reported) |
-| 8.2 | delisting sensitivity `drop` / `terminal −30%` | adapt | coverage split (= `drop`) done; **no `terminal` mode** |
+| 8.2 | delisting sensitivity `drop` / `terminal −30%` | done 2026-09-14 | `prices.terminal_returns`, `backtester delisting`, variant column in results.md; nine names, ≤ 0.01 Sharpe |
 | 8.3 | weighting gap on SMB | new | |
 | 8.4 | what-did-not-work generated from spec log + git log | done 2026-09-14 | `research_log.py`, `backtester research-log`; README keeps the interpretation |
 | 9.1 | four charts, USREC shading | adapt | four charts done; recession shading hard-codes 2020 only, **no FRED USREC** |
