@@ -37,6 +37,19 @@ FACTORS: dict[str, dict] = {
     # 2020): long the names whose filing did not change. No French factor
     # to validate against; attribution on the five is the check.
     "text_change": {"signals": ["doc_similarity"], "french": None},
+    # Trailing-twelve-month flows from 10-Qs in place of the annual 10-K
+    # value (BUILD_PLAN 4.5). Logged sensitivities; the reported factors
+    # keep the annual convention unless the owner rules otherwise.
+    "value_ttm": {
+        "signals": ["book_to_price", "earnings_yield_ttm"],
+        "french": "hml",
+        "big": "big_hml",
+    },
+    "quality_ttm": {
+        "signals": ["gross_profitability_ttm", "accruals_ttm"],
+        "french": "rmw",
+        "big": "big_rmw",
+    },
     # Replications of the French construction, used only to validate the
     # fundamentals join: one signal, no sector neutralisation, cap-weighted
     # terciles (see run.replicate).

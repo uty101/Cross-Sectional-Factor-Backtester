@@ -125,7 +125,7 @@ current_liabilities,2023,520,LiabilitiesCurrent,68.2
 current_liabilities,2024,520,LiabilitiesCurrent,68.2
 current_liabilities,2025,478,LiabilitiesCurrent,62.6
 current_liabilities,2026,35,LiabilitiesCurrent,4.6
-depreciation,2009,218,DepreciationAndAmortization,28.6
+depreciation,2009,218,DepreciationDepletionAndAmortization,28.6
 depreciation,2010,399,DepreciationDepletionAndAmortization,52.3
 depreciation,2011,460,DepreciationDepletionAndAmortization,60.3
 depreciation,2012,465,DepreciationDepletionAndAmortization,60.9

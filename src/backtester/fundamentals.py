@@ -39,7 +39,13 @@ MIN_CAP = 1e9
 # How old a reported period may be before the value is treated as missing:
 # an annual figure is stale 18 months after its year end (the next 10-K is
 # due within 12), a quarterly one 9 months after its quarter end.
-MAX_AGE_MONTHS = {"flow": 18, "latest_flow": 9, "stock": 9, "annual_stock": 18}
+MAX_AGE_MONTHS = {
+    "flow": 18,
+    "latest_flow": 9,
+    "stock": 9,
+    "annual_stock": 18,
+    "ttm": 9,  # a trailing sum is refreshed every 10-Q
+}
 TAG_MAP = Path(__file__).with_name("tag_map.toml")
 
 NUM_SCHEMA = {
@@ -264,6 +270,58 @@ def asof_join(
     )
 
 
+def ttm(ff: pl.DataFrame) -> pl.DataFrame:
+    """Trailing twelve months of every flow concept, at every filing.
+
+    At a 10-K the TTM is the annual value (qtrs 4). At a 10-Q reporting
+    ``k`` quarters year-to-date at ``ddate``, it is
+
+        YTD(k, ddate) + annual(fye) - YTD(k, ddate - 12 months)
+
+    with ``fye = ddate - 3k months``: the previous fiscal year end. All
+    three are first-filed values; the row is stamped ``filed`` with the
+    latest of their filing dates, so it is available only once every
+    input was (invariant 1). A 10-Q whose annual or prior-year YTD is
+    missing produces no row rather than a partial sum (BUILD_PLAN 4.5).
+    ``ff`` is ``first_filed`` output; the result has the same columns
+    plus ``ttm`` in place of ``value``.
+    """
+    flow = ff.filter(pl.col("qtrs").is_in([1, 2, 3, 4]))
+    annual = flow.filter(pl.col("qtrs") == 4).select(
+        "cik",
+        "concept",
+        pl.col("ddate").alias("fye"),
+        pl.col("value").alias("annual"),
+        pl.col("filed").alias("filed_a"),
+    )
+    ytd = flow.filter(pl.col("qtrs") < 4).with_columns(
+        pl.col("ddate")
+        .dt.offset_by(pl.format("-{}mo", pl.col("qtrs") * 3))
+        .dt.month_end()
+        .alias("fye"),
+        pl.col("ddate").dt.offset_by("-12mo").dt.month_end().alias("prev"),
+    )
+    prior = ytd.select(
+        "cik",
+        "concept",
+        pl.col("ddate").alias("prev"),
+        "qtrs",
+        pl.col("value").alias("prior"),
+        pl.col("filed").alias("filed_p"),
+    )
+    q = (
+        ytd.join(annual, on=["cik", "concept", "fye"], how="inner")
+        .join(prior, on=["cik", "concept", "prev", "qtrs"], how="inner")
+        .with_columns(
+            (pl.col("value") + pl.col("annual") - pl.col("prior")).alias("value"),
+            pl.max_horizontal("filed", "filed_a", "filed_p").alias("filed"),
+        )
+        .select(ff.columns)
+    )
+    k = flow.filter(pl.col("qtrs") == 4).select(ff.columns)
+    return pl.concat([q, k]).sort("cik", "concept", "ddate", "filed")
+
+
 # --- monthly panel and signals ------------------------------------------
 
 
@@ -319,7 +377,30 @@ def monthly_panel(
             on=["month", "cik"],
             how="left",
         )
+    # Trailing twelve months of every flow concept, alongside the annual.
+    trailing = ttm(ff.filter(pl.col("concept").is_in(_flow_concepts(tag_map))))
+    for concept in _flow_concepts(tag_map):
+        vals = trailing.filter(pl.col("concept") == concept)
+        j = asof_join(base, vals, cfg.asof_buffer_days)
+        max_age = MAX_AGE_MONTHS["ttm"]
+        j = j.with_columns(
+            pl.when(
+                pl.col("period_end") < pl.col("month").dt.offset_by(f"-{max_age}mo")
+            )
+            .then(None)
+            .otherwise(pl.col("value"))
+            .alias("value")
+        )
+        out = out.join(
+            j.select("month", "cik", pl.col("value").alias(f"{concept}_ttm")),
+            on=["month", "cik"],
+            how="left",
+        )
     return out
+
+
+def _flow_concepts(tag_map: dict[str, dict]) -> list[str]:
+    return [c for c, spec in tag_map.items() if spec["kind"] == "flow"]
 
 
 def signal(
@@ -330,13 +411,18 @@ def signal(
 ) -> pl.DataFrame:
     """Frame[month, ticker, value] for a fundamentals-based signal."""
     f = fundamentals
+    # A ``_ttm`` suffix uses the trailing-twelve-month flows (BUILD_PLAN
+    # 4.5) in place of the annual 10-K values; the formula is unchanged.
+    sfx = ""
+    if name.endswith("_ttm"):
+        name, sfx = name[: -len("_ttm")], "_ttm"
     if name in ("book_to_price", "earnings_yield"):
         if caps is None:
             raise RuntimeError(f"{name} needs market caps")
         j = f.join(
             caps.select("month", "ticker", "cap"), on=["month", "ticker"], how="inner"
         )
-        num = "equity" if name == "book_to_price" else "net_income"
+        num = "equity" if name == "book_to_price" else "net_income" + sfx
         return j.filter((pl.col("cap") > 0) & pl.col(num).is_not_null()).select(
             "month", "ticker", (pl.col(num) / pl.col("cap")).alias("value")
         )
@@ -356,7 +442,9 @@ def signal(
             .filter(pl.col("value").is_not_null())
         )
     if name == "gross_profitability":
-        gp = pl.coalesce(pl.col("gross_profit"), pl.col("revenue") - pl.col("cogs"))
+        gp = pl.coalesce(
+            pl.col("gross_profit" + sfx), pl.col("revenue" + sfx) - pl.col("cogs" + sfx)
+        )
         return (
             f.filter(pl.col("assets") > 0)
             .select("month", "ticker", (gp / pl.col("assets")).alias("value"))
@@ -370,9 +458,10 @@ def signal(
             .select(
                 "month",
                 "ticker",
-                (-(pl.col("net_income") - pl.col("cfo")) / pl.col("assets")).alias(
-                    "value"
-                ),
+                (
+                    -(pl.col("net_income" + sfx) - pl.col("cfo" + sfx))
+                    / pl.col("assets")
+                ).alias("value"),
             )
             .filter(pl.col("value").is_not_null())
         )

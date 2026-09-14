@@ -38,7 +38,7 @@ and this directory is the plan's `decisions/`.
 | 4.2 | DuckDB load | done | `fundamentals.ingest_quarter` (DuckDB `read_csv`), cached to parquet rather than a persistent `.duckdb` |
 | 4.3 | originals only, `prevrpt = 0` | decline | see §2.2 |
 | 4.4 | tag map + coverage ≥ 0.90 | done | `tag_map.toml` 16 concepts, `data/checks/tag_coverage.csv`. Coverage is **below 0.90 before 2013** and documented as a data limit, not fixed by tag additions |
-| 4.5 | TTM from 10-Qs | new | README "Not done". The one substantive data-quality item the plan adds |
+| 4.5 | TTM from 10-Qs | done 2026-09-14 | `fundamentals.ttm`, `_ttm` panel columns, `value_ttm`/`quality_ttm` logged; moves nothing measurable, reported factors keep annual |
 | 4.6 | as-of join, THE test in README, `company_tickers.json` | adapt | `asof_join`, `test_asof_join_excludes_filing_after_signal_date`, README leads with it. CIK map is Wikipedia + name match (`sectors.cik_map`); **`company_tickers.json` not used** — worth adding as the primary source with the name match as fallback |
 | 4.7 | SIC → 11 sectors | done | `sectors.py`, 84.5% GICS agreement logged |
 | 4.8 | SEC shares for cap | done | from the start |
@@ -138,3 +138,10 @@ Rules 2–9 map to invariants 9, DuckDB-only ingest, `as_of` stamping
 (named `as_of`, not `asof_date`), invariant 7, invariant 1, invariant 8,
 tests-first, polars-first. Rule 1 (one step per session, show the test
 output, stop) is adopted from here on.
+
+## 5. Observations for later phases
+
+- `asof_join` picks nondeterministically between two filings of the same
+  CIK with the same availability date (unstable sort on `available`). It
+  moved one name's market cap in two months of 2018 on a rebuild. Harmless
+  now; phase 10.4's full-recompute check will need it fixed first.

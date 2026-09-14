@@ -155,3 +155,62 @@ def test_cik_match_by_name_records_its_method() -> None:
         "AAPL": 320193,
         "OLDCO": 555,
     }
+
+
+def _ff(*rows: tuple[date, int, float, date, str]) -> pl.DataFrame:
+    """(ddate, qtrs, value, filed, form) for one cik and one concept."""
+    return pl.DataFrame(
+        [
+            {
+                "adsh": f"a{i}",
+                "cik": 1,
+                "concept": "net_income",
+                "tag": "NetIncomeLoss",
+                "ddate": d,
+                "qtrs": q,
+                "value": v,
+                "filed": f,
+                "form": fm,
+                "fy": d.year,
+                "fp": "FY" if q == 4 else f"Q{q}",
+                "sic": 1,
+                "name": "X",
+            }
+            for i, (d, q, v, f, fm) in enumerate(rows)
+        ],
+        schema=fx.NUM_SCHEMA,
+    )
+
+
+def test_ttm_against_hand_computed_quarters() -> None:
+    # FY2019 annual 100. 2019 YTD: Q1 20, H1 45. 2020 YTD: Q1 30, H1 65.
+    # TTM at Q1 2020 = 30 + 100 - 20 = 110; at H1 2020 = 65 + 100 - 45 = 120.
+    ff = _ff(
+        (date(2019, 3, 31), 1, 20.0, date(2019, 5, 1), "10-Q"),
+        (date(2019, 6, 30), 2, 45.0, date(2019, 8, 1), "10-Q"),
+        (date(2019, 12, 31), 4, 100.0, date(2020, 2, 20), "10-K"),
+        (date(2020, 3, 31), 1, 30.0, date(2020, 5, 5), "10-Q"),
+        (date(2020, 6, 30), 2, 65.0, date(2020, 8, 5), "10-Q"),
+    )
+    t = fx.ttm(ff)
+    got = {(r["ddate"], r["qtrs"]): r for r in t.iter_rows(named=True)}
+    assert got[(date(2020, 3, 31), 1)]["value"] == 110.0
+    assert got[(date(2020, 6, 30), 2)]["value"] == 120.0
+    assert got[(date(2019, 12, 31), 4)]["value"] == 100.0
+    # 2019's quarters have no prior-year YTD or annual: no partial sums.
+    assert (date(2019, 3, 31), 1) not in got and (date(2019, 6, 30), 2) not in got
+    # Stamped with the latest input filing, which is the 10-Q itself here.
+    assert got[(date(2020, 6, 30), 2)]["filed"] == date(2020, 8, 5)
+
+
+def test_ttm_is_available_only_when_every_input_was_filed() -> None:
+    # The prior-year YTD is first filed late, in an amendment after the
+    # 10-Q: the TTM row carries that later date, not the 10-Q's.
+    ff = _ff(
+        (date(2019, 3, 31), 1, 20.0, date(2020, 6, 1), "10-Q/A"),
+        (date(2019, 12, 31), 4, 100.0, date(2020, 2, 20), "10-K"),
+        (date(2020, 3, 31), 1, 30.0, date(2020, 5, 5), "10-Q"),
+    )
+    t = fx.ttm(ff)
+    row = t.filter(pl.col("qtrs") == 1).row(0, named=True)
+    assert row["value"] == 110.0 and row["filed"] == date(2020, 6, 1)

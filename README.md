@@ -53,7 +53,7 @@ outsider can verify, over 2010–2026?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
 of 1; the composite's net Sharpe of 0.34 deflates to a 14% probability of
-beating the best of 74 logged trials by luck.
+beating the best of 76 logged trials by luck.
 
 ## Results
 
@@ -72,7 +72,7 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 74 is the row
+the same dispersion, adjusted for skew and kurtosis. *N* = 76 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
 every run — base, sensitivity, diagnostic, and the two broken first attempts
 at momentum — is logged. **Break-even cost** is the one-way cost at which
@@ -248,15 +248,23 @@ what each of those commits changed, from its body, below a marker.
   trained after the filing knows what happened next, and no test on the
   timestamps would catch it. Item 1A / Item 7 extraction and the 8-K
   earnings release are the next steps if the text route is pursued.
-- **Not done:** trailing-twelve-month flows from 10-Qs (annual 10-K values
-  are used, updated at filing date); a delisting-return adjustment beyond
-  closing a position at its last print.
+- **Trailing-twelve-month flows from 10-Qs change nothing you can see.**
+  Built as BUILD_PLAN step 4.5 (`fundamentals.ttm`: YTD + last annual −
+  prior-year YTD, stamped with the latest of the three filing dates) and
+  run as logged sensitivities: value with TTM earnings yield nets 0.50
+  against 0.50 annual and correlates 0.25 with HML against 0.25; quality
+  with TTM gross profit and accruals nets 0.07 against 0.17 and
+  correlates 0.09 with RMW against 0.07. Coverage is 79.2% of
+  member-months against 79.7%. The reported factors keep the annual
+  convention.
+- **Not done:** a delisting-return adjustment beyond closing a position at
+  its last print.
 
 ## Running it
 
 ```bash
 uv sync
-uv run pytest                                   # 96 tests
+uv run pytest                                   # 98 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11

@@ -73,3 +73,5 @@ timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,win
 2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0774,0.0223,sensitivity hold12,,
 2026-09-14T11:52:18+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,sensitivity nosector no-sector,,
 2026-09-14T11:52:26+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1493,0.0485,sensitivity jaccard,,
+2026-09-14T14:14:02+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5729,0.4977,sensitivity ttm,f2decc504e00,d9d6daf
+2026-09-14T14:14:02+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1519,0.0739,sensitivity ttm,f2decc504e00,d9d6daf
