@@ -1,504 +1,6 @@
 ticker,cik,method,matched
-A,1090872,constituents,Agilent Technologies
-AAPL,320193,constituents,Apple Inc.
-ABBV,1551152,constituents,AbbVie
-ABNB,1559720,constituents,Airbnb
-ABT,1800,constituents,Abbott Laboratories
-ACGL,947484,constituents,Arch Capital Group
-ACN,1467373,constituents,Accenture
-ADBE,796343,constituents,Adobe Inc.
-ADI,6281,constituents,Analog Devices
-ADM,7084,constituents,Archer Daniels Midland
-ADP,8670,constituents,Automatic Data Processing
-ADSK,769397,constituents,Autodesk
-AEE,1002910,constituents,Ameren
-AEP,4904,constituents,American Electric Power
-AES,874761,constituents,AES Corporation
-AFL,4977,constituents,Aflac
-AIG,5272,constituents,American International Group
-AIZ,1267238,constituents,Assurant
-AJG,354190,constituents,Arthur J. Gallagher & Co.
-AKAM,1086222,constituents,Akamai Technologies
-ALB,915913,constituents,Albemarle Corporation
-ALGN,1097149,constituents,Align Technology
-ALL,899051,constituents,Allstate
-ALLE,1579241,constituents,Allegion
-AMAT,6951,constituents,Applied Materials
-AMCR,1748790,constituents,Amcor
-AMD,2488,constituents,Advanced Micro Devices
-AME,1037868,constituents,Ametek
-AMGN,318154,constituents,Amgen
-AMP,820027,constituents,Ameriprise Financial
-AMT,1053507,constituents,American Tower
-AMZN,1018724,constituents,Amazon
-ANET,1596532,constituents,Arista Networks
-AON,315293,constituents,Aon plc
-AOS,91142,constituents,A. O. Smith
-APA,1841666,constituents,APA Corporation
-APD,2969,constituents,Air Products
-APH,820313,constituents,Amphenol
-APO,1858681,constituents,Apollo Global Management
-APP,1751008,constituents,AppLovin
-APTV,1521332,constituents,Aptiv
-ARE,1035443,constituents,Alexandria Real Estate Equities
-ARES,1176948,constituents,Ares Management
-ATO,731802,constituents,Atmos Energy
-AVGO,1730168,constituents,Broadcom
-AVY,8818,constituents,Avery Dennison
-AWK,1410636,constituents,American Water Works
-AXON,1069183,constituents,Axon Enterprise
-AXP,4962,constituents,American Express
-AZO,866787,constituents,AutoZone
-BA,12927,constituents,Boeing
-BAC,70858,constituents,Bank of America
-BALL,9389,constituents,Ball Corporation
-BAX,10456,constituents,Baxter International
-BBY,764478,constituents,Best Buy
-BDX,10795,constituents,Becton Dickinson
-BEN,38777,constituents,Franklin Resources
 BF.B,14693,constituents,Brown–Forman
-BG,1996862,constituents,Bunge Global
-BIIB,875045,constituents,Biogen
-BKNG,1075531,constituents,Booking Holdings
-BKR,1701605,constituents,Baker Hughes
-BLDR,1316835,constituents,Builders FirstSource
-BLK,2012383,constituents,BlackRock
-BMY,14272,constituents,Bristol Myers Squibb
-BNY,1390777,constituents,BNY Mellon
-BR,1383312,constituents,Broadridge Financial Solutions
 BRK.B,1067983,constituents,Berkshire Hathaway
-BRO,79282,constituents,Brown & Brown
-BSX,885725,constituents,Boston Scientific
-BX,1393818,constituents,Blackstone Inc.
-BXP,1037540,constituents,"BXP, Inc."
-C,831001,constituents,Citigroup
-CAH,721371,constituents,Cardinal Health
-CARR,1783180,constituents,Carrier Global
-CASY,726958,constituents,Casey's
-CAT,18230,constituents,Caterpillar Inc.
-CB,896159,constituents,Chubb Limited
-CBOE,1374310,constituents,Cboe Global Markets
-CBRE,1138118,constituents,CBRE Group
-CCI,1051470,constituents,Crown Castle
-CCL,815097,constituents,Carnival Corporation
-CDNS,813672,constituents,Cadence Design Systems
-CDW,1402057,constituents,CDW Corporation
-CEG,1868275,constituents,Constellation Energy Group
-CF,1324404,constituents,CF Industries
-CFG,759944,constituents,Citizens Financial Group
-CHD,313927,constituents,Church & Dwight
-CHRW,1043277,constituents,C.H. Robinson
-CHTR,1091667,constituents,Charter Communications
-CI,1739940,constituents,Cigna
-CIEN,936395,constituents,Ciena
-CINF,20286,constituents,Cincinnati Financial
-CL,21665,constituents,Colgate-Palmolive
-CLX,21076,constituents,Clorox
-CMCSA,1166691,constituents,Comcast
-CME,1156375,constituents,CME Group
-CMG,1058090,constituents,Chipotle Mexican Grill
-CMI,26172,constituents,Cummins
-CMS,811156,constituents,CMS Energy
-CNC,1071739,constituents,Centene Corporation
-CNP,1130310,constituents,CenterPoint Energy
-COF,927628,constituents,Capital One
-COHR,820318,constituents,Coherent Corp.
-COIN,1679788,constituents,Coinbase
-COO,711404,constituents,Cooper Companies (The)
-COP,1163165,constituents,ConocoPhillips
-COR,1140859,constituents,Cencora
-COST,909832,constituents,Costco
-CPAY,1175454,constituents,Corpay
-CPRT,900075,constituents,Copart
-CPT,906345,constituents,Camden Property Trust
-CRH,849395,constituents,CRH plc
-CRL,1100682,constituents,Charles River Laboratories
-CRM,1108524,constituents,Salesforce
-CRWD,1535527,constituents,CrowdStrike
-CSCO,858877,constituents,Cisco
-CSGP,1057352,constituents,CoStar Group
-CSX,277948,constituents,CSX Corporation
-CTAS,723254,constituents,Cintas
-CTSH,1058290,constituents,Cognizant
-CTVA,1755672,constituents,Corteva
-CVNA,1690820,constituents,Carvana
-CVS,64803,constituents,CVS Health
-CVX,93410,constituents,Chevron Corporation
-D,715957,constituents,Dominion Energy
-DAL,27904,constituents,Delta Air Lines
-DASH,1792789,constituents,DoorDash
-DD,1666700,constituents,DuPont
-DDOG,1561550,constituents,Datadog
-DE,315189,constituents,Deere & Company
-DECK,910521,constituents,Deckers Brands
-DELL,1571996,constituents,Dell
-DG,29534,constituents,Dollar General
-DGX,1022079,constituents,Quest Diagnostics
-DHI,882184,constituents,D. R. Horton
-DHR,313616,constituents,Danaher Corporation
-DIS,1744489,constituents,Walt Disney Company (The)
-DLR,1297996,constituents,Digital Realty
-DLTR,935703,constituents,Dollar Tree
-DOC,765880,constituents,Healthpeak Properties
-DOV,29905,constituents,Dover Corporation
-DOW,1751788,constituents,Dow Chemical Company
-DPZ,1286681,constituents,Domino's
-DRI,940944,constituents,Darden Restaurants
-DTE,936340,constituents,DTE Energy
-DUK,1326160,constituents,Duke Energy
-DVA,927066,constituents,DaVita
-DVN,1090012,constituents,Devon Energy
-DXCM,1093557,constituents,Dexcom
-EBAY,1065088,constituents,eBay Inc.
-ECHO,1415404,constituents,EchoStar
-ECL,31462,constituents,Ecolab
-ED,1047862,constituents,Consolidated Edison
-EFX,33185,constituents,Equifax
-EG,1095073,constituents,Everest Group
-EIX,827052,constituents,Edison International
-EL,1001250,constituents,Estée Lauder Companies (The)
-ELV,1156039,constituents,Elevance Health
-EME,105634,constituents,Emcor
-EMR,32604,constituents,Emerson Electric
-EOG,821189,constituents,EOG Resources
-EQIX,1101239,constituents,Equinix
-EQT,33213,constituents,EQT Corporation
-ERIE,922621,constituents,Erie Indemnity
-ES,72741,constituents,Eversource Energy
-ESS,920522,constituents,Essex Property Trust
-ETN,1551182,constituents,Eaton Corporation
-ETR,65984,constituents,Entergy
-EVRG,1711269,constituents,Evergy
-EW,1099800,constituents,Edwards Lifesciences
-EXC,1109357,constituents,Exelon
-EXE,895126,constituents,Expand Energy
-EXPD,746515,constituents,Expeditors International
-EXPE,1324424,constituents,Expedia Group
-EXR,1289490,constituents,Extra Space Storage
-F,37996,constituents,Ford Motor Company
-FANG,1539838,constituents,Diamondback Energy
-FAST,815556,constituents,Fastenal
-FCX,831259,constituents,Freeport-McMoRan
-FDS,1013237,constituents,FactSet
-FDX,1048911,constituents,FedEx
-FE,1031296,constituents,FirstEnergy
-FERG,2011641,constituents,Ferguson Enterprises
-FFIV,1048695,constituents,"F5, Inc."
-FICO,814547,constituents,Fair Isaac
-FIS,1136893,constituents,Fidelity National Information Services
-FISV,798354,constituents,Fiserv
-FITB,35527,constituents,Fifth Third Bancorp
-FIX,1035983,constituents,Comfort Systems USA
-FLEX,866374,constituents,Flex Ltd.
-FOX,1754301,constituents,21st Century Fox
-FOXA,1754301,constituents,21st Century Fox
-FRT,34903,constituents,Federal Realty Investment Trust
-FSLR,1274494,constituents,First Solar
-FTNT,1262039,constituents,Fortinet
-FTV,1659166,constituents,Fortive
-GD,40533,constituents,General Dynamics
-GDDY,1609711,constituents,GoDaddy
-GE,40545,constituents,GE Aerospace
-GEHC,1932393,constituents,GE HealthCare
-GEN,849399,constituents,Gen Digital
-GEV,1996810,constituents,GE Vernova
-GILD,882095,constituents,Gilead Sciences
-GIS,40704,constituents,General Mills
-GL,320335,constituents,Globe Life
-GLW,24741,constituents,Corning Inc.
-GM,1467858,constituents,General Motors
-GNRC,1474735,constituents,Generac
-GOOG,1652044,constituents,Alphabet Inc. (Class C)
-GOOGL,1652044,constituents,Alphabet Inc. (Class A)
-GPC,40987,constituents,Genuine Parts Company
-GPN,1123360,constituents,Global Payments
-GRMN,1121788,constituents,Garmin
-GS,886982,constituents,Goldman Sachs
-GWW,277135,constituents,W. W. Grainger
-HAL,45012,constituents,Halliburton
-HAS,46080,constituents,Hasbro
-HBAN,49196,constituents,Huntington Bancshares
-HCA,860730,constituents,HCA Healthcare
-HD,354950,constituents,Home Depot (The)
-HIG,874766,constituents,Hartford (The)
-HII,1501585,constituents,Huntington Ingalls Industries
-HLT,1585689,constituents,Hilton Worldwide
-HON,773840,constituents,Honeywell Technologies
-HOOD,1783879,constituents,Robinhood Markets
-HPE,1645590,constituents,Hewlett Packard Enterprise
-HPQ,47217,constituents,HP Inc.
-HRL,48465,constituents,Hormel Foods
-HSIC,1000228,constituents,Henry Schein
-HST,1070750,constituents,Host Hotels & Resorts
-HSY,47111,constituents,Hershey Company (The)
-HUBB,48898,constituents,Hubbell Incorporated
-HUM,49071,constituents,Humana
-HWM,4281,constituents,Howmet Aerospace
-IBKR,1381197,constituents,Interactive Brokers
-IBM,51143,constituents,IBM
-ICE,1571949,constituents,Intercontinental Exchange
-IDXX,874716,constituents,Idexx Laboratories
-IEX,832101,constituents,IDEX Corporation
-IFF,51253,constituents,International Flavors & Fragrances
-INCY,879169,constituents,Incyte
-INTC,50863,constituents,Intel
-INTU,896878,constituents,Intuit
-INVH,1687229,constituents,Invitation Homes
-IP,51434,constituents,International Paper
-IQV,1478242,constituents,IQVIA
-IR,1699150,constituents,Ingersoll Rand
-IRM,1020569,constituents,Iron Mountain
-ISRG,1035267,constituents,Intuitive Surgical
-IT,749251,constituents,Gartner
-ITW,49826,constituents,Illinois Tool Works
-IVZ,914208,constituents,Invesco
-J,52988,constituents,Jacobs Solutions
-JBHT,728535,constituents,J.B. Hunt
-JBL,898293,constituents,Jabil Circuit
-JCI,833444,constituents,Johnson Controls
-JKHY,779152,constituents,Jack Henry & Associates
-JNJ,200406,constituents,Johnson & Johnson
-JPM,19617,constituents,JPMorgan Chase
-KDP,1418135,constituents,Keurig Dr Pepper
-KEY,91576,constituents,KeyCorp
-KEYS,1601046,constituents,Keysight Technologies
-KHC,1637459,constituents,Kraft Heinz
-KIM,879101,constituents,Kimco Realty
-KKR,1404912,constituents,KKR & Co.
-KLAC,319201,constituents,KLA Corporation
-KMB,55785,constituents,Kimberly-Clark
-KMI,1506307,constituents,Kinder Morgan
-KO,21344,constituents,Coca-Cola Company (The)
-KR,56873,constituents,Kroger
-KVUE,1944048,constituents,Kenvue
-L,60086,constituents,Loews Corporation
-LDOS,1336920,constituents,Leidos
-LEN,920760,constituents,Lennar
-LH,920148,constituents,Labcorp
-LHX,202058,constituents,L3Harris
-LII,1069202,constituents,Lennox International
-LIN,1707925,constituents,Linde plc
-LITE,1633978,constituents,Lumentum
-LLY,59478,constituents,Lilly (Eli)
-LMT,936468,constituents,Lockheed Martin
-LNT,352541,constituents,Alliant Energy
-LOW,60667,constituents,Lowe's
-LRCX,707549,constituents,Lam Research
-LULU,1397187,constituents,Lululemon Athletica
-LUV,92380,constituents,Southwest Airlines
-LVS,1300514,constituents,Las Vegas Sands
-LYB,1489393,constituents,LyondellBasell
-LYV,1335258,constituents,Live Nation Entertainment
-MA,1141391,constituents,Mastercard
-MAA,912595,constituents,Mid-America Apartment Communities
-MAR,1048286,constituents,Marriott International
-MAS,62996,constituents,Masco
-MCD,63908,constituents,McDonald's
-MCHP,827054,constituents,Microchip Technology
-MCK,927653,constituents,McKesson
-MCO,1059556,constituents,Moody's Corporation
-MDLZ,1103982,constituents,Mondelez International
-MDT,1613103,constituents,Medtronic
-MET,1099219,constituents,MetLife
-META,1326801,constituents,Meta Platforms
-MGM,789570,constituents,MGM Resorts
-MKC,63754,constituents,McCormick & Company
-MLM,916076,constituents,Martin Marietta Materials
-MMM,66740,constituents,3M
-MNST,865752,constituents,Monster Beverage
-MO,764180,constituents,Altria
-MOS,1285785,constituents,Mosaic Company (The)
-MPC,1510295,constituents,Marathon Petroleum
-MPWR,1280452,constituents,Monolithic Power Systems
-MRK,310158,constituents,Merck & Co.
-MRNA,1682852,constituents,Moderna
-MRSH,62709,constituents,Marsh McLennan
-MRVL,1835632,constituents,Marvell Technology
-MS,895421,constituents,Morgan Stanley
-MSCI,1408198,constituents,MSCI
-MSFT,789019,constituents,Microsoft
-MSI,68505,constituents,Motorola Solutions
-MTB,36270,constituents,M&T Bank
-MTD,1037646,constituents,Mettler Toledo
-MU,723125,constituents,Micron Technology
-NCLH,1513761,constituents,Norwegian Cruise Line Holdings
-NDAQ,1120193,constituents,"Nasdaq, Inc."
-NDSN,72331,constituents,Nordson Corporation
-NEE,753308,constituents,NextEra Energy
-NEM,1164727,constituents,Newmont
-NFLX,1065280,constituents,Netflix
-NI,1111711,constituents,NiSource
-NKE,320187,constituents,"Nike, Inc."
-NOC,1133421,constituents,Northrop Grumman
-NOW,1373715,constituents,ServiceNow
-NRG,1013871,constituents,NRG Energy
-NSC,702165,constituents,Norfolk Southern
-NTAP,1002047,constituents,NetApp
-NTRS,73124,constituents,Northern Trust
-NUE,73309,constituents,Nucor
-NVDA,1045810,constituents,Nvidia
-NVR,906163,constituents,"NVR, Inc."
-NWS,1564708,constituents,News Corp (Class B)
-NWSA,1564708,constituents,News Corp (Class A)
-NXPI,1413447,constituents,NXP Semiconductors
-O,726728,constituents,Realty Income
-ODFL,878927,constituents,Old Dominion
-OKE,1039684,constituents,Oneok
-OMC,29989,constituents,Omnicom Group
-ON,1097864,constituents,ON Semiconductor
-ORCL,1341439,constituents,Oracle Corporation
-ORLY,898173,constituents,O'Reilly Automotive
-OTIS,1781335,constituents,Otis Worldwide
-OXY,797468,constituents,Occidental Petroleum
-PANW,1327567,constituents,Palo Alto Networks
-PAYX,723531,constituents,Paychex
-PCAR,75362,constituents,Paccar
-PCG,1004980,constituents,Pacific Gas & Electric Company
-PEG,788784,constituents,Public Service Enterprise Group
-PEP,77476,constituents,PepsiCo
-PFE,78003,constituents,Pfizer
-PFG,1126328,constituents,Principal Financial Group
-PG,80424,constituents,Procter & Gamble
-PGR,80661,constituents,Progressive Corporation
-PH,76334,constituents,Parker Hannifin
-PHM,822416,constituents,PulteGroup
-PKG,75677,constituents,Packaging Corporation of America
-PLD,1045609,constituents,Prologis
-PLTR,1321655,constituents,Palantir Technologies
-PM,1413329,constituents,Philip Morris International
-PNC,713676,constituents,PNC Financial Services
-PNR,77360,constituents,Pentair
-PNW,764622,constituents,Pinnacle West Capital
-PODD,1145197,constituents,Insulet Corporation
-PPG,79879,constituents,PPG Industries
-PPL,922224,constituents,PPL Corporation
-PRU,1137774,constituents,Prudential Financial
-PSA,1393311,constituents,Public Storage
-PSKY,2041610,constituents,Paramount Skydance Corporation
-PSX,1534701,constituents,Phillips 66
-PTC,857005,constituents,PTC Inc.
-PWR,1050915,constituents,Quanta Services
-PYPL,1633917,constituents,PayPal
-Q,2058873,constituents,Qwest Communications
-QCOM,804328,constituents,Qualcomm
-RCL,884887,constituents,Royal Caribbean Group
-RDDT,1713445,constituents,Reddit
-REG,910606,constituents,Regency Centers
-REGN,872589,constituents,Regeneron Pharmaceuticals
-RF,1281761,constituents,Regions Financial Corporation
-RJF,720005,constituents,Raymond James Financial
-RL,1037038,constituents,Ralph Lauren Corporation
-RMD,943819,constituents,ResMed|
-ROK,1024478,constituents,Rockwell Automation
-ROL,84839,constituents,"Rollins, Inc."
-ROP,882835,constituents,Roper Technologies
-ROST,745732,constituents,Ross Stores
-RSG,1060391,constituents,Republic Services
-RTX,101829,constituents,RTX Corporation
-RVTY,31791,constituents,Revvity
-SBAC,1034054,constituents,SBA Communications
-SBUX,829224,constituents,Starbucks
-SCHW,316709,constituents,Charles Schwab Corporation
-SHW,89800,constituents,Sherwin-Williams
-SJM,91419,constituents,J.M. Smucker Company (The)
-SLB,87347,constituents,Schlumberger
-SMCI,1375365,constituents,Supermicro
-SNA,91440,constituents,Snap-on
-SNDK,2023554,constituents,SanDisk
-SNPS,883241,constituents,Synopsys
-SO,92122,constituents,Southern Company
-SOLV,1964738,constituents,Solventum
-SPG,1063761,constituents,Simon Property Group
-SPGI,64040,constituents,S&P Global
-SRE,1032208,constituents,Sempra
-STE,1757898,constituents,Steris
-STLD,1022671,constituents,Steel Dynamics
-STT,93751,constituents,State Street Corporation
-STX,1137789,constituents,Seagate Technology
-STZ,16918,constituents,Constellation Brands
-SW,2005951,constituents,Smurfit Westrock
-SWK,93556,constituents,Stanley Black & Decker
-SWKS,4127,constituents,Skyworks Solutions
-SYF,1601712,constituents,Synchrony Financial
-SYK,310764,constituents,Stryker Corporation
-SYY,96021,constituents,Sysco
-T,732717,constituents,AT&T Corporation
-TAP,24545,constituents,Molson Coors Beverage Company
-TDG,1260221,constituents,TransDigm Group
-TDY,1094285,constituents,Teledyne Technologies
-TECH,842023,constituents,Bio-Techne
-TEL,1385157,constituents,TE Connectivity
-TER,97210,constituents,Teradyne
-TFC,92230,constituents,Truist Financial
-TGT,27419,constituents,Target Corporation
-TJX,109198,constituents,TJX Companies
-TKO,1973266,constituents,TKO Group Holdings
-TMO,97745,constituents,Thermo Fisher Scientific
-TMUS,1283699,constituents,T-Mobile US
-TPL,1811074,constituents,Texas Pacific Land Corporation
-TPR,1116132,constituents,"Tapestry, Inc."
-TRGP,1389170,constituents,Targa Resources
-TRMB,864749,constituents,Trimble Inc.
-TROW,1113169,constituents,T. Rowe Price
-TRV,86312,constituents,Travelers Companies (The)
-TSCO,916365,constituents,Tractor Supply
-TSLA,1318605,constituents,"Tesla, Inc."
-TSN,100493,constituents,Tyson Foods
-TT,1466258,constituents,Trane Technologies
-TTD,1671933,constituents,Trade Desk (The)
-TTWO,946581,constituents,Take-Two Interactive
-TXN,97476,constituents,Texas Instruments
-TXT,217346,constituents,Textron
-TYL,860731,constituents,Tyler Technologies
-UAL,100517,constituents,United Airlines Holdings
-UBER,1543151,constituents,Uber
-UDR,74208,constituents,"UDR, Inc."
-UHS,352915,constituents,Universal Health Services
-ULTA,1403568,constituents,Ulta Beauty
-UNH,731766,constituents,UnitedHealth Group
-UNP,100885,constituents,Union Pacific Corporation
-UPS,1090727,constituents,United Parcel Service
-URI,1067701,constituents,United Rentals
-USB,36104,constituents,U.S. Bancorp
-V,1403161,constituents,Visa Inc.
-VEEV,1393052,constituents,Veeva Systems
-VICI,1705696,constituents,Vici Properties
-VLO,1035002,constituents,Valero Energy
-VLTO,1967680,constituents,Veralto
-VMC,1396009,constituents,Vulcan Materials Company
-VMRK,906107,constituents,Vivmark Residential
-VRSK,1442145,constituents,Verisk Analytics
-VRSN,1014473,constituents,Verisign
-VRT,1674101,constituents,Vertiv
-VRTX,875320,constituents,Vertex Pharmaceuticals
-VST,1692819,constituents,Vistra Corp.
-VTR,740260,constituents,Ventas
-VTRS,1792044,constituents,Viatris
-VZ,732712,constituents,Verizon
-WAB,943452,constituents,Wabtec
-WAT,1000697,constituents,Waters Corporation
-WBD,1437107,constituents,Warner Bros. Discovery
-WDAY,1327811,constituents,"Workday, Inc."
-WDC,106040,constituents,Western Digital
-WEC,783325,constituents,WEC Energy Group
-WELL,766704,constituents,Welltower
-WFC,72971,constituents,Wells Fargo
-WM,823768,constituents,Waste Management
-WMB,107263,constituents,Williams Companies
-WMT,104169,constituents,Walmart
-WRB,11544,constituents,W. R. Berkley Corporation
-WSM,719955,constituents,"Williams-Sonoma, Inc."
-WST,105770,constituents,West Pharmaceutical Services
-WTW,1140536,constituents,Willis Towers Watson
-WY,106535,constituents,Weyerhaeuser
-WYNN,1174922,constituents,Wynn Resorts
-XEL,72903,constituents,Xcel Energy
-XYL,1524472,constituents,Xylem Inc.
-XYZ,1512673,constituents,"Block, Inc."
-YUM,1041061,constituents,Yum! Brands
-ZBH,1136869,constituents,Zimmer Biomet
-ZBRA,877212,constituents,Zebra Technologies
-ZTS,1555280,constituents,Zoetis
 XOM,34088,constituents cik absent; name exact (spaces removed),EXXONMOBIL
 FDXF,,constituents cik absent; unmatched,FEDEX FREIGHT
 HONA,,constituents cik absent; unmatched,HONEYWELL AEROSPACE
@@ -777,6 +279,504 @@ MJN,1452575,name prefix,MEAD JOHNSON
 RRD,29669,name prefix,RR DONNELLEY
 UA,1336917,name prefix,UNDER ARMOUR
 ZION,109380,name prefix,ZIONS BANCORPORATION
+A,1090872,sec company_tickers,Agilent Technologies
+AAPL,320193,sec company_tickers,Apple Inc.
+ABBV,1551152,sec company_tickers,AbbVie
+ABNB,1559720,sec company_tickers,Airbnb
+ABT,1800,sec company_tickers,Abbott Laboratories
+ACGL,947484,sec company_tickers,Arch Capital Group
+ACN,1467373,sec company_tickers,Accenture
+ADBE,796343,sec company_tickers,Adobe Inc.
+ADI,6281,sec company_tickers,Analog Devices
+ADM,7084,sec company_tickers,Archer Daniels Midland
+ADP,8670,sec company_tickers,Automatic Data Processing
+ADSK,769397,sec company_tickers,Autodesk
+AEE,1002910,sec company_tickers,Ameren
+AEP,4904,sec company_tickers,American Electric Power
+AES,874761,sec company_tickers,AES Corporation
+AFL,4977,sec company_tickers,Aflac
+AIG,5272,sec company_tickers,American International Group
+AIZ,1267238,sec company_tickers,Assurant
+AJG,354190,sec company_tickers,Arthur J. Gallagher & Co.
+AKAM,1086222,sec company_tickers,Akamai Technologies
+ALB,915913,sec company_tickers,Albemarle Corporation
+ALGN,1097149,sec company_tickers,Align Technology
+ALL,899051,sec company_tickers,Allstate
+ALLE,1579241,sec company_tickers,Allegion
+AMAT,6951,sec company_tickers,Applied Materials
+AMCR,1748790,sec company_tickers,Amcor
+AMD,2488,sec company_tickers,Advanced Micro Devices
+AME,1037868,sec company_tickers,Ametek
+AMGN,318154,sec company_tickers,Amgen
+AMP,820027,sec company_tickers,Ameriprise Financial
+AMT,1053507,sec company_tickers,American Tower
+AMZN,1018724,sec company_tickers,Amazon
+ANET,1596532,sec company_tickers,Arista Networks
+AON,315293,sec company_tickers,Aon plc
+AOS,91142,sec company_tickers,A. O. Smith
+APA,1841666,sec company_tickers,APA Corporation
+APD,2969,sec company_tickers,Air Products
+APH,820313,sec company_tickers,Amphenol
+APO,1858681,sec company_tickers,Apollo Global Management
+APP,1751008,sec company_tickers,AppLovin
+APTV,1521332,sec company_tickers,Aptiv
+ARE,1035443,sec company_tickers,Alexandria Real Estate Equities
+ARES,1176948,sec company_tickers,Ares Management
+ATO,731802,sec company_tickers,Atmos Energy
+AVGO,1730168,sec company_tickers,Broadcom
+AVY,8818,sec company_tickers,Avery Dennison
+AWK,1410636,sec company_tickers,American Water Works
+AXON,1069183,sec company_tickers,Axon Enterprise
+AXP,4962,sec company_tickers,American Express
+AZO,866787,sec company_tickers,AutoZone
+BA,12927,sec company_tickers,Boeing
+BAC,70858,sec company_tickers,Bank of America
+BALL,9389,sec company_tickers,Ball Corporation
+BAX,10456,sec company_tickers,Baxter International
+BBY,764478,sec company_tickers,Best Buy
+BDX,10795,sec company_tickers,Becton Dickinson
+BEN,38777,sec company_tickers,Franklin Resources
+BG,1996862,sec company_tickers,Bunge Global
+BIIB,875045,sec company_tickers,Biogen
+BKNG,1075531,sec company_tickers,Booking Holdings
+BKR,1701605,sec company_tickers,Baker Hughes
+BLDR,1316835,sec company_tickers,Builders FirstSource
+BLK,2012383,sec company_tickers,BlackRock
+BMY,14272,sec company_tickers,Bristol Myers Squibb
+BNY,1390777,sec company_tickers,BNY Mellon
+BR,1383312,sec company_tickers,Broadridge Financial Solutions
+BRO,79282,sec company_tickers,Brown & Brown
+BSX,885725,sec company_tickers,Boston Scientific
+BX,1393818,sec company_tickers,Blackstone Inc.
+BXP,1037540,sec company_tickers,"BXP, Inc."
+C,831001,sec company_tickers,Citigroup
+CAH,721371,sec company_tickers,Cardinal Health
+CARR,1783180,sec company_tickers,Carrier Global
+CASY,726958,sec company_tickers,Casey's
+CAT,18230,sec company_tickers,Caterpillar Inc.
+CB,896159,sec company_tickers,Chubb Limited
+CBOE,1374310,sec company_tickers,Cboe Global Markets
+CBRE,1138118,sec company_tickers,CBRE Group
+CCI,1051470,sec company_tickers,Crown Castle
+CCL,815097,sec company_tickers,Carnival Corporation
+CDNS,813672,sec company_tickers,Cadence Design Systems
+CDW,1402057,sec company_tickers,CDW Corporation
+CEG,1868275,sec company_tickers,Constellation Energy Group
+CF,1324404,sec company_tickers,CF Industries
+CFG,759944,sec company_tickers,Citizens Financial Group
+CHD,313927,sec company_tickers,Church & Dwight
+CHRW,1043277,sec company_tickers,C.H. Robinson
+CHTR,1091667,sec company_tickers,Charter Communications
+CI,1739940,sec company_tickers,Cigna
+CIEN,936395,sec company_tickers,Ciena
+CINF,20286,sec company_tickers,Cincinnati Financial
+CL,21665,sec company_tickers,Colgate-Palmolive
+CLX,21076,sec company_tickers,Clorox
+CMCSA,1166691,sec company_tickers,Comcast
+CME,1156375,sec company_tickers,CME Group
+CMG,1058090,sec company_tickers,Chipotle Mexican Grill
+CMI,26172,sec company_tickers,Cummins
+CMS,811156,sec company_tickers,CMS Energy
+CNC,1071739,sec company_tickers,Centene Corporation
+CNP,1130310,sec company_tickers,CenterPoint Energy
+COF,927628,sec company_tickers,Capital One
+COHR,820318,sec company_tickers,Coherent Corp.
+COIN,1679788,sec company_tickers,Coinbase
+COO,711404,sec company_tickers,Cooper Companies (The)
+COP,1163165,sec company_tickers,ConocoPhillips
+COR,1140859,sec company_tickers,Cencora
+COST,909832,sec company_tickers,Costco
+CPAY,1175454,sec company_tickers,Corpay
+CPRT,900075,sec company_tickers,Copart
+CPT,906345,sec company_tickers,Camden Property Trust
+CRH,849395,sec company_tickers,CRH plc
+CRL,1100682,sec company_tickers,Charles River Laboratories
+CRM,1108524,sec company_tickers,Salesforce
+CRWD,1535527,sec company_tickers,CrowdStrike
+CSCO,858877,sec company_tickers,Cisco
+CSGP,1057352,sec company_tickers,CoStar Group
+CSX,277948,sec company_tickers,CSX Corporation
+CTAS,723254,sec company_tickers,Cintas
+CTSH,1058290,sec company_tickers,Cognizant
+CTVA,1755672,sec company_tickers,Corteva
+CVNA,1690820,sec company_tickers,Carvana
+CVS,64803,sec company_tickers,CVS Health
+CVX,93410,sec company_tickers,Chevron Corporation
+D,715957,sec company_tickers,Dominion Energy
+DAL,27904,sec company_tickers,Delta Air Lines
+DASH,1792789,sec company_tickers,DoorDash
+DD,1666700,sec company_tickers,DuPont
+DDOG,1561550,sec company_tickers,Datadog
+DE,315189,sec company_tickers,Deere & Company
+DECK,910521,sec company_tickers,Deckers Brands
+DELL,1571996,sec company_tickers,Dell
+DG,29534,sec company_tickers,Dollar General
+DGX,1022079,sec company_tickers,Quest Diagnostics
+DHI,882184,sec company_tickers,D. R. Horton
+DHR,313616,sec company_tickers,Danaher Corporation
+DIS,1744489,sec company_tickers,Walt Disney Company (The)
+DLR,1297996,sec company_tickers,Digital Realty
+DLTR,935703,sec company_tickers,Dollar Tree
+DOC,765880,sec company_tickers,Healthpeak Properties
+DOV,29905,sec company_tickers,Dover Corporation
+DOW,1751788,sec company_tickers,Dow Chemical Company
+DPZ,1286681,sec company_tickers,Domino's
+DRI,940944,sec company_tickers,Darden Restaurants
+DTE,936340,sec company_tickers,DTE Energy
+DUK,1326160,sec company_tickers,Duke Energy
+DVA,927066,sec company_tickers,DaVita
+DVN,1090012,sec company_tickers,Devon Energy
+DXCM,1093557,sec company_tickers,Dexcom
+EBAY,1065088,sec company_tickers,eBay Inc.
+ECHO,1415404,sec company_tickers,EchoStar
+ECL,31462,sec company_tickers,Ecolab
+ED,1047862,sec company_tickers,Consolidated Edison
+EFX,33185,sec company_tickers,Equifax
+EG,1095073,sec company_tickers,Everest Group
+EIX,827052,sec company_tickers,Edison International
+EL,1001250,sec company_tickers,Estée Lauder Companies (The)
+ELV,1156039,sec company_tickers,Elevance Health
+EME,105634,sec company_tickers,Emcor
+EMR,32604,sec company_tickers,Emerson Electric
+EOG,821189,sec company_tickers,EOG Resources
+EQIX,1101239,sec company_tickers,Equinix
+EQT,33213,sec company_tickers,EQT Corporation
+ERIE,922621,sec company_tickers,Erie Indemnity
+ES,72741,sec company_tickers,Eversource Energy
+ESS,920522,sec company_tickers,Essex Property Trust
+ETN,1551182,sec company_tickers,Eaton Corporation
+ETR,65984,sec company_tickers,Entergy
+EVRG,1711269,sec company_tickers,Evergy
+EW,1099800,sec company_tickers,Edwards Lifesciences
+EXC,1109357,sec company_tickers,Exelon
+EXE,895126,sec company_tickers,Expand Energy
+EXPD,746515,sec company_tickers,Expeditors International
+EXPE,1324424,sec company_tickers,Expedia Group
+EXR,1289490,sec company_tickers,Extra Space Storage
+F,37996,sec company_tickers,Ford Motor Company
+FANG,1539838,sec company_tickers,Diamondback Energy
+FAST,815556,sec company_tickers,Fastenal
+FCX,831259,sec company_tickers,Freeport-McMoRan
+FDS,1013237,sec company_tickers,FactSet
+FDX,1048911,sec company_tickers,FedEx
+FE,1031296,sec company_tickers,FirstEnergy
+FERG,2011641,sec company_tickers,Ferguson Enterprises
+FFIV,1048695,sec company_tickers,"F5, Inc."
+FICO,814547,sec company_tickers,Fair Isaac
+FIS,1136893,sec company_tickers,Fidelity National Information Services
+FISV,798354,sec company_tickers,Fiserv
+FITB,35527,sec company_tickers,Fifth Third Bancorp
+FIX,1035983,sec company_tickers,Comfort Systems USA
+FLEX,866374,sec company_tickers,Flex Ltd.
+FOX,1754301,sec company_tickers,21st Century Fox
+FOXA,1754301,sec company_tickers,21st Century Fox
+FRT,34903,sec company_tickers,Federal Realty Investment Trust
+FSLR,1274494,sec company_tickers,First Solar
+FTNT,1262039,sec company_tickers,Fortinet
+FTV,1659166,sec company_tickers,Fortive
+GD,40533,sec company_tickers,General Dynamics
+GDDY,1609711,sec company_tickers,GoDaddy
+GE,40545,sec company_tickers,GE Aerospace
+GEHC,1932393,sec company_tickers,GE HealthCare
+GEN,849399,sec company_tickers,Gen Digital
+GEV,1996810,sec company_tickers,GE Vernova
+GILD,882095,sec company_tickers,Gilead Sciences
+GIS,40704,sec company_tickers,General Mills
+GL,320335,sec company_tickers,Globe Life
+GLW,24741,sec company_tickers,Corning Inc.
+GM,1467858,sec company_tickers,General Motors
+GNRC,1474735,sec company_tickers,Generac
+GOOG,1652044,sec company_tickers,Alphabet Inc. (Class C)
+GOOGL,1652044,sec company_tickers,Alphabet Inc. (Class A)
+GPC,40987,sec company_tickers,Genuine Parts Company
+GPN,1123360,sec company_tickers,Global Payments
+GRMN,1121788,sec company_tickers,Garmin
+GS,886982,sec company_tickers,Goldman Sachs
+GWW,277135,sec company_tickers,W. W. Grainger
+HAL,45012,sec company_tickers,Halliburton
+HAS,46080,sec company_tickers,Hasbro
+HBAN,49196,sec company_tickers,Huntington Bancshares
+HCA,860730,sec company_tickers,HCA Healthcare
+HD,354950,sec company_tickers,Home Depot (The)
+HIG,874766,sec company_tickers,Hartford (The)
+HII,1501585,sec company_tickers,Huntington Ingalls Industries
+HLT,1585689,sec company_tickers,Hilton Worldwide
+HON,773840,sec company_tickers,Honeywell Technologies
+HOOD,1783879,sec company_tickers,Robinhood Markets
+HPE,1645590,sec company_tickers,Hewlett Packard Enterprise
+HPQ,47217,sec company_tickers,HP Inc.
+HRL,48465,sec company_tickers,Hormel Foods
+HSIC,1000228,sec company_tickers,Henry Schein
+HST,1070750,sec company_tickers,Host Hotels & Resorts
+HSY,47111,sec company_tickers,Hershey Company (The)
+HUBB,48898,sec company_tickers,Hubbell Incorporated
+HUM,49071,sec company_tickers,Humana
+HWM,4281,sec company_tickers,Howmet Aerospace
+IBKR,1381197,sec company_tickers,Interactive Brokers
+IBM,51143,sec company_tickers,IBM
+ICE,1571949,sec company_tickers,Intercontinental Exchange
+IDXX,874716,sec company_tickers,Idexx Laboratories
+IEX,832101,sec company_tickers,IDEX Corporation
+IFF,51253,sec company_tickers,International Flavors & Fragrances
+INCY,879169,sec company_tickers,Incyte
+INTC,50863,sec company_tickers,Intel
+INTU,896878,sec company_tickers,Intuit
+INVH,1687229,sec company_tickers,Invitation Homes
+IP,51434,sec company_tickers,International Paper
+IQV,1478242,sec company_tickers,IQVIA
+IR,1699150,sec company_tickers,Ingersoll Rand
+IRM,1020569,sec company_tickers,Iron Mountain
+ISRG,1035267,sec company_tickers,Intuitive Surgical
+IT,749251,sec company_tickers,Gartner
+ITW,49826,sec company_tickers,Illinois Tool Works
+IVZ,914208,sec company_tickers,Invesco
+J,52988,sec company_tickers,Jacobs Solutions
+JBHT,728535,sec company_tickers,J.B. Hunt
+JBL,898293,sec company_tickers,Jabil Circuit
+JCI,833444,sec company_tickers,Johnson Controls
+JKHY,779152,sec company_tickers,Jack Henry & Associates
+JNJ,200406,sec company_tickers,Johnson & Johnson
+JPM,19617,sec company_tickers,JPMorgan Chase
+KDP,1418135,sec company_tickers,Keurig Dr Pepper
+KEY,91576,sec company_tickers,KeyCorp
+KEYS,1601046,sec company_tickers,Keysight Technologies
+KHC,1637459,sec company_tickers,Kraft Heinz
+KIM,879101,sec company_tickers,Kimco Realty
+KKR,1404912,sec company_tickers,KKR & Co.
+KLAC,319201,sec company_tickers,KLA Corporation
+KMB,55785,sec company_tickers,Kimberly-Clark
+KMI,1506307,sec company_tickers,Kinder Morgan
+KO,21344,sec company_tickers,Coca-Cola Company (The)
+KR,56873,sec company_tickers,Kroger
+KVUE,1944048,sec company_tickers,Kenvue
+L,60086,sec company_tickers,Loews Corporation
+LDOS,1336920,sec company_tickers,Leidos
+LEN,920760,sec company_tickers,Lennar
+LH,920148,sec company_tickers,Labcorp
+LHX,202058,sec company_tickers,L3Harris
+LII,1069202,sec company_tickers,Lennox International
+LIN,1707925,sec company_tickers,Linde plc
+LITE,1633978,sec company_tickers,Lumentum
+LLY,59478,sec company_tickers,Lilly (Eli)
+LMT,936468,sec company_tickers,Lockheed Martin
+LNT,352541,sec company_tickers,Alliant Energy
+LOW,60667,sec company_tickers,Lowe's
+LRCX,707549,sec company_tickers,Lam Research
+LULU,1397187,sec company_tickers,Lululemon Athletica
+LUV,92380,sec company_tickers,Southwest Airlines
+LVS,1300514,sec company_tickers,Las Vegas Sands
+LYB,1489393,sec company_tickers,LyondellBasell
+LYV,1335258,sec company_tickers,Live Nation Entertainment
+MA,1141391,sec company_tickers,Mastercard
+MAA,912595,sec company_tickers,Mid-America Apartment Communities
+MAR,1048286,sec company_tickers,Marriott International
+MAS,62996,sec company_tickers,Masco
+MCD,63908,sec company_tickers,McDonald's
+MCHP,827054,sec company_tickers,Microchip Technology
+MCK,927653,sec company_tickers,McKesson
+MCO,1059556,sec company_tickers,Moody's Corporation
+MDLZ,1103982,sec company_tickers,Mondelez International
+MDT,1613103,sec company_tickers,Medtronic
+MET,1099219,sec company_tickers,MetLife
+META,1326801,sec company_tickers,Meta Platforms
+MGM,789570,sec company_tickers,MGM Resorts
+MKC,63754,sec company_tickers,McCormick & Company
+MLM,916076,sec company_tickers,Martin Marietta Materials
+MMM,66740,sec company_tickers,3M
+MNST,865752,sec company_tickers,Monster Beverage
+MO,764180,sec company_tickers,Altria
+MOS,1285785,sec company_tickers,Mosaic Company (The)
+MPC,1510295,sec company_tickers,Marathon Petroleum
+MPWR,1280452,sec company_tickers,Monolithic Power Systems
+MRK,310158,sec company_tickers,Merck & Co.
+MRNA,1682852,sec company_tickers,Moderna
+MRSH,62709,sec company_tickers,Marsh McLennan
+MRVL,1835632,sec company_tickers,Marvell Technology
+MS,895421,sec company_tickers,Morgan Stanley
+MSCI,1408198,sec company_tickers,MSCI
+MSFT,789019,sec company_tickers,Microsoft
+MSI,68505,sec company_tickers,Motorola Solutions
+MTB,36270,sec company_tickers,M&T Bank
+MTD,1037646,sec company_tickers,Mettler Toledo
+MU,723125,sec company_tickers,Micron Technology
+NCLH,1513761,sec company_tickers,Norwegian Cruise Line Holdings
+NDAQ,1120193,sec company_tickers,"Nasdaq, Inc."
+NDSN,72331,sec company_tickers,Nordson Corporation
+NEE,753308,sec company_tickers,NextEra Energy
+NEM,1164727,sec company_tickers,Newmont
+NFLX,1065280,sec company_tickers,Netflix
+NI,1111711,sec company_tickers,NiSource
+NKE,320187,sec company_tickers,"Nike, Inc."
+NOC,1133421,sec company_tickers,Northrop Grumman
+NOW,1373715,sec company_tickers,ServiceNow
+NRG,1013871,sec company_tickers,NRG Energy
+NSC,702165,sec company_tickers,Norfolk Southern
+NTAP,1002047,sec company_tickers,NetApp
+NTRS,73124,sec company_tickers,Northern Trust
+NUE,73309,sec company_tickers,Nucor
+NVDA,1045810,sec company_tickers,Nvidia
+NVR,906163,sec company_tickers,"NVR, Inc."
+NWS,1564708,sec company_tickers,News Corp (Class B)
+NWSA,1564708,sec company_tickers,News Corp (Class A)
+NXPI,1413447,sec company_tickers,NXP Semiconductors
+O,726728,sec company_tickers,Realty Income
+ODFL,878927,sec company_tickers,Old Dominion
+OKE,1039684,sec company_tickers,Oneok
+OMC,29989,sec company_tickers,Omnicom Group
+ON,1097864,sec company_tickers,ON Semiconductor
+ORCL,1341439,sec company_tickers,Oracle Corporation
+ORLY,898173,sec company_tickers,O'Reilly Automotive
+OTIS,1781335,sec company_tickers,Otis Worldwide
+OXY,797468,sec company_tickers,Occidental Petroleum
+PANW,1327567,sec company_tickers,Palo Alto Networks
+PAYX,723531,sec company_tickers,Paychex
+PCAR,75362,sec company_tickers,Paccar
+PCG,1004980,sec company_tickers,Pacific Gas & Electric Company
+PEG,788784,sec company_tickers,Public Service Enterprise Group
+PEP,77476,sec company_tickers,PepsiCo
+PFE,78003,sec company_tickers,Pfizer
+PFG,1126328,sec company_tickers,Principal Financial Group
+PG,80424,sec company_tickers,Procter & Gamble
+PGR,80661,sec company_tickers,Progressive Corporation
+PH,76334,sec company_tickers,Parker Hannifin
+PHM,822416,sec company_tickers,PulteGroup
+PKG,75677,sec company_tickers,Packaging Corporation of America
+PLD,1045609,sec company_tickers,Prologis
+PLTR,1321655,sec company_tickers,Palantir Technologies
+PM,1413329,sec company_tickers,Philip Morris International
+PNC,713676,sec company_tickers,PNC Financial Services
+PNR,77360,sec company_tickers,Pentair
+PNW,764622,sec company_tickers,Pinnacle West Capital
+PODD,1145197,sec company_tickers,Insulet Corporation
+PPG,79879,sec company_tickers,PPG Industries
+PPL,922224,sec company_tickers,PPL Corporation
+PRU,1137774,sec company_tickers,Prudential Financial
+PSA,1393311,sec company_tickers,Public Storage
+PSKY,2041610,sec company_tickers,Paramount Skydance Corporation
+PSX,1534701,sec company_tickers,Phillips 66
+PTC,857005,sec company_tickers,PTC Inc.
+PWR,1050915,sec company_tickers,Quanta Services
+PYPL,1633917,sec company_tickers,PayPal
+Q,2058873,sec company_tickers,Qwest Communications
+QCOM,804328,sec company_tickers,Qualcomm
+RCL,884887,sec company_tickers,Royal Caribbean Group
+RDDT,1713445,sec company_tickers,Reddit
+REG,910606,sec company_tickers,Regency Centers
+REGN,872589,sec company_tickers,Regeneron Pharmaceuticals
+RF,1281761,sec company_tickers,Regions Financial Corporation
+RJF,720005,sec company_tickers,Raymond James Financial
+RL,1037038,sec company_tickers,Ralph Lauren Corporation
+RMD,943819,sec company_tickers,ResMed|
+ROK,1024478,sec company_tickers,Rockwell Automation
+ROL,84839,sec company_tickers,"Rollins, Inc."
+ROP,882835,sec company_tickers,Roper Technologies
+ROST,745732,sec company_tickers,Ross Stores
+RSG,1060391,sec company_tickers,Republic Services
+RTX,101829,sec company_tickers,RTX Corporation
+RVTY,31791,sec company_tickers,Revvity
+SBAC,1034054,sec company_tickers,SBA Communications
+SBUX,829224,sec company_tickers,Starbucks
+SCHW,316709,sec company_tickers,Charles Schwab Corporation
+SHW,89800,sec company_tickers,Sherwin-Williams
+SJM,91419,sec company_tickers,J.M. Smucker Company (The)
+SLB,87347,sec company_tickers,Schlumberger
+SMCI,1375365,sec company_tickers,Supermicro
+SNA,91440,sec company_tickers,Snap-on
+SNDK,2023554,sec company_tickers,SanDisk
+SNPS,883241,sec company_tickers,Synopsys
+SO,92122,sec company_tickers,Southern Company
+SOLV,1964738,sec company_tickers,Solventum
+SPG,1063761,sec company_tickers,Simon Property Group
+SPGI,64040,sec company_tickers,S&P Global
+SRE,1032208,sec company_tickers,Sempra
+STE,1757898,sec company_tickers,Steris
+STLD,1022671,sec company_tickers,Steel Dynamics
+STT,93751,sec company_tickers,State Street Corporation
+STX,1137789,sec company_tickers,Seagate Technology
+STZ,16918,sec company_tickers,Constellation Brands
+SW,2005951,sec company_tickers,Smurfit Westrock
+SWK,93556,sec company_tickers,Stanley Black & Decker
+SWKS,4127,sec company_tickers,Skyworks Solutions
+SYF,1601712,sec company_tickers,Synchrony Financial
+SYK,310764,sec company_tickers,Stryker Corporation
+SYY,96021,sec company_tickers,Sysco
+T,732717,sec company_tickers,AT&T Corporation
+TAP,24545,sec company_tickers,Molson Coors Beverage Company
+TDG,1260221,sec company_tickers,TransDigm Group
+TDY,1094285,sec company_tickers,Teledyne Technologies
+TECH,842023,sec company_tickers,Bio-Techne
+TEL,1385157,sec company_tickers,TE Connectivity
+TER,97210,sec company_tickers,Teradyne
+TFC,92230,sec company_tickers,Truist Financial
+TGT,27419,sec company_tickers,Target Corporation
+TJX,109198,sec company_tickers,TJX Companies
+TKO,1973266,sec company_tickers,TKO Group Holdings
+TMO,97745,sec company_tickers,Thermo Fisher Scientific
+TMUS,1283699,sec company_tickers,T-Mobile US
+TPL,1811074,sec company_tickers,Texas Pacific Land Corporation
+TPR,1116132,sec company_tickers,"Tapestry, Inc."
+TRGP,1389170,sec company_tickers,Targa Resources
+TRMB,864749,sec company_tickers,Trimble Inc.
+TROW,1113169,sec company_tickers,T. Rowe Price
+TRV,86312,sec company_tickers,Travelers Companies (The)
+TSCO,916365,sec company_tickers,Tractor Supply
+TSLA,1318605,sec company_tickers,"Tesla, Inc."
+TSN,100493,sec company_tickers,Tyson Foods
+TT,1466258,sec company_tickers,Trane Technologies
+TTD,1671933,sec company_tickers,Trade Desk (The)
+TTWO,946581,sec company_tickers,Take-Two Interactive
+TXN,97476,sec company_tickers,Texas Instruments
+TXT,217346,sec company_tickers,Textron
+TYL,860731,sec company_tickers,Tyler Technologies
+UAL,100517,sec company_tickers,United Airlines Holdings
+UBER,1543151,sec company_tickers,Uber
+UDR,74208,sec company_tickers,"UDR, Inc."
+UHS,352915,sec company_tickers,Universal Health Services
+ULTA,1403568,sec company_tickers,Ulta Beauty
+UNH,731766,sec company_tickers,UnitedHealth Group
+UNP,100885,sec company_tickers,Union Pacific Corporation
+UPS,1090727,sec company_tickers,United Parcel Service
+URI,1067701,sec company_tickers,United Rentals
+USB,36104,sec company_tickers,U.S. Bancorp
+V,1403161,sec company_tickers,Visa Inc.
+VEEV,1393052,sec company_tickers,Veeva Systems
+VICI,1705696,sec company_tickers,Vici Properties
+VLO,1035002,sec company_tickers,Valero Energy
+VLTO,1967680,sec company_tickers,Veralto
+VMC,1396009,sec company_tickers,Vulcan Materials Company
+VMRK,906107,sec company_tickers,Vivmark Residential
+VRSK,1442145,sec company_tickers,Verisk Analytics
+VRSN,1014473,sec company_tickers,Verisign
+VRT,1674101,sec company_tickers,Vertiv
+VRTX,875320,sec company_tickers,Vertex Pharmaceuticals
+VST,1692819,sec company_tickers,Vistra Corp.
+VTR,740260,sec company_tickers,Ventas
+VTRS,1792044,sec company_tickers,Viatris
+VZ,732712,sec company_tickers,Verizon
+WAB,943452,sec company_tickers,Wabtec
+WAT,1000697,sec company_tickers,Waters Corporation
+WBD,1437107,sec company_tickers,Warner Bros. Discovery
+WDAY,1327811,sec company_tickers,"Workday, Inc."
+WDC,106040,sec company_tickers,Western Digital
+WEC,783325,sec company_tickers,WEC Energy Group
+WELL,766704,sec company_tickers,Welltower
+WFC,72971,sec company_tickers,Wells Fargo
+WM,823768,sec company_tickers,Waste Management
+WMB,107263,sec company_tickers,Williams Companies
+WMT,104169,sec company_tickers,Walmart
+WRB,11544,sec company_tickers,W. R. Berkley Corporation
+WSM,719955,sec company_tickers,"Williams-Sonoma, Inc."
+WST,105770,sec company_tickers,West Pharmaceutical Services
+WTW,1140536,sec company_tickers,Willis Towers Watson
+WY,106535,sec company_tickers,Weyerhaeuser
+WYNN,1174922,sec company_tickers,Wynn Resorts
+XEL,72903,sec company_tickers,Xcel Energy
+XYL,1524472,sec company_tickers,Xylem Inc.
+XYZ,1512673,sec company_tickers,"Block, Inc."
+YUM,1041061,sec company_tickers,Yum! Brands
+ZBH,1136869,sec company_tickers,Zimmer Biomet
+ZBRA,877212,sec company_tickers,Zebra Technologies
+ZTS,1555280,sec company_tickers,Zoetis
 AA,,unmatched,ALCOA
 AAL,,unmatched,AMERICAN AIRLINES
 ABS,,unmatched,ALBERTSONS

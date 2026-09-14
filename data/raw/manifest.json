@@ -90872,5 +90872,12 @@
     "sha256": "b03da3fbf18669fa0aa1acf2d28de8ddaa31d7cbc2ba4f0e15359fa77d735b30",
     "bytes": 291074,
     "fetched_at": "2026-09-14T11:48:42+00:00"
+  },
+  {
+    "path": "sec/company_tickers_2026-09-14.json",
+    "url": "https://www.sec.gov/files/company_tickers.json",
+    "sha256": "26602b2fd871aa1815bdc33fa234308f9c82f0ee6b939d16b2e2b9b1b4bfdaef",
+    "bytes": 797931,
+    "fetched_at": "2026-09-14T14:15:55+00:00"
   }
 ]

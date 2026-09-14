@@ -33,6 +33,7 @@ from backtester import raw
 from backtester.config import Config
 
 SEC_BASE = "https://www.sec.gov/files/dera/data/financial-statement-data-sets/"
+SEC_TICKERS = "https://www.sec.gov/files/company_tickers.json"
 FIRST_QUARTER = (2009, 1)
 SEC_USER_AGENT = "Utkarsh Malhotra factor-research utkarsh.malhotra@yahoo.co.uk"
 MIN_CAP = 1e9
@@ -100,7 +101,29 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
             continue
         r.raise_for_status()
         stored.append(raw.store_raw(root, rel, r.content, SEC_BASE + f"{q}.zip"))
+    # The SEC's own ticker -> CIK map, date-stamped: it changes as names
+    # list and delist (BUILD_PLAN 4.6).
+    rel = f"sec/company_tickers_{as_of.isoformat()}.json"
+    if not (root / rel).exists():
+        r = requests.get(
+            SEC_TICKERS, headers={"User-Agent": SEC_USER_AGENT}, timeout=60
+        )
+        r.raise_for_status()
+        stored.append(raw.store_raw(root, rel, r.content, SEC_TICKERS))
     return stored
+
+
+def sec_tickers(cfg: Config) -> dict[str, int] | None:
+    """ticker -> cik from the latest company_tickers.json on disk, or None
+    if none was fetched. Tickers use the repo's convention (BRK-B)."""
+    import json
+
+    try:
+        path = raw.latest(cfg.data / "raw", "sec/company_tickers_*.json")
+    except FileNotFoundError:
+        return None
+    entries = json.loads(path.read_text(encoding="utf-8")).values()
+    return {e["ticker"].replace(".", "-"): int(e["cik_str"]) for e in entries}
 
 
 # --- tag map ------------------------------------------------------------
@@ -530,7 +553,7 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     num = ingest(cfg) if reingest or not cached.exists() else pl.read_parquet(cached)
     membership = pl.read_parquet(cfg.data / "interim" / "membership.parquet")
     constituents = pl.read_parquet(cfg.data / "interim" / "sp500_constituents.parquet")
-    ciks, cik_log = sectors.cik_map(membership, constituents, num)
+    ciks, cik_log = sectors.cik_map(membership, constituents, num, sec_tickers(cfg))
     sectors.build(cfg, num, ciks)
 
     monthly = pl.read_parquet(cfg.data / "processed" / "returns_monthly.parquet")

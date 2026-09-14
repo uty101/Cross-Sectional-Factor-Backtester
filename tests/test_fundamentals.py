@@ -138,6 +138,7 @@ def test_cik_match_by_name_records_its_method() -> None:
         {
             "ticker": ["AAPL", "OLDCO", "GONE"],
             "security": ["Apple Inc.", "Widget Makers Corp", "Nowhere Ltd"],
+            "end": [None, date(2015, 1, 1), date(2015, 1, 1)],
         }
     )
     constituents = pl.DataFrame({"ticker": ["AAPL"], "cik": ["0000320193"]})
@@ -155,6 +156,43 @@ def test_cik_match_by_name_records_its_method() -> None:
         "AAPL": 320193,
         "OLDCO": 555,
     }
+
+
+def test_sec_company_tickers_come_first_and_disagreements_are_logged() -> None:
+    membership = pl.DataFrame(
+        {
+            "ticker": ["AAPL", "XOM", "OLDCO", "S"],
+            "security": ["Apple", "Exxon", "Widget", "Sprint Nextel"],
+            "end": [None, None, date(2015, 1, 1), date(2013, 7, 7)],
+        }
+    )
+    # Wikipedia carries a brand-new XOM entity with no filings (999).
+    constituents = pl.DataFrame(
+        {"ticker": ["AAPL", "XOM"], "cik": ["0000320193", "0000000999"]}
+    )
+    num = pl.DataFrame(
+        {
+            "cik": [320193, 34088, 555, 101830, 1583708],
+            "name": [
+                "APPLE INC",
+                "EXXON MOBIL CORP",
+                "WIDGET",
+                "SPRINT NEXTEL CORP",
+                "SENTINELONE INC",
+            ],
+            "filed": [date(2020, 1, 1)] * 5,
+        }
+    )
+    # S is SentinelOne in today's SEC map; the removed member was Sprint.
+    sec = {"AAPL": 320193, "XOM": 34088, "S": 1583708, "NEWCO": 777}
+    ciks, log = sectors.cik_map(membership, constituents, num, sec)
+    got = dict(zip(log["ticker"], log["method"], strict=True))
+    assert got["AAPL"] == "sec company_tickers"
+    assert got["XOM"] == "sec company_tickers (wikipedia had 999)"
+    assert got["OLDCO"] == "name exact"  # a removed name: not in the SEC map
+    assert got["S"] == "name exact"  # removed: today's symbol holder is not used
+    placed = dict(zip(ciks["ticker"], ciks["cik"], strict=True))
+    assert placed["XOM"] == 34088 and placed["S"] == 101830
 
 
 def _ff(*rows: tuple[date, int, float, date, str]) -> pl.DataFrame:

@@ -126,10 +126,23 @@ def normalise_name(name: str | None) -> str:
 
 
 def cik_map(
-    membership: pl.DataFrame, constituents: pl.DataFrame, num: pl.DataFrame
+    membership: pl.DataFrame,
+    constituents: pl.DataFrame,
+    num: pl.DataFrame,
+    sec_tickers: dict[str, int] | None = None,
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
     """Frame[ticker, cik] for every universe ticker that can be placed, and a
-    log with one row per ticker: method, cik, the SEC name matched."""
+    log with one row per ticker: method, cik, the SEC name matched.
+
+    Order of evidence: the SEC's own company_tickers.json for a ticker
+    that is a member today, then the CIK Wikipedia's constituents table
+    carries, then a name match against the filers. The SEC map is a
+    snapshot of today's symbols, so it is never applied to a removed
+    name: S is SentinelOne now and was Sprint then, DV is DoubleVerify
+    now and was DeVry then. Each CIK must have filings; the log says
+    which was used and, when the SEC and Wikipedia disagree, what
+    Wikipedia had.
+    """
     filer_names = (
         num.select("cik", "name", "filed")
         .sort("filed", descending=True)
@@ -158,9 +171,24 @@ def cik_map(
         if r["cik"] and r["cik"].strip("0")
     }
     filers = set(int(c) for c in filer_names["cik"].unique())
+    sec_tickers = sec_tickers or {}
+    current = set(membership.filter(pl.col("end").is_null())["ticker"].to_list())
     rows = []
     for r in membership.unique(subset=["ticker"]).iter_rows(named=True):
         t, sec_name = r["ticker"], r["security"]
+        if t in current and t in sec_tickers and sec_tickers[t] in filers:
+            method = "sec company_tickers"
+            if t in direct and direct[t] != sec_tickers[t]:
+                method += f" (wikipedia had {direct[t]})"
+            rows.append(
+                {
+                    "ticker": t,
+                    "cik": sec_tickers[t],
+                    "method": method,
+                    "matched": sec_name,
+                }
+            )
+            continue
         if t in direct and direct[t] in filers:
             rows.append(
                 {

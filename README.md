@@ -219,6 +219,14 @@ what each of those commits changed, from its body, below a marker.
   are in the specification log.
 - **Wikipedia's CIK for ExxonMobil is a 2026 entity with no filings.** A
   constituents CIK with no history falls back to the company name.
+- **The SEC's own ticker map is a snapshot of today, and applied to a
+  removed name it gives you today's holder of the symbol.** Adding
+  `company_tickers.json` as the primary CIK source (BUILD_PLAN 4.6)
+  first re-pointed twelve removed names: S to SentinelOne instead of
+  Sprint, DV to DoubleVerify instead of DeVry, TMC to The Metals Company
+  instead of Times Mirror. It now applies to current members only —
+  498 of 500, all agreeing with Wikipedia's CIK — and removed names keep
+  the name match. Every method is in `data/checks/cik_map.csv`.
 - **A few large filers report the balance-sheet share count in the wrong
   units** (RTX, CMG), and Berkshire reports class-A equivalents against a
   class-B price. Market cap uses the diluted weighted-average count; a cap
@@ -264,7 +272,7 @@ what each of those commits changed, from its body, below a marker.
 
 ```bash
 uv sync
-uv run pytest                                   # 98 tests
+uv run pytest                                   # 99 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11
