@@ -1,6 +1,7 @@
 from datetime import date
 
 import polars as pl
+import pytest
 
 from backtester import signals
 
@@ -87,3 +88,19 @@ def test_volatility_is_negative_annualised_std_at_month_end() -> None:
     v = signals.volatility(dr, me, window=10)
     assert v.height == 1
     assert v["value"][0] < 0
+
+
+def test_normalise_refuses_a_value_available_after_its_month() -> None:
+
+    raw = pl.DataFrame(
+        {
+            "month": [date(2020, 1, 31)] * 3,
+            "ticker": ["A", "B", "C"],
+            "value": [1.0, 2.0, 3.0],
+            "available_from": [date(2020, 1, 2), date(2020, 1, 31), date(2020, 2, 1)],
+        }
+    )
+    with pytest.raises(AssertionError, match="invariant 1"):
+        signals.normalise(raw, None, (0.01, 0.99))
+    ok = raw.filter(pl.col("ticker") != "C")
+    assert signals.normalise(ok, None, (0.01, 0.99)).height == 2

@@ -147,6 +147,12 @@ def normalise(
     a name with no sector, is standardised against the whole cross-section
     for that month instead.
     """
+    # A frame that still carries its availability date is checked here
+    # too: nothing after the month may reach a z-score (BUILD_PLAN 5.5).
+    from backtester.fundamentals import assert_point_in_time
+
+    for col in ("available_from", "filed"):
+        assert_point_in_time(raw, col)
     df = winsorise(raw.filter(pl.col("value").is_finite()), *winsor)
     if sectors is None:
         df = df.with_columns(pl.lit("ALL").alias("sector"))

@@ -293,6 +293,7 @@ def asof_join(
         joined = p.join_asof(
             v, left_on="month", right_on="available", by="cik", strategy="backward"
         )
+    assert_point_in_time(joined, "available")
     return joined.select("month", "cik", "value", "ddate", "available").rename(
         {"ddate": "period_end", "available": "available_from"}
     )
@@ -348,6 +349,22 @@ def ttm(ff: pl.DataFrame) -> pl.DataFrame:
     )
     k = flow.filter(pl.col("qtrs") == 4).select(ff.columns)
     return pl.concat([q, k]).sort("cik", "concept", "ddate", "filed")
+
+
+def assert_point_in_time(df: pl.DataFrame, col: str = "available_from") -> None:
+    """Raise if any row's ``col`` (the date a value became usable) is after
+    its ``month``. The join guarantees it; this is the runtime check the
+    plan asks for (BUILD_PLAN 5.5), so a future edit cannot leak quietly.
+    """
+    if col not in df.columns or "month" not in df.columns:
+        return
+    late = df.filter(pl.col(col).is_not_null() & (pl.col(col) > pl.col("month")))
+    if late.height:
+        r = late.row(0, named=True)
+        raise AssertionError(
+            f"{late.height} rows use data after their month, e.g. "
+            f"{col}={r[col]} at month {r['month']} (invariant 1)"
+        )
 
 
 # --- monthly panel and signals ------------------------------------------

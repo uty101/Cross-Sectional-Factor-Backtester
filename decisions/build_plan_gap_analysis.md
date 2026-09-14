@@ -43,7 +43,7 @@ and this directory is the plan's `decisions/`.
 | 4.7 | SIC → 11 sectors | done | `sectors.py`, 84.5% GICS agreement logged |
 | 4.8 | SEC shares for cap | done | from the start |
 | 5.1–5.4 | value, quality, low vol, beta, composite | done | `run.FACTORS`; `beta_252` exists, not validated against BAB |
-| 5.5 | sector-neutral on, `filed + buffer <= t` assertion in normalise | adapt | sector-neutral on; the assertion lives in `asof_join` tests, **not as a runtime guard in `normalise`** |
+| 5.5 | sector-neutral on, `filed + buffer <= t` assertion in normalise | done 2026-09-14 | sector-neutral on; the assertion lives in `asof_join` tests, **not as a runtime guard in `normalise`** |
 | 6.1–6.2 | full grid, cost curves | done | `run.run_all`, `sensitivities`, `stats.sharpe_by_cost` |
 | 6.3 | momentum regression baseline | new | correlation is recomputed each report; no stored baseline test |
 | 7.1–7.5 | FM, NW, decay, DSR, attribution | done | `stats.py`; NW cross-checked against statsmodels in tests; DSR worked example |
