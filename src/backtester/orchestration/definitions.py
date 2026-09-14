@@ -33,12 +33,26 @@ from dagster import (
     AssetExecutionContext,
     AssetKey,
     AssetSelection,
+    DagsterRunStatus,
     Definitions,
     MaterializeResult,
+    OpExecutionContext,
+    RunConfig,
+    RunRequest,
     ScheduleDefinition,
+    SkipReason,
     asset,
     asset_check,
+    asset_sensor,
     define_asset_job,
+    job,
+    op,
+    run_failure_sensor,
+    run_status_sensor,
+    sensor,
+)
+from dagster import (
+    Config as OpConfig,
 )
 
 from backtester import benchmarks, config, fundamentals, prices, text, universe
@@ -304,6 +318,169 @@ schedules = [
     ScheduleDefinition(job=benchmarks_job, cron_schedule="0 6 3 * *"),
 ]
 
+# --- agent jobs and sensors (11.8) ------------------------------------------
+#
+# Each agent is an op in its own job; a sensor decides when it runs. The
+# agents need ANTHROPIC_API_KEY and gh; without them the job fails and
+# the failure is visible in the UI, which is the honest outcome.
+
+
+class AgentEvent(OpConfig):
+    event: str = ""
+
+
+@op
+def research_log_op(context: OpExecutionContext) -> None:
+    from backtester.agents import research_log as agent
+
+    rec = agent.run(ROOT)
+    context.log.info(rec["final_output"])
+
+
+@op
+def reporting_op(context: OpExecutionContext) -> None:
+    from backtester.agents import reporting as agent
+
+    rec = agent.run(ROOT, checks_passed=True)
+    context.log.info(rec["final_output"])
+
+
+@op
+def triage_op(context: OpExecutionContext, config: AgentEvent) -> None:
+    from backtester.agents import triage as agent
+
+    rec = agent.run(ROOT, config.event)
+    context.log.info(rec["final_output"])
+
+
+@op
+def tag_map_op(context: OpExecutionContext, config: AgentEvent) -> None:
+    from backtester.agents import tag_map as agent
+
+    rec = agent.run(ROOT, config.event.split(",") or ["revenue"])
+    context.log.info(rec["final_output"])
+
+
+@op
+def universe_change_op(context: OpExecutionContext, config: AgentEvent) -> None:
+    from backtester.agents import universe_change as agent
+
+    error, _, html = config.event.partition("|")
+    rec = agent.run(ROOT, error, html or "data/raw/wikipedia")
+    context.log.info(rec["final_output"])
+
+
+@op
+def drift_op(context: OpExecutionContext, config: AgentEvent) -> None:
+    from backtester.agents import drift as agent
+
+    rec = agent.run(ROOT, config.event or "decisions/drift/latest.md")
+    context.log.info(rec["final_output"])
+
+
+@job
+def research_log_agent():
+    research_log_op()
+
+
+@job
+def reporting_agent():
+    reporting_op()
+
+
+@job
+def triage_agent():
+    triage_op()
+
+
+@job
+def tag_map_agent():
+    tag_map_op()
+
+
+@job
+def universe_change_agent():
+    universe_change_op()
+
+
+@job
+def drift_agent():
+    drift_op()
+
+
+def _event(op_name: str, text: str) -> RunConfig:
+    return RunConfig(ops={op_name: AgentEvent(event=text)})
+
+
+@asset_sensor(asset_key=AssetKey("results"), job=research_log_agent)
+def results_materialized(context, asset_event):
+    """11.2: after every pipeline run."""
+    return RunRequest(run_key=str(asset_event.run_id))
+
+
+@run_status_sensor(
+    run_status=DagsterRunStatus.SUCCESS,
+    monitored_jobs=[full_job],
+    request_job=reporting_agent,
+)
+def pipeline_green(context):
+    """11.3: a full run that finished with every blocking check passed."""
+    return RunRequest(run_key=context.dagster_run.run_id)
+
+
+@run_failure_sensor(monitored_jobs=[full_job, sec_job, universe_job, prices_job])
+def pipeline_failed(context):
+    """11.5 / 11.4 / 11.6: route a failure to the agent that handles it."""
+    text = context.failure_event.message or ""
+    run = context.dagster_run
+    if run.job_name == universe_job.name:
+        yield RunRequest(
+            job_name=universe_change_agent.name,
+            run_key=run.run_id,
+            run_config=_event("universe_change_op", f"{text}|data/raw/wikipedia"),
+        )
+        return
+    if "recent_fundamentals_coverage" in text:
+        yield RunRequest(
+            job_name=tag_map_agent.name,
+            run_key=run.run_id,
+            run_config=_event("tag_map_op", "revenue,cogs,net_income,cfo"),
+        )
+        return
+    yield RunRequest(
+        job_name=triage_agent.name,
+        run_key=run.run_id,
+        run_config=_event(
+            "triage_op", f"run {run.run_id} of {run.job_name} failed: {text}"
+        ),
+    )
+
+
+@sensor(job=triage_agent, minimum_interval_seconds=6 * 3600)
+def four_sigma_months(context):
+    """11.5: a factor month beyond four leave-one-out sigmas, once each."""
+    from backtester.agents.triage import anomalous_months
+
+    hits = anomalous_months(cfg())
+    if hits.is_empty():
+        return SkipReason("no anomalous months")
+    seen = set((context.cursor or "").split(";")) - {""}
+    for r in hits.iter_rows(named=True):
+        key = f"{r['factor']}:{r['month']}"
+        if key in seen:
+            continue
+        seen.add(key)
+        yield RunRequest(
+            run_key=key,
+            run_config=_event(
+                "triage_op",
+                f"{r['factor']} long-short {r['month']}: "
+                f"{r['ret_gross']:+.3f} ({r['sigma']:+.1f} sigma)",
+            ),
+        )
+    context.update_cursor(";".join(sorted(seen)))
+
+
 defs = Definitions(
     assets=[
         wikipedia_html,
@@ -329,6 +506,19 @@ defs = Definitions(
         momentum_validates_against_umd,
         every_validation_row_is_present,
     ],
-    jobs=[prices_job, universe_job, sec_job, benchmarks_job, full_job],
+    jobs=[
+        prices_job,
+        universe_job,
+        sec_job,
+        benchmarks_job,
+        full_job,
+        research_log_agent,
+        reporting_agent,
+        triage_agent,
+        tag_map_agent,
+        universe_change_agent,
+        drift_agent,
+    ],
     schedules=schedules,
+    sensors=[results_materialized, pipeline_green, pipeline_failed, four_sigma_months],
 )

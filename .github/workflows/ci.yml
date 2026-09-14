@@ -1,0 +1,51 @@
+# BUILD_PLAN 11.8. Three jobs: the gate on every push and pull request;
+# the tag-map guard on pull requests that touch tag_map.toml; the
+# spot-check on pull requests that touch the universe parser or the
+# fixtures. The data volume is not in git, so the coverage and regression
+# tests that need it skip here and run locally through the Dagster checks.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }  # the research-log tests read git history
+      - uses: astral-sh/setup-uv@v5
+      - run: uv python install 3.12
+      - run: uv sync --frozen
+      - run: uv run ruff check . && uv run ruff format --check .
+      - run: PYTHONIOENCODING=utf-8 uv run pytest -q
+
+  tag-map:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@v5
+      - run: uv python install 3.12
+      - run: uv sync --frozen
+      - name: tag_map.toml only ever gains tags
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- src/backtester/tag_map.toml; then
+            echo "tag map unchanged"; exit 0; fi
+          git show origin/${{ github.base_ref }}:src/backtester/tag_map.toml > /tmp/base_tag_map.toml
+          uv run python scripts/check_tag_map.py /tmp/base_tag_map.toml src/backtester/tag_map.toml
+
+  spotcheck:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv python install 3.12
+      - run: uv sync --frozen
+      - name: membership spot-check and universe tests
+        run: PYTHONIOENCODING=utf-8 uv run pytest -q tests/test_universe.py

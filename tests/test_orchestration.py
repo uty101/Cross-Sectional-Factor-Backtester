@@ -44,3 +44,23 @@ def test_dependencies_follow_the_data_flow() -> None:
     )
     assert "fundamentals_monthly" in deps("factor_value")
     assert {"sensitivities", "delisting"} <= deps("results")
+
+
+def test_every_agent_has_a_job_and_the_sensors_are_wired() -> None:
+    jobs = {j.name for j in d.defs.jobs}
+    for name in (
+        "research_log",
+        "reporting",
+        "triage",
+        "tag_map",
+        "universe_change",
+        "drift",
+    ):
+        assert f"{name}_agent" in jobs
+    sensors = {s.name for s in d.defs.sensors}
+    assert sensors == {
+        "results_materialized",
+        "pipeline_green",
+        "pipeline_failed",
+        "four_sigma_months",
+    }

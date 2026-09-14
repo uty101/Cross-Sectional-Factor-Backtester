@@ -315,7 +315,7 @@ what each of those commits changed, from its body, below a marker.
 
 ```bash
 uv sync
-uv run pytest                                   # 112 tests
+uv run pytest                                   # 115 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11
