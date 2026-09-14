@@ -51,6 +51,14 @@ hml_replica = 0.60
 rmw_replica = 0.60
 beta = 0.50
 
+[checks]
+# Dagster asset checks (BUILD_PLAN 10.5). A failing blocking check stops
+# what depends on the asset.
+universe_min = 490
+universe_max = 510
+max_recent_price_gap_pct = 5.0             # mean over the last 12 months
+min_recent_fundamentals_coverage = 0.75    # assets, equity, net income, revenue
+
 [paths]
 data = "data"
 reports = "reports"

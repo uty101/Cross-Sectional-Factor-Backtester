@@ -16,6 +16,8 @@ dependencies = [
     "fpdf2>=2.8.8",
     "anthropic>=1.5.0",
     "fastexcel>=0.21.0",
+    "dagster>=1.13.22",
+    "dagster-webserver>=1.13.22",
 ]
 
 [project.scripts]
@@ -35,6 +37,9 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/backtester"]
+
+[tool.dagster]
+module_name = "backtester.orchestration.definitions"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

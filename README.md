@@ -290,7 +290,7 @@ what each of those commits changed, from its body, below a marker.
 
 ```bash
 uv sync
-uv run pytest                                   # 104 tests
+uv run pytest                                   # 106 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11
@@ -300,6 +300,7 @@ uv run backtester build --step universe && uv run backtester build --step prices
 uv run backtester build --step benchmarks && uv run backtester build --step fundamentals
 uv run backtester build --step text && uv run backtester run --factor text_change
 uv run backtester run-all && uv run backtester sensitivities && uv run backtester report
+uv run dagster dev                              # the same pipeline as assets, with checks and schedules
 ```
 
 Raw downloads are never overwritten and every one is in

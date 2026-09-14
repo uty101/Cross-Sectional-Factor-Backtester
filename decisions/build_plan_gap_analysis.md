@@ -55,7 +55,9 @@ and this directory is the plan's `decisions/`.
 | 9.1 | four charts, USREC shading | done 2026-09-14 | FRED USREC fetched/parsed; `report.recession_spans` reads every NBER span in the window, hard-coded 2020 is the fallback |
 | 9.2 | README regenerated from a template | decline | see §2.4 |
 | 9.3 | methodology PDF via pandoc | done | `methodology.py` via fpdf2; no pandoc on this machine |
-| 10.x | Dagster, incremental, recompute check, asset checks | new | |
+| 10.1, 10.2, 10.5 | Dagster assets, schedules, asset checks | done 2026-09-14 | `backtester.orchestration.definitions`: 20 assets, 5 checks (all green on the current data; validation reported as WARN), 4 schedules. Path is `src/backtester/orchestration/`, not `orchestration/` (ruling 3) |
+| 10.3 | incremental compute | declined | every factor recomputes in under a minute; one code path keeps 10.4 honest. Owner can overrule |
+| 10.4 | full recompute check | new | needs the `asof_join` tie fix in §5 first |
 | 11.1–11.2 | harness, research-log agent | done 2026-09-14 | `agents/base.py`, `agents/tools.py`, `agents/research_log.py`; **no real logged run yet: no API key or gh on this machine** |
 | 11.3–11.8 | five more agents, sensors, CI | new | |
 | — | 10-K text factor, invariant 10 | done, not in plan | `text.py`, added 2026-09-14 |

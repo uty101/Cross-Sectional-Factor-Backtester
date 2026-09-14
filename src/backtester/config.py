@@ -50,6 +50,8 @@ class Config:
     text_min_words: int
     # validation: factor -> minimum correlation with its benchmark
     validation: tuple[tuple[str, float], ...]
+    # checks: thresholds for the Dagster asset checks
+    checks: tuple[tuple[str, float], ...]
     # paths
     data: Path
     reports: Path
@@ -110,6 +112,7 @@ def load(path: str | Path = "config.toml") -> Config:
     signals, fundamentals, paths = raw["signals"], raw["fundamentals"], raw["paths"]
     text = raw["text"]
     validation = raw.get("validation", {})
+    checks = raw.get("checks", {})
 
     return Config(
         start=date.fromisoformat(window["start"]),
@@ -134,6 +137,7 @@ def load(path: str | Path = "config.toml") -> Config:
         text_similarity=text["similarity"],
         text_min_words=int(text["min_words"]),
         validation=tuple((k, float(v)) for k, v in validation.items()),
+        checks=tuple((k, float(v)) for k, v in checks.items()),
         data=Path(paths["data"]),
         reports=Path(paths["reports"]),
         specifications=Path(paths["specifications"]),
