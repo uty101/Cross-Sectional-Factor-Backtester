@@ -42,3 +42,11 @@ def test_invalid_values_are_refused(repo_root: Path, changes: dict) -> None:
     cfg = config.load(repo_root / "config.toml")
     with pytest.raises(ValueError):
         cfg.with_(**changes)
+
+
+def test_config_hash_is_stable_and_sensitive(repo_root: Path) -> None:
+    a = config.load(repo_root / "config.toml")
+    b = config.load(repo_root / "config.toml")
+    assert config.config_hash(a) == config.config_hash(b)
+    assert len(config.config_hash(a)) == 12
+    assert config.config_hash(a) != config.config_hash(a.with_(base_bps=25.0))

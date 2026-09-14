@@ -35,7 +35,7 @@ from pathlib import Path
 
 import polars as pl
 
-from backtester.config import Config
+from backtester.config import Config, config_hash
 
 SPEC_COLUMNS = [
     "timestamp",
@@ -54,6 +54,8 @@ SPEC_COLUMNS = [
     "sharpe_gross",
     "sharpe_net",
     "note",
+    "config_hash",
+    "git_commit",
 ]
 
 
@@ -292,13 +294,56 @@ def log_specification(path: Path, cfg: Config, **fields: object) -> None:
         "sharpe_gross": _fmt(fields.get("sharpe_gross")),
         "sharpe_net": _fmt(fields.get("sharpe_net")),
         "note": fields.get("note", ""),
+        "config_hash": config_hash(cfg),
+        "git_commit": git_commit(),
     }
     new = not path.exists() or path.stat().st_size == 0
+    if not new:
+        _widen_columns(path)
     with open(path, "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=SPEC_COLUMNS)
         if new:
             w.writeheader()
         w.writerow(row)
+
+
+def git_commit() -> str:
+    """Short hash of HEAD, or "nogit" outside a repository."""
+    import subprocess
+
+    try:
+        out = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=10,
+        )
+        return out.stdout.strip() or "nogit"
+    except (OSError, subprocess.SubprocessError):
+        return "nogit"
+
+
+def _widen_columns(path: Path) -> None:
+    """Bring a log written under an older header up to SPEC_COLUMNS.
+
+    Columns are only ever appended, so every existing row keeps its
+    values and gets blanks for the new ones; the row count is unchanged.
+    Rows logged before a column existed are not backfilled: the commit a
+    2026-09-11 run was made under is not known, and is not guessed.
+    """
+    with open(path, encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        if reader.fieldnames == SPEC_COLUMNS:
+            return
+        if not set(reader.fieldnames or []) <= set(SPEC_COLUMNS):
+            raise ValueError(f"{path} has columns outside SPEC_COLUMNS")
+        rows = list(reader)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=SPEC_COLUMNS)
+        w.writeheader()
+        for r in rows:
+            w.writerow({c: r.get(c, "") for c in SPEC_COLUMNS})
 
 
 def _fmt(x: object) -> str:

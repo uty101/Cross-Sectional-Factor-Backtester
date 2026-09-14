@@ -251,7 +251,7 @@ Kept as a first-class section, per the brief.
 
 ```bash
 uv sync
-uv run pytest                                   # 79 tests
+uv run pytest                                   # 83 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11

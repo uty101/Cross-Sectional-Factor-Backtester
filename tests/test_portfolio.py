@@ -173,3 +173,41 @@ def test_validation_compares_formation_month_with_the_month_earned() -> None:
     v = run.validate(ls, french, "umd")
     # Row M1 earned in Feb pairs with umd(M2) = +0.05 and so on: correlation 1.
     assert v["months"] == 3 and abs(v["corr"] - 1.0) < 1e-12
+
+
+def test_specification_row_carries_config_hash_and_commit(cfg: config.Config) -> None:
+    z = pl.DataFrame({"month": [M1] * 2, "ticker": ["A", "B"], "z": [-1.0, 1.0]})
+    rets = pl.DataFrame(
+        {"month": [M1] * 2, "ticker": ["A", "B"], "ret_fwd": [0.0, 0.1]}
+    )
+    portfolio.backtest(z, rets, cfg, factor="test")
+    log = pl.read_csv(cfg.specifications)
+    assert log["config_hash"][0] == config.config_hash(cfg)
+    assert log["git_commit"][0] and log["git_commit"][0] != ""
+
+
+def test_older_log_is_widened_without_losing_rows(cfg: config.Config) -> None:
+    # A log written before config_hash and git_commit existed: two rows
+    # under the 16-column header. Appending a third must keep both, keep
+    # their values, and leave the new columns blank for them.
+    old_cols = portfolio.SPEC_COLUMNS[:-2]
+    cfg.specifications.parent.mkdir(parents=True, exist_ok=True)
+    with open(cfg.specifications, "w", encoding="utf-8", newline="") as f:
+        f.write(",".join(old_cols) + "\n")
+        f.write(
+            "t1,momentum,m,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1,0.0,first\n"
+        )
+        f.write(
+            "t2,value,v,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5,0.4,second\n"
+        )
+    assert portfolio.count_specifications(cfg.specifications) == 2
+    z = pl.DataFrame({"month": [M1] * 2, "ticker": ["A", "B"], "z": [-1.0, 1.0]})
+    rets = pl.DataFrame(
+        {"month": [M1] * 2, "ticker": ["A", "B"], "ret_fwd": [0.0, 0.1]}
+    )
+    portfolio.backtest(z, rets, cfg, factor="test")
+    assert portfolio.count_specifications(cfg.specifications) == 3
+    log = pl.read_csv(cfg.specifications)
+    assert log.columns == portfolio.SPEC_COLUMNS
+    assert log["note"].to_list()[:2] == ["first", "second"]
+    assert log["config_hash"][0] is None and log["config_hash"][2] is not None

@@ -8,8 +8,10 @@ would fail silently downstream.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import tomllib
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from datetime import date
 from pathlib import Path
 
@@ -82,6 +84,16 @@ class Config:
         from dataclasses import replace
 
         return replace(self, **changes)  # type: ignore[arg-type]
+
+
+def config_hash(cfg: Config) -> str:
+    """First 12 hex digits of the sha256 of the sorted JSON of every field.
+
+    Two runs with the same hash ran under the same knobs; the spec log
+    records it next to the factor and the commit (BUILD_PLAN step 0.3).
+    """
+    payload = json.dumps(asdict(cfg), sort_keys=True, default=str)
+    return hashlib.sha256(payload.encode()).hexdigest()[:12]
 
 
 def load(path: str | Path = "config.toml") -> Config:
