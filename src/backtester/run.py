@@ -144,9 +144,15 @@ def member_panel(membership: pl.DataFrame, months: list[date]) -> pl.DataFrame:
     return pl.DataFrame(rows, schema={"month": pl.Date, "ticker": pl.Utf8})
 
 
-def raw_signal(name: str, inp: Inputs) -> pl.DataFrame:
-    """Frame[month, ticker, value] for one named signal."""
-    cfg = inp.cfg
+def raw_signal(name: str, inp: Inputs, cfg: Config | None = None) -> pl.DataFrame:
+    """Frame[month, ticker, value] for one named signal.
+
+    ``cfg`` is the specification being run; it defaults to the one the
+    inputs were loaded under, but a sensitivity that changes a signal
+    knob (momentum_window, text_similarity, ...) must pass its own, or
+    the knob is silently the base one. That happened once (spec row 130).
+    """
+    cfg = cfg or inp.cfg
     month_ends = inp.monthly.select("month", "t").unique().sort("month")
     if name == "momentum_12_1":
         back, skip = cfg.momentum_window
@@ -201,7 +207,9 @@ def run_factor(
 
     zs = []
     for name in spec["signals"]:
-        raw = raw_signal(name, inp).join(members, on=["month", "ticker"], how="inner")
+        raw = raw_signal(name, inp, cfg).join(
+            members, on=["month", "ticker"], how="inner"
+        )
         zs.append(signals.normalise(raw, sectors, cfg.winsor))
     z = zs[0] if len(zs) == 1 else signals.composite(zs)
 

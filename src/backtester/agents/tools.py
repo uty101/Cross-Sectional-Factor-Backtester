@@ -53,6 +53,10 @@ class Toolbox:
     root: Path
     agent: str
     scripts: dict[str, Callable[[list[str]], str]] = field(default_factory=dict)
+    # Paths inside FORBIDDEN_WRITE this one agent may put in a pull request
+    # (never write directly): the tag-map agent's tag_map.toml, the
+    # universe agent's parser. Reviewed by a person and CI before merge.
+    allow_pr: tuple[str, ...] = ()
 
     # --- guards ---------------------------------------------------------
 
@@ -69,9 +73,11 @@ class Toolbox:
             raise PermissionError(f"{rel} is not readable by an agent")
         return p
 
-    def _writable(self, rel: str) -> Path:
+    def _writable(self, rel: str, via_pr: bool = False) -> Path:
         p = self._inside(rel)
         r = p.relative_to(self.root.resolve()).as_posix()
+        if via_pr and r in self.allow_pr:
+            return p
         if any(r == f or r.startswith(f + "/") for f in FORBIDDEN_WRITE):
             raise PermissionError(f"{rel} is not writable by an agent")
         return p
@@ -103,10 +109,11 @@ class Toolbox:
         if not SELECT_ONLY.match(sql):
             raise PermissionError("only SELECT / WITH statements are allowed")
         con = duckdb.connect()
-        for sub in ("interim", "processed"):
+        for sub in ("interim", "processed", "interim/recompute", "processed/recompute"):
             for f in sorted((self.root / "data" / sub).glob("*.parquet")):
+                name = sub.replace("/", "_")
                 con.execute(
-                    f"CREATE VIEW {sub}_{f.stem} AS SELECT * FROM "
+                    f"CREATE VIEW {name}_{f.stem} AS SELECT * FROM "
                     f"read_parquet('{f.as_posix()}')"
                 )
         spec = self.root / "reports" / "specifications.csv"
@@ -148,7 +155,7 @@ class Toolbox:
         if not SAFE_NAME.match(branch):
             raise PermissionError(f"branch {branch!r} must be a bare name")
         for rel in files:
-            self._writable(rel)
+            self._writable(rel, via_pr=True)
         wt = self.root / ".agent-worktrees" / branch
         wt.parent.mkdir(exist_ok=True)
         try:

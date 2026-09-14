@@ -52,8 +52,8 @@ outsider can verify, over 2010–2026?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the composite's net Sharpe of 0.34 deflates to a 12% probability of
-beating the best of 83 logged trials by luck.
+of 1; the composite's net Sharpe of 0.32 deflates to a 7% probability of
+beating the best of 131 logged trials by luck.
 
 ## Results
 
@@ -64,15 +64,15 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Momentum 12-1 | 2.2% | 0.7% | 15.8% | 0.05 | 0.01 | −56% | 0.62 | 0.007 | 0.6 | 15 bp |
-| Value (B/P, E/P) | 5.3% | 4.6% | 9.2% | 0.50 | 0.30 | −22% | 0.28 | 0.011 | 1.4 | 80 bp |
-| Quality (GP/A, accruals) | 2.1% | 1.4% | 8.5% | 0.17 | 0.03 | −24% | 0.26 | 0.009 | 1.5 | 33 bp |
+| Value (B/P, E/P) | 5.1% | 4.4% | 9.1% | 0.49 | 0.22 | −21% | 0.27 | 0.011 | 1.4 | 79 bp |
+| Quality (GP/A, accruals) | 1.9% | 1.3% | 8.5% | 0.16 | 0.02 | −24% | 0.25 | 0.009 | 1.5 | 32 bp |
 | Low volatility | −4.1% | −4.7% | 18.9% | −0.25 | 0.00 | −71% | 0.24 | 0.003 | 0.2 | none (loses gross) |
-| Composite | 5.9% | 5.0% | 14.5% | 0.34 | 0.12 | −28% | 0.40 | 0.018 | 1.9 | 62 bp |
-| 10-K text similarity | 0.8% | 0.1% | 7.3% | 0.01 | 0.01 | −29% | 0.31 | 0.003 | 0.6 | 11 bp |
+| Composite | 5.6% | 4.6% | 14.4% | 0.32 | 0.07 | −28% | 0.39 | 0.018 | 1.9 | 59 bp |
+| 10-K text similarity | −0.1% | −0.8% | 5.7% | −0.15 | 0.00 | −27% | 0.30 | 0.003 | 0.6 | none (loses gross) |
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 83 is the row
+the same dispersion, adjusted for skew and kurtosis. *N* = 131 is the row
 count of [reports/specifications.csv](reports/specifications.csv), where
 every run — base, sensitivity, diagnostic, and the two broken first attempts
 at momentum — is logged. **Break-even cost** is the one-way cost at which
@@ -85,29 +85,37 @@ What the table says, factor by factor:
   Holding for 3–12 months instead of 1 raises the net Sharpe to 0.18–0.23
   by cutting turnover, at the price of tracking UMD less closely.
 - **Value** is the one that worked, and not the way the brief expected. Net
-  Sharpe 0.50, Fama-MacBeth t 3.2, break-even 80 bp. Its attribution alpha
-  of 4.9% (t 2.4) after Mkt, HML, UMD and RMW is the number to distrust
+  Sharpe 0.49, Fama-MacBeth t 3.2, break-even 79 bp. Its attribution alpha
+  of 4.7% (t 2.3) after Mkt, HML, UMD and RMW is the number to distrust
   first. It is not the earnings-yield half: sector-neutral B/P on its own
   has an alpha of 4.5% (t 2.3) with an HML loading of only 0.26, and
   sector-neutral E/P 4.6% (t 1.9) with an HML loading of −0.12. The "alpha"
   is what sector neutralisation leaves after HML, which is not
   sector-neutral — a within-sector value premium that the French factor
   does not price, or a data-coverage artefact in the early years; the
-  coverage split below says 0.48 on the well-covered months against 0.50
-  on all, which argues for the former. Cap-weighted it drops to 0.30.
-- **Quality** is small (net Sharpe 0.17) and 0.42 cap-weighted; accruals
+  coverage split below says 0.49 on the well-covered months against 0.49
+  on all, which argues for the former. Cap-weighted it drops to 0.29.
+- **Quality** is small (net Sharpe 0.16) and 0.41 cap-weighted; accruals
   carry it, gross profitability alone is negative in this universe.
 - **Low volatility** loses 4.1% a year gross as a long–short. Its
   attribution is the brief's prediction: market beta −0.65 (t −10.5) and
   RMW 0.94 (t 8.2), with alpha of 1.1% (t 0.4). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
-- **Composite** (all six signals) nets 0.34, 0.64 held for 12 months.
+- **Composite** (all six signals) nets 0.32, 0.52 held for 12 months. The
+  12-month hold is fragile to its calendar: dropping the thin January 2010
+  formation (below) moved the annual rebalance from January to February and
+  took quality's 12-month Sharpe from 0.23 to 0.05 and the composite's from
+  0.64 to 0.52 — a hold that long has only sixteen rebalances to average
+  over.
 - **10-K text similarity** — long the names whose annual report changed
   least year on year, Cohen, Malloy and Nguyen's "Lazy Prices" — earns
-  nothing here: 0.8% gross, 0.1% net, alpha 1.1% (t 0.6), R² 0.02 on the
+  nothing here: −0.1% gross, −0.8% net, alpha 0.0% (t 0.0), R² 0.04 on the
   four French factors, so it is at least not a repackaging of them. Jaccard
-  instead of cosine gives 0.05 net; cap-weighting and a 3-month hold go
-  negative. The paper's effect sits in small caps and in the short leg, and
+  instead of cosine gives 0.03 net; every variant is within ±0.2 of zero.
+  Its first four months had two to five names and one of them printed +18%
+  on a single stock — the anomaly detector caught it, and the 50-name
+  minimum cross-section (below) now removes such months for every factor.
+  The paper's effect sits in small caps and in the short leg, and
   this is an S&P 500 long-short over 2010-2026. It is in the table because
   the point of building it was the data path (next section), not the return.
 
@@ -149,7 +157,7 @@ leg correlates only 0.92 with full HML over the window).
 | Replication | vs full factor | vs big-cap leg | from 2016 |
 |---|---|---|---|
 | B/P, cap-weighted terciles | 0.65 | **0.74** | **0.89** |
-| Pre-tax income / FY book equity, cap-weighted terciles | 0.27 | 0.45 | 0.62 |
+| Pre-tax income / FY book equity, cap-weighted terciles | 0.28 | 0.48 | 0.63 |
 
 The book-equity join clears the bar against the like-for-like series. The
 profitability replication does not, and the by-period numbers say why: it
@@ -178,8 +186,8 @@ the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
 yfinance, and that is the survivorship that remains: the "with and without"
 table in `results.md` gives every factor on the 129 months from 2015-12
-where the price gap is under 20% — value 0.48 against 0.50 on all months,
-quality 0.34 against 0.17, momentum −0.03 against 0.05. Fundamentals coverage is 39% of members in 2010 and 86%
+where the price gap is under 20% — value 0.49 against 0.49 on all months,
+quality 0.34 against 0.16, momentum −0.03 against 0.05. Fundamentals coverage is 39% of members in 2010 and 86%
 in 2023. A Russell 3000 version needs paid coverage of delisted names and
 their filings.
 
@@ -244,7 +252,7 @@ what each of those commits changed, from its body, below a marker.
   under a billion dollars is dropped and listed.
 - **`OperatingIncomeLoss` is not reported by banks or insurers**, which
   left profitability without financials and its French replication at 0.31.
-  Pre-tax income over fiscal-year book equity is the closest reported line and lifted it to 0.45 — still
+  Pre-tax income over fiscal-year book equity is the closest reported line and lifted it to 0.48 — still
   short, for the coverage reasons above.
 - **Value and quality do not validate against HML and RMW as reported**, and
   the fix was not to change the reported factors until they did; it was to
@@ -270,12 +278,29 @@ what each of those commits changed, from its body, below a marker.
 - **Trailing-twelve-month flows from 10-Qs change nothing you can see.**
   Built as BUILD_PLAN step 4.5 (`fundamentals.ttm`: YTD + last annual −
   prior-year YTD, stamped with the latest of the three filing dates) and
-  run as logged sensitivities: value with TTM earnings yield nets 0.50
-  against 0.50 annual and correlates 0.25 with HML against 0.25; quality
-  with TTM gross profit and accruals nets 0.07 against 0.17 and
+  run as logged sensitivities: value with TTM earnings yield nets 0.45
+  against 0.49 annual and correlates 0.24 with HML against 0.25; quality
+  with TTM gross profit and accruals nets 0.06 against 0.16 and
   correlates 0.09 with RMW against 0.07. Coverage is 79.2% of
   member-months against 79.7%. The reported factors keep the annual
   convention.
+- **The first month of the window had fifteen names, and one of them was a
+  factor return.** Fundamentals arrive with the FY2009 10-Ks in February
+  and March 2010, so January 2010 had 15–23 names with a value or quality
+  signal and value's +5.5% that month was one long against two shorts; the
+  text factor's first four months had two to five names and printed +18%
+  on one stock. The 4σ anomaly detector built for the triage agent
+  (BUILD_PLAN 11.5) surfaced it. `config.toml [portfolio] min_names = 50`
+  now forms no portfolio in a month thinner than that; every affected
+  specification was re-run and logged (N 83 → 131), and the DSRs in the
+  table fell with N as they should.
+- **One specification row is mislabelled, and it stays.** Row 94 says
+  "sensitivity jaccard" and is a cosine run: `raw_signal` read the scorer
+  from the inputs' config rather than the run's, so a shared `Inputs`
+  silently kept the base knob. Fixed and tested; the correct Jaccard run
+  is row 131, whose note points back to "row 130" — miscounted when it
+  was written. Neither row is edited: the log is append-only, and this
+  paragraph is the correction.
 - **A terminal delisting return changes nothing either.** BUILD_PLAN 8.2's
   `terminal` convention (−30% in the month after a removed name's last
   print, `config.toml [delisting]`) applies to nine names in the window —
@@ -290,7 +315,7 @@ what each of those commits changed, from its body, below a marker.
 
 ```bash
 uv sync
-uv run pytest                                   # 106 tests
+uv run pytest                                   # 112 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11

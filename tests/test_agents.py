@@ -137,6 +137,13 @@ def test_write_guards_cover_data_src_config_and_the_spec_log(repo: Path) -> None
             box.open_pr("b", "t", "b", {bad: "x"})
     with pytest.raises(PermissionError):
         box.write_decision("../escape.md", "x")
+    # An explicit per-agent allowance covers pull requests only, one path.
+    allowed = tools.Toolbox(repo, "tagmap", allow_pr=("src/backtester/tag_map.toml",))
+    assert allowed._writable("src/backtester/tag_map.toml", via_pr=True)
+    with pytest.raises(PermissionError):
+        allowed._writable("src/backtester/tag_map.toml")  # not a direct write
+    with pytest.raises(PermissionError):
+        allowed._writable("src/backtester/run.py", via_pr=True)  # not that path
     rel = box.write_decision("note.md", "content")
     assert rel == "decisions/unit/note.md"
     assert (repo / rel).read_text() == "content"
@@ -229,3 +236,88 @@ def test_research_log_agent_wiring(
     assert not gen["is_error"] and rl.MARKER in gen["output"]
     assert (tmp_path / "decisions" / "research_log" / "draft.md").read_text() == "x"
     assert client.requests[0]["system"] == agent.SYSTEM
+
+
+def test_reporting_agent_is_blocked_when_a_check_failed(repo: Path) -> None:
+    from backtester.agents import reporting
+
+    with pytest.raises(PermissionError, match="blocked"):
+        reporting.run(repo, checks_passed=False, client=FakeClient([]), model="m")
+    client = FakeClient([_text("note")])
+    rec = reporting.run(repo, checks_passed=True, client=client, model="m")
+    assert rec["agent"] == "reporting"
+    assert [t["name"] for t in client.requests[0]["tools"]] == reporting.TOOLS
+    assert sorted(reporting.toolbox(repo).scripts) == [
+        "previous_results",
+        "spec_rows_since",
+    ]
+
+
+def test_tag_map_agent_may_pr_only_the_tag_map(repo: Path) -> None:
+    from backtester.agents import tag_map
+
+    box = tag_map.toolbox(repo)
+    assert box.allow_pr == ("src/backtester/tag_map.toml",)
+    assert box._writable("src/backtester/tag_map.toml", via_pr=True)
+    with pytest.raises(PermissionError):
+        box._writable("src/backtester/fundamentals.py", via_pr=True)
+    client = FakeClient([_text("nothing to propose")])
+    rec = tag_map.run(repo, ["revenue"], client=client, model="m")
+    assert "revenue" in rec["user_prompt"] and "candidate_tags" in rec["user_prompt"]
+
+
+def test_triage_agent_flags_a_four_sigma_month(repo: Path, monkeypatch) -> None:
+    from datetime import date
+
+    from backtester import config
+    from backtester.agents import triage
+
+    cfg = config.load(Path(__file__).resolve().parent.parent / "config.toml")
+    cfg = cfg.with_(data=repo / "data")
+    months = [date(2020, m, 28) for m in range(1, 13)]
+    rets = [0.01, -0.01] * 5 + [0.01, 0.50]  # the last month is the outlier
+    pl.DataFrame({"month": months, "ret_gross": rets}).write_parquet(
+        repo / "data" / "processed" / "long_short_momentum.parquet"
+    )
+    hits = triage.anomalous_months(cfg, ["momentum"])
+    assert hits["month"].to_list() == [date(2020, 12, 28)] and hits["sigma"][0] > 3
+    client = FakeClient([_text("issue url")])
+    rec = triage.run(repo, "momentum 2020-12 +50%", client=client, model="m")
+    assert "open_issue" in [t["name"] for t in client.requests[0]["tools"]]
+    assert "open_pr" not in [t["name"] for t in client.requests[0]["tools"]]
+    assert rec["final_output"] == "issue url"
+
+
+def test_universe_change_agent_has_web_search_and_the_parser_allowance(
+    repo: Path,
+) -> None:
+    from backtester.agents import universe_change
+
+    client = FakeClient([_text("pr")])
+    universe_change.run(
+        repo, "KeyError: 'Date'", "data/raw/x.html", client=client, model="m"
+    )
+    sent = client.requests[0]["tools"]
+    assert sent[-1]["type"] == "web_search_20260209"
+    assert universe_change.toolbox(repo).allow_pr == ("src/backtester/universe.py",)
+
+
+def test_drift_agent_sees_recompute_views(repo: Path) -> None:
+    from backtester.agents import drift
+
+    rec_dir = repo / "data" / "processed" / "recompute"
+    rec_dir.mkdir()
+    pl.DataFrame(
+        {"month": ["2026-01-31"], "ticker": ["A"], "ret": [0.2]}
+    ).write_parquet(rec_dir / "returns_monthly.parquet")
+    box = drift.toolbox(repo)
+    out = json.loads(
+        box.duckdb_query(
+            "SELECT a.ret AS inc, b.ret AS full FROM processed_returns_monthly a "
+            "JOIN processed_recompute_returns_monthly b USING (month, ticker)"
+        )
+    )
+    assert out["rows"] == [[0.1, 0.2]]
+    client = FakeClient([_text("issue")])
+    rec = drift.run(repo, "decisions/drift/2026-09-14.md", client=client, model="m")
+    assert "universe_monthly" in rec["user_prompt"]

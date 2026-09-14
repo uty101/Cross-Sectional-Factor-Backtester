@@ -16,6 +16,7 @@ M1, M2, M3 = date(2020, 1, 31), date(2020, 2, 29), date(2020, 3, 31)
 def cfg(repo_root: Path, tmp_path: Path) -> config.Config:
     return config.load(repo_root / "config.toml").with_(
         n_deciles=2,
+        min_names=0,  # synthetic cross-sections of a handful of names
         specifications=tmp_path / "specs.csv",
         base_bps=10.0,
     )
@@ -211,3 +212,24 @@ def test_older_log_is_widened_without_losing_rows(cfg: config.Config) -> None:
     assert log.columns == portfolio.SPEC_COLUMNS
     assert log["note"].to_list()[:2] == ["first", "second"]
     assert log["config_hash"][0] is None and log["config_hash"][2] is not None
+
+
+def test_a_month_below_min_names_forms_no_portfolio(cfg: config.Config) -> None:
+    thin = cfg.with_(min_names=6, n_deciles=2)
+    m2 = date(2020, 2, 29)
+    z = pl.DataFrame(
+        {
+            "month": [M1] * 8 + [m2] * 4,
+            "ticker": list("ABCDEFGH") + list("ABCD"),
+            "z": [float(i) for i in range(8)] + [1.0, 2.0, 3.0, 4.0],
+        }
+    )
+    rets = pl.DataFrame(
+        {
+            "month": [M1] * 8 + [m2] * 4,
+            "ticker": list("ABCDEFGH") + list("ABCD"),
+            "ret_fwd": [0.01] * 12,
+        }
+    )
+    res = portfolio.backtest(z, rets, thin, factor="test")
+    assert res.long_short["month"].to_list() == [M1]  # February had 4 names

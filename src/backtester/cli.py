@@ -55,7 +55,20 @@ def main(argv: Sequence[str] | None = None) -> int:
         "research-log", help="reports/what_did_not_work.md from the spec log and git"
     )
     agent = sub.add_parser("agent", help="run one agent through the harness")
-    agent.add_argument("name", choices=["research_log"])
+    agent.add_argument(
+        "name",
+        choices=[
+            "research_log",
+            "reporting",
+            "tag_map",
+            "triage",
+            "universe_change",
+            "drift",
+        ],
+    )
+    agent.add_argument(
+        "--arg", action="append", default=[], help="agent-specific input"
+    )
 
     args = parser.parse_args(argv)
     cfg = config.load(args.config)
@@ -92,9 +105,27 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.command == "agent":
         from pathlib import Path
 
-        from backtester.agents import research_log as research_log_agent
+        from backtester.agents import (
+            drift,
+            reporting,
+            research_log,
+            tag_map,
+            triage,
+            universe_change,
+        )
 
-        rec = {"research_log": research_log_agent.run}[args.name](Path.cwd())
+        root, a = Path.cwd(), args.arg
+        runners = {
+            "research_log": lambda: research_log.run(root),
+            "reporting": lambda: reporting.run(root, checks_passed=True),
+            "tag_map": lambda: tag_map.run(root, a or ["revenue"]),
+            "triage": lambda: triage.run(root, a[0] if a else "manual run"),
+            "universe_change": lambda: universe_change.run(root, a[0], a[1]),
+            "drift": lambda: drift.run(
+                root, a[0] if a else "decisions/drift/latest.md"
+            ),
+        }
+        rec = runners[args.name]()
         print(
             f"{rec['agent']}: {len(rec['tool_calls'])} tool calls, {rec['stop_reason']}"
         )

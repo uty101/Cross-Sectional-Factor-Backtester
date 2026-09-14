@@ -158,7 +158,12 @@ def backtest(
               priced forward)
     """
     n = cfg.n_deciles
-    dec = assign_deciles(signal_z.filter(pl.col("z").is_finite()), n)
+    z = signal_z.filter(pl.col("z").is_finite())
+    # A month whose cross-section is thinner than min_names forms no
+    # portfolio at all: the first months of a new data source can have a
+    # handful of names, and a decile of them is one stock's return.
+    z = z.filter(pl.len().over("month") >= cfg.min_names)
+    dec = assign_deciles(z, n)
     target = weights(dec, caps, cfg.weighting)
     months = sorted(returns.select("month").unique().get_column("month").to_list())
     sig_months = set(target.get_column("month").unique().to_list())

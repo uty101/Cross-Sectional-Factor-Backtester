@@ -29,6 +29,7 @@ class Config:
     index: str
     # portfolio
     n_deciles: int
+    min_names: int
     weighting: str
     rebalance: str
     lag_days: int
@@ -70,6 +71,8 @@ class Config:
             )
         if self.text_min_words < 0:
             raise ValueError("text min_words cannot be negative")
+        if self.min_names < 0:
+            raise ValueError("min_names cannot be negative")
         if self.n_deciles < 2:
             raise ValueError(f"n_deciles must be at least 2, got {self.n_deciles}")
         if self.lag_days < 0 or self.asof_buffer_days < 0:
@@ -119,6 +122,7 @@ def load(path: str | Path = "config.toml") -> Config:
         end=date.fromisoformat(window["end"]),
         index=universe["index"],
         n_deciles=int(portfolio["n_deciles"]),
+        min_names=int(portfolio.get("min_names", 0)),
         weighting=portfolio["weighting"],
         rebalance=portfolio["rebalance"],
         lag_days=int(portfolio["lag_days"]),

@@ -8,7 +8,7 @@ from datetime import date, datetime
 import polars as pl
 import pytest
 
-from backtester import config, text
+from backtester import config, signals, text
 
 M = [date(2021, 1, 31), date(2021, 2, 28), date(2021, 3, 31), date(2021, 4, 30)]
 
@@ -230,3 +230,43 @@ def test_primary_documents_reads_both_page_shapes() -> None:
     assert text.doc_path(320193, "0000320193-23-000106", "aapl-20230930.htm") == (
         "edgar/10k/320193/0000320193-23-000106.htm.gz"
     )
+
+
+def test_run_factor_uses_the_signal_knob_of_the_config_it_is_given(
+    repo_root, monkeypatch
+) -> None:
+    # The sensitivity loops share one Inputs across configs; a signal-level
+    # knob must come from the config passed in, not from inp.cfg.
+    from backtester import run
+
+    cfg = config.load(repo_root / "config.toml")
+    seen = {}
+
+    def fake_signal(c, sim, ciks, months, measure=None):
+        seen["measure"] = measure or c.text_similarity
+        return pl.DataFrame(schema=signals.SIGNAL_SCHEMA)
+
+    monkeypatch.setattr(text, "signal", fake_signal)
+    inp = run.Inputs(
+        cfg,
+        pl.DataFrame({"ticker": ["A"], "start": [date(2000, 1, 1)], "end": [None]}),
+        pl.DataFrame(
+            {
+                "month": [date(2020, 1, 31)],
+                "t": [date(2020, 1, 31)],
+                "ticker": ["A"],
+                "ret_fwd": [0.0],
+                "px_me": [1.0],
+            }
+        ),
+        pl.DataFrame({"date": [date(2020, 1, 31)], "ticker": ["A"], "ret": [0.0]}),
+        pl.DataFrame({"month": [date(2020, 1, 31)], "umd": [0.0]}),
+        pl.DataFrame({"ticker": ["A"], "cik": [1], "sic": [1], "sector": ["x"]}),
+        None,
+        None,
+        pl.DataFrame(schema=text.SIMILARITY_SCHEMA),
+    )
+    run.raw_signal("doc_similarity", inp, cfg.with_(text_similarity="jaccard"))
+    assert seen["measure"] == "jaccard"
+    run.raw_signal("doc_similarity", inp)
+    assert seen["measure"] == "cosine"

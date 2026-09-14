@@ -59,7 +59,8 @@ and this directory is the plan's `decisions/`.
 | 10.3 | incremental compute | declined | every factor recomputes in under a minute; one code path keeps 10.4 honest. Owner can overrule |
 | 10.4 | full recompute check | new | needs the `asof_join` tie fix in §5 first |
 | 11.1–11.2 | harness, research-log agent | done 2026-09-14 | `agents/base.py`, `agents/tools.py`, `agents/research_log.py`; **no real logged run yet: no API key or gh on this machine** |
-| 11.3–11.8 | five more agents, sensors, CI | new | |
+| 11.3–11.7 | reporting, tag-map, triage, universe-change, drift agents | done 2026-09-14 | one module each under `agents/`, wiring tests on a scripted model; the 4σ detector found the thin-month defect on first use; no live runs (no API key on this machine) |
+| 11.8 | sensors + CI | new | |
 | — | 10-K text factor, invariant 10 | done, not in plan | `text.py`, added 2026-09-14 |
 
 ## 2. Where the plan and the repo disagree

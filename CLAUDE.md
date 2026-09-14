@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 106 tests, ~6 s
+uv run pytest                              # 112 tests, ~6 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -71,7 +71,7 @@ yfinance price files, the French zips, all in `data/raw/manifest.json`.
 `reingest=True` to `fundamentals.build` after changing `tag_map.toml`,
 otherwise new tags silently come back empty.
 
-Every backtest appends to `reports/specifications.csv`; N is 83 as of the
+Every backtest appends to `reports/specifications.csv`; N is 131 as of the
 last report. Each row carries `config_hash` and `git_commit` (blank for
 rows logged before 2026-09-14; not backfilled). **Do not delete rows from it**, including the diagnostic runs
 and the two broken first momentum attempts; the deflated Sharpe reads it.
@@ -122,6 +122,13 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   fixed. Do not tune the reported factors to raise these numbers.
 - **Cost convention** differs from the brief on purpose: every dollar
   traded pays c, `ret_net = ret_gross - 2c * turnover`.
+- **A month thinner than `min_names` (50) forms no portfolio.** January
+  2010 had 15–23 names with fundamentals; the text factor's first four
+  months had 2–5. Their "returns" were single stocks. Found by the 4σ
+  detector in `agents/triage.py` on 2026-09-14.
+- **Spec-log row 94 is mislabelled** ("sensitivity jaccard", actually
+  cosine); row 131 is the correction and its note miscounts the row. Do
+  not edit either; the README explains it.
 - **Series stamping.** Long-short rows carry the *formation* month; anything
   compared with a French factor is shifted one month first
   (`stats.to_month_earned`, `run.validate`). Getting this wrong was the

@@ -212,6 +212,64 @@ def ingest_quarter(zip_path: Path, tags: list[str]) -> pl.DataFrame:
     ).drop_nulls(["cik", "ddate", "filed", "value"])
 
 
+def candidate_tags(
+    cfg: Config, concept: str, fy: int, ciks: list[int], limit: int = 40
+) -> pl.DataFrame:
+    """Frame[tag, n_ciks, example_name]: every tag reported in fiscal year
+    ``fy`` by the given CIKs (the ones with no value for ``concept``),
+    from the raw zips of that year, most widely used first. What the
+    tag-map agent reads to propose additions (BUILD_PLAN 11.4); the
+    interim cache holds mapped tags only, so it cannot come from there.
+    """
+    import duckdb
+
+    zips = sorted((cfg.data / "raw" / "sec").glob(f"{fy}q*.zip")) + sorted(
+        (cfg.data / "raw" / "sec").glob(f"{fy + 1}q1.zip")
+    )
+    if not zips or not ciks:
+        return pl.DataFrame(
+            schema={"tag": pl.Utf8, "n_ciks": pl.Int64, "example": pl.Utf8}
+        )
+    cik_list = ",".join(str(int(c)) for c in ciks)
+    tmp = cfg.data / "raw" / "sec" / "_tmp"
+    tmp.mkdir(exist_ok=True)
+    frames = []
+    for z in zips:
+        with zipfile.ZipFile(z) as zf:
+            num_p, sub_p = tmp / f"{z.stem}_num.txt", tmp / f"{z.stem}_sub.txt"
+            num_p.write_bytes(zf.read("num.txt"))
+            sub_p.write_bytes(zf.read("sub.txt"))
+        try:
+            con = duckdb.connect()
+            frames.append(
+                con.execute(
+                    f"""
+                    SELECT n.tag, s.cik, s.name
+                    FROM read_csv('{num_p.as_posix()}', delim='	', header=true,
+                                  quote='', all_varchar=true, ignore_errors=true) n
+                    JOIN read_csv('{sub_p.as_posix()}', delim='	', header=true,
+                                  quote='', all_varchar=true, ignore_errors=true) s
+                      USING (adsh)
+                    WHERE s.form IN ('10-K', '10-Q') AND s.cik IN ({cik_list})
+                      AND coalesce(n.segments, '') = '' AND n.uom = 'USD'
+                    """
+                ).pl()
+            )
+        finally:
+            num_p.unlink(missing_ok=True)
+            sub_p.unlink(missing_ok=True)
+    df = pl.concat(frames)
+    return (
+        df.group_by("tag")
+        .agg(
+            pl.col("cik").n_unique().alias("n_ciks"),
+            pl.col("name").first().alias("example"),
+        )
+        .sort("n_ciks", descending=True)
+        .head(limit)
+    )
+
+
 def ingest(cfg: Config) -> pl.DataFrame:
     """All quarters -> data/interim/sec_num.parquet, concept-labelled."""
     tag_map = load_tag_map()

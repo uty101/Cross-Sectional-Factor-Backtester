@@ -11,6 +11,7 @@ index = "sp500"
 
 [portfolio]
 n_deciles = 10
+min_names = 50          # a month with fewer names forms no portfolio (a 5-name decile is not one)
 weighting = "ew"        # "ew" or "cw"
 rebalance = "M"
 lag_days = 1            # signal at close t, trade at close t + lag_days
