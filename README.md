@@ -225,7 +225,7 @@ what each of those commits changed, from its body, below a marker.
   first re-pointed twelve removed names: S to SentinelOne instead of
   Sprint, DV to DoubleVerify instead of DeVry, TMC to The Metals Company
   instead of Times Mirror. It now applies to current members only —
-  498 of 500, all agreeing with Wikipedia's CIK — and removed names keep
+  500 of 500, all agreeing with Wikipedia's CIK — and removed names keep
   the name match. Every method is in `data/checks/cik_map.csv`.
 - **A few large filers report the balance-sheet share count in the wrong
   units** (RTX, CMG), and Berkshire reports class-A equivalents against a

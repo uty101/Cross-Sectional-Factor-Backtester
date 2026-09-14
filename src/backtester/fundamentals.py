@@ -115,7 +115,8 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
 
 def sec_tickers(cfg: Config) -> dict[str, int] | None:
     """ticker -> cik from the latest company_tickers.json on disk, or None
-    if none was fetched. Tickers use the repo's convention (BRK-B)."""
+    if none was fetched. The SEC writes share classes with a dash (BRK-B)
+    and the universe with a dot (BRK.B); both spellings are keyed."""
     import json
 
     try:
@@ -123,7 +124,11 @@ def sec_tickers(cfg: Config) -> dict[str, int] | None:
     except FileNotFoundError:
         return None
     entries = json.loads(path.read_text(encoding="utf-8")).values()
-    return {e["ticker"].replace(".", "-"): int(e["cik_str"]) for e in entries}
+    out = {}
+    for e in entries:
+        out[e["ticker"]] = int(e["cik_str"])
+        out[e["ticker"].replace("-", ".")] = int(e["cik_str"])
+    return out
 
 
 # --- tag map ------------------------------------------------------------

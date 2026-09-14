@@ -1,6 +1,4 @@
 ticker,cik,method,matched
-BF.B,14693,constituents,Brown–Forman
-BRK.B,1067983,constituents,Berkshire Hathaway
 XOM,34088,constituents cik absent; name exact (spaces removed),EXXONMOBIL
 FDXF,,constituents cik absent; unmatched,FEDEX FREIGHT
 HONA,,constituents cik absent; unmatched,HONEYWELL AEROSPACE
@@ -336,6 +334,7 @@ BAX,10456,sec company_tickers,Baxter International
 BBY,764478,sec company_tickers,Best Buy
 BDX,10795,sec company_tickers,Becton Dickinson
 BEN,38777,sec company_tickers,Franklin Resources
+BF.B,14693,sec company_tickers,Brown–Forman
 BG,1996862,sec company_tickers,Bunge Global
 BIIB,875045,sec company_tickers,Biogen
 BKNG,1075531,sec company_tickers,Booking Holdings
@@ -345,6 +344,7 @@ BLK,2012383,sec company_tickers,BlackRock
 BMY,14272,sec company_tickers,Bristol Myers Squibb
 BNY,1390777,sec company_tickers,BNY Mellon
 BR,1383312,sec company_tickers,Broadridge Financial Solutions
+BRK.B,1067983,sec company_tickers,Berkshire Hathaway
 BRO,79282,sec company_tickers,Brown & Brown
 BSX,885725,sec company_tickers,Boston Scientific
 BX,1393818,sec company_tickers,Blackstone Inc.

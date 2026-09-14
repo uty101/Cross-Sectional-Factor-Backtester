@@ -39,7 +39,7 @@ and this directory is the plan's `decisions/`.
 | 4.3 | originals only, `prevrpt = 0` | decline | see §2.2 |
 | 4.4 | tag map + coverage ≥ 0.90 | done | `tag_map.toml` 16 concepts, `data/checks/tag_coverage.csv`. Coverage is **below 0.90 before 2013** and documented as a data limit, not fixed by tag additions |
 | 4.5 | TTM from 10-Qs | done 2026-09-14 | `fundamentals.ttm`, `_ttm` panel columns, `value_ttm`/`quality_ttm` logged; moves nothing measurable, reported factors keep annual |
-| 4.6 | as-of join, THE test in README, `company_tickers.json` | done 2026-09-14 | `asof_join`, `test_asof_join_excludes_filing_after_signal_date`, README leads with it. CIK map is Wikipedia + name match (`sectors.cik_map`); `company_tickers.json` is the primary source for current members (498/500, no disagreements); removed names keep the name match because the SEC map is today's snapshot |
+| 4.6 | as-of join, THE test in README, `company_tickers.json` | done 2026-09-14 | `asof_join`, `test_asof_join_excludes_filing_after_signal_date`, README leads with it. CIK map is Wikipedia + name match (`sectors.cik_map`); `company_tickers.json` is the primary source for current members (500/500, no disagreements); removed names keep the name match because the SEC map is today's snapshot |
 | 4.7 | SIC → 11 sectors | done | `sectors.py`, 84.5% GICS agreement logged |
 | 4.8 | SEC shares for cap | done | from the start |
 | 5.1–5.4 | value, quality, low vol, beta, composite | done | `run.FACTORS`; `beta_252` exists, not validated against BAB |
