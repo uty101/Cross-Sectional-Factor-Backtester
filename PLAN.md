@@ -182,6 +182,7 @@ green and committed.
 | **6 Value, quality, low vol** | remaining signals, composite | corr with HML > 0.7, RMW > 0.7; low vol attribution shows the beta/duration story |
 | **7 Sensitivities** | cost 5/10/25, EW vs CW, rebalance frequency from half-life | one config loop, no rewrite; `specifications.csv` has every row |
 | **8 Report** | four charts, results table, validation table, "What did not work", methodology PDF | README results table filled from `results.md`; no number typed by hand |
+| **9 Text** (added 2026-09-14) | 10-K primary documents from EDGAR, indexed from `sub.txt`; year-on-year cosine/Jaccard similarity; `doc_similarity` signal through `asof_join` | Invariant 10 tests; coverage per filing year in `data/checks/text_coverage.csv`; the factor runs through the same engine and is logged like any other |
 
 Time budget from the brief: 4–6 weeks. Rough split: 0–2 one week, 3–4 one
 week, 5 one to two weeks (this is where the time goes), 6–8 one to two weeks.

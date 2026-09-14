@@ -32,6 +32,7 @@ guards. Do not weaken one to make a run pass.
 | 7 | Raw downloads are never overwritten; every fetch appends to `data/raw/manifest.json` (URL, sha256, timestamp). | `test_fetch_refuses_to_overwrite_raw` |
 | 8 | Every backtest run appends a row to `reports/specifications.csv`. N in the deflated Sharpe is that row count, never an argument. | `test_run_logs_specification` |
 | 9 | Nothing in `src/` reads a knob that is not in `config.toml`. | review |
+| 10 | A text score is a deterministic function of documents **filed** on or before *t - asof_buffer_days*. No language model scores a filing: a model trained after the filing knows what happened next, and that leak passes every other test here. | `test_text_signal_is_unchanged_by_a_later_filing`, `test_scorer_has_no_model_and_no_network` |
 
 Two consequences worth spelling out:
 
@@ -49,9 +50,9 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 68 tests, ~3 s
+uv run pytest                              # 79 tests, ~3 s
 uv run ruff check . && uv run ruff format --check .
-uv run backtester fetch --step <universe|prices|benchmarks|fundamentals> --as-of YYYY-MM-DD
+uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
 uv run backtester run --factor momentum [--no-sector] [--note "..."]
 uv run backtester run-all                  # the five reported factors, base spec
@@ -88,6 +89,7 @@ src/backtester/
   fundamentals.py        SEC FSDS via DuckDB, first_filed, asof_join, caps
   tag_map.toml           16 concepts, ordered XBRL tags
   sectors.py             CIK matching by name, SIC -> 11 buckets
+  text.py                10-K primary documents from EDGAR, year-on-year similarity
   signals.py             signals, winsorise, sector z, composite
   portfolio.py           the engine; any (month, ticker, z); spec log
   stats.py               IC, decay, FM/NW, DSR, attribution, break-even
@@ -120,6 +122,15 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
 - **Market cap** uses weighted-average diluted shares first; balance-sheet
   counts are mis-scaled for some filers. Caps under $1bn are dropped
   (`data/checks/market_cap_dropped.csv`).
+- **Text comes from EDGAR, never from company websites.** The 10-K
+  primary documents live under `data/raw/edgar/10k/<cik>/<adsh>.htm.gz`,
+  one per original filing, indexed from `sub.txt` in the FSDS zips so the
+  filing date is the SEC's. Websites have no filing timestamp, overwrite
+  restated numbers in place, and vanish for delisted names. Earnings-call
+  transcripts are not filed and are not used; the 8-K earnings release
+  (Exhibit 99.1) is the next text source to add, not a transcript vendor.
+  The scorer is cosine/Jaccard between consecutive 10-Ks ("Lazy Prices");
+  `config.toml [text] similarity` accepts only those two, by design.
 
 ---
 

@@ -15,6 +15,7 @@ from pathlib import Path
 
 WEIGHTINGS = ("ew", "cw")
 REBALANCES = ("M",)
+SIMILARITIES = ("cosine", "jaccard")  # deterministic scorers only (invariant 10)
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,6 +41,9 @@ class Config:
     beta_window: int
     # fundamentals
     asof_buffer_days: int
+    # text
+    text_similarity: str
+    text_min_words: int
     # paths
     data: Path
     reports: Path
@@ -52,6 +56,12 @@ class Config:
             raise ValueError(f"weighting {self.weighting!r} not in {WEIGHTINGS}")
         if self.rebalance not in REBALANCES:
             raise ValueError(f"rebalance {self.rebalance!r} not in {REBALANCES}")
+        if self.text_similarity not in SIMILARITIES:
+            raise ValueError(
+                f"text similarity {self.text_similarity!r} not in {SIMILARITIES}"
+            )
+        if self.text_min_words < 0:
+            raise ValueError("text min_words cannot be negative")
         if self.n_deciles < 2:
             raise ValueError(f"n_deciles must be at least 2, got {self.n_deciles}")
         if self.lag_days < 0 or self.asof_buffer_days < 0:
@@ -82,6 +92,7 @@ def load(path: str | Path = "config.toml") -> Config:
     window, universe = raw["window"], raw["universe"]
     portfolio, costs = raw["portfolio"], raw["costs"]
     signals, fundamentals, paths = raw["signals"], raw["fundamentals"], raw["paths"]
+    text = raw["text"]
 
     return Config(
         start=date.fromisoformat(window["start"]),
@@ -102,6 +113,8 @@ def load(path: str | Path = "config.toml") -> Config:
         vol_window=int(signals["vol_window"]),
         beta_window=int(signals["beta_window"]),
         asof_buffer_days=int(fundamentals["asof_buffer_days"]),
+        text_similarity=text["similarity"],
+        text_min_words=int(text["min_words"]),
         data=Path(paths["data"]),
         reports=Path(paths["reports"]),
         specifications=Path(paths["specifications"]),

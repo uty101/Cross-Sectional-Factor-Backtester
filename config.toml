@@ -29,6 +29,10 @@ beta_window = 252           # trading days
 [fundamentals]
 asof_buffer_days = 1        # filed on or before t - buffer
 
+[text]
+similarity = "cosine"       # "cosine" (term counts) or "jaccard" (word sets)
+min_words = 1000            # a shorter 10-K is a wrapper round an exhibit; treated as missing
+
 [paths]
 data = "data"
 reports = "reports"

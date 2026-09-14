@@ -11,7 +11,7 @@ import sys
 from collections.abc import Sequence
 from datetime import date
 
-from backtester import benchmarks, config, fundamentals, prices, universe
+from backtester import benchmarks, config, fundamentals, prices, text, universe
 
 # step name -> (fetch, build). Phases add themselves here as they land.
 STEPS = {
@@ -22,6 +22,7 @@ STEPS = {
         lambda cfg, as_of: fundamentals.fetch(cfg, as_of),
         fundamentals.build,
     ),
+    "text": (lambda cfg, as_of: text.fetch(cfg, as_of), text.build),
 }
 UNIMPLEMENTED: dict[str, str] = {}
 

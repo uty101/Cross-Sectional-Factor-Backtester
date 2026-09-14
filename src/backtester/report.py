@@ -32,6 +32,7 @@ LABELS = {
     "quality": "Quality (GP/A, accruals)",
     "low_vol": "Low volatility",
     "composite": "Composite",
+    "text_change": "10-K text similarity",
 }
 # Categorical slots, fixed order, validated (dataviz skill). Text stays ink.
 SERIES = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]

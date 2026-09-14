@@ -159,6 +159,7 @@ years, not a join error, and it is left as a fail rather than tuned.
 | Sector map | SIC from the filings | 11 GICS-like buckets by hand; 84.5% agreement with Wikipedia's GICS on current members |
 | Benchmarks | Ken French data library | Mkt, SMB, HML, RMW, CMA, UMD, and the six size × B/M and size × OP portfolios for the big-cap legs |
 | Risk-free | French RF; FRED DGS1MO kept | Long–short spreads need none |
+| 10-K text | EDGAR primary documents, indexed from the FSDS `sub.txt` | One gzip per original 10-K; **filing date is the SEC's**; scored by cosine/Jaccard against the prior year's filing (Cohen, Malloy and Nguyen 2020). Not company websites: no timestamp, restatements overwrite in place, delisted names vanish. Not transcripts: not filed, no point-in-time archive without a vendor. No language model: a model trained after the filing knows the outcome (invariant 10) |
 
 **Known limitations, stated up front.** The S&P 500 restriction is a
 compromise forced by free data — 496–504 names at every month-end and 818
@@ -228,13 +229,15 @@ Kept as a first-class section, per the brief.
 
 ```bash
 uv sync
-uv run pytest                                   # 68 tests
+uv run pytest                                   # 79 tests
 uv run backtester fetch --step universe --as-of 2026-09-11
 uv run backtester fetch --step prices     --as-of 2026-09-11
 uv run backtester fetch --step benchmarks --as-of 2026-09-11
 uv run backtester fetch --step fundamentals --as-of 2026-09-11   # ~2.5 GB
+uv run backtester fetch --step text --as-of 2026-09-14           # ~10,300 10-K documents, resumable
 uv run backtester build --step universe && uv run backtester build --step prices
 uv run backtester build --step benchmarks && uv run backtester build --step fundamentals
+uv run backtester build --step text && uv run backtester run --factor text_change
 uv run backtester run-all && uv run backtester sensitivities && uv run backtester report
 ```
 
@@ -251,6 +254,7 @@ src/backtester/
   benchmarks.py                French factors and their big-cap legs, FRED
   fundamentals.py + tag_map.toml   SEC filings, first-filed, as-of join, caps
   sectors.py                   CIK matching, SIC -> 11 buckets
+  text.py                      10-K text from EDGAR, year-on-year similarity, invariant 10
   signals.py                   signals, winsorise, sector z-score, composite
   portfolio.py                 the engine: deciles, drift, turnover, costs, spec log
   stats.py                     IC, decay, Fama-MacBeth, Newey-West, DSR, attribution

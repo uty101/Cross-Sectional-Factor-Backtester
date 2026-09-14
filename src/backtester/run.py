@@ -33,6 +33,10 @@ FACTORS: dict[str, dict] = {
     "low_vol": {"signals": ["volatility_252"], "french": None},
     "asset_growth": {"signals": ["asset_growth"], "french": "cma"},
     "beta": {"signals": ["beta_252"], "french": None},
+    # Year-on-year similarity of the 10-K text (Cohen, Malloy and Nguyen
+    # 2020): long the names whose filing did not change. No French factor
+    # to validate against; attribution on the five is the check.
+    "text_change": {"signals": ["doc_similarity"], "french": None},
     # Replications of the French construction, used only to validate the
     # fundamentals join: one signal, no sector neutralisation, cap-weighted
     # terciles (see run.replicate).
@@ -66,6 +70,7 @@ class Inputs:
     sectors: pl.DataFrame | None  # ticker, sector
     fundamentals: pl.DataFrame | None  # month, ticker, concept columns (phase 5)
     caps: pl.DataFrame | None  # month, ticker, cap
+    text: pl.DataFrame | None = None  # text.build output: cik, period, filed, scores
 
 
 @dataclass
@@ -94,6 +99,11 @@ def load_inputs(cfg: Config) -> Inputs:
         if (processed / "market_cap.parquet").exists()
         else None
     )
+    text = (
+        pl.read_parquet(interim / "text_similarity.parquet")
+        if (interim / "text_similarity.parquet").exists()
+        else None
+    )
     return Inputs(
         cfg,
         pl.read_parquet(interim / "membership.parquet"),
@@ -103,6 +113,7 @@ def load_inputs(cfg: Config) -> Inputs:
         sectors,
         fundamentals,
         caps,
+        text,
     )
 
 
@@ -139,6 +150,13 @@ def raw_signal(name: str, inp: Inputs) -> pl.DataFrame:
             month_ends,
             cfg.beta_window,
         )
+    if name == "doc_similarity":
+        if inp.text is None or inp.sectors is None:
+            raise RuntimeError("doc_similarity needs `build --step text` and sectors")
+        from backtester import text
+
+        months = sorted(month_ends.get_column("month").to_list())
+        return text.signal(cfg, inp.text, inp.sectors, months)
     if inp.fundamentals is None:
         raise RuntimeError(f"{name} needs fundamentals (phase 5) which are not built")
     from backtester import fundamentals as fx
