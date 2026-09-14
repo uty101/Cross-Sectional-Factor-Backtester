@@ -521,4 +521,33 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
     from backtester.run import validation_table as validation_csv
 
     validation_csv(cfg, inp).write_csv(cfg.reports / "validation.csv")
+    weighting_gap_table(cfg, [r.factor for r in reports], inp).write_csv(
+        cfg.reports / "weighting_gap.csv"
+    )
     return text
+
+
+def weighting_gap_table(cfg: Config, factors: list[str], inp) -> pl.DataFrame:
+    """Per factor with both a base and a cap-weighted run: the equal-minus-
+    cap spread on SMB (BUILD_PLAN 8.3)."""
+    rows = []
+    for f in factors:
+        cw = cfg.data / "processed" / f"long_short_{f}_cw.parquet"
+        if not cw.exists():
+            continue
+        eq = pl.read_parquet(cfg.data / "processed" / f"long_short_{f}.parquet")
+        a = stats.weighting_gap(
+            eq, pl.read_parquet(cw), inp.french, lags=max(cfg.holding_months - 1, 0)
+        )
+        rows.append(
+            {
+                "factor": f,
+                "alpha_ann": round(a.alpha_annual, 4),
+                "alpha_t": round(a.alpha_t, 2),
+                "beta_smb": round(a.betas["smb"], 3),
+                "t_smb": round(a.beta_t["smb"], 2),
+                "r2": round(a.r2, 3),
+                "months": a.months,
+            }
+        )
+    return pl.DataFrame(rows)

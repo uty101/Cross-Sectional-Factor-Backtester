@@ -162,3 +162,26 @@ def test_ic_decay_half_life_of_a_planted_exponential() -> None:
     table, hl = stats.ic_decay(zf, monthly, [1, 2, 3, 6, 12])
     assert table["mean_ic"][0] > table["mean_ic"][-1]
     assert 2 < hl < 8
+
+
+def test_weighting_gap_recovers_a_planted_smb_loading() -> None:
+    # Equal-minus-cap is built as exactly 0.8 x SMB: the regression must
+    # return beta 0.8, R2 1 and zero alpha.
+    from datetime import date
+
+    months = [
+        pl.Series([date(2020 + i // 12, i % 12 + 1, 1)]).dt.month_end()[0]
+        for i in range(36)
+    ]
+    smb = [(-1) ** i * 0.01 * (i % 5 + 1) for i in range(36)]
+    french = pl.DataFrame({"month": months, "smb": smb})
+    # Formation-stamped series earn their return the month after, so
+    # (eq - cw) at formation t is 0.8 x smb at t + 1.
+    formation = months[:-1]
+    cw = pl.DataFrame({"month": formation, "ret_gross": [0.002] * 35})
+    eq = pl.DataFrame(
+        {"month": formation, "ret_gross": [0.002 + 0.8 * s for s in smb[1:]]}
+    )
+    a = stats.weighting_gap(eq, cw, french)
+    assert abs(a.betas["smb"] - 0.8) < 1e-9
+    assert abs(a.alpha_monthly) < 1e-9 and a.r2 > 0.999999 and a.months == 35

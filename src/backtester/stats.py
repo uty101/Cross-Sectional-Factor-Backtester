@@ -330,6 +330,23 @@ def attribution(
     )
 
 
+def weighting_gap(
+    equal_ls: pl.DataFrame,
+    cap_ls: pl.DataFrame,
+    french: pl.DataFrame,
+    ret_col: str = "ret_gross",
+    lags: int = 0,
+) -> Attribution:
+    """The equal-minus-cap-weighted long-short spread regressed on SMB
+    (BUILD_PLAN 8.3): how much of the weighting choice is a size bet.
+    Both series are formation-stamped; the join is on formation month."""
+    gap = equal_ls.select("month", pl.col(ret_col).alias("eq")).join(
+        cap_ls.select("month", pl.col(ret_col).alias("cw")), on="month", how="inner"
+    )
+    gap = gap.select("month", (pl.col("eq") - pl.col("cw")).alias(ret_col))
+    return attribution(gap, french, factors=["smb"], ret_col=ret_col, lags=lags)
+
+
 # --- costs --------------------------------------------------------------
 
 

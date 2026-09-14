@@ -190,6 +190,12 @@ The thresholds live in `config.toml [validation]` and every row above is
 recomputed into [reports/validation.csv](reports/validation.csv) by
 `backtester report`, pass or fail.
 
+The equal-versus-cap-weighted gap is not a size bet: regressed on SMB
+(BUILD_PLAN 8.3, [reports/weighting_gap.csv](reports/weighting_gap.csv))
+the R² is 0.035 for quality and under 0.012 for every other factor. In
+an all-large-cap universe, weighting changes which large names dominate,
+not the size exposure.
+
 ## What did not work
 
 Kept as a first-class section, per the brief. The interpretation is
