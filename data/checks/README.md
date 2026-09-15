@@ -37,6 +37,7 @@ and `shares_overrides.csv`.
 | `text_short_documents.csv` | 10-Ks under `min_words`: wrappers whose annual report is an exhibit. Treated as missing, not parsed further |
 | `text_fetch_missing.csv` | Filings in the index the submissions API did not list a primary document for, or that EDGAR refused |
 | `sector_map_check.csv` / `_disagreements.csv` | SIC-to-sector agreement with Wikipedia's GICS on current members (84.5%), and every disagreement |
+| `rmw_trough_disagreements.csv` / `rmw_trough_blocks.csv` | FIX_PLAN_2 G5: per name over 2013-2015, the rank gap between the RMW replica's sort and a naive net income + interest + tax sort, with what drives it; and the replica's correlation with big-cap RMW by 3-year block as reported, without Financials, with two-year equity, and without the three reused symbols (HAR, EP, COL). Written by `scripts/rmw_trough.py`; see `decisions/g5_rmw_trough.md` |
 | `membership_spotcheck.csv` | **Hand-written.** 20 rows verified against S&P press releases or contemporaneous news: ordinary additions and removals across the window, every override, and every rejected `date_added` |
 
 ## Conventions the numbers depend on

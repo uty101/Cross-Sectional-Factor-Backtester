@@ -54,7 +54,7 @@ outsider can verify, over 2010–2026?
 **The answer** ([reports/answer.md](reports/answer.md); every number in it
 is in a table on this page or in [reports/results.md](reports/results.md)):
 
-Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.39 against the 8 candidate specifications and 0.09 against all 58, on a net Sharpe of 0.24, an IC t-stat of 1.4, and 70% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.5% and −0.16. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
+Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.39 against the 8 candidate specifications and 0.09 against all 61, on a net Sharpe of 0.24, an IC t-stat of 1.4, and 70% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.5% and −0.16. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
 
 ## Results
 
@@ -83,11 +83,11 @@ disproportionately those that left the index. See Data.
 that the net Sharpe exceeds the expected maximum of *N* random trials with
 the same dispersion, adjusted for skew and kurtosis. *N* is read from
 [reports/specifications.csv](reports/specifications.csv), where every run is
-logged (335 rows). A trial is a distinct specification key: factor,
+logged (340 rows). A trial is a distinct specification key: factor,
 signal, weighting, cost, lag, holding period, winsorisation, deciles,
 sector flag, window and variant (`spec_key` in the log); re-running one
 after a code fix is the same trial, so the 144 reruns after the data
-fixes of September 2026 are not new trials. **DSR (all)** counts the 58
+fixes of September 2026 are not new trials. **DSR (all)** counts the 61
 distinct specifications (base, sensitivity, diagnostic, the two broken
 first attempts at momentum); **DSR (cand.)** counts the 8 whose `kind`
 is `candidate`, a specification that could have been reported, rather
@@ -397,7 +397,7 @@ what each of those commits changed, from its body, below a marker.
   count of the specification log, and three reruns of the same 48
   specifications after the September data fixes had pushed it from 185
   to 329 without a single new strategy being tried. A trial is now a
-  distinct specification key; the log has 58 of them across 335 rows,
+  distinct specification key; the log has 61 of them across 340 rows,
   8 of them candidates. Every DSR rose (quality's from 0.06 to 0.39
   against the candidates) and none clears 0.5
   ([decisions/g2_trial_count.md](decisions/g2_trial_count.md)).

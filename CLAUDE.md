@@ -76,10 +76,10 @@ new tags, and the recompute check caught it. Also on disk since F2:
 `data/raw/sec/companyconcept/` (share counts from the SEC API, 2,520
 files) and `data/raw/prices/yfinance_splits/` (858 files).
 
-Every backtest appends to `reports/specifications.csv`; 335 rows as of the
+Every backtest appends to `reports/specifications.csv`; 340 rows as of the
 last report (144 of them are the September 2026 reruns after the data
 fixes and two tie rules the recompute found). **N in the deflated Sharpe
-is the number of distinct `spec_key` values** (58, of which 8 candidates;
+is the number of distinct `spec_key` values** (61, of which 8 candidates;
 FIX_PLAN_2 G2, `speclog.py`), not the row count: re-running a
 specification after a code fix is the same trial. Each row carries
 `config_hash`, `git_commit` (blank for rows logged before 2026-09-14; not
