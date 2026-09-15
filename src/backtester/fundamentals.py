@@ -11,6 +11,9 @@
                      month-end t was filed on or before t - buffer_days
     signal           book_to_price, earnings_yield, gross_profitability,
                      accruals, asset_growth from the as-of panel
+    public_float_check
+                     the pipeline's cap at the float date against the 10-K's
+                     EntityPublicFloat (FIX_PLAN_3 H1); feeds identity.py
 
 Flow concepts (income, cash flow) are taken as annual values from 10-K
 filings (qtrs = 4) and updated when the next 10-K is filed; stock
@@ -802,6 +805,270 @@ def market_caps(
     )
 
 
+# --- public float cross-check (FIX_PLAN_3 H1) ---------------------------
+
+FLOAT_CHECK_SCHEMA = {
+    "ticker": pl.Utf8,
+    "cik": pl.Int64,
+    "fy": pl.Int32,
+    "float_date": pl.Date,
+    "month": pl.Date,
+    "close": pl.Float64,
+    "shares": pl.Float64,
+    "shares_source": pl.Utf8,
+    "cap": pl.Float64,
+    "public_float": pl.Float64,
+    "ratio": pl.Float64,
+    "flag": pl.Utf8,
+    "reason": pl.Utf8,
+}
+# ``float_scale`` is the filed float's own error, not the pipeline's: the
+# cap is inside the band against the ticker's float in a neighbouring
+# fiscal year (GE filed $201.5m for FY2011, in thousands; eBay 3e19 for
+# FY2019; Mattel, Duke, DuPont likewise). Recorded, not excluded: the
+# price and the count are that filer's. The other reasons name the size
+# of a real flag and every one of them is excluded (identity.float_windows).
+FLOAT_REASONS = ("float_scale", "near_split", "near_1000", "over_100x", "other")
+NEAR = 0.15  # a ratio within 15% of a split factor or of 1000 is "near" it
+ADJACENT_YEARS = 2  # how far to look for the neighbouring float
+# A scale error is a factor of 1000 (thousands), 1e6 or 1e9; a flag under
+# this size is never one, whatever the neighbouring year says (Chesapeake's
+# 2021 cap is 63x its float: a stale pre-emergence count, not a decimals
+# attribute).
+SCALE_MIN = 100.0
+
+
+def float_thresholds(cfg: Config) -> tuple[float, float]:
+    c = dict(cfg.checks)
+    return float(c.get("float_ratio_lo", 0.5)), float(c.get("float_ratio_hi", 20))
+
+
+def public_float_check(
+    floats: pl.DataFrame,
+    ciks: pl.DataFrame,
+    caps: pl.DataFrame,
+    px: pl.DataFrame,
+    lo: float,
+    hi: float,
+    splits: pl.DataFrame | None = None,
+) -> pl.DataFrame:
+    """FLOAT_CHECK_SCHEMA rows: for every (ticker, fiscal year) with a
+    public float, the pipeline's own market cap at the last month-end on
+    or before the float date against the 10-K's ``EntityPublicFloat``.
+
+    ``floats`` is FLOAT_SCHEMA (cik, adsh, ddate = float date, filed,
+    form, value, fy); the first-filed value per (cik, float date) is
+    used, so a 10-K/A does not rewrite the float. ``caps`` is the
+    ``market_caps`` output the portfolios read (cap = close x count in
+    the price basis, after the split factor and the plausibility guard),
+    ``px`` is Frame[month, ticker, px_me_raw], and ``ciks`` the CIK map
+    (ticker, cik, start, end) so the ticker is the registrant's at that
+    month. ``ratio = cap / float``; ``flag`` is ``low`` under ``lo``,
+    ``high`` over ``hi``, else blank. A (ticker, year) with no cap at
+    that month has a null ratio and no flag: a missing float or a missing
+    price never excludes anything, only a bad ratio does. ``reason``
+    names the size of a flagged ratio: near a split factor of the ticker
+    (``splits``: ticker, date, ratio), near 1000, beyond 100x, or other.
+    """
+    from backtester.sectors import cik_at
+
+    if not floats.height:
+        return pl.DataFrame(schema=FLOAT_CHECK_SCHEMA)
+    ff = first_filed(
+        floats.with_columns(
+            pl.lit("public_float").alias("concept"),
+            pl.lit(0, dtype=pl.Int32).alias("qtrs"),
+        )
+    ).select(
+        "cik",
+        pl.col("ddate").alias("float_date"),
+        "fy",
+        pl.col("value").alias("public_float"),
+    )
+    # The last month-end on or before the float date.
+    ff = ff.with_columns(
+        pl.when(pl.col("float_date") == pl.col("float_date").dt.month_end())
+        .then(pl.col("float_date"))
+        .otherwise(pl.col("float_date").dt.offset_by("-1mo").dt.month_end())
+        .alias("month")
+    )
+    months = sorted(ff.get_column("month").unique().to_list())
+    who = cik_at(ciks, months)
+    out = (
+        ff.join(who, on=["month", "cik"], how="inner")
+        .join(
+            px.select("month", "ticker", pl.col("px_me_raw").alias("close")),
+            on=["month", "ticker"],
+            how="left",
+        )
+        .join(
+            caps.select("month", "ticker", "cap", "shares_source"),
+            on=["month", "ticker"],
+            how="left",
+        )
+        .with_columns(
+            (pl.col("cap") / pl.col("close")).alias("shares"),
+            (pl.col("cap") / pl.col("public_float")).alias("ratio"),
+        )
+        .with_columns(
+            pl.when(pl.col("ratio").is_null())
+            .then(pl.lit(""))
+            .when(pl.col("ratio") < lo)
+            .then(pl.lit("low"))
+            .when(pl.col("ratio") > hi)
+            .then(pl.lit("high"))
+            .otherwise(pl.lit(""))
+            .alias("flag")
+        )
+    )
+    out = _float_reason(out, splits, lo, hi)
+    return out.select(list(FLOAT_CHECK_SCHEMA)).sort("ticker", "float_date")
+
+
+def _near(x: pl.Expr, target: pl.Expr | float) -> pl.Expr:
+    return (x / target - 1).abs() <= NEAR
+
+
+def _float_reason(
+    check: pl.DataFrame, splits: pl.DataFrame | None, lo: float, hi: float
+) -> pl.DataFrame:
+    """``reason`` for the flagged rows. First the filed float is tested
+    against the ticker's own floats within ADJACENT_YEARS: a cap inside
+    [lo, hi] of any other year's float, when the flag is at least
+    SCALE_MIN, is ``float_scale`` (a filer that is wrong two years
+    running, Corteva in billions, is still caught by the year before). Then
+    the ratio (or its inverse, for a low flag) is compared with every
+    split ratio of the ticker and with the product of the splits after
+    the float date, then with 1000."""
+    size = (
+        pl.when(pl.col("flag") == "low")
+        .then(1 / pl.col("ratio"))
+        .otherwise(pl.col("ratio"))
+    )
+    c = check.with_columns(size.alias("_size"))
+    others = check.select(
+        "cik",
+        pl.col("fy").alias("_fy2"),
+        pl.col("public_float").alias("_float2"),
+    )
+    adjacent = (
+        c.filter(pl.col("flag") != "")
+        .select("cik", "fy", "float_date", "cap")
+        .join(others, on="cik", how="inner")
+        .filter(
+            (pl.col("_fy2") != pl.col("fy"))
+            & ((pl.col("_fy2") - pl.col("fy")).abs() <= ADJACENT_YEARS)
+        )
+        .with_columns((pl.col("cap") / pl.col("_float2")).alias("_adj"))
+        .group_by("cik", "float_date")
+        .agg(
+            ((pl.col("_adj") >= lo) & (pl.col("_adj") <= hi))
+            .any()
+            .alias("_float_scale")
+        )
+    )
+    c = c.join(adjacent, on=["cik", "float_date"], how="left").with_columns(
+        (
+            pl.col("_float_scale").fill_null(False) & (pl.col("_size") >= SCALE_MIN)
+        ).alias("_float_scale")
+    )
+    if splits is not None and splits.height:
+        per = (
+            c.select("ticker", "float_date", "_size")
+            .join(splits.select("ticker", "date", "ratio"), on="ticker", how="inner")
+            .group_by("ticker", "float_date")
+            .agg(
+                _near(pl.col("_size").first(), pl.col("ratio")).any().alias("_one"),
+                pl.col("ratio")
+                .filter(pl.col("date") > pl.col("float_date"))
+                .product()
+                .alias("_after"),
+                pl.col("_size").first(),
+            )
+            .with_columns(
+                (
+                    pl.col("_one")
+                    | _near(pl.col("_size"), pl.col("_after")).fill_null(False)
+                ).alias("_near_split")
+            )
+            .select("ticker", "float_date", "_near_split")
+        )
+        c = c.join(per, on=["ticker", "float_date"], how="left").with_columns(
+            pl.col("_near_split").fill_null(False)
+        )
+    else:
+        c = c.with_columns(pl.lit(False).alias("_near_split"))
+    return c.with_columns(
+        pl.when(pl.col("flag") == "")
+        .then(pl.lit(""))
+        .when(pl.col("_float_scale"))
+        .then(pl.lit("float_scale"))
+        .when(pl.col("_near_split"))
+        .then(pl.lit("near_split"))
+        .when(_near(pl.col("_size"), 1000.0))
+        .then(pl.lit("near_1000"))
+        .when(pl.col("_size") > 100)
+        .then(pl.lit("over_100x"))
+        .otherwise(pl.lit("other"))
+        .alias("reason")
+    ).drop("_size", "_near_split", "_float_scale")
+
+
+def public_float_summary(
+    check: pl.DataFrame, membership: pl.DataFrame, cfg: Config
+) -> pl.DataFrame:
+    """Per fiscal year from the window's start: member-years (tickers in
+    the index at any month-end of that calendar year), how many have a
+    float, a ratio, each flag, and each reason. The coverage the plan's
+    bar reads (90% of member-years from 2011)."""
+    from backtester.universe import members_at
+
+    rows = []
+    for fy in range(cfg.start.year, cfg.end.year + 1):
+        members: set[str] = set()
+        for m in range(1, 13):
+            d = date(fy, m, 1) + timedelta(days=32)
+            me = date(d.year, d.month, 1) - timedelta(days=1)
+            if cfg.start <= me <= cfg.end:
+                members |= set(members_at(membership, me))
+        g = check.filter((pl.col("fy") == fy) & pl.col("ticker").is_in(list(members)))
+        covered = g.select("ticker").unique().height
+        row = {
+            "fy": fy,
+            "member_years": len(members),
+            "with_float": covered,
+            "pct_covered": round(100 * covered / len(members), 1) if members else None,
+            "with_ratio": g.filter(pl.col("ratio").is_not_null())
+            .select("ticker")
+            .unique()
+            .height,
+            "low": g.filter(pl.col("flag") == "low").height,
+            "high": g.filter(pl.col("flag") == "high").height,
+        }
+        for r in FLOAT_REASONS:
+            row[r] = g.filter(pl.col("reason") == r).height
+        row["excluded"] = g.filter(
+            (pl.col("flag") != "") & (pl.col("reason") != "float_scale")
+        ).height
+        rows.append(row)
+    return pl.DataFrame(rows)
+
+
+def load_floats(cfg: Config, num: pl.DataFrame) -> pl.DataFrame:
+    """The API's rows (shares.load_float) plus whatever the FSDS carried
+    under the ``public_float`` concept, in FLOAT_SCHEMA."""
+    from backtester import shares
+
+    api = shares.load_float(cfg)
+    fsds = num.filter(
+        (pl.col("concept") == "public_float") & pl.col("form").str.starts_with("10-K")
+    ).select("cik", "adsh", "ddate", "filed", "form", "value", "fy")
+    parts = [f for f in (api, fsds) if f is not None and f.height]
+    if not parts:
+        return pl.DataFrame(schema=shares.FLOAT_SCHEMA)
+    return pl.concat([f.select(list(shares.FLOAT_SCHEMA)) for f in parts])
+
+
 # --- pipeline entry -----------------------------------------------------
 
 
@@ -900,6 +1167,20 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
 
     checks = cfg.data / "checks"
     implausible.write_csv(checks / "market_cap_dropped.csv")
+    # The public-float cross-check and the exclusion list it feeds
+    # (FIX_PLAN_3 H1); the identity check's rows (H2) are read back from
+    # its own file so a rebuild composes both.
+    from backtester import identity
+
+    lo, hi = float_thresholds(cfg)
+    float_check = public_float_check(
+        load_floats(cfg, num), ciks, caps, px_raw, lo, hi, splits
+    )
+    float_check.write_csv(checks / "public_float.csv")
+    public_float_summary(float_check, membership, cfg).write_csv(
+        checks / "public_float_summary.csv"
+    )
+    identity.write_exclusions(cfg, float_check, identity.load_identity_flags(cfg))
     tag_coverage(num, ciks, cfg).write_csv(checks / "tag_coverage.csv")
     concept_coverage(panel, membership, cfg, caps).write_csv(
         checks / "fundamentals_coverage.csv"

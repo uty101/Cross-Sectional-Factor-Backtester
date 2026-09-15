@@ -3,6 +3,8 @@
     fetch_cover      dei:EntityCommonStockSharesOutstanding per universe CIK
                      from the SEC companyconcept API (the 10-K/10-Q cover
                      page count), never overwritten
+    fetch_float      dei:EntityPublicFloat per universe CIK, the same way
+                     (FIX_PLAN_3 H1; fundamentals.public_float_check)
     fetch_splits     stock split events per ticker from yfinance
     build            both -> data/interim/cover_shares.parquet, splits.parquet
     resolve          cover count, then balance-sheet count, then the diluted
@@ -58,6 +60,10 @@ FALLBACK_TAGS = {
     "shares": "CommonStockSharesOutstanding",
     "shares_wavg": "WeightedAverageNumberOfDilutedSharesOutstanding",
 }
+# The 10-K cover page's public float (FIX_PLAN_3 H1), from the same API:
+# the FSDS carries it for 12 of 4,697 10-Ks in 2015q1 and none in 2024q1.
+FLOAT_URL = "https://data.sec.gov/api/xbrl/companyconcept/CIK{cik:010d}/dei/EntityPublicFloat.json"
+FLOAT_TAG = "EntityPublicFloat"
 SEC_USER_AGENT = "Utkarsh Malhotra factor-research utkarsh.malhotra@yahoo.co.uk"
 SEC_RATE = 0.11  # seconds between requests: the SEC allows 10 per second
 COVER_SCHEMA = {
@@ -140,7 +146,59 @@ def fetch_fallback(cfg: Config, as_of: date) -> list[Path]:
     return stored
 
 
+def fetch_float(cfg: Config, as_of: date, ciks: list[int] | None = None) -> list[Path]:
+    """dei:EntityPublicFloat for every universe CIK, one JSON each under
+    data/raw/sec/companyconcept/, never overwritten (FIX_PLAN_3 H1)."""
+    import requests
+
+    root = cfg.data / "raw"
+    stamp = as_of.isoformat()
+    session = requests.Session()
+    stored = []
+    for cik in ciks if ciks is not None else _universe_ciks(cfg):
+        rel = f"sec/companyconcept/{cik}_{FLOAT_TAG}_{stamp}.json"
+        if (root / rel).exists():
+            stored.append(root / rel)
+            continue
+        url = FLOAT_URL.format(cik=cik)
+        r = session.get(url, headers={"User-Agent": SEC_USER_AGENT}, timeout=60)
+        if r.status_code not in (200, 404):
+            r.raise_for_status()
+        stored.append(raw.store_raw(root, rel, r.content, url))
+        time.sleep(SEC_RATE)
+    return stored
+
+
 API_SCHEMA = {**COVER_SCHEMA, "concept": pl.Utf8, "qtrs": pl.Int32}
+FLOAT_SCHEMA = {**COVER_SCHEMA, "fy": pl.Int32}
+
+
+def parse_float(text: str, cik: int) -> pl.DataFrame:
+    """FLOAT_SCHEMA rows from one companyconcept response: the USD facts
+    of 10-K forms (10-K, 10-K/A, 10-KT) with a positive value. ``ddate``
+    is the float date (the end of the second fiscal quarter), ``fy`` the
+    fiscal year the filing reports. A 404 body yields nothing."""
+    try:
+        j = json.loads(text)
+    except json.JSONDecodeError:
+        return pl.DataFrame(schema=FLOAT_SCHEMA)
+    facts = (j.get("units") or {}).get("USD") or []
+    rows = [
+        {
+            "cik": cik,
+            "adsh": f["accn"],
+            "ddate": date.fromisoformat(f["end"]),
+            "filed": date.fromisoformat(f["filed"]),
+            "form": f["form"],
+            "value": float(f["val"]),
+            "fy": int(f["fy"]) if f.get("fy") is not None else None,
+        }
+        for f in facts
+        if f.get("val")
+        and float(f["val"]) > 0
+        and str(f.get("form", "")).startswith("10-K")
+    ]
+    return pl.DataFrame(rows, schema=FLOAT_SCHEMA)
 
 
 def parse_fallback(text: str, cik: int, concept: str) -> pl.DataFrame:
@@ -267,6 +325,16 @@ def build(cfg: Config) -> tuple[pl.DataFrame, pl.DataFrame]:
     api = (pl.concat(fallback) if fallback else pl.DataFrame(schema=API_SCHEMA)).sort(
         "cik", "concept", "filed", "ddate"
     )
+    floats = []
+    for cik in ciks:
+        try:
+            p = raw.latest(root, f"sec/companyconcept/{cik}_{FLOAT_TAG}_*.json")
+        except FileNotFoundError:
+            continue
+        floats.append(parse_float(p.read_text(encoding="utf-8"), cik))
+    public_float = (
+        pl.concat(floats) if floats else pl.DataFrame(schema=FLOAT_SCHEMA)
+    ).sort("cik", "filed", "ddate")
 
     from backtester.prices import _raw_name
 
@@ -294,6 +362,7 @@ def build(cfg: Config) -> tuple[pl.DataFrame, pl.DataFrame]:
     stamp = pl.lit(date.today().isoformat()).alias("as_of")
     cover.with_columns(stamp).write_parquet(interim / "cover_shares.parquet")
     api.with_columns(stamp).write_parquet(interim / "api_shares.parquet")
+    public_float.with_columns(stamp).write_parquet(interim / "public_float.parquet")
     splits.sort("ticker", "date").with_columns(stamp).write_parquet(
         interim / "splits.parquet"
     )
@@ -307,6 +376,15 @@ def load(cfg: Config) -> tuple[pl.DataFrame | None, pl.DataFrame | None]:
         pl.read_parquet(c).drop("as_of") if c.exists() else None,
         pl.read_parquet(s).drop("as_of") if s.exists() else None,
     )
+
+
+def load_float(cfg: Config) -> pl.DataFrame | None:
+    """The API's public-float rows (FLOAT_SCHEMA), or None before
+    ``build --step shares`` has run."""
+    p = cfg.data / "interim" / "public_float.parquet"
+    if not p.exists():
+        return None
+    return pl.read_parquet(p).drop("as_of")
 
 
 def load_api(cfg: Config) -> pl.DataFrame | None:

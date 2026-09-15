@@ -66,6 +66,12 @@ universe_min = 490
 universe_max = 510
 max_recent_price_gap_pct = 5.0             # mean over the last 12 months
 min_recent_fundamentals_coverage = 0.75    # assets, equity, net income, revenue
+# Public-float cross-check (FIX_PLAN_3 H1): a (ticker, fiscal year) whose
+# month-end close x shares over the 10-K's EntityPublicFloat is outside
+# [lo, hi] is not that filer's price or count, and is excluded from every
+# signal for the 12 months after the float date.
+float_ratio_lo = 0.5
+float_ratio_hi = 20
 
 [paths]
 data = "data"

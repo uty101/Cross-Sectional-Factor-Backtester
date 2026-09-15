@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 117 tests, ~6 s
+uv run pytest                              # 166 tests, ~8 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|shares|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -106,7 +106,8 @@ src/backtester/
   sources.py             Tiingo second source, Alpha Vantage delistings, reconcile/merge (F6; needs keys in .env)
   benchmarks.py          French factors + big-cap HML/RMW legs, FRED
   fundamentals.py        SEC FSDS via DuckDB, first_filed, asof_join, caps
-  tag_map.toml           18 concepts, ordered XBRL tags (only ever added to)
+  tag_map.toml           19 concepts, ordered XBRL tags (only ever added to)
+  identity.py            price-identity exclusion list (FIX_PLAN_3 H1/H2); run.py applies it
   sectors.py             CIK matching by name, SIC -> 11 buckets
   text.py                10-K primary documents from EDGAR, year-on-year similarity
   agents/                base.run_agent harness; tools.Toolbox with the allowlists in code
@@ -180,6 +181,17 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   balance-sheet count, then the diluted weighted average
   (`shares.select`). Nothing is dropped by size any more;
   `market_cap_dropped.csv` lists what still comes out under $1bn.
+- **A price is checked against the filer's own market value** (FIX_PLAN_3
+  H1). Every 10-K cover carries `dei:EntityPublicFloat`; the pipeline's
+  cap at the float date over it is in [0.5, 20] for 8,453 of 8,515
+  ticker-years, and the 62 outside are `data/checks/public_float.csv`
+  (`flag`, `reason`). A flag is excluded for 12 months
+  (`price_identity_exclusions.csv`) unless the reason is `float_scale`:
+  the filer's own float in thousands or billions (GE 2011, eBay 2019),
+  49 of the 62, where the pipeline is right. Like the cover share count,
+  the float comes from the companyconcept API, not the FSDS. Exelon's
+  XBRL float is twice its cover text for four years and is excluded by
+  the rule; `review/h1.md` has every flagged row.
 - **Text comes from EDGAR, never from company websites.** The 10-K
   primary documents live under `data/raw/edgar/10k/<cik>/<adsh>.htm.gz`,
   one per original filing, indexed from `sub.txt` in the FSDS zips so the

@@ -1,0 +1,14 @@
+ticker,start,end,reason,source_check
+AA,2025-06-30,2026-06-30,"FY2025 cap/float 0.1588 (low, other): close 29.51 x shares 403674062.0 = 11912421662.0 against float 75000000000.0",public_float
+EXC,2010-12-31,2011-12-31,"FY2010 cap/float 0.4661 (low, near_split): close 29.7 x shares 927301494.0 = 27541251273.0 against float 59092745316.0",public_float
+EXC,2011-12-31,2012-12-31,"FY2011 cap/float 0.4866 (low, near_split): close 30.93 x shares 929543675.0 = 28754856877.0 against float 59092745316.0",public_float
+EXC,2012-12-31,2013-12-31,"FY2012 cap/float 0.4299 (low, other): close 21.21 x shares 1197704909.0 = 25406378890.0 against float 59092745316.0",public_float
+EXC,2013-12-31,2014-12-31,"FY2013 cap/float 0.3972 (low, other): close 19.54 x shares 1201379369.0 = 23470600211.0 against float 59092745316.0",public_float
+EXE,2021-06-30,2022-06-30,"FY2021 cap/float 63.5046 (high, other): close 51.92 x shares 1957000000.0 = 101607436417.0 against float 1600000000.0",public_float
+GENZ,2010-06-30,2011-06-30,"FY2010 cap/float 0.4946 (low, other): close 22.72 x shares 266868620.0 = 6063254863.0 against float 12259385395.0",public_float
+HAR,2013-12-31,2014-12-31,"FY2014 cap/float 91.553 (high, other): close 7483.38 x shares 67550698.0 = 505507534483.0 against float 5521472168.0",public_float
+HAR,2014-12-31,2015-12-31,"FY2015 cap/float 83.7095 (high, other): close 8886.52 x shares 68515693.0 = 608866044042.0 against float 7273559193.0",public_float
+HAR,2015-12-31,2016-12-31,"FY2016 cap/float 44.9073 (high, other): close 4210.53 x shares 71080986.0 = 299288608711.0 against float 6664593936.0",public_float
+PCG,2020-06-30,2021-06-30,"FY2020 cap/float 0.3874 (low, other): close 8.87 x shares 529785896.0 = 4699200837.0 against float 12130000000.0",public_float
+PLD,2011-06-30,2012-06-30,"FY2011 cap/float 0.3732 (low, other): close 35.84 x shares 169576043.0 = 6077605407.0 against float 16284024207.0",public_float
+RDDT,2024-06-28,2025-06-28,"FY2024 cap/float 0.3663 (low, other): close 54.24 x shares 70240492.0 = 3809844404.0 against float 10400000000.0",public_float

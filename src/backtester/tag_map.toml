@@ -157,3 +157,14 @@ tags = [
   "StockholdersEquity",
   "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
 ]
+
+# The 10-K cover page's market value of non-affiliate shares at the end
+# of the second fiscal quarter (FIX_PLAN_3 H1): ddate is the float date,
+# and price x shares at that date must be at least the float and rarely
+# more than a few times it (fundamentals.public_float_check). Like the
+# cover share count, the FSDS carries it for almost no filer (12 of 4,697
+# 10-Ks in 2015q1, none in 2024q1), so the companyconcept API is the
+# source (shares.fetch_float) and these rows are the supplement.
+[concept.public_float]
+kind = "annual_stock"
+tags = ["dei:EntityPublicFloat", "EntityPublicFloat"]

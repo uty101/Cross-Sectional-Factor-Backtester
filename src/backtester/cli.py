@@ -29,6 +29,7 @@ STEPS = {
         lambda cfg, as_of: (
             shares.fetch_cover(cfg, as_of)
             + shares.fetch_fallback(cfg, as_of)
+            + shares.fetch_float(cfg, as_of)
             + shares.fetch_splits(cfg, as_of)
         ),
         shares.build,
