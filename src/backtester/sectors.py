@@ -1,15 +1,27 @@
 """CIKs for every universe name, and SIC codes mapped by hand to 11
 GICS-like buckets.
 
-    cik_map(membership, constituents, num) -> (Frame[ticker, cik], log)
+    cik_map(membership, constituents, num, sec_tickers, overrides)
+        -> (Frame[ticker, cik, start, end], log)
+    cik_at(ciks, months) -> Frame[month, ticker, cik]
     sic_to_sector(sic) -> str
-    build(cfg, num, ciks) -> Frame[ticker, cik, sic, sector]
+    build(cfg, num, ciks) -> Frame[ticker, cik, start, end, sic, sector]
 
 Current members carry a CIK on the Wikipedia constituents table. Removed
 names do not, and the SEC has no historical ticker file, so they are
 matched by company name against the names on their own filings in
 sub.txt. Every match records how it was made; every miss is a row too.
 Unmapped SICs go to "Other" and are counted, not dropped.
+
+A ticker can have more than one registrant over time: Disney filed
+under CIK 1001039 until its 2019 reorganisation and under 1744489
+after; the ticker CB was Chubb Corp until ACE Ltd bought it in 2016
+and took the name and the symbol. data/checks/cik_overrides.csv
+(hand-written, FIX_PLAN F1b) carries one row per (ticker, CIK) era
+with an EDGAR URL as evidence; ``cik_at`` resolves the CIK for each
+month. An override's date range beats the base map inside the range;
+outside it the base map applies; two override ranges for one ticker
+never overlap (tests/test_cik_overrides.py).
 """
 
 from __future__ import annotations
@@ -125,23 +137,50 @@ def normalise_name(name: str | None) -> str:
     return s
 
 
+OVERRIDE_SCHEMA = {
+    "ticker": pl.Utf8,
+    "cik": pl.Int64,
+    "start": pl.Date,
+    "end": pl.Date,
+    "source_url": pl.Utf8,
+    "note": pl.Utf8,
+}
+
+
+def load_overrides(cfg: Config) -> pl.DataFrame:
+    """data/checks/cik_overrides.csv, or an empty frame if it is absent."""
+    path = cfg.data / "checks" / "cik_overrides.csv"
+    if not path.exists():
+        return pl.DataFrame(schema=OVERRIDE_SCHEMA)
+    return pl.read_csv(path, schema_overrides=OVERRIDE_SCHEMA).select(
+        list(OVERRIDE_SCHEMA)
+    )
+
+
 def cik_map(
     membership: pl.DataFrame,
     constituents: pl.DataFrame,
     num: pl.DataFrame,
     sec_tickers: dict[str, int] | None = None,
+    overrides: pl.DataFrame | None = None,
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
-    """Frame[ticker, cik] for every universe ticker that can be placed, and a
-    log with one row per ticker: method, cik, the SEC name matched.
+    """Frame[ticker, cik, start, end] for every universe ticker that can be
+    placed, and a log with one row per (ticker, cik): method, the SEC
+    name matched, the range.
 
     Order of evidence: the SEC's own company_tickers.json for a ticker
     that is a member today, then the CIK Wikipedia's constituents table
-    carries, then a name match against the filers. The SEC map is a
-    snapshot of today's symbols, so it is never applied to a removed
-    name: S is SentinelOne now and was Sprint then, DV is DoubleVerify
-    now and was DeVry then. Each CIK must have filings; the log says
-    which was used and, when the SEC and Wikipedia disagree, what
-    Wikipedia had.
+    carries, then the hand-written overrides, then a name match against
+    the filers. The SEC map is a snapshot of today's symbols, so it is
+    never applied to a removed name: S is SentinelOne now and was Sprint
+    then, DV is DoubleVerify now and was DeVry then. Each CIK must have
+    filings; the log says which was used and, when the SEC and Wikipedia
+    disagree, what Wikipedia had.
+
+    A ticker with override rows keeps its SEC or constituents CIK for
+    the months outside the override ranges and is never name-matched:
+    the override is the hand-verified answer to the question the name
+    match was asking. Start and end are null when unbounded.
     """
     filer_names = (
         num.select("cik", "name", "filed")
@@ -173,31 +212,39 @@ def cik_map(
     filers = set(int(c) for c in filer_names["cik"].unique())
     sec_tickers = sec_tickers or {}
     current = set(membership.filter(pl.col("end").is_null())["ticker"].to_list())
+    over: dict[str, list[dict]] = {}
+    if overrides is not None:
+        for o in overrides.iter_rows(named=True):
+            over.setdefault(o["ticker"], []).append(o)
     rows = []
     for r in membership.unique(subset=["ticker"]).iter_rows(named=True):
         t, sec_name = r["ticker"], r["security"]
+        base = None
         if t in current and t in sec_tickers and sec_tickers[t] in filers:
             method = "sec company_tickers"
             if t in direct and direct[t] != sec_tickers[t]:
                 method += f" (wikipedia had {direct[t]})"
-            rows.append(
-                {
-                    "ticker": t,
-                    "cik": sec_tickers[t],
-                    "method": method,
-                    "matched": sec_name,
-                }
-            )
+            base = {"ticker": t, "cik": sec_tickers[t], "method": method}
+        elif t in direct and direct[t] in filers:
+            base = {"ticker": t, "cik": direct[t], "method": "constituents"}
+        if base is not None:
+            rows.append({**base, "matched": sec_name, "start": None, "end": None})
+        if t in over:
+            for o in over[t]:
+                if base is not None and o["cik"] == base["cik"]:
+                    continue  # the override agrees with the base map
+                rows.append(
+                    {
+                        "ticker": t,
+                        "cik": int(o["cik"]),
+                        "method": "override",
+                        "matched": o["note"],
+                        "start": o["start"],
+                        "end": o["end"],
+                    }
+                )
             continue
-        if t in direct and direct[t] in filers:
-            rows.append(
-                {
-                    "ticker": t,
-                    "cik": direct[t],
-                    "method": "constituents",
-                    "matched": sec_name,
-                }
-            )
+        if base is not None:
             continue
         # Wikipedia's CIK can be a brand-new entity with no filing history
         # (ExxonMobil's 2026 reorganisation): then the name has to place it.
@@ -239,22 +286,66 @@ def cik_map(
             {"ticker": t, "cik": None, "method": prefix + "unmatched", "matched": norm}
         )
     log = pl.DataFrame(
-        rows,
+        [{"start": None, "end": None, **r} for r in rows],
         schema={
             "ticker": pl.Utf8,
             "cik": pl.Int64,
             "method": pl.Utf8,
             "matched": pl.Utf8,
+            "start": pl.Date,
+            "end": pl.Date,
         },
-    ).sort("method", "ticker")
-    return log.filter(pl.col("cik").is_not_null()).select("ticker", "cik"), log
+    ).sort("method", "ticker", "start", nulls_last=False)
+    return (
+        log.filter(pl.col("cik").is_not_null()).select("ticker", "cik", "start", "end"),
+        log,
+    )
+
+
+def cik_at(ciks: pl.DataFrame, months: list) -> pl.DataFrame:
+    """Frame[month, ticker, cik]: the registrant of each ticker at each
+    month-end. A row whose range covers the month wins over an unbounded
+    one; a ticker with no row covering a month has no CIK there. Raises
+    if two ranged rows cover the same month for one ticker."""
+    if "start" not in ciks.columns:
+        ciks = ciks.with_columns(
+            pl.lit(None, dtype=pl.Date).alias("start"),
+            pl.lit(None, dtype=pl.Date).alias("end"),
+        )
+    grid = pl.DataFrame({"month": months}, schema={"month": pl.Date}).join(
+        ciks.select("ticker", "cik", "start", "end"), how="cross"
+    )
+    covered = grid.filter(
+        (pl.col("start").is_null() | (pl.col("start") <= pl.col("month")))
+        & (pl.col("end").is_null() | (pl.col("month") <= pl.col("end")))
+    ).with_columns(
+        (pl.col("start").is_not_null() | pl.col("end").is_not_null()).alias("ranged")
+    )
+    clash = (
+        covered.filter(pl.col("ranged"))
+        .group_by("month", "ticker")
+        .agg(pl.len().alias("n"))
+        .filter(pl.col("n") > 1)
+    )
+    if clash.height:
+        r = clash.row(0, named=True)
+        raise ValueError(f"{r['ticker']} has {r['n']} CIK ranges covering {r['month']}")
+    return (
+        covered.sort("ranged", descending=True)
+        .unique(subset=["month", "ticker"], keep="first", maintain_order=True)
+        .select("month", "ticker", "cik")
+        .sort("month", "ticker")
+    )
 
 
 # --- build --------------------------------------------------------------
 
 
 def build(cfg: Config, num: pl.DataFrame, ciks: pl.DataFrame) -> pl.DataFrame:
-    """Frame[ticker, cik, sic, sector] from each CIK's most recent filing;
+    """Frame[ticker, cik, start, end, sic, sector]: one row per (ticker,
+    CIK) era, the SIC from that CIK's most recent filing, and the sector
+    of the ticker's latest era on every row (a sector is a property of
+    the ticker in the cross-section, so it is one value per ticker);
     writes sectors.parquet and the agreement with Wikipedia's GICS sector
     for current members to data/checks/sector_map_check.csv."""
     latest_sic = (
@@ -264,8 +355,25 @@ def build(cfg: Config, num: pl.DataFrame, ciks: pl.DataFrame) -> pl.DataFrame:
         .unique(subset=["cik"], keep="first")
         .select("cik", "sic")
     )
-    out = ciks.join(latest_sic, on="cik", how="left").with_columns(
-        pl.col("sic").map_elements(sic_to_sector, return_dtype=pl.Utf8).alias("sector")
+    if "start" not in ciks.columns:
+        ciks = ciks.with_columns(
+            pl.lit(None, dtype=pl.Date).alias("start"),
+            pl.lit(None, dtype=pl.Date).alias("end"),
+        )
+    out = ciks.join(latest_sic, on="cik", how="left")
+    latest_era = (
+        out.sort("end", descending=True, nulls_last=False)
+        .unique(subset=["ticker"], keep="first", maintain_order=True)
+        .select(
+            "ticker",
+            "sic",
+            pl.col("sic")
+            .map_elements(sic_to_sector, return_dtype=pl.Utf8)
+            .alias("sector"),
+        )
+    )
+    out = out.join(latest_era.drop("sic"), on="ticker", how="left").sort(
+        "ticker", "start", nulls_last=False
     )
     interim = cfg.data / "interim"
     out.write_parquet(interim / "sectors.parquet")
@@ -273,7 +381,7 @@ def build(cfg: Config, num: pl.DataFrame, ciks: pl.DataFrame) -> pl.DataFrame:
     cons = pl.read_parquet(interim / "sp500_constituents.parquet").select(
         "ticker", pl.col("gics_sector").alias("gics")
     )
-    check = out.join(cons, on="ticker", how="inner").with_columns(
+    check = latest_era.join(cons, on="ticker", how="inner").with_columns(
         (pl.col("sector") == pl.col("gics")).alias("agree")
     )
     summary = (

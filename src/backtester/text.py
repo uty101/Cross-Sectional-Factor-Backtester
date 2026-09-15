@@ -456,10 +456,10 @@ def signal(
     is the long leg. A value is carried for at most MAX_AGE_MONTHS after
     its period end.
     """
+    from backtester.sectors import cik_at
+
     measure = measure or cfg.text_similarity
-    base = pl.DataFrame({"month": months}).join(
-        ciks.select("ticker", "cik"), how="cross"
-    )
+    base = cik_at(ciks, months)
     vals = sim.select("cik", pl.col("period").alias("ddate"), "filed", measure)
     j = asof_join(base, vals, cfg.asof_buffer_days, value_col=measure)
     j = j.filter(

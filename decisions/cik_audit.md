@@ -86,3 +86,86 @@ Proceed to F1b: `data/checks/cik_overrides.csv` with one row per
 (ticker, CIK) the audit and the filer index establish, allowing more
 than one CIK per ticker so a successor registrant does not erase its
 predecessor's filings.
+
+---
+
+# F1b: the overrides, and the result
+
+**Date:** 2026-09-15. **File:** `data/checks/cik_overrides.csv`, 93 rows
+over 82 tickers, 44 of them date-ranged. **Test:** `tests/test_cik_overrides.py`.
+
+## What changed in the map
+
+`sectors.cik_map` takes the override rows after the SEC map and the
+constituents table and before the name match; a ticker with an override
+is never name-matched. The map is now `Frame[ticker, cik, start, end]`
+and `sectors.cik_at` resolves the registrant per month: an override's
+range beats the base map inside the range, the base map applies
+outside, and two ranges for one ticker never overlap (the function
+raises). `fundamentals.monthly_panel` and `text.signal` both go through
+it, so Disney reads CIK 1001039's filings to 2019-03 and 1744489's after,
+with no month reading both.
+
+Every CIK was verified against the SEC's own filer index
+(`data/interim/sec_sub.parquet`): the SEC name on the filings, the form
+types and the first and last 10-K/10-Q filing dates were checked
+against the membership interval before a row was written, and the
+`source_url` is the EDGAR filing list for that CIK. Nothing was taken
+from a web search alone.
+
+Two cases the F1 audit did not flag but the same mechanism produces,
+found while checking the successor pairs:
+
+- **JCI.** Johnson Controls Inc (53669) merged into Tyco International
+  plc (833444) on 2016-09-02 and the Tyco registrant took the JCI
+  symbol. The SEC map gave JCI 833444, which carried Tyco's fundamentals
+  back through JCI's history while TYC was unmatched. Now JCI is 53669
+  to 2016-08 and 833444 after; TYC is 833444 to its removal.
+- **CB.** Chubb Corp (20171) held the CB symbol until ACE Ltd (896159)
+  bought it in January 2016 and took the name and the symbol. CB was
+  mapped to 896159 back to 2010, so ACE's balance sheet sat under both
+  CB and ACE for six years. Now CB is 20171 to 2015-12 and 896159 after.
+
+The share-class test is applied month by month on the resolved map:
+no CIK is held by two index members in the same month unless their
+security names share a stem (Alphabet Class A / Class C, Comcast /
+Comcast Series K, 21st Century Fox) or `ticker_renames.csv` pairs them.
+A rename (AA to ARNC to HWM under CIK 4281) passes because the tickers
+are never members together.
+
+## Coverage
+
+Members with a value at the December month-end, before and after:
+
+| concept | 2011 | 2015 | 2020 | 2024 |
+|---|---|---|---|---|
+| members | 498 | 503 | 504 | 503 |
+| assets, before | 436 | 458 | 493 | 496 |
+| assets, after | 494 | 501 | 503 | 502 |
+| equity, after | 494 | 500 | 503 | 502 |
+| net income, after | 481 | 494 | 491 | 499 |
+| revenue, before | 374 | 398 | 458 | 475 |
+| revenue, after | 429 | 436 | 468 | 481 |
+| cogs, after | 294 | 291 | 318 | 313 |
+| market cap, before | 262 | 315 | 385 | 421 |
+| market cap, after | 280 | 331 | 394 | 426 |
+
+`assets` coverage is at least **97.8%** of members in every month from
+2011-01-31 (the minimum, January 2011; median 99.6%), so F1b's bar of
+95% is met. The audit rerun on the new panel leaves 8 rows across the
+three months:
+
+| ticker | class | why it stays |
+|---|---|---|
+| HON 2011 | other | total assets tagged `AssetsNet` in FY2010-11; a tag-map question for F3 |
+| HST 2011, PCL 2011 and 2015, LM 2015 | other | every balance-sheet line carries a `LegalEntity` segment; the ingest keeps unsegmented rows only |
+| WPX 2011 | no_xbrl | spun off 2011-12-31, first 10-K in 2012 |
+| FRC 2022, SBNY 2022 | no_xbrl | banks that filed with the FDIC, not the SEC; never on EDGAR |
+
+Revenue and COGS coverage moved with the map but remain the F3 problem
+(429 and 294 of 498 in 2011). Market cap moved by 18 to 26 names; the
+1bn floor is F2's problem.
+
+The 10-K documents for the 78 newly mapped CIKs were not on disk;
+`fetch --step text` was run so the text factor sees the same registrants
+as the fundamentals when F4 rebuilds it.

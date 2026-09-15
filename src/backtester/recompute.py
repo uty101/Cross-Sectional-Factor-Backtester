@@ -29,7 +29,11 @@ import polars as pl
 from backtester.config import Config
 
 STAMPS = {"as_of", "fetched_at"}
-HAND_WRITTEN = ("membership_overrides.csv", "membership_spotcheck.csv")
+HAND_WRITTEN = (
+    "membership_overrides.csv",
+    "membership_spotcheck.csv",
+    "cik_overrides.csv",
+)
 TOLERANCE = 1e-10
 
 

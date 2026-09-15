@@ -157,7 +157,13 @@ def normalise(
     if sectors is None:
         df = df.with_columns(pl.lit("ALL").alias("sector"))
     else:
-        df = df.join(sectors.select("ticker", "sector"), on="ticker", how="left")
+        # sectors.parquet has a row per (ticker, CIK) era with the same
+        # sector on each; the join needs one row per ticker.
+        df = df.join(
+            sectors.select("ticker", "sector").unique(subset=["ticker"]),
+            on="ticker",
+            how="left",
+        )
         df = df.with_columns(pl.col("sector").fill_null("ALL"))
     df = df.with_columns(
         pl.len().over("month", "sector").alias("n_sector"),

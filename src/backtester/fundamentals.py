@@ -501,11 +501,16 @@ def monthly_panel(
     """Frame[month, ticker, cik, <concept>..., <concept>_period_end].
 
     Flow concepts from annual 10-K values (qtrs = 4); stock concepts from
-    any 10-K/10-Q (qtrs = 0). ``ciks`` is Frame[ticker, cik].
+    any 10-K/10-Q (qtrs = 0). ``ciks`` is Frame[ticker, cik, start, end]
+    (start and end optional): a ticker's registrant at each month is
+    resolved by ``sectors.cik_at``, so a name whose filer changed (Disney
+    in 2019, CB in 2016) reads each era's own filings.
     """
+    from backtester.sectors import cik_at
+
     tag_map = load_tag_map()
     ff = first_filed(num)
-    base = pl.DataFrame({"month": months}).join(ciks, how="cross")
+    base = cik_at(ciks, months)
     out = base
     for concept, spec in tag_map.items():
         if spec["kind"] == "flow":
@@ -708,7 +713,9 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     num = ingest(cfg) if reingest or not cached.exists() else pl.read_parquet(cached)
     membership = pl.read_parquet(cfg.data / "interim" / "membership.parquet")
     constituents = pl.read_parquet(cfg.data / "interim" / "sp500_constituents.parquet")
-    ciks, cik_log = sectors.cik_map(membership, constituents, num, sec_tickers(cfg))
+    ciks, cik_log = sectors.cik_map(
+        membership, constituents, num, sec_tickers(cfg), sectors.load_overrides(cfg)
+    )
     sectors.build(cfg, num, ciks)
 
     monthly = pl.read_parquet(cfg.data / "processed" / "returns_monthly.parquet")

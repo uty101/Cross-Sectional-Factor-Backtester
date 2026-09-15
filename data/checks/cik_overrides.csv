@@ -1,0 +1,94 @@
+ticker,cik,start,end,source_url,note
+AA,4281,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000004281&type=10-K,ALCOA INC; renamed Arconic Inc 2016-11 and Howmet Aerospace 2020-04 under the same CIK; name match refused because Alcoa Corp (1675149) also normalises to ALCOA
+ARNC,4281,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000004281&type=10-K,ARCONIC INC. 2016-11 to 2020-03 is the Alcoa Inc registrant renamed; the 2020 spin-off Arconic Corp (1790982) was never a member under ARNC
+AAL,6201,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000006201&type=10-K,AMR CORP renamed AMERICAN AIRLINES GROUP INC. 2013-12; membership carries the security name only
+ACE,896159,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000896159&type=10-K,ACE LTD; renamed CHUBB LTD 2016-01 after buying Chubb Corp; Wikipedia lists the removed ticker under the new name so the search found the old Chubb (20171)
+CB,20171,,2015-12-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000020171&type=10-K,CHUBB CORP was the CB registrant until ACE Ltd closed the acquisition 2016-01-14 and took the symbol; today's CB (896159) is ACE Ltd renamed
+ADT,1546640,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001546640&type=10-K,ADT CORP 2012-2016 (spun from Tyco); the 2018 ADT Inc IPO is a different registrant and never a member
+AET,1122304,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001122304&type=10-K,AETNA INC /PA/; the /PA/ suffix defeated the exact-name matcher
+AGN,850693,,2015-02-28,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000850693&type=10-K,ALLERGAN INC until Actavis plc closed the acquisition 2015-03-17
+AGN,1578845,2015-03-31,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001578845&type=10-K,ACTAVIS PLC renamed ALLERGAN PLC 2015-06 and took the AGN symbol 2015-03-23; the second AGN membership interval
+AIV,922864,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000922864&type=10-K,APARTMENT INVESTMENT & MANAGEMENT CO; Wikipedia's Aimco is the brand and the search found the operating partnership AIMCO Properties LP (926660) instead
+AN,350698,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000350698&type=10-K","AUTONATION, INC.; the ticker AN was Amoco before 1998 and the name matcher took the older membership row"
+ANR,1301063,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001301063&type=10-K","ALPHA NATURAL RESOURCES, INC."
+APA,6769,,2021-02-28,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000006769&type=10-K,APACHE CORP until the holding-company reorganisation of 2021-03-01; APA Corp (1841666) files after
+AVGO,1441634,,2016-01-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001441634&type=10-K,AVAGO TECHNOLOGIES LTD until it closed the Broadcom Corp acquisition 2016-02-01 and became Broadcom Ltd
+AVGO,1649338,2016-02-29,2018-03-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001649338&type=10-K,BROADCOM LTD until the redomiciliation to Broadcom Inc (1730168) 2018-04-04
+BBBY,886158,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000886158&type=10-K,BED BATH & BEYOND INC
+BCR,9892,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000009892&type=10-K,BARD C R INC /NJ/; the SEC spells the name surname-first
+BEAM,789073,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000789073&type=10-K,FORTUNE BRANDS INC renamed BEAM INC 2011-10 under the same CIK; Wikipedia lists the removed ticker as Suntory Global Spirits
+BG,1144519,,2023-11-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001144519&type=10-K,BUNGE LTD until the redomiciliation to Bunge Global SA (1996862) 2023-11-01
+BHI,808362,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000808362&type=10-K,BAKER HUGHES INC until the GE merger 2017-07; BKR is the new registrant (1701605)
+BLK,1364742,,2024-09-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001364742&type=10-K,BLACKROCK INC. until the 2024-10-01 holding-company reorganisation; today's BlackRock (2012383) files after
+BRCM,1054374,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001054374&type=10-K,BROADCOM CORP; three Broadcom registrants exist and the name matcher refused the ambiguity
+CA,356028,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000356028&type=10-K","CA, INC. (CA Technologies)"
+CBE,1141982,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001141982&type=10-K,COOPER INDUSTRIES PLC
+CCE,804055,,2010-09-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000804055&type=10-K,COCA COLA ENTERPRISES INC until Coca-Cola bought its North American business 2010-10-02
+CCE,1491675,2010-10-31,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001491675&type=10-K","COCA-COLA ENTERPRISES, INC.: the European business spun out 2010-10 under the same symbol"
+CDAY,1725057,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001725057&type=10-K,CERIDIAN HCM HOLDING INC. (renamed Dayforce 2024-02 under the same CIK)
+CEG,1004440,,2012-03-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001004440&type=10-K,CONSTELLATION ENERGY GROUP INC until Exelon closed 2012-03-12; the 2022 Constellation Energy Corp (1868275) is a different registrant with the same symbol
+CI,701221,,2018-11-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000701221&type=10-K,CIGNA CORP until the Express Scripts merger created a new holding company (1739940) 2018-12-20
+CMCSK,1166691,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001166691&type=10-K,COMCAST CORP: CMCSK was the Class A Special share class of the same registrant as CMCSA
+CNX,1070412,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001070412&type=10-K,CONSOL ENERGY INC (renamed CNX Resources 2017-11 under the same CIK)
+CZR,1590895,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001590895&type=10-K","ELDORADO RESORTS, INC. renamed CAESARS ENTERTAINMENT, INC. 2020-07; the pre-2020 Caesars (858339) was never a member"
+DD,30554,,2017-08-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000030554&type=10-K,DUPONT E I DE NEMOURS & CO until the DowDuPont merger 2017-08-31; the 2019 DD (1666700) is DowDuPont renamed
+DWDP,1666700,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001666700&type=10-K,DOWDUPONT INC. 2017-09 to 2019-05
+DELL,826083,,2013-10-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000826083&type=10-K,DELL INC until the 2013-10-29 buyout; the 2024 DELL (1571996) is Dell Technologies
+DIS,1001039,,2019-03-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001001039&type=10-K,WALT DISNEY CO/ until the 2019-03-20 Fox reorganisation made it a subsidiary of the new Walt Disney Co (1744489)
+DNB,1115222,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001115222&type=10-K,DUN & BRADSTREET CORP/NW; the name matcher took the 2020 re-IPO registrant (1799208) which has no filings in the membership interval
+DOW,29915,,2017-08-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000029915&type=10-K,DOW CHEMICAL CO /DE/ until the DowDuPont merger 2017-08-31; the 2019 DOW (1751788) is Dow Inc
+DTV,1465112,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001465112&type=10-K,DIRECTV (the 2009 holding company)
+ENDP,1593034,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001593034&type=10-K,ENDO INTERNATIONAL PLC; the membership interval starts 2015 after the Irish redomiciliation
+ESRX,885721,,2012-03-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000885721&type=10-K,EXPRESS SCRIPTS INC until the Medco merger closed 2012-04-02
+ESRX,1532063,2012-04-30,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001532063&type=10-K,EXPRESS SCRIPTS HOLDING CO. from 2012-04
+ETN,31277,,2012-11-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000031277&type=10-K,EATON CORP until the Cooper acquisition and Irish redomiciliation 2012-11-30; Eaton Corp plc (1551182) files after
+EVHC,1678531,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001678531&type=10-K,ENVISION HEALTHCARE CORP (the 2016 AmSurg merger registrant)
+FOX,1308161,,2019-02-28,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001308161&type=10-K","NEWS CORP renamed TWENTY-FIRST CENTURY FOX, INC. 2013-06; Fox Corp (1754301) took the symbols 2019-03-19"
+FOXA,1308161,,2019-02-28,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001308161&type=10-K","NEWS CORP renamed TWENTY-FIRST CENTURY FOX, INC. 2013-06; Fox Corp (1754301) took the symbols 2019-03-19"
+FTI,1135152,,2016-12-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001135152&type=10-K,FMC TECHNOLOGIES INC until the Technip merger 2017-01-16
+FTI,1681459,2017-01-31,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001681459&type=10-K,TECHNIPFMC PLC from 2017-01 (the name matcher had this CIK for the whole interval)
+GAS,72020,,2011-11-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000072020&type=10-K,NICOR INC until AGL Resources closed 2011-12-09
+GAS,1004155,2011-12-31,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001004155&type=10-K,AGL RESOURCES INC took the GAS symbol 2011-12-12 (renamed Southern Co Gas 2016 under the same CIK)
+GHC,104889,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000104889&type=10-K,WASHINGTON POST CO renamed GRAHAM HOLDINGS CO 2013-11 under the same CIK
+GOOG,1288776,,2015-09-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001288776&type=10-K,GOOGLE INC. until the Alphabet holding company (1652044) took over 2015-10-02
+GOOGL,1288776,,2015-09-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001288776&type=10-K,GOOGLE INC. until the Alphabet holding company (1652044) took over 2015-10-02
+HNZ,46640,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000046640&type=10-K,HEINZ H J CO
+HOT,316206,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000316206&type=10-K","STARWOOD HOTEL & RESORTS WORLDWIDE, INC"
+ICE,1174746,,2013-10-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001174746&type=10-K,INTERCONTINENTALEXCHANGE INC until the NYSE Euronext acquisition created a new holding company (1571949) 2013-11-13
+IPG,51644,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000051644&type=10-K","INTERPUBLIC GROUP OF COMPANIES, INC."
+JCI,53669,,2016-08-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000053669&type=10-K,JOHNSON CONTROLS INC until the 2016-09-02 merger into Tyco International plc; the surviving registrant (833444) renamed Johnson Controls International plc and holds the symbol today
+KFT,1103982,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001103982&type=10-K,KRAFT FOODS INC until the 2012-10 split; the registrant renamed Mondelez International (MDLZ) under the same CIK
+KRFT,1545158,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001545158&type=10-K","KRAFT FOODS GROUP, INC. 2012-10 to 2015-07 (the North American grocery spin-off)"
+LIN,884905,,2018-10-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000884905&type=10-K,PRAXAIR INC until the Linde merger closed 2018-10-31; Linde plc (1707925) files after
+LLL,1056239,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001056239&type=10-K,L 3 COMMUNICATIONS HOLDINGS INC (renamed L3 Technologies 2016-12 under the same CIK); the name matcher took the subsidiary co-registrant L-3 Communications Corp (1039101)
+LO,1424847,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001424847&type=10-K","LORILLARD, INC."
+LSI,703360,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000703360&type=10-K,LSI CORP
+LXK,1001288,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001001288&type=10-K,LEXMARK INTERNATIONAL INC /KY/
+MDT,64670,,2015-01-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000064670&type=10-K,MEDTRONIC INC until the Covidien acquisition and Irish redomiciliation 2015-01-26; Medtronic plc (1613103) files after
+MFE,890801,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000890801&type=10-K","MCAFEE, INC. (acquired by Intel 2011-02)"
+MHK,851968,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000851968&type=10-K,MOHAWK INDUSTRIES INC
+MTCH,891103,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000891103&type=10-K","IAC/INTERACTIVECORP became MATCH GROUP, INC. in the 2020-07 separation under the same CIK"
+NE,1458891,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001458891&type=10-K,NOBLE CORP / SWITZERLAND then NOBLE CORP PLC; the search found Noble Energy
+OI,812074,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000812074&type=10-K,OWENS ILLINOIS INC /DE/ (renamed O-I Glass 2019 under the same CIK)
+PAYC,1590955,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001590955&type=10-K","PAYCOM SOFTWARE, INC."
+PCS,1283699,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001283699&type=10-K,METROPCS COMMUNICATIONS INC (the registrant survived the 2013 reverse merger as T-Mobile US)
+PLD,899881,,2011-05-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000899881&type=10-K,PROLOGIS (the trust) until the 2011-06-03 merger into AMB Property Corp (1045609) which took the name and symbol
+PRGO,820096,,2013-11-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000820096&type=10-K,PERRIGO CO until the Elan acquisition and Irish redomiciliation 2013-12-18
+PRGO,1585364,2013-12-31,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001585364&type=10-K,PERRIGO CO PLC from 2013-12
+PSKY,813828,,2025-07-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000813828&type=10-K,CBS CORP then VIACOMCBS INC. then PARAMOUNT GLOBAL under one CIK until the Skydance merger 2025-08-07; Paramount Skydance (2041610) files after
+Q,1037949,,2011-03-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001037949&type=10-K,QWEST COMMUNICATIONS INTERNATIONAL INC until CenturyLink closed 2011-04-01
+Q,1478242,2017-08-31,2017-11-30,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001478242&type=10-K","QUINTILES IMS HOLDINGS, INC. held the symbol Q 2017-08 to 2017-11 before becoming IQVIA (IQV); today's Q (2058873) is Qnity"
+SNDK,1000180,,2016-05-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001000180&type=10-K,SANDISK CORP until Western Digital closed 2016-05-12; the 2025 SNDK (2023554) is the spin-off
+SUN,95304,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000095304&type=10-K,SUNOCO INC; the search found Sunoco Logistics Partners
+TSS,721683,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000721683&type=10-K,TOTAL SYSTEM SERVICES INC; Wikipedia lists the removed ticker as TSYS
+TYC,833444,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000833444&type=10-K,TYCO INTERNATIONAL LTD then PLC; the registrant survived the 2016 merger as Johnson Controls International plc (JCI)
+VNO,899689,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000899689&type=10-K,VORNADO REALTY TRUST; a second CIK (Vornado Realty LP) shares the name
+VTRS,69499,,2015-02-28,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000069499&type=10-K,MYLAN INC. until the Abbott generics deal and Dutch redomiciliation 2015-02-27
+VTRS,1623613,2015-03-31,2020-11-30,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001623613&type=10-K,MYLAN N.V. until the Upjohn combination formed Viatris (1792044) 2020-11-16
+WBA,104207,,2014-12-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000104207&type=10-K,WALGREEN CO until the Alliance Boots reorganisation 2014-12-31
+WBA,1618921,2015-01-31,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001618921&type=10-K,WALGREENS BOOTS ALLIANCE from 2015-01 (the name matcher had this CIK for the whole interval)
+WCG,1279363,,,"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001279363&type=10-K","WELLCARE HEALTH PLANS, INC."
+WIN,1282266,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001282266&type=10-K,WINDSTREAM CORP (Windstream Holdings under the same CIK from 2013)
+XRX,108772,,2019-07-31,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000108772&type=10-K,XEROX CORP until the holding-company reorganisation 2019-07-31
+XRX,1770450,2019-08-31,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001770450&type=10-K,XEROX HOLDINGS CORP from 2019-08
+SEDG,1419612,,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001419612&type=10-K,SOLAREDGE TECHNOLOGIES INC; a domestic 10-K filer the name matcher missed (two spellings of the name in sub)
