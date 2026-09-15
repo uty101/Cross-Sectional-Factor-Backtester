@@ -77,6 +77,48 @@ class FactorReport:
 # --- per factor ---------------------------------------------------------
 
 
+# A half-life is a property of an IC that is there. Under |t| < 1.96 at
+# h=1 the mean IC is not distinguishable from zero, so the table prints
+# n/a and the chart draws no fitted curve (FIX_PLAN_2 G3).
+IC_T_MIN = 1.96
+# Factors whose signal excludes Financials by rule (gross profitability,
+# as Novy-Marx does): coverage is reported against non-financial members.
+NON_FINANCIAL = {"quality", "quality_ttm"}
+COVERAGE_FOOTNOTE = (
+    "¹ Quality is computed on {pct}% of non-financial members in a typical month: "
+    "gross profitability needs a cost-of-goods line and the rest do not tag one "
+    "(decisions/tag_coverage_f3.md); financials are excluded by rule, as in Novy-Marx. "
+    "Coverage is the median across months of the share of members with a signal."
+)
+
+
+def coverage(
+    z: pl.DataFrame, members: pl.DataFrame, sectors: pl.DataFrame | None, non_fin: bool
+) -> float:
+    """Median across months of (members with a finite z) / (members), the
+    denominator restricted to non-financials when the signal excludes them.
+    This is what the signal was computed on, read off the saved z frame,
+    not the tag coverage the signal was built from."""
+    denom = members
+    if non_fin and sectors is not None:
+        sec = sectors.select("ticker", "sector").unique(subset=["ticker"])
+        denom = members.join(sec, on="ticker", how="left").filter(
+            pl.col("sector") != "Financials"
+        )
+    n = denom.group_by("month").len().rename({"len": "n"})
+    have = (
+        z.filter(pl.col("z").is_finite())
+        .join(denom, on=["month", "ticker"], how="inner")
+        .group_by("month")
+        .len()
+        .rename({"len": "have"})
+    )
+    j = n.join(have, on="month", how="left").with_columns(pl.col("have").fill_null(0))
+    if j.height == 0:
+        return float("nan")
+    return float((j["have"] / j["n"]).median())
+
+
 def _load(
     cfg: Config, factor: str, tag: str = ""
 ) -> tuple[pl.DataFrame, pl.DataFrame, pl.DataFrame]:
@@ -125,6 +167,8 @@ def factor_report(
     decay, hl = stats.ic_decay(
         z, inp.monthly.join(members, on=["month", "ticker"], how="inner"), HORIZONS
     )
+    if abs(ics["ic_t"]) < IC_T_MIN:
+        hl = float("nan")  # no IC at h=1, so nothing to fit a decay to
     fm = stats.fama_macbeth(z, returns, lags=max(cfg.holding_months - 1, 0))
     att = stats.attribution(ls, inp.french, lags=max(cfg.holding_months - 1, 0))
 
@@ -167,6 +211,8 @@ def factor_report(
         "breakeven_bps": stats.breakeven_cost(ls) * 1e4,
         "half_life": hl,
         "months": len(n),
+        "coverage": coverage(z, members, inp.sectors, factor in NON_FINANCIAL),
+        "coverage_of": "non-fin." if factor in NON_FINANCIAL else "members",
     }
     return FactorReport(factor, ls, dec, ic, decay, hl, row, att, val)
 
@@ -189,7 +235,8 @@ def _be(x: float) -> str:
 def results_table(reports: list[FactorReport]) -> str:
     head = (
         "| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | "
-        "Turnover | Mean IC | IC t-stat | Break-even cost |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n"
+        "Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |\n"
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|\n"
     )
     rows = []
     for r in reports:
@@ -199,9 +246,30 @@ def results_table(reports: list[FactorReport]) -> str:
             f"{_f(x['vol'], 1, True)} | {_f(x['sharpe_net'])} | {_f(x['dsr'])} | "
             f"{_f(x['dsr_candidates'])} | "
             f"{_f(x['max_dd'], 0, True)} | {_f(x['turnover'])} | {_f(x['mean_ic'], 3)} | "
-            f"{_f(x['ic_t'], 1)} | {_be(x['breakeven_bps'])} |"
+            f"{_f(x['ic_t'], 1)} | {_be(x['breakeven_bps'])} | {_cov(r)} |"
         )
     return head + "\n".join(rows) + "\n"
+
+
+def _cov(r: FactorReport) -> str:
+    """ "87%" for a signal on all members; "66% of non-fin.¹" when the
+    signal excludes financials by rule, the mark pointing at the footnote."""
+    x = r.row
+    cell = _f(x["coverage"], 0, True)
+    if x["coverage_of"] != "members":
+        cell += f" of {x['coverage_of']}{FOOTNOTE_MARK}"
+    return cell
+
+
+FOOTNOTE_MARK = "¹"
+
+
+def coverage_footnote(reports: list[FactorReport]) -> str:
+    """The one-line COGS footnote under a table that has quality in it."""
+    q = [r for r in reports if r.factor in NON_FINANCIAL]
+    if not q:
+        return ""
+    return COVERAGE_FOOTNOTE.format(pct=f"{100 * q[0].row['coverage']:.0f}") + "\n"
 
 
 def validation_table(cfg: Config, inp) -> str:
@@ -274,11 +342,18 @@ def attribution_table(reports: list[FactorReport]) -> str:
         def cell(k: str, b: dict = a.betas, t: dict = a.beta_t) -> str:
             return f"{b[k]:.2f} ({t[k]:.1f})"
 
+        mark = FOOTNOTE_MARK if r.factor in NON_FINANCIAL else ""
         out += (
-            f"| {LABELS[r.factor]} | {_f(a.alpha_annual, 1, True)} | {a.alpha_t:.1f} | "
+            f"| {LABELS[r.factor]}{mark} | {_f(a.alpha_annual, 1, True)} | {a.alpha_t:.1f} | "
             f"{cell('mkt_rf')} | {cell('hml')} | {cell('umd')} | {cell('rmw')} | {a.r2:.2f} |\n"
         )
     return out
+
+
+def _half_life(r: FactorReport) -> str:
+    if abs(r.row["ic_t"]) < IC_T_MIN:
+        return "n/a"
+    return "none within 5y" if math.isnan(r.half_life) else _f(r.half_life, 1)
 
 
 def decay_table(reports: list[FactorReport]) -> str:
@@ -293,7 +368,7 @@ def decay_table(reports: list[FactorReport]) -> str:
         out += (
             f"| {LABELS[r.factor]} | "
             + " | ".join(_f(ics[h], 3) for h in HORIZONS)
-            + f" | {'none within 5y' if math.isnan(r.half_life) else _f(r.half_life, 1)} |\n"
+            + f" | {_half_life(r)} |\n"
         )
     return out
 
@@ -620,6 +695,7 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         f"{sr_var:.4f} all, {sr_var_cand:.4f} candidates).\n",
         "## Results table\n",
         results_table(headline),
+        "\n" + coverage_footnote(headline),
         f"\nPrice history covers {100 - gap:.1f}% of member-months; the missing names are "
         "disproportionately those that left the index. See Data.\n",
         "\nDSR is the deflated Sharpe: the probability that the net Sharpe exceeds the expected maximum "
@@ -635,6 +711,8 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         attribution_table(headline),
         "\n## IC decay\n",
         decay_table(headline),
+        f"\nHalf-life is n/a where the h=1 IC t-stat is under {IC_T_MIN} in absolute value: "
+        "there is no IC to decay. The chart draws a fitted curve only where one is printed.\n",
         "\n## Net Sharpe by assumed cost\n",
         cost_table(headline, [0, 5, 10, 25, 50]),
         "\n## Variants (net Sharpe)\n",
@@ -666,6 +744,7 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
             "names whose filing changed least. Built for the data path (EDGAR primary documents, "
             "filing-dated, deterministic scorer); not one of the five factors the brief asked for.\n",
             results_table(appendix),
+            "\n" + coverage_footnote(appendix),
             "\nAttribution:\n",
             attribution_table(appendix),
             "\nVariants (net Sharpe):\n",

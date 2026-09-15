@@ -63,13 +63,15 @@ Window 2010-01 to 2026-08, 200 monthly formations. Equal-weighted deciles,
 signals z-scored within sector, 1-day execution lag, **10 bp one-way cost on
 every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 
-| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| Momentum 12-1 | 2.1% | 0.6% | 15.5% | 0.04 | 0.02 | 0.14 | −56% | 0.62 | 0.006 | 0.6 | 14 bp |
-| Value (B/P, E/P) | −1.1% | −1.8% | 11.0% | −0.16 | 0.00 | 0.03 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) |
-| Quality (GP/A, accruals) | 2.7% | 2.1% | 8.8% | 0.24 | 0.09 | 0.39 | −24% | 0.25 | 0.008 | 1.4 | 45 bp |
-| Low volatility | −4.5% | −5.1% | 18.6% | −0.27 | 0.00 | 0.01 | −74% | 0.25 | 0.003 | 0.2 | none (loses gross) |
-| Composite | −3.6% | −4.7% | 14.1% | −0.33 | 0.00 | 0.00 | −66% | 0.45 | −0.002 | −0.2 | none (loses gross) |
+| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Momentum 12-1 | 2.1% | 0.6% | 15.5% | 0.04 | 0.02 | 0.14 | −56% | 0.62 | 0.006 | 0.6 | 14 bp | 87% |
+| Value (B/P, E/P) | −1.1% | −1.8% | 11.0% | −0.16 | 0.00 | 0.03 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) | 84% |
+| Quality (GP/A, accruals) | 2.7% | 2.1% | 8.8% | 0.24 | 0.09 | 0.39 | −24% | 0.25 | 0.008 | 1.4 | 45 bp | 70% of non-fin.¹ |
+| Low volatility | −4.5% | −5.1% | 18.6% | −0.27 | 0.00 | 0.01 | −74% | 0.25 | 0.003 | 0.2 | none (loses gross) | 87% |
+| Composite | −3.6% | −4.7% | 14.1% | −0.33 | 0.00 | 0.00 | −66% | 0.45 | −0.002 | −0.2 | none (loses gross) | 52% |
+
+¹ Quality is computed on 70% of non-financial members in a typical month: gross profitability needs a cost-of-goods line and the rest do not tag one (decisions/tag_coverage_f3.md); financials are excluded by rule, as in Novy-Marx. Coverage is the median across months of the share of members with a signal.
 
 Price history covers 85.4% of member-months; the missing names are
 disproportionately those that left the index. See Data.
@@ -120,10 +122,11 @@ What the table says, factor by factor:
   months, so the missing delisted names are not hiding a premium.
 - **Quality** is the only positive line: net Sharpe 0.24, 0.30 cap-weighted,
   0.38 on the well-covered months, Fama-MacBeth t 1.4, DSR 0.39 against the
-  8 candidates. Accruals carry it. Gross profitability is computed on the
-  67–71% of non-financial members that report a cost-of-goods line
-  ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md)) and
-  excludes financials by rule, as Novy-Marx does. A net Sharpe of 0.24 with
+  8 candidates. Accruals carry it. The Coverage column is the caveat: the signal
+  exists for 70% of non-financial members in a typical month, because
+  gross profitability needs a cost-of-goods line and the rest do not tag
+  one ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md));
+  financials are excluded by rule, as Novy-Marx does. A net Sharpe of 0.24 with
   an IC t-stat of 1.4 is not evidence of much.
 - **Low volatility** loses 4.5% a year gross as a long–short. Its
   attribution is the brief's prediction: market beta −0.65 (t −10.7) and
@@ -143,12 +146,13 @@ Four charts, from [reports/figures/](reports/figures/):
 ![IC decay](reports/figures/chart3_ic_decay.png)
 ![Sharpe vs cost](reports/figures/chart4_sharpe_vs_cost.png)
 
-Signal decay: momentum's IC is small at every horizon and the exponential
-fit halves it in about 27 months; quality's IC at h=12 is as high as at
-h=1, which is why holding it for 6–12 months costs nothing in return and
-saves most of the turnover (though its 3–12 month holds net 0.02–0.08
-against 0.24 monthly, the difference being which calendar months form the
-portfolio). The full tables, including net Sharpe at 0, 5, 10, 25 and 50 bp,
+Signal decay: no half-life is printed, because no factor's h=1 IC t-stat
+reaches 1.96 and there is no IC to fit a decay to (the chart draws the
+points and no curve). Momentum's IC is small at every horizon; quality's
+IC at h=12 is as high as at h=1, which is why holding it for 6–12 months
+costs nothing in return and saves most of the turnover (though its 3–12
+month holds net 0.02–0.08 against 0.24 monthly, the difference being which
+calendar months form the portfolio). The full tables, including net Sharpe at 0, 5, 10, 25 and 50 bp,
 the cap-weighted and holding-period variants, and the Fama-MacBeth premia,
 are in [reports/results.md](reports/results.md).
 
@@ -159,9 +163,9 @@ factor. It is not one of the five the brief asked for, so it lives in
 [reports/results.md](reports/results.md) under its own heading, with the
 same columns:
 
-| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.03 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) |
+| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.03 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) | 98% |
 
 **10-K text similarity**, long the names whose annual report changed
   least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
