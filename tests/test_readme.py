@@ -68,3 +68,17 @@ def test_no_half_life_where_the_ic_t_stat_is_under_1_96(repo_root: Path) -> None
     # the quality footnote mark is on the attribution row too
     att = _table(text, "| Factor | Alpha (ann.) |")
     assert any(r.startswith("| Quality (GP/A, accruals)¹ |") for r in att)
+
+
+def test_every_number_in_the_answer_is_in_a_table(repo_root: Path) -> None:
+    """FIX_PLAN_2 G4: the answer paragraph is at most 120 words and every
+    number in it is in reports/results.md or in a table on the README."""
+    answer = (repo_root / "reports" / "answer.md").read_text(encoding="utf-8")
+    assert len(answer.split()) <= 120
+    readme = (repo_root / "README.md").read_text(encoding="utf-8")
+    assert answer.strip() in readme, "README does not carry the answer verbatim"
+    results = (repo_root / "reports" / "results.md").read_text(encoding="utf-8")
+    tables = "\n".join(x for x in readme.splitlines() if x.startswith("|"))
+    backed = (results + tables).replace("−", "-")
+    for n in set(re.findall(r"\d+(?:\.\d+)?", answer)):
+        assert re.search(rf"(?<![\d.]){re.escape(n)}(?![\d])", backed), n

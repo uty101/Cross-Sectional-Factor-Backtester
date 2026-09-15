@@ -51,17 +51,20 @@ outsider can verify, over 2010–2026?
 - How fast does each signal decay, and what rebalance frequency follows?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
-**The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the best line, quality at a net Sharpe of 0.24, deflates to a 39%
-probability of beating the best of 8 candidate specifications by luck,
-and 9% against all 58 distinct specifications tried. Value, which the first version of this
-README reported at 0.48, was a market-cap bug (Results, below).
+**The answer** ([reports/answer.md](reports/answer.md); every number in it
+is in a table on this page or in [reports/results.md](reports/results.md)):
+
+Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.39 against the 8 candidate specifications and 0.09 against all 58, on a net Sharpe of 0.24, an IC t-stat of 1.4, and 70% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.5% and −0.16. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
 
 ## Results
 
-Window 2010-01 to 2026-08, 200 monthly formations. Equal-weighted deciles,
-signals z-scored within sector, 1-day execution lag, **10 bp one-way cost on
-every dollar bought or sold**. Long–short is decile 10 minus decile 1.
+The table is what the five factors the brief asked for earned over 2010-01
+to 2026-08 (200 monthly formations) as equal-weighted long–short deciles,
+signals z-scored within sector, 1-day execution lag, **10 bp one-way cost
+on every dollar bought or sold**. Read the DSR (cand.) and Coverage
+columns first: one says how much of each Sharpe is selection, the other
+how much of the index the signal exists for. No line clears either the
+deflated Sharpe or an IC t-stat of 1.96; quality is the closest on both.
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -107,6 +110,18 @@ had been quietly trimming rather than diagnosing. With the count in the
 price basis the factor loads 0.42 on HML (t 7.7, R² 0.52, alpha −1.5%,
 t −0.7), correlates 0.56 with HML instead of 0.25, and earns what large-cap
 value earned over 2010–2026: nothing.
+
+| Value (B/P, E/P), sector-neutral | before F2 (unadjusted count) | after F2 (count in the price basis) |
+|---|---|---|
+| Net Sharpe | 0.48 | −0.16 |
+| Alpha after Mkt-RF, HML, UMD, RMW (t) | 4.7% (2.3) | −1.5% (−0.7) |
+| Loading on HML (t) | 0.10 | 0.42 (7.7) |
+| Correlation with HML | 0.25 | 0.56 |
+
+The before column is the previous README as quoted in
+[decisions/f4_before_after.md](decisions/f4_before_after.md); the after
+column is the attribution and validation tables in
+[reports/results.md](reports/results.md).
 
 What the table says, factor by factor:
 
