@@ -432,7 +432,13 @@ def validation_table(cfg: Config, inp: Inputs | None = None) -> pl.DataFrame:
     rows = []
     for factor, threshold in cfg.validation:
         path = cfg.data / "processed" / f"long_short_{factor}.parquet"
-        bench = FACTORS[factor.removesuffix("_hedged")]["french"]
+        spec = FACTORS[factor.removesuffix("_hedged")]
+        # A French replication is judged against the big-cap leg of the
+        # factor, the like-for-like series for an all-large-cap universe
+        # (FIX_PLAN F8); the reported factors against the full factor.
+        bench = spec["french"]
+        if factor.endswith("_replica"):
+            bench = spec.get("big") or spec["french"]
         if not path.exists() or bench is None or bench not in inp.french.columns:
             rows.append(
                 {

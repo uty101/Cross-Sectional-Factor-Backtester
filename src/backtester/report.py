@@ -214,15 +214,65 @@ def results_table(reports: list[FactorReport]) -> str:
     return head + "\n".join(rows) + "\n"
 
 
-def validation_table(reports: list[FactorReport]) -> str:
-    out = "| Series | French factor | Correlation | Months | Bar |\n|---|---|---|---|---|\n"
-    for r in reports:
-        v = r.validation
-        if not v["french"]:
+def validation_table(cfg: Config, inp) -> str:
+    """The six-row validation table (FIX_PLAN F8): momentum against UMD,
+    the two French replications against the big-cap legs of HML and RMW
+    (the like-for-like series), low beta raw and beta-hedged against BAB,
+    and the reported value and quality composites against HML and RMW,
+    marked as not a join test. Bars are config.toml [validation]."""
+    from backtester.run import validate
+
+    bars = dict(cfg.validation)
+    rows = [
+        ("momentum", "", "umd", "UMD", bars.get("momentum"), True),
+        (
+            "hml_replica",
+            "",
+            "big_hml",
+            "HML, big-cap leg",
+            bars.get("hml_replica"),
+            True,
+        ),
+        (
+            "rmw_replica",
+            "",
+            "big_rmw",
+            "RMW, big-cap leg",
+            bars.get("rmw_replica"),
+            True,
+        ),
+        ("beta", "", "bab", "BAB (AQR)", bars.get("beta"), True),
+        ("beta", "hedged", "bab", "BAB (AQR)", bars.get("beta_hedged"), True),
+        ("value", "", "hml", "HML", bars.get("value"), False),
+        ("quality", "", "rmw", "RMW", bars.get("quality"), False),
+    ]
+    out = "| Series | Against | Correlation | Months | Bar | |\n|---|---|---|---|---|---|\n"
+    for f, tag, col, name, bar, join_test in rows:
+        sfx = f"_{tag}" if tag else ""
+        path = cfg.data / "processed" / f"long_short_{f}{sfx}.parquet"
+        if not path.exists() or col not in inp.french.columns:
             continue
-        bar = "> 0.7" if r.factor in ("momentum", "value", "quality") else "-"
-        ok = "" if v["corr"] is None else (" pass" if v["corr"] > 0.7 else " **fail**")
-        out += f"| {LABELS[r.factor]} long-short | {v['french'].upper()} | {_f(v['corr'], 3)}{ok if bar != '-' else ''} | {v['months']} | {bar} |\n"
+        v = validate(pl.read_parquet(path), inp.french, col)
+        label = {
+            "momentum": "Momentum 12-1 long-short",
+            "hml_replica": "B/P, cap-weighted terciles (French's construction)",
+            "rmw_replica": "Pre-tax income / FY equity, cap-weighted terciles (French's construction)",
+            "beta": "Low beta long-short" + (", beta-hedged" if tag else ", raw"),
+            "value": "Value (B/P, E/P) long-short, sector-neutral",
+            "quality": "Quality (GP/A, accruals) long-short, sector-neutral",
+        }[f]
+        verdict = ""
+        if bar is not None and v["corr"] is not None:
+            verdict = "pass" if v["corr"] >= bar else "**fail**"
+        note = (
+            verdict
+            if join_test
+            else "not a join test: a two-signal sector-neutral composite against a raw one-signal factor"
+        )
+        out += (
+            f"| {label} | {name} | {_f(v['corr'], 3)} | {v['months']} | "
+            f"{'> ' + f'{bar:.1f}' if bar is not None else '-'} | {note} |\n"
+        )
     return out
 
 
@@ -547,14 +597,20 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         for f in factors
         if (cfg.data / "processed" / f"long_short_{f}.parquet").exists()
     ]
+    # The headline table is the five factors the brief asked for; the
+    # 10-K text factor is an appendix (FIX_PLAN F8).
+    headline = [r for r in reports if r.factor != "text_change"]
+    appendix = [r for r in reports if r.factor == "text_change"]
+    cov = pl.read_csv(cfg.data / "checks" / "price_coverage_summary.csv")
+    gap = float(cov.filter(pl.col("metric") == "gap_pct")["value"][0])
     figs = cfg.reports / "figures"
     figs.mkdir(parents=True, exist_ok=True)
-    chart_deciles(reports, figs / "chart1_deciles.png")
+    chart_deciles(headline, figs / "chart1_deciles.png")
     chart_rolling_ic(
-        reports, figs / "chart2_rolling_ic.png", spans=recession_spans(cfg)
+        headline, figs / "chart2_rolling_ic.png", spans=recession_spans(cfg)
     )
-    chart_decay(reports, figs / "chart3_ic_decay.png")
-    chart_cost(reports, figs / "chart4_sharpe_vs_cost.png")
+    chart_decay(headline, figs / "chart3_ic_decay.png")
+    chart_cost(headline, figs / "chart4_sharpe_vs_cost.png")
 
     tags = [
         ("cw", "Cap-weighted"),
@@ -572,22 +628,24 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         f"specifications logged N = {n_trials} (variance of monthly Sharpe across them {sr_var:.4f}), "
         f"of which {n_cand} candidates (variance {sr_var_cand:.4f}).\n",
         "## Results table\n",
-        results_table(reports),
+        results_table(headline),
+        f"\nPrice history covers {100 - gap:.1f}% of member-months; the missing names are "
+        "disproportionately those that left the index. See Data.\n",
         "\nDSR is the deflated Sharpe: the probability that the net Sharpe exceeds the expected maximum "
         "of N random trials with the same dispersion, adjusted for skew and kurtosis. DSR (all) counts every "
         "row of the specification log; DSR (cand.) counts the candidate rows only (a sensitivity, a "
         "replication or a diagnostic is not a candidate for the table). Break-even cost is the "
         "one-way cost at which the mean net return is zero.\n",
-        "## Validation against Ken French\n",
-        validation_table(reports),
+        "## Validation against Ken French and AQR\n",
+        validation_table(cfg, inp),
         "\n## Attribution (long-short on Mkt-RF, HML, UMD, RMW; t-stats in brackets)\n",
-        attribution_table(reports),
+        attribution_table(headline),
         "\n## IC decay\n",
-        decay_table(reports),
+        decay_table(headline),
         "\n## Net Sharpe by assumed cost\n",
-        cost_table(reports, [0, 5, 10, 25, 50]),
+        cost_table(headline, [0, 5, 10, 25, 50]),
         "\n## Variants (net Sharpe)\n",
-        variant_table(cfg, [r.factor for r in reports], tags),
+        variant_table(cfg, [r.factor for r in headline], tags),
         "\nCap-weighted runs hold only the names with a market cap (39% of members in "
         "2010, 86% in 2023); the equal-weighted base holds every name with a signal.\n",
         "\n## Beta-hedged low volatility and low beta\n",
@@ -597,17 +655,29 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         "months have no beta and are dropped. BAB is beta-neutral by construction, so the hedged row "
         "is the like-for-like comparison; the bar in config.toml is 0.5 for both.\n",
         "\n## With and without the badly covered months\n",
-        coverage_split_table(cfg, reports),
+        coverage_split_table(cfg, headline),
         "\n## Fama-MacBeth premia (per unit z, monthly) and IC information ratio\n",
         "| Factor | Premium | t (NW) | IC IR |\n|---|---|---|---|\n"
         + "".join(
             f"| {r.row['factor']} | {_f(r.row['fm_premium'], 2, True)} | {_f(r.row['fm_t'], 1)} | {_f(r.row['ic_ir'])} |\n"
-            for r in reports
+            for r in headline
         ),
         "\n## Charts\n",
         "![deciles](figures/chart1_deciles.png)\n![rolling IC](figures/chart2_rolling_ic.png)\n"
         "![IC decay](figures/chart3_ic_decay.png)\n![Sharpe vs cost](figures/chart4_sharpe_vs_cost.png)\n",
     ]
+    if appendix:
+        md += [
+            "\n## Appendix: text factor\n",
+            "Year-on-year similarity of the 10-K text (Cohen, Malloy and Nguyen 2020), long the "
+            "names whose filing changed least. Built for the data path (EDGAR primary documents, "
+            "filing-dated, deterministic scorer); not one of the five factors the brief asked for.\n",
+            results_table(appendix),
+            "\nAttribution:\n",
+            attribution_table(appendix),
+            "\nVariants (net Sharpe):\n",
+            variant_table(cfg, ["text_change"], tags + [("jaccard", "Jaccard scorer")]),
+        ]
     text = "\n".join(md)
     (cfg.reports / "results.md").write_text(text, encoding="utf-8", newline="\n")
     from backtester.run import validation_table as validation_csv

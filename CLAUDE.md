@@ -128,10 +128,13 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   composites and score 0.56 / 0.07 vs HML / RMW (value was 0.25 before
   the market-cap fix); the join is validated by `run.replicate`: B/P
   cap-weighted terciles vs the big-cap HML leg 0.78 (0.90 from 2016),
-  0.72 vs full HML. The RMW replication is 0.44 vs full RMW and 0.62 vs
-  the big-cap leg; its early-years weakness was the CIK map, not XBRL
+  0.72 vs full HML. The RMW replication is 0.62 vs the big-cap leg (0.44
+  vs full RMW); its early-years weakness was the CIK map, not XBRL
   coverage (2010-12 went from 0.07 to 0.69), and a 2013-15 trough of
-  0.38 is not understood. Do not tune the reported factors to raise
+  0.38 is not understood. `reports/validation.csv` judges the two
+  replications against the big-cap legs (bar 0.6) and the reported
+  factors against the full factors (bar 0.7); the text factor is an
+  appendix, not a headline row (F8). Do not tune the reported factors to raise
   these numbers.
 - **Value's old net Sharpe of 0.48 was a market-cap bug**, not a premium:
   split-adjusted prices met unadjusted share counts, so pre-split

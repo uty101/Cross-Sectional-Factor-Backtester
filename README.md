@@ -70,7 +70,6 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 | Quality (GP/A, accruals) | 2.7% | 2.1% | 8.8% | 0.24 | 0.02 | 0.06 | −24% | 0.25 | 0.008 | 1.4 | 45 bp |
 | Low volatility | −4.5% | −5.1% | 18.6% | −0.27 | 0.00 | 0.00 | −74% | 0.25 | 0.003 | 0.2 | none (loses gross) |
 | Composite | −3.6% | −4.7% | 14.1% | −0.33 | 0.00 | 0.00 | −66% | 0.45 | −0.002 | −0.2 | none (loses gross) |
-| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.00 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) |
 
 Price history covers 85.4% of member-months; the missing names are
 disproportionately those that left the index. See Data.
@@ -131,15 +130,6 @@ What the table says, factor by factor:
 - **Composite** (all six signals) nets −0.33, and −0.09 cap-weighted: with
   value and low volatility both negative there is nothing for the
   composite to average.
-- **10-K text similarity**, long the names whose annual report changed
-  least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
-  nothing here: −0.2% gross, −1.0% net, alpha −0.5% (t −0.4), R² 0.03 on
-  the four French factors, so it is at least not a repackaging of them.
-  Jaccard instead of cosine gives 0.05 net; every variant is within ±0.3
-  of zero. The paper's effect sits in small caps and in the short leg, and
-  this is an S&P 500 long-short over 2010–2026. It is in the table because
-  the point of building it was the data path (next section), not the return.
-
 Four charts, from [reports/figures/](reports/figures/):
 
 ![deciles](reports/figures/chart1_deciles.png)
@@ -156,35 +146,58 @@ portfolio). The full tables, including net Sharpe at 0, 5, 10, 25 and 50 bp,
 the cap-weighted and holding-period variants, and the Fama-MacBeth premia,
 are in [reports/results.md](reports/results.md).
 
+### Appendix: text factor
+
+The sixth line in earlier versions of this table was the 10-K text
+factor. It is not one of the five the brief asked for, so it lives in
+[reports/results.md](reports/results.md) under its own heading, with the
+same columns:
+
+| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.00 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) |
+
+**10-K text similarity**, long the names whose annual report changed
+  least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
+  nothing here: −0.2% gross, −1.0% net, alpha −0.5% (t −0.4), R² 0.03 on
+  the four French factors, so it is at least not a repackaging of them.
+  Jaccard instead of cosine gives 0.05 net; every variant is within ±0.3
+  of zero. The paper's effect sits in small caps and in the short leg, and
+  this is an S&P 500 long-short over 2010–2026. It is in the table because
+  the point of building it was the data path (next section), not the return.
+
 ## Validation bar
 
 The pipeline is considered wrong until the long–short series clear this:
 
-| Series | Must correlate with | Threshold | Result |
+| Series | Against | Threshold | Result |
 |---|---|---|---|
 | Momentum long–short | French **UMD** | > 0.7 | **0.78** pass (0.85 without sector neutralisation) |
-| Value long–short | French **HML** | > 0.7 | 0.56 fail as reported (0.25 before the market-cap fix); see below |
-| Quality long–short | French **RMW** | > 0.7 | 0.07 fail as reported; see below |
-| Low beta long–short | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
-| Low beta long–short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.82 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.11 after, correlation 0.46, still short |
+| B/P, cap-weighted terciles, French's construction | French **HML, big-cap leg** | > 0.6 | **0.78** pass (0.72 vs full HML; 0.90 from 2016) |
+| Pre-tax income / FY equity, cap-weighted terciles, French's construction | French **RMW, big-cap leg** | > 0.6 | **0.62** pass (0.44 vs full RMW) |
+| Low beta long–short, raw | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
+| Low beta long–short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.82 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.11 after, still short |
+| Value and quality long–short, as reported | French **HML** / **RMW** | > 0.7 | 0.56 / 0.07; not a join test: two-signal sector-neutral composites against raw one-signal factors (value was 0.25 before the market-cap fix) |
 
-The reported value and quality factors are sector-neutral composites of two
-signals each, and HML and RMW are neither, so their correlation was never
-going to reach 0.7 and it is not the test of the join. The test of the join
-is to build French's factor the way French does (one raw signal, no sector
-neutralisation, cap-weighted top third minus bottom third) and compare it
-with the **big-cap half** of his factor, which he also publishes, because HML
-and RMW are half small-cap and this universe has none (French's own big-cap
-leg correlates only 0.92 with full HML over the window).
+The first three rows test the fundamentals join. The brief's bar of 0.7 on
+the reported value and quality factors stays in the table and is not that
+test, because HML and RMW are neither sector-neutral nor composites. The
+test of the join is to build French's factor the way French does (one raw
+signal, no sector neutralisation, cap-weighted top third minus bottom
+third) and compare it with the **big-cap half** of his factor, which he
+also publishes, because HML and RMW are half small-cap and this universe
+has none (French's own big-cap leg correlates only 0.92 with full HML over
+the window). `reports/validation.csv` carries every row above, pass or
+fail, from `config.toml [validation]`.
 
 | Replication | vs full factor | vs big-cap leg | from 2016 |
 |---|---|---|---|
 | B/P, cap-weighted terciles | 0.72 | **0.78** | **0.90** |
 | Pre-tax income / FY book equity, cap-weighted terciles | 0.44 | 0.62 | 0.64 |
 
-The book-equity join clears the bar against the like-for-like series. The
-profitability replication does not, and the by-period numbers no longer
-say what the previous README said. Before the CIK fix it was 0.07 in
+Both joins clear the 0.6 bar against the like-for-like series; the
+profitability one only just, and its by-period numbers no longer say what
+the previous README said. Before the CIK fix it was 0.07 in
 2010–12, rising with XBRL coverage; now it is 0.69 in 2010–12, 0.38 in
 2013–15, 0.83 in 2016–18, 0.62 in 2019–21 and 0.61 from 2022. The early
 weakness was the ticker-to-CIK map (18% of members had no filings attached,
