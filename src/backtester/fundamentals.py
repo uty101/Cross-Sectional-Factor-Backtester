@@ -662,9 +662,15 @@ def signal(
             .filter(pl.col("value").is_not_null())
         )
     if name == "gross_profitability":
+        # (revenue - COGS) / assets, Novy-Marx (2013). Financials are
+        # excluded by rule, as in the paper: a bank has no cost of goods
+        # sold and its derived revenue over its balance sheet is not the
+        # same quantity (FIX_PLAN F3).
         gp = pl.coalesce(
             pl.col("gross_profit" + sfx), pl.col("revenue" + sfx) - pl.col("cogs" + sfx)
         )
+        if "sector" in f.columns:
+            f = f.filter(pl.col("sector").ne_missing("Financials"))
         return (
             f.filter(pl.col("assets") > 0)
             .select("month", "ticker", (gp / pl.col("assets")).alias("value"))
@@ -766,6 +772,15 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
 
     cover, splits = shares.load(cfg)
     panel = monthly_panel(cfg, num, ciks, months, cover, shares.load_api(cfg))
+    sector_of = (
+        pl.read_parquet(cfg.data / "interim" / "sectors.parquet")
+        .select("ticker", "sector")
+        .unique(subset=["ticker"])
+    )
+    panel = bank_revenue(panel.join(sector_of, on="ticker", how="left"))
+    revenue_derived(panel, membership, cfg).write_csv(
+        cfg.data / "checks" / "revenue_derived.csv"
+    )
 
     # Unadjusted month-end close for market cap: shares outstanding are not
     # split-adjusted, and neither should the price be.
@@ -810,7 +825,7 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
             .agg(pl.len().alias("months"), pl.col("cap").median().alias("median_cap"))
             .with_columns(pl.lit("under 1bn; kept").alias("reason")),
         ]
-    ).sort("reason", "months", descending=[False, True])
+    ).sort("reason", "months", "ticker", descending=[False, True, False])
     caps = caps.filter(~pl.col("implausible")).drop("implausible")
 
     processed = cfg.data / "processed"
@@ -827,6 +842,77 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     )
     amendments(num).write_csv(checks / "sec_amendments_by_year.csv")
     return panel
+
+
+def bank_revenue(panel: pl.DataFrame) -> pl.DataFrame:
+    """Financials with no revenue tag get net interest income plus
+    noninterest income, the bank convention (FIX_PLAN F3), for both the
+    annual and the TTM columns; ``revenue_source`` says which rows.
+    Only the Financials sector: a manufacturer with a missing revenue
+    stays missing rather than taking its interest line."""
+    if "sector" not in panel.columns:
+        return panel
+    fin = pl.col("sector") == "Financials"
+    out = panel
+    for sfx in ("", "_ttm"):
+        nii, non = f"net_interest_income{sfx}", f"noninterest_income{sfx}"
+        if nii not in out.columns or non not in out.columns:
+            continue
+        derived = pl.col(nii) + pl.col(non)
+        out = out.with_columns(
+            (fin & pl.col(f"revenue{sfx}").is_null() & derived.is_not_null()).alias(
+                "_use"
+            )
+        )
+        if sfx == "":
+            out = out.with_columns(
+                pl.when(pl.col("_use"))
+                .then(pl.lit("derived_bank"))
+                .when(pl.col("revenue").is_not_null())
+                .then(pl.lit("tag"))
+                .otherwise(pl.lit(None, dtype=pl.Utf8))
+                .alias("revenue_source")
+            )
+        out = out.with_columns(
+            pl.when(pl.col("_use"))
+            .then(derived)
+            .otherwise(pl.col(f"revenue{sfx}"))
+            .alias(f"revenue{sfx}")
+        ).drop("_use")
+    return out
+
+
+def revenue_derived(
+    panel: pl.DataFrame, membership: pl.DataFrame, cfg: Config
+) -> pl.DataFrame:
+    """Per December month-end: members with revenue from a tag, derived
+    for a bank, or missing. The log the plan asks for."""
+    from backtester.universe import members_at
+
+    rows = []
+    for (m,), g in panel.group_by("month"):
+        if not (cfg.start <= m <= cfg.end) or m.month != 12:
+            continue
+        members = members_at(membership, m)
+        g = g.filter(pl.col("ticker").is_in(members))
+        src = g["revenue_source"] if "revenue_source" in g.columns else None
+        rows.append(
+            {
+                "month": m,
+                "n_members": len(members),
+                "revenue_tag": int((src == "tag").sum()) if src is not None else 0,
+                "revenue_derived_bank": int((src == "derived_bank").sum())
+                if src is not None
+                else 0,
+                "revenue_missing": int(g["revenue"].is_null().sum()),
+                "financials_missing": int(
+                    g.filter(pl.col("sector") == "Financials")["revenue"]
+                    .is_null()
+                    .sum()
+                ),
+            }
+        )
+    return pl.DataFrame(rows).sort("month")
 
 
 def tag_coverage(num: pl.DataFrame, ciks: pl.DataFrame, cfg: Config) -> pl.DataFrame:

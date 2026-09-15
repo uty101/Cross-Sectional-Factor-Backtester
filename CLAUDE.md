@@ -93,7 +93,7 @@ src/backtester/
   prices.py              yfinance pull, three cleaning rules, monthly returns with lag
   benchmarks.py          French factors + big-cap HML/RMW legs, FRED
   fundamentals.py        SEC FSDS via DuckDB, first_filed, asof_join, caps
-  tag_map.toml           16 concepts, ordered XBRL tags
+  tag_map.toml           18 concepts, ordered XBRL tags (only ever added to)
   sectors.py             CIK matching by name, SIC -> 11 buckets
   text.py                10-K primary documents from EDGAR, year-on-year similarity
   agents/                base.run_agent harness; tools.Toolbox with the allowlists in code

@@ -8,7 +8,8 @@
 
 [concept.assets]
 kind = "stock"
-tags = ["Assets"]
+# AssetsNet: Honeywell's total assets tag in FY2010-11 (FIX_PLAN F1 audit).
+tags = ["Assets", "AssetsNet"]
 
 [concept.equity]
 kind = "stock"
@@ -51,6 +52,12 @@ tags = [
   "NetIncomeLossAvailableToCommonStockholdersBasic",
 ]
 
+# The last four were added in FIX_PLAN F3 from data/checks/tag_gap_revenue_*.csv:
+# each is the whole top line for the filers that use it (service companies,
+# regulated utilities, REITs, E&Ps) and 5 or more universe filers with no
+# revenue value used it in FY2011 or FY2015. Banks have no revenue tag at
+# all; their revenue is derived (net_interest_income + noninterest_income,
+# fundamentals.build), never taken from gross interest income.
 [concept.revenue]
 kind = "flow"
 tags = [
@@ -60,8 +67,25 @@ tags = [
   "RevenueFromContractWithCustomerIncludingAssessedTax",
   "SalesRevenueGoodsNet",
   "RevenuesNetOfInterestExpense",
+  "SalesRevenueServicesNet",
+  "RegulatedAndUnregulatedOperatingRevenue",
+  "RealEstateRevenueNet",
+  "OilAndGasRevenue",
 ]
 
+# Bank revenue = net interest income + noninterest income (FIX_PLAN F3).
+[concept.net_interest_income]
+kind = "flow"
+tags = ["InterestIncomeExpenseNet"]
+
+[concept.noninterest_income]
+kind = "flow"
+tags = ["NoninterestIncome"]
+
+# CostsAndExpenses and OperatingCostsAndExpenses are never cogs: they
+# include SG&A (FIX_PLAN F3). The last tag was added in F3 from
+# data/checks/tag_gap_cogs_*.csv (7 and 13 missing filers in FY2011 and
+# FY2015).
 [concept.cogs]
 kind = "flow"
 tags = [
@@ -70,6 +94,7 @@ tags = [
   "CostOfGoodsSold",
   "CostOfServices",
   "CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization",
+  "CostOfGoodsSoldExcludingDepreciationDepletionAndAmortization",
 ]
 
 [concept.gross_profit]
