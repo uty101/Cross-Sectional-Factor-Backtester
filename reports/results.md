@@ -63,17 +63,30 @@ DSR is the deflated Sharpe: the probability that the net Sharpe exceeds the expe
 
 ## Variants (net Sharpe)
 
-| Factor | Base | Cap-weighted | Hold 3m | Hold 6m | Hold 12m | No sector neutralisation | Delisting: terminal return |
-|---|---|---|---|---|---|---|---|
-| Momentum 12-1 | 0.04 | 0.24 | 0.19 | 0.20 | 0.23 | -0.05 | 0.04 |
-| Value (B/P, E/P) | -0.16 | -0.19 | -0.20 | -0.22 | -0.15 | -0.10 | -0.16 |
-| Quality (GP/A, accruals) | 0.24 | 0.30 | 0.08 | 0.07 | 0.02 | 0.17 | 0.24 |
-| Low volatility | -0.27 | -0.40 | -0.24 | -0.23 | -0.15 | -0.34 | -0.27 |
-| Composite | -0.33 | -0.09 | -0.32 | -0.14 | -0.15 | -0.24 | -0.33 |
-| 10-K text similarity | -0.17 | -0.30 | -0.19 | -0.06 | -0.06 | -0.00 | -0.16 |
+| Factor | Base | Cap-weighted | Hold 3m | Hold 6m | Hold 12m | No sector neutralisation | Delisting: terminal return | Beta-hedged |
+|---|---|---|---|---|---|---|---|---|
+| Momentum 12-1 | 0.04 | 0.24 | 0.19 | 0.20 | 0.23 | -0.05 | 0.04 | n/a |
+| Value (B/P, E/P) | -0.16 | -0.19 | -0.20 | -0.22 | -0.15 | -0.10 | -0.16 | n/a |
+| Quality (GP/A, accruals) | 0.24 | 0.30 | 0.08 | 0.07 | 0.02 | 0.17 | 0.24 | n/a |
+| Low volatility | -0.27 | -0.40 | -0.24 | -0.23 | -0.15 | -0.34 | -0.27 | 0.33 |
+| Composite | -0.33 | -0.09 | -0.32 | -0.14 | -0.15 | -0.24 | -0.33 | n/a |
+| 10-K text similarity | -0.17 | -0.30 | -0.19 | -0.06 | -0.06 | -0.00 | -0.16 | n/a |
 
 
 Cap-weighted runs hold only the names with a market cap (39% of members in 2010, 86% in 2023); the equal-weighted base holds every name with a signal.
+
+
+## Beta-hedged low volatility and low beta
+
+| Series | Net Sharpe | Market beta (t) | Corr. with BAB | Months |
+|---|---|---|---|---|
+| Low volatility, raw | -0.27 | -0.65 (-10.7) | 0.39 | 197 |
+| Low volatility, beta-hedged | 0.33 | 0.12 (1.7) | 0.44 | 173 |
+| Low beta, raw | -0.40 | -0.82 (-12.7) | 0.42 | 197 |
+| Low beta, beta-hedged | 0.26 | 0.11 (1.4) | 0.46 | 173 |
+
+
+The hedge is the rolling 36-month beta to Mkt-RF estimated on months strictly before the formation month, applied to the next month's Mkt-RF (portfolio.beta_hedge); the first 24 months have no beta and are dropped. BAB is beta-neutral by construction, so the hedged row is the like-for-like comparison; the bar in config.toml is 0.5 for both.
 
 
 ## With and without the badly covered months

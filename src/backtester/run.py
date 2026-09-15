@@ -15,7 +15,7 @@ from datetime import date
 
 import polars as pl
 
-from backtester import portfolio, signals, universe
+from backtester import portfolio, signals, stats, universe
 from backtester.config import Config
 
 FACTORS: dict[str, dict] = {
@@ -377,6 +377,27 @@ def replicate(
     return out
 
 
+HEDGED = ("low_vol", "beta")
+
+
+def hedged(cfg: Config, factors: tuple[str, ...] = HEDGED) -> None:
+    """The beta-hedged variant of each saved base run in ``factors``
+    (FIX_PLAN F5), saved with the tag ``hedged``: a derived series, not a
+    backtest, so no specification row. ``low_vol_hedged`` and
+    ``beta_hedged`` are what the variants table and the BAB validation
+    read."""
+    french = pl.read_parquet(cfg.data / "interim" / "french_monthly.parquet")
+    processed = cfg.data / "processed"
+    for f in factors:
+        path = processed / f"long_short_{f}.parquet"
+        if not path.exists():
+            continue
+        out = portfolio.beta_hedge(pl.read_parquet(path), french)
+        out.write_parquet(processed / f"long_short_{f}_hedged.parquet")
+        sr = stats.sharpe(out["ret_net"])
+        print(f"{f}_hedged: {out.height} months, net Sharpe {sr:.2f}")
+
+
 def rerun(cfg: Config, suffix: str) -> None:
     """Every specification the report reads, again, each note carrying
     ``suffix`` (FIX_PLAN F4: "post-F3"). The base run of every reported
@@ -399,6 +420,7 @@ def rerun(cfg: Config, suffix: str) -> None:
     sensitivities(cfg, suffix=suffix)
     delisting(cfg, suffix=suffix)
     replicate(cfg, suffix=suffix)
+    hedged(cfg)
 
 
 def validation_table(cfg: Config, inp: Inputs | None = None) -> pl.DataFrame:
@@ -410,7 +432,7 @@ def validation_table(cfg: Config, inp: Inputs | None = None) -> pl.DataFrame:
     rows = []
     for factor, threshold in cfg.validation:
         path = cfg.data / "processed" / f"long_short_{factor}.parquet"
-        bench = FACTORS[factor]["french"]
+        bench = FACTORS[factor.removesuffix("_hedged")]["french"]
         if not path.exists() or bench is None or bench not in inp.french.columns:
             rows.append(
                 {

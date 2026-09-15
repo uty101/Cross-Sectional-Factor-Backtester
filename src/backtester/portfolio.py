@@ -385,3 +385,59 @@ def count_specifications(path: Path, kind: str | None = None) -> int:
     if kind is None:
         return len(rows)
     return sum(1 for r in rows if (r.get("kind") or spec_kind(r.get("note"))) == kind)
+
+
+# --- beta hedge (FIX_PLAN F5) --------------------------------------------
+
+HEDGE_WINDOW = 36
+HEDGE_MIN_MONTHS = 24
+
+
+def beta_hedge(
+    long_short: pl.DataFrame,
+    french: pl.DataFrame,
+    window: int = HEDGE_WINDOW,
+    min_months: int = HEDGE_MIN_MONTHS,
+) -> pl.DataFrame:
+    """The long-short series with its market beta hedged out.
+
+    Row t of ``long_short`` is stamped with its formation month and earns
+    its return over the following month, the month ``french`` stamps
+    Mkt-RF with. The beta applied to row t is the OLS slope of the series
+    on Mkt-RF over the ``window`` formation months strictly before t (at
+    least ``min_months`` of them), so no month at or after t is used:
+    ``hedged_t = ls_t - beta_{t-1} x mkt_rf_{t+1}``. Rows without a beta
+    (the first ``min_months``) are dropped. Both ``ret_gross`` and
+    ``ret_net`` are hedged; ``beta`` is kept on each row. Low volatility
+    and low beta long-shorts carry a market beta near -0.65, and BAB is
+    beta-neutral by construction, so the raw series is not the
+    like-for-like comparison.
+    """
+    mkt = french.select(
+        pl.col("month").dt.offset_by("-1mo").dt.month_end().alias("month"),
+        pl.col("mkt_rf"),
+    )
+    df = (
+        long_short.join(mkt, on="month", how="inner")
+        .filter(pl.col("mkt_rf").is_not_null())
+        .sort("month")
+    )
+    x, y = df["mkt_rf"].to_list(), df["ret_gross"].to_list()
+    betas: list[float | None] = []
+    for i in range(len(x)):
+        lo = max(0, i - window)
+        xs, ys = x[lo:i], y[lo:i]
+        if len(xs) < min_months:
+            betas.append(None)
+            continue
+        mx, my = sum(xs) / len(xs), sum(ys) / len(ys)
+        sxx = sum((a - mx) ** 2 for a in xs)
+        sxy = sum((a - mx) * (b - my) for a, b in zip(xs, ys, strict=True))
+        betas.append(sxy / sxx if sxx > 0 else None)
+    out = df.with_columns(pl.Series("beta", betas, dtype=pl.Float64)).filter(
+        pl.col("beta").is_not_null()
+    )
+    return out.with_columns(
+        (pl.col("ret_gross") - pl.col("beta") * pl.col("mkt_rf")).alias("ret_gross"),
+        (pl.col("ret_net") - pl.col("beta") * pl.col("mkt_rf")).alias("ret_net"),
+    ).drop("mkt_rf")

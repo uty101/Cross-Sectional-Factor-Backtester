@@ -51,6 +51,7 @@ quality = 0.70
 hml_replica = 0.60
 rmw_replica = 0.60
 beta = 0.50
+beta_hedged = 0.50           # the same series with its rolling market beta hedged out (FIX_PLAN F5)
 
 [checks]
 # Dagster asset checks (BUILD_PLAN 10.5). A failing blocking check stops

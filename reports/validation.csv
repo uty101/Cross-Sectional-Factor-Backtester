@@ -5,3 +5,4 @@ quality,rmw,0.0701,197,0.7,false
 hml_replica,hml,0.722,198,0.6,true
 rmw_replica,rmw,0.4365,197,0.6,false
 beta,bab,0.4184,197,0.5,false
+beta_hedged,bab,0.4584,173,0.5,false

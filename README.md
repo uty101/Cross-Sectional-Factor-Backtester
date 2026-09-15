@@ -124,6 +124,10 @@ What the table says, factor by factor:
   attribution is the brief's prediction: market beta −0.65 (t −10.7) and
   RMW 0.92 (t 8.1), with alpha of 0.8% (t 0.3). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
+  With the rolling market beta hedged out (`portfolio.beta_hedge`,
+  estimated only on months before formation) it nets 0.33, and the low
+  beta long–short 0.26: what is left once the short-beta drag is removed,
+  reported as variants, not headline rows.
 - **Composite** (all six signals) nets −0.33, and −0.09 cap-weighted: with
   value and low volatility both negative there is nothing for the
   composite to average.
@@ -162,6 +166,7 @@ The pipeline is considered wrong until the long–short series clear this:
 | Value long–short | French **HML** | > 0.7 | 0.56 fail as reported (0.25 before the market-cap fix); see below |
 | Quality long–short | French **RMW** | > 0.7 | 0.07 fail as reported; see below |
 | Low beta long–short | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
+| Low beta long–short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.82 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.11 after, correlation 0.46, still short |
 
 The reported value and quality factors are sector-neutral composites of two
 signals each, and HML and RMW are neither, so their correlation was never

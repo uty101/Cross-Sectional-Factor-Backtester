@@ -79,6 +79,7 @@ def rebuild(cfg: Config) -> Config:
     fundamentals.build(c)
     text.build(c)
     run.run_all(c, note="recompute check")
+    run.hedged(c)
     return c
 
 

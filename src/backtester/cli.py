@@ -61,6 +61,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     sub.add_parser("run-all", help="base run of every reported factor")
     sub.add_parser("sensitivities", help="weighting and holding-period variants")
     sub.add_parser("delisting", help="the terminal-return delisting sensitivity")
+    sub.add_parser("hedge", help="beta-hedged variants of low_vol and beta (F5)")
     rerun = sub.add_parser(
         "rerun", help="every specification again, with a note suffix (F4)"
     )
@@ -147,6 +148,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"{rec['agent']}: {len(rec['tool_calls'])} tool calls, {rec['stop_reason']}"
         )
         print(rec["final_output"])
+        return 0
+    if args.command == "hedge":
+        from backtester import run as runner
+
+        runner.hedged(cfg)
         return 0
     if args.command == "rerun":
         from backtester import run as runner
