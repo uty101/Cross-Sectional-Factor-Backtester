@@ -19,7 +19,8 @@ here and the report says so. With ``holding_months`` > 1 the portfolio
 is only re-formed every k months and drifts in between.
 
 Every call appends one row to ``reports/specifications.csv`` (invariant
-8). That file is the N in the deflated Sharpe.
+8) through ``speclog``; the distinct specifications in that file are
+the N in the deflated Sharpe.
 
 This module is the reuse surface for projects 2 and 7: swapping in a new
 signal must be a change to the caller, not to this file.
@@ -27,47 +28,20 @@ signal must be a change to the caller, not to this file.
 
 from __future__ import annotations
 
-import csv
 import math
 from dataclasses import dataclass
-from datetime import UTC, datetime
 from pathlib import Path
 
 import polars as pl
 
-from backtester.config import Config, config_hash
-
-SPEC_COLUMNS = [
-    "timestamp",
-    "factor",
-    "signal",
-    "weighting",
-    "cost_bps",
-    "lag_days",
-    "rebalance",
-    "holding_months",
-    "winsor_lo",
-    "winsor_hi",
-    "n_deciles",
-    "start",
-    "end",
-    "sharpe_gross",
-    "sharpe_net",
-    "note",
-    "config_hash",
-    "git_commit",
-    "kind",
-]
-# A row is a candidate (something that could be reported) or a diagnostic
-# (a sensitivity, a replication, a check). The deflated Sharpe is reported
-# with both counts (FIX_PLAN F4); the kind is read off the note so the
-# rows logged before the column existed are classified the same way.
-DIAGNOSTIC_PREFIXES = ("diagnostic", "sensitivity", "french replication")
-
-
-def spec_kind(note: str | None) -> str:
-    n = (note or "").strip().lower()
-    return "diagnostic" if n.startswith(DIAGNOSTIC_PREFIXES) else "candidate"
+from backtester.config import Config
+from backtester.speclog import (  # noqa: F401  (re-exported; the log moved to speclog)
+    SPEC_COLUMNS,
+    count_specifications,
+    git_commit,
+    log_specification,
+    spec_kind,
+)
 
 
 @dataclass
@@ -160,6 +134,8 @@ def backtest(
     signal: str = "",
     caps: pl.DataFrame | None = None,
     note: str = "",
+    sector_neutral: bool = True,
+    variant: str = "",
     log_path: Path | None = None,
 ) -> BacktestResult:
     """Run one specification and log it.
@@ -279,6 +255,8 @@ def backtest(
         sharpe_gross=_sharpe(long_short["ret_gross"]),
         sharpe_net=_sharpe(long_short["ret_net"]),
         note=note,
+        sector_neutral=sector_neutral,
+        variant=variant,
     )
     return result
 
@@ -288,103 +266,6 @@ def _sharpe(r: pl.Series) -> float:
     if sd is None or sd == 0 or r.len() < 2:
         return float("nan")
     return float(r.mean() / sd * math.sqrt(12))
-
-
-def log_specification(path: Path, cfg: Config, **fields: object) -> None:
-    """Append one row to the specifications log (invariant 8)."""
-    path.parent.mkdir(parents=True, exist_ok=True)
-    row = {
-        "timestamp": datetime.now(UTC).isoformat(timespec="seconds"),
-        "factor": fields.get("factor", ""),
-        "signal": fields.get("signal", ""),
-        "weighting": cfg.weighting,
-        "cost_bps": cfg.base_bps,
-        "lag_days": cfg.lag_days,
-        "rebalance": cfg.rebalance,
-        "holding_months": cfg.holding_months,
-        "winsor_lo": cfg.winsor[0],
-        "winsor_hi": cfg.winsor[1],
-        "n_deciles": cfg.n_deciles,
-        "start": cfg.start,
-        "end": cfg.end,
-        "sharpe_gross": _fmt(fields.get("sharpe_gross")),
-        "sharpe_net": _fmt(fields.get("sharpe_net")),
-        "note": fields.get("note", ""),
-        "config_hash": config_hash(cfg),
-        "git_commit": git_commit(),
-        "kind": fields.get("kind") or spec_kind(str(fields.get("note", ""))),
-    }
-    new = not path.exists() or path.stat().st_size == 0
-    if not new:
-        _widen_columns(path)
-    with open(path, "a", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=SPEC_COLUMNS)
-        if new:
-            w.writeheader()
-        w.writerow(row)
-
-
-def git_commit() -> str:
-    """Short hash of HEAD, or "nogit" outside a repository."""
-    import subprocess
-
-    try:
-        out = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"],
-            capture_output=True,
-            text=True,
-            check=True,
-            timeout=10,
-        )
-        return out.stdout.strip() or "nogit"
-    except (OSError, subprocess.SubprocessError):
-        return "nogit"
-
-
-def _widen_columns(path: Path) -> None:
-    """Bring a log written under an older header up to SPEC_COLUMNS.
-
-    Columns are only ever appended, so every existing row keeps its
-    values and gets blanks for the new ones; the row count is unchanged.
-    Rows logged before a column existed are not backfilled, with one
-    exception: ``kind`` is a function of the note and is filled for
-    every row (FIX_PLAN F4). The commit a 2026-09-11 run was made under
-    is not known, and is not guessed.
-    """
-    with open(path, encoding="utf-8", newline="") as f:
-        reader = csv.DictReader(f)
-        if reader.fieldnames == SPEC_COLUMNS:
-            return
-        if not set(reader.fieldnames or []) <= set(SPEC_COLUMNS):
-            raise ValueError(f"{path} has columns outside SPEC_COLUMNS")
-        rows = list(reader)
-    with open(path, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=SPEC_COLUMNS)
-        w.writeheader()
-        for r in rows:
-            row = {c: r.get(c, "") for c in SPEC_COLUMNS}
-            row["kind"] = row["kind"] or spec_kind(row["note"])
-            w.writerow(row)
-
-
-def _fmt(x: object) -> str:
-    if isinstance(x, float):
-        return "" if math.isnan(x) else f"{x:.4f}"
-    return "" if x is None else str(x)
-
-
-def count_specifications(path: Path, kind: str | None = None) -> int:
-    """The N for the deflated Sharpe: rows in the log, never an argument.
-    With ``kind`` only the rows of that kind (``candidate`` rows for
-    dsr_candidates); a row logged before the column existed is
-    classified by its note."""
-    if not path.exists():
-        return 0
-    with open(path, encoding="utf-8", newline="") as f:
-        rows = list(csv.DictReader(f))
-    if kind is None:
-        return len(rows)
-    return sum(1 for r in rows if (r.get("kind") or spec_kind(r.get("note"))) == kind)
 
 
 # --- beta hedge (FIX_PLAN F5) --------------------------------------------

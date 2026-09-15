@@ -1,336 +1,336 @@
-timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,winsor_lo,winsor_hi,n_deciles,start,end,sharpe_gross,sharpe_net,note,config_hash,git_commit,kind
-2026-09-11T12:03:36+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3750,0.3739,phase 3 first run no-sector,,,candidate
-2026-09-11T12:08:20+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,phase 3 after price cleaning no-sector,,,candidate
-2026-09-11T12:09:00+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,phase 3 validation aligned no-sector,,,candidate
-2026-09-11T12:35:58+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5783,0.5039,phase 6 first run,,,candidate
-2026-09-11T12:35:59+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1404,0.0685,phase 6 first run,,,candidate
-2026-09-11T12:36:00+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2038,-0.2351,phase 6 first run,,,candidate
-2026-09-11T12:36:01+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1511,0.0571,phase 6 sector-neutral,,,candidate
-2026-09-11T12:36:16+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5783,0.5039,diagnostic value,,,diagnostic
-2026-09-11T12:36:17+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4657,0.4089,diagnostic value no-sector,,,diagnostic
-2026-09-11T12:36:17+00:00,bp,book_to_price,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5050,0.4444,diagnostic bp,,,diagnostic
-2026-09-11T12:36:17+00:00,bp,book_to_price,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3383,0.3007,diagnostic bp no-sector,,,diagnostic
-2026-09-11T12:36:18+00:00,ep,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4570,0.3822,diagnostic ep,,,diagnostic
-2026-09-11T12:36:18+00:00,ep,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3920,0.3365,diagnostic ep no-sector,,,diagnostic
-2026-09-11T12:36:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1404,0.0685,diagnostic quality,,,diagnostic
-2026-09-11T12:36:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3703,0.3150,diagnostic quality no-sector,,,diagnostic
-2026-09-11T12:36:19+00:00,gpa,gross_profitability,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.4212,-0.4683,diagnostic gpa,,,diagnostic
-2026-09-11T12:36:20+00:00,gpa,gross_profitability,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1486,-0.1828,diagnostic gpa no-sector,,,diagnostic
-2026-09-11T12:36:20+00:00,acc,accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3921,0.3110,diagnostic acc,,,diagnostic
-2026-09-11T12:36:21+00:00,acc,accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3245,0.2698,diagnostic acc no-sector,,,diagnostic
-2026-09-11T12:36:50+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1007,0.0795,French replication no-sector,,,diagnostic
-2026-09-11T12:36:50+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1716,0.1367,French replication no-sector,,,diagnostic
-2026-09-11T12:37:45+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1716,0.1367,diagnostic op_inc/equity no-sector,,,diagnostic
-2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2291,0.2025,diagnostic net_income/equity no-sector,,,diagnostic
-2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2591,0.2324,diagnostic (rev-cogs)/equity no-sector,,,diagnostic
-2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2348,0.2100,diagnostic gross_profit/equity no-sector,,,diagnostic
-2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2907,0.2626,diagnostic cfo/equity no-sector,,,diagnostic
-2026-09-11T12:37:47+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1936,0.1633,diagnostic op_inc/assets no-sector,,,diagnostic
-2026-09-11T12:38:56+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0831,0.0608,French replication no-sector,,,diagnostic
-2026-09-11T12:38:57+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1495,0.1147,French replication no-sector,,,diagnostic
-2026-09-11T12:44:57+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0839,0.0620,French replication no-sector,,,diagnostic
-2026-09-11T12:44:58+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4835,0.4499,French replication no-sector,,,diagnostic
-2026-09-11T12:45:47+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base,,,candidate
-2026-09-11T12:45:48+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5759,0.5038,base,,,candidate
-2026-09-11T12:45:48+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2409,0.1686,base,,,candidate
-2026-09-11T12:45:49+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base,,,candidate
-2026-09-11T12:45:49+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4090,0.3429,base,,,candidate
-2026-09-11T12:46:04+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1601,0.0734,sensitivity cw,,,diagnostic
-2026-09-11T12:46:04+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3487,0.3029,sensitivity cw,,,diagnostic
-2026-09-11T12:46:04+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4659,0.4197,sensitivity cw,,,diagnostic
-2026-09-11T12:46:05+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1065,-0.1340,sensitivity cw,,,diagnostic
-2026-09-11T12:46:06+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3844,0.3479,sensitivity cw,,,diagnostic
-2026-09-11T12:46:06+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2371,0.1821,sensitivity hold3,,,diagnostic
-2026-09-11T12:46:07+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.6488,0.6044,sensitivity hold3,,,diagnostic
-2026-09-11T12:46:07+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2201,0.1699,sensitivity hold3,,,diagnostic
-2026-09-11T12:46:08+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2261,-0.2476,sensitivity hold3,,,diagnostic
-2026-09-11T12:46:08+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.5291,0.4910,sensitivity hold3,,,diagnostic
-2026-09-11T12:46:09+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2144,0.1759,sensitivity hold6,,,diagnostic
-2026-09-11T12:46:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5827,0.5518,sensitivity hold6,,,diagnostic
-2026-09-11T12:46:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1313,0.0919,sensitivity hold6,,,diagnostic
-2026-09-11T12:46:10+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2126,-0.2295,sensitivity hold6,,,diagnostic
-2026-09-11T12:46:11+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5370,0.5100,sensitivity hold6,,,diagnostic
-2026-09-11T12:46:12+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2525,0.2264,sensitivity hold12,,,diagnostic
-2026-09-11T12:46:13+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5863,0.5629,sensitivity hold12,,,diagnostic
-2026-09-11T12:46:14+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2556,0.2300,sensitivity hold12,,,diagnostic
-2026-09-11T12:46:15+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1366,-0.1491,sensitivity hold12,,,diagnostic
-2026-09-11T12:46:16+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.6604,0.6417,sensitivity hold12,,,diagnostic
-2026-09-11T12:46:17+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector no-sector,,,diagnostic
-2026-09-11T12:46:18+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5521,0.4958,sensitivity nosector no-sector,,,diagnostic
-2026-09-11T12:46:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2507,0.1955,sensitivity nosector no-sector,,,diagnostic
-2026-09-11T12:46:20+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector no-sector,,,diagnostic
-2026-09-11T12:46:21+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3114,0.2547,sensitivity nosector no-sector,,,diagnostic
-2026-09-11T15:15:45+00:00,bp_sn,book_to_price,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5598,0.5000,diagnostic bp_sn attribution,,,diagnostic
-2026-09-11T15:15:46+00:00,ep_sn,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4828,0.4102,diagnostic ep_sn attribution,,,diagnostic
-2026-09-11T15:20:52+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0840,0.0620,French replication no-sector,,,diagnostic
-2026-09-11T15:20:53+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4819,0.4536,French replication no-sector,,,diagnostic
-2026-09-14T11:51:57+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1141,0.0117,base,,,candidate
-2026-09-14T11:51:58+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,diagnostic no-sector,,,diagnostic
-2026-09-14T11:52:16+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1141,0.0117,base,,,candidate
-2026-09-14T11:52:16+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0411,-0.1094,sensitivity cw,,,diagnostic
-2026-09-14T11:52:16+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1370,-0.2088,sensitivity hold3,,,diagnostic
-2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0887,0.0145,sensitivity hold6,,,diagnostic
-2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0774,0.0223,sensitivity hold12,,,diagnostic
-2026-09-14T11:52:18+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,sensitivity nosector no-sector,,,diagnostic
-2026-09-14T11:52:26+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1493,0.0485,sensitivity jaccard,,,diagnostic
-2026-09-14T14:14:02+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5729,0.4977,sensitivity ttm,f2decc504e00,d9d6daf,diagnostic
-2026-09-14T14:14:02+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1519,0.0739,sensitivity ttm,f2decc504e00,d9d6daf,diagnostic
-2026-09-14T14:22:19+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3484,-0.3823,base,20496fdb51f7,194e771,candidate
-2026-09-14T14:25:24+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1377,0.0431,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic
-2026-09-14T14:25:25+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5857,0.5135,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic
-2026-09-14T14:25:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2409,0.1686,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic
-2026-09-14T14:25:26+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2124,-0.2434,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic
-2026-09-14T14:25:26+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4090,0.3429,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic
-2026-09-14T14:25:27+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1185,0.0162,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic
-2026-09-14T14:38:51+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base min_names=50,a36513de6ddf,41aa868,candidate
-2026-09-14T14:38:51+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5561,0.4856,base min_names=50,a36513de6ddf,41aa868,candidate
-2026-09-14T14:38:52+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,base min_names=50,a36513de6ddf,41aa868,candidate
-2026-09-14T14:38:52+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base min_names=50,a36513de6ddf,41aa868,candidate
-2026-09-14T14:38:53+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3853,0.3202,base min_names=50,a36513de6ddf,41aa868,candidate
-2026-09-14T14:38:53+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,base min_names=50,a36513de6ddf,41aa868,candidate
-2026-09-14T14:38:54+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0845,0.0625,French replication no-sector,b2f34ce17f5d,41aa868,diagnostic
-2026-09-14T14:38:54+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4315,0.4041,French replication no-sector,b2f34ce17f5d,41aa868,diagnostic
-2026-09-14T14:38:54+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5248,0.4495,sensitivity ttm,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:38:55+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1382,0.0623,sensitivity ttm,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:38:55+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,sensitivity jaccard,449338b228ac,41aa868,diagnostic
-2026-09-14T14:38:56+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1600,0.0733,sensitivity cw,5e89f4b663e7,41aa868,diagnostic
-2026-09-14T14:38:57+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3374,0.2929,sensitivity cw,5e89f4b663e7,41aa868,diagnostic
-2026-09-14T14:38:57+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4522,0.4074,sensitivity cw,5e89f4b663e7,41aa868,diagnostic
-2026-09-14T14:38:58+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1068,-0.1342,sensitivity cw,5e89f4b663e7,41aa868,diagnostic
-2026-09-14T14:38:59+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3716,0.3357,sensitivity cw,5e89f4b663e7,41aa868,diagnostic
-2026-09-14T14:38:59+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1443,-0.2164,sensitivity cw,5e89f4b663e7,41aa868,diagnostic
-2026-09-14T14:39:00+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2371,0.1821,sensitivity hold3,9402e45cf80b,41aa868,diagnostic
-2026-09-14T14:39:00+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.5652,0.5158,sensitivity hold3,9402e45cf80b,41aa868,diagnostic
-2026-09-14T14:39:01+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2381,0.1872,sensitivity hold3,9402e45cf80b,41aa868,diagnostic
-2026-09-14T14:39:01+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2261,-0.2476,sensitivity hold3,9402e45cf80b,41aa868,diagnostic
-2026-09-14T14:39:02+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.4135,0.3764,sensitivity hold3,9402e45cf80b,41aa868,diagnostic
-2026-09-14T14:39:02+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0814,-0.1763,sensitivity hold3,9402e45cf80b,41aa868,diagnostic
-2026-09-14T14:39:03+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2144,0.1759,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic
-2026-09-14T14:39:03+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5923,0.5542,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic
-2026-09-14T14:39:04+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2411,0.1981,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic
-2026-09-14T14:39:04+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2126,-0.2295,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic
-2026-09-14T14:39:05+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5325,0.5056,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic
-2026-09-14T14:39:05+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.0497,-0.1270,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic
-2026-09-14T14:39:06+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2525,0.2264,sensitivity hold12,0e72153c1e13,41aa868,diagnostic
-2026-09-14T14:39:06+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5308,0.5036,sensitivity hold12,0e72153c1e13,41aa868,diagnostic
-2026-09-14T14:39:07+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0801,0.0487,sensitivity hold12,0e72153c1e13,41aa868,diagnostic
-2026-09-14T14:39:07+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1366,-0.1491,sensitivity hold12,0e72153c1e13,41aa868,diagnostic
-2026-09-14T14:39:08+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5332,0.5168,sensitivity hold12,0e72153c1e13,41aa868,diagnostic
-2026-09-14T14:39:08+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0116,-0.0435,sensitivity hold12,0e72153c1e13,41aa868,diagnostic
-2026-09-14T14:39:09+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5632,0.5089,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2648,0.2115,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:11+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:11+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3083,0.2529,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:12+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0330,-0.0287,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:13+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1377,0.0431,sensitivity terminal,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:14+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5561,0.4856,sensitivity terminal,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:14+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,sensitivity terminal,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:15+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2124,-0.2434,sensitivity terminal,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:15+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3853,0.3202,sensitivity terminal,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:39:16+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0157,-0.1398,sensitivity terminal,a36513de6ddf,41aa868,diagnostic
-2026-09-14T14:40:13+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1258,0.0259,"sensitivity jaccard (rerun: row 130 was cosine, raw_signal ignored the passed config)",449338b228ac,41aa868,diagnostic
-2026-09-14T14:55:08+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base after asof tie rule,a36513de6ddf,c153738,candidate
-2026-09-14T14:55:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5348,0.4647,base after asof tie rule,a36513de6ddf,c153738,candidate
-2026-09-14T14:55:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,base after asof tie rule,a36513de6ddf,c153738,candidate
-2026-09-14T14:55:10+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base after asof tie rule,a36513de6ddf,c153738,candidate
-2026-09-14T14:55:11+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3877,0.3226,base after asof tie rule,a36513de6ddf,c153738,candidate
-2026-09-14T14:55:12+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,base after asof tie rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:05+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base quarter-wins shares rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:05+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5547,0.4842,base quarter-wins shares rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:06+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,base quarter-wins shares rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:06+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base quarter-wins shares rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:07+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3825,0.3175,base quarter-wins shares rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:08+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,base quarter-wins shares rule,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:08+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0837,0.0618,French replication no-sector,b2f34ce17f5d,c153738,diagnostic
-2026-09-14T15:00:09+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4314,0.4040,French replication no-sector,b2f34ce17f5d,c153738,diagnostic
-2026-09-14T15:00:09+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5258,0.4507,sensitivity ttm,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:10+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1382,0.0623,sensitivity ttm,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:10+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1258,0.0259,sensitivity jaccard,449338b228ac,c153738,diagnostic
-2026-09-14T15:00:11+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3484,-0.3823,base,a36513de6ddf,c153738,candidate
-2026-09-14T15:00:13+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1602,0.0734,sensitivity cw,5e89f4b663e7,c153738,diagnostic
-2026-09-14T15:00:13+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3379,0.2934,sensitivity cw,5e89f4b663e7,c153738,diagnostic
-2026-09-14T15:00:14+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4518,0.4070,sensitivity cw,5e89f4b663e7,c153738,diagnostic
-2026-09-14T15:00:15+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1065,-0.1340,sensitivity cw,5e89f4b663e7,c153738,diagnostic
-2026-09-14T15:00:15+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3710,0.3352,sensitivity cw,5e89f4b663e7,c153738,diagnostic
-2026-09-14T15:00:16+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1443,-0.2164,sensitivity cw,5e89f4b663e7,c153738,diagnostic
-2026-09-14T15:00:17+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2371,0.1821,sensitivity hold3,9402e45cf80b,c153738,diagnostic
-2026-09-14T15:00:17+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.5743,0.5250,sensitivity hold3,9402e45cf80b,c153738,diagnostic
-2026-09-14T15:00:18+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2381,0.1872,sensitivity hold3,9402e45cf80b,c153738,diagnostic
-2026-09-14T15:00:18+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2261,-0.2476,sensitivity hold3,9402e45cf80b,c153738,diagnostic
-2026-09-14T15:00:19+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.4135,0.3764,sensitivity hold3,9402e45cf80b,c153738,diagnostic
-2026-09-14T15:00:20+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0814,-0.1763,sensitivity hold3,9402e45cf80b,c153738,diagnostic
-2026-09-14T15:00:20+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2144,0.1759,sensitivity hold6,fe2d2b901be6,c153738,diagnostic
-2026-09-14T15:00:21+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5879,0.5500,sensitivity hold6,fe2d2b901be6,c153738,diagnostic
-2026-09-14T15:00:22+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2411,0.1981,sensitivity hold6,fe2d2b901be6,c153738,diagnostic
-2026-09-14T15:00:22+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2126,-0.2295,sensitivity hold6,fe2d2b901be6,c153738,diagnostic
-2026-09-14T15:00:23+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5325,0.5056,sensitivity hold6,fe2d2b901be6,c153738,diagnostic
-2026-09-14T15:00:24+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.0497,-0.1270,sensitivity hold6,fe2d2b901be6,c153738,diagnostic
-2026-09-14T15:00:24+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2525,0.2264,sensitivity hold12,0e72153c1e13,c153738,diagnostic
-2026-09-14T15:00:25+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5336,0.5065,sensitivity hold12,0e72153c1e13,c153738,diagnostic
-2026-09-14T15:00:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0801,0.0487,sensitivity hold12,0e72153c1e13,c153738,diagnostic
-2026-09-14T15:00:26+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1366,-0.1491,sensitivity hold12,0e72153c1e13,c153738,diagnostic
-2026-09-14T15:00:27+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5332,0.5168,sensitivity hold12,0e72153c1e13,c153738,diagnostic
-2026-09-14T15:00:27+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0116,-0.0435,sensitivity hold12,0e72153c1e13,c153738,diagnostic
-2026-09-14T15:00:28+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:29+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5672,0.5128,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:29+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2648,0.2115,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:30+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:31+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3098,0.2543,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:31+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0330,-0.0287,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:33+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1377,0.0431,sensitivity terminal,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:34+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5547,0.4842,sensitivity terminal,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:34+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,sensitivity terminal,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:35+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2124,-0.2434,sensitivity terminal,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:36+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3825,0.3175,sensitivity terminal,a36513de6ddf,c153738,diagnostic
-2026-09-14T15:00:36+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0157,-0.1398,sensitivity terminal,a36513de6ddf,c153738,diagnostic
-2026-09-15T12:29:29+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1359,0.0398,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:30+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:30+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:31+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2393,-0.2709,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:33+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:34+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0438,-0.1703,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:35+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3628,-0.3970,base post-F3,a36513de6ddf,788662c,candidate
-2026-09-15T12:29:36+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1393,-0.2105,sensitivity ttm post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:29:37+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0656,-0.0098,sensitivity ttm post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:29:38+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1559,0.0541,sensitivity jaccard post-F3,449338b228ac,788662c,diagnostic
-2026-09-15T12:29:39+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3234,0.2422,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic
-2026-09-15T12:29:40+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1582,-0.1906,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic
-2026-09-15T12:29:40+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3498,0.3004,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic
-2026-09-15T12:29:42+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3717,-0.3959,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic
-2026-09-15T12:29:43+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0403,-0.0947,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic
-2026-09-15T12:29:44+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2336,-0.3030,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic
-2026-09-15T12:29:45+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2450,0.1895,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic
-2026-09-15T12:29:46+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1598,-0.2018,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic
-2026-09-15T12:29:46+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.1362,0.0849,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic
-2026-09-15T12:29:47+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2180,-0.2395,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic
-2026-09-15T12:29:49+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2764,-0.3185,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic
-2026-09-15T12:29:50+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0978,-0.1938,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic
-2026-09-15T12:29:51+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2402,0.2012,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic
-2026-09-15T12:29:52+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1878,-0.2198,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic
-2026-09-15T12:29:52+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1166,0.0736,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic
-2026-09-15T12:29:53+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2108,-0.2279,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic
-2026-09-15T12:29:55+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1094,-0.1396,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic
-2026-09-15T12:29:56+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0206,-0.0565,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic
-2026-09-15T12:29:56+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2582,0.2316,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic
-2026-09-15T12:29:57+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1275,-0.1509,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic
-2026-09-15T12:29:58+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0522,0.0199,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic
-2026-09-15T12:29:59+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1406,-0.1533,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic
-2026-09-15T12:30:01+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1320,-0.1518,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic
-2026-09-15T12:30:02+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.0070,-0.0633,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic
-2026-09-15T12:30:03+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:04+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0585,-0.1028,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:04+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2193,0.1668,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:05+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:07+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1823,-0.2417,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:08+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0595,-0.0035,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:09+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:10+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:11+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:12+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:13+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:14+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic
-2026-09-15T12:30:15+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 no-sector,b2f34ce17f5d,788662c,diagnostic
-2026-09-15T12:30:16+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 no-sector,b2f34ce17f5d,788662c,diagnostic
-2026-09-15T15:44:43+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1359,0.0398,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:44+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:45+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:46+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2393,-0.2709,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:48+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:50+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0438,-0.1703,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:52+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3628,-0.3970,base post-F3 ingest v2,a36513de6ddf,788662c,candidate
-2026-09-15T15:44:54+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1393,-0.2105,sensitivity ttm post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:44:55+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0656,-0.0098,sensitivity ttm post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:44:57+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1559,0.0541,sensitivity jaccard post-F3 ingest v2,449338b228ac,788662c,diagnostic
-2026-09-15T15:44:58+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3234,0.2422,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic
-2026-09-15T15:45:00+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1582,-0.1906,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic
-2026-09-15T15:45:01+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3498,0.3004,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic
-2026-09-15T15:45:03+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3717,-0.3959,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic
-2026-09-15T15:45:05+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0403,-0.0947,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic
-2026-09-15T15:45:06+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2336,-0.3030,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic
-2026-09-15T15:45:08+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2450,0.1895,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic
-2026-09-15T15:45:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1598,-0.2018,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic
-2026-09-15T15:45:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.1362,0.0849,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic
-2026-09-15T15:45:12+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2180,-0.2395,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic
-2026-09-15T15:45:14+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2764,-0.3185,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic
-2026-09-15T15:45:15+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0978,-0.1938,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic
-2026-09-15T15:45:16+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2402,0.2012,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic
-2026-09-15T15:45:18+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1878,-0.2198,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic
-2026-09-15T15:45:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1166,0.0736,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic
-2026-09-15T15:45:21+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2108,-0.2279,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic
-2026-09-15T15:45:23+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1094,-0.1396,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic
-2026-09-15T15:45:24+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0206,-0.0565,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic
-2026-09-15T15:45:25+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2582,0.2316,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic
-2026-09-15T15:45:27+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1275,-0.1509,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic
-2026-09-15T15:45:28+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0522,0.0199,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic
-2026-09-15T15:45:30+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1406,-0.1533,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic
-2026-09-15T15:45:32+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1320,-0.1518,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic
-2026-09-15T15:45:33+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.0070,-0.0633,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic
-2026-09-15T15:45:34+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:36+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0585,-0.1028,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:37+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2193,0.1668,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:39+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:41+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1823,-0.2417,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:43+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0595,-0.0035,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:44+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:46+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:47+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:49+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:51+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:52+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic
-2026-09-15T15:45:54+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 ingest v2 no-sector,b2f34ce17f5d,788662c,diagnostic
-2026-09-15T15:45:55+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 ingest v2 no-sector,b2f34ce17f5d,788662c,diagnostic
-2026-09-15T16:03:10+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1359,0.0398,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:11+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:12+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:14+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2393,-0.2709,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:16+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:17+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0438,-0.1703,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:20+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3628,-0.3970,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate
-2026-09-15T16:03:21+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1393,-0.2105,sensitivity ttm post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:03:23+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0656,-0.0098,sensitivity ttm post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:03:24+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1559,0.0541,sensitivity jaccard post-F3 first-filed tie,449338b228ac,788662c,diagnostic
-2026-09-15T16:03:26+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3234,0.2422,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic
-2026-09-15T16:03:27+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1582,-0.1906,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic
-2026-09-15T16:03:28+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3498,0.3004,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic
-2026-09-15T16:03:30+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3717,-0.3959,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic
-2026-09-15T16:03:32+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0403,-0.0947,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic
-2026-09-15T16:03:34+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2336,-0.3030,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic
-2026-09-15T16:03:35+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2450,0.1895,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic
-2026-09-15T16:03:36+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1598,-0.2018,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic
-2026-09-15T16:03:38+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.1362,0.0849,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic
-2026-09-15T16:03:39+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2180,-0.2395,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic
-2026-09-15T16:03:41+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2764,-0.3185,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic
-2026-09-15T16:03:43+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0978,-0.1938,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic
-2026-09-15T16:03:44+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2402,0.2012,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic
-2026-09-15T16:03:45+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1878,-0.2198,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic
-2026-09-15T16:03:46+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1166,0.0736,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic
-2026-09-15T16:03:48+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2108,-0.2279,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic
-2026-09-15T16:03:50+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1094,-0.1396,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic
-2026-09-15T16:03:51+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0206,-0.0565,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic
-2026-09-15T16:03:53+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2582,0.2316,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic
-2026-09-15T16:03:54+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1275,-0.1509,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic
-2026-09-15T16:03:55+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0522,0.0199,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic
-2026-09-15T16:03:56+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1406,-0.1533,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic
-2026-09-15T16:03:58+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1320,-0.1518,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic
-2026-09-15T16:04:00+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.0070,-0.0633,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic
-2026-09-15T16:04:01+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:03+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0585,-0.1028,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:04+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2193,0.1668,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:06+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:08+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1823,-0.2417,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:09+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0595,-0.0035,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:11+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:13+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:14+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:16+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:18+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:20+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
-2026-09-15T16:04:21+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 first-filed tie no-sector,b2f34ce17f5d,788662c,diagnostic
-2026-09-15T16:04:22+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 first-filed tie no-sector,b2f34ce17f5d,788662c,diagnostic
-2026-09-15T16:58:23+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
-2026-09-15T16:58:24+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
-2026-09-15T16:58:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
-2026-09-15T16:58:27+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
-2026-09-15T16:58:29+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
-2026-09-15T16:58:30+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
+timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,winsor_lo,winsor_hi,n_deciles,start,end,sharpe_gross,sharpe_net,note,config_hash,git_commit,kind,sector_neutral,variant,spec_key
+2026-09-11T12:03:36+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3750,0.3739,phase 3 first run no-sector,,,candidate,0,,f687c63dac95
+2026-09-11T12:08:20+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,phase 3 after price cleaning no-sector,,,candidate,0,,f687c63dac95
+2026-09-11T12:09:00+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,phase 3 validation aligned no-sector,,,candidate,0,,f687c63dac95
+2026-09-11T12:35:58+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5783,0.5039,phase 6 first run,,,candidate,1,,d6ae39269d9e
+2026-09-11T12:35:59+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1404,0.0685,phase 6 first run,,,candidate,1,,2b08bbb50803
+2026-09-11T12:36:00+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2038,-0.2351,phase 6 first run,,,candidate,1,,b7b95235bbe1
+2026-09-11T12:36:01+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1511,0.0571,phase 6 sector-neutral,,,candidate,1,,4ada42335a50
+2026-09-11T12:36:16+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5783,0.5039,diagnostic value,,,diagnostic,1,,d6ae39269d9e
+2026-09-11T12:36:17+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4657,0.4089,diagnostic value no-sector,,,diagnostic,0,,d3ab650d96ed
+2026-09-11T12:36:17+00:00,bp,book_to_price,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5050,0.4444,diagnostic bp,,,diagnostic,1,,285e6b900155
+2026-09-11T12:36:17+00:00,bp,book_to_price,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3383,0.3007,diagnostic bp no-sector,,,diagnostic,0,,ad2cd5122a6e
+2026-09-11T12:36:18+00:00,ep,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4570,0.3822,diagnostic ep,,,diagnostic,1,,72474e96ee92
+2026-09-11T12:36:18+00:00,ep,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3920,0.3365,diagnostic ep no-sector,,,diagnostic,0,,66bbde479104
+2026-09-11T12:36:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1404,0.0685,diagnostic quality,,,diagnostic,1,,2b08bbb50803
+2026-09-11T12:36:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3703,0.3150,diagnostic quality no-sector,,,diagnostic,0,,fd7153743456
+2026-09-11T12:36:19+00:00,gpa,gross_profitability,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.4212,-0.4683,diagnostic gpa,,,diagnostic,1,,9330ffc61408
+2026-09-11T12:36:20+00:00,gpa,gross_profitability,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1486,-0.1828,diagnostic gpa no-sector,,,diagnostic,0,,ad72bb02425f
+2026-09-11T12:36:20+00:00,acc,accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3921,0.3110,diagnostic acc,,,diagnostic,1,,15124bf9b242
+2026-09-11T12:36:21+00:00,acc,accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3245,0.2698,diagnostic acc no-sector,,,diagnostic,0,,33454b87f1cb
+2026-09-11T12:36:50+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1007,0.0795,French replication no-sector,,,diagnostic,0,,5261a1d682a0
+2026-09-11T12:36:50+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1716,0.1367,French replication no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:37:45+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1716,0.1367,diagnostic op_inc/equity no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2291,0.2025,diagnostic net_income/equity no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2591,0.2324,diagnostic (rev-cogs)/equity no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2348,0.2100,diagnostic gross_profit/equity no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:37:46+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2907,0.2626,diagnostic cfo/equity no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:37:47+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1936,0.1633,diagnostic op_inc/assets no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:38:56+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0831,0.0608,French replication no-sector,,,diagnostic,0,,5261a1d682a0
+2026-09-11T12:38:57+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.1495,0.1147,French replication no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:44:57+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0839,0.0620,French replication no-sector,,,diagnostic,0,,5261a1d682a0
+2026-09-11T12:44:58+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4835,0.4499,French replication no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-11T12:45:47+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base,,,candidate,1,,4ada42335a50
+2026-09-11T12:45:48+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5759,0.5038,base,,,candidate,1,,d6ae39269d9e
+2026-09-11T12:45:48+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2409,0.1686,base,,,candidate,1,,2b08bbb50803
+2026-09-11T12:45:49+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base,,,candidate,1,,b7b95235bbe1
+2026-09-11T12:45:49+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4090,0.3429,base,,,candidate,1,,2754ddc70899
+2026-09-11T12:46:04+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1601,0.0734,sensitivity cw,,,diagnostic,1,,e3a17ef90969
+2026-09-11T12:46:04+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3487,0.3029,sensitivity cw,,,diagnostic,1,,3feac58a46ac
+2026-09-11T12:46:04+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4659,0.4197,sensitivity cw,,,diagnostic,1,,d05cbb141431
+2026-09-11T12:46:05+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1065,-0.1340,sensitivity cw,,,diagnostic,1,,c9319216a165
+2026-09-11T12:46:06+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3844,0.3479,sensitivity cw,,,diagnostic,1,,11eb14bd4264
+2026-09-11T12:46:06+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2371,0.1821,sensitivity hold3,,,diagnostic,1,,d047c10ba628
+2026-09-11T12:46:07+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.6488,0.6044,sensitivity hold3,,,diagnostic,1,,5b6aaf96f687
+2026-09-11T12:46:07+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2201,0.1699,sensitivity hold3,,,diagnostic,1,,6583374b89b0
+2026-09-11T12:46:08+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2261,-0.2476,sensitivity hold3,,,diagnostic,1,,97cbf721f4ea
+2026-09-11T12:46:08+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.5291,0.4910,sensitivity hold3,,,diagnostic,1,,bd7435321e26
+2026-09-11T12:46:09+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2144,0.1759,sensitivity hold6,,,diagnostic,1,,e497bd02ee71
+2026-09-11T12:46:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5827,0.5518,sensitivity hold6,,,diagnostic,1,,afe6e8fff9f7
+2026-09-11T12:46:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1313,0.0919,sensitivity hold6,,,diagnostic,1,,2b15ed2ba07e
+2026-09-11T12:46:10+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2126,-0.2295,sensitivity hold6,,,diagnostic,1,,7ed4007a7735
+2026-09-11T12:46:11+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5370,0.5100,sensitivity hold6,,,diagnostic,1,,b554993e435c
+2026-09-11T12:46:12+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2525,0.2264,sensitivity hold12,,,diagnostic,1,,681877591e5c
+2026-09-11T12:46:13+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5863,0.5629,sensitivity hold12,,,diagnostic,1,,fbbeb771155c
+2026-09-11T12:46:14+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2556,0.2300,sensitivity hold12,,,diagnostic,1,,b9ff0dedce09
+2026-09-11T12:46:15+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1366,-0.1491,sensitivity hold12,,,diagnostic,1,,690560a85177
+2026-09-11T12:46:16+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.6604,0.6417,sensitivity hold12,,,diagnostic,1,,f8c3c6139540
+2026-09-11T12:46:17+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector no-sector,,,diagnostic,0,,f687c63dac95
+2026-09-11T12:46:18+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5521,0.4958,sensitivity nosector no-sector,,,diagnostic,0,,d3ab650d96ed
+2026-09-11T12:46:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2507,0.1955,sensitivity nosector no-sector,,,diagnostic,0,,fd7153743456
+2026-09-11T12:46:20+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector no-sector,,,diagnostic,0,,9a9c3767b81a
+2026-09-11T12:46:21+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3114,0.2547,sensitivity nosector no-sector,,,diagnostic,0,,05b01c88f94b
+2026-09-11T15:15:45+00:00,bp_sn,book_to_price,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5598,0.5000,diagnostic bp_sn attribution,,,diagnostic,1,,2c9f7462044d
+2026-09-11T15:15:46+00:00,ep_sn,earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4828,0.4102,diagnostic ep_sn attribution,,,diagnostic,1,,c2d8c8c1e98c
+2026-09-11T15:20:52+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0840,0.0620,French replication no-sector,,,diagnostic,0,,5261a1d682a0
+2026-09-11T15:20:53+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4819,0.4536,French replication no-sector,,,diagnostic,0,,3c5ec2a28d4d
+2026-09-14T11:51:57+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1141,0.0117,base,,,candidate,1,cosine,733ce05c16ac
+2026-09-14T11:51:58+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,diagnostic no-sector,,,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-14T11:52:16+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1141,0.0117,base,,,candidate,1,cosine,733ce05c16ac
+2026-09-14T11:52:16+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0411,-0.1094,sensitivity cw,,,diagnostic,1,cosine,b6d8698cf952
+2026-09-14T11:52:16+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1370,-0.2088,sensitivity hold3,,,diagnostic,1,cosine,917bb027a47f
+2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0887,0.0145,sensitivity hold6,,,diagnostic,1,cosine,3893775dfd0f
+2026-09-14T11:52:17+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0774,0.0223,sensitivity hold12,,,diagnostic,1,cosine,8961af95dc43
+2026-09-14T11:52:18+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0713,0.0077,sensitivity nosector no-sector,,,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-14T11:52:26+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1493,0.0485,sensitivity jaccard,,,diagnostic,1,jaccard,ed98307e3733
+2026-09-14T14:14:02+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5729,0.4977,sensitivity ttm,f2decc504e00,d9d6daf,diagnostic,1,,7e882171beb1
+2026-09-14T14:14:02+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1519,0.0739,sensitivity ttm,f2decc504e00,d9d6daf,diagnostic,1,,a4c2eedfe044
+2026-09-14T14:22:19+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3484,-0.3823,base,20496fdb51f7,194e771,candidate,1,,e1d918b6038f
+2026-09-14T14:25:24+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1377,0.0431,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic,1,terminal,13eb0be01d0a
+2026-09-14T14:25:25+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5857,0.5135,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic,1,terminal,6404b81f7ea9
+2026-09-14T14:25:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2409,0.1686,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic,1,terminal,827f4ff687eb
+2026-09-14T14:25:26+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2124,-0.2434,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic,1,terminal,379edba5451f
+2026-09-14T14:25:26+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4090,0.3429,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-14T14:25:27+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1185,0.0162,sensitivity terminal,dbe0d6dbcdea,e1767c4,diagnostic,1,terminal,54b3f399dd6a
+2026-09-14T14:38:51+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base min_names=50,a36513de6ddf,41aa868,candidate,1,,4ada42335a50
+2026-09-14T14:38:51+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5561,0.4856,base min_names=50,a36513de6ddf,41aa868,candidate,1,,d6ae39269d9e
+2026-09-14T14:38:52+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,base min_names=50,a36513de6ddf,41aa868,candidate,1,,2b08bbb50803
+2026-09-14T14:38:52+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base min_names=50,a36513de6ddf,41aa868,candidate,1,,b7b95235bbe1
+2026-09-14T14:38:53+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3853,0.3202,base min_names=50,a36513de6ddf,41aa868,candidate,1,,2754ddc70899
+2026-09-14T14:38:53+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,base min_names=50,a36513de6ddf,41aa868,candidate,1,cosine,733ce05c16ac
+2026-09-14T14:38:54+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0845,0.0625,French replication no-sector,b2f34ce17f5d,41aa868,diagnostic,0,,5261a1d682a0
+2026-09-14T14:38:54+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4315,0.4041,French replication no-sector,b2f34ce17f5d,41aa868,diagnostic,0,,3c5ec2a28d4d
+2026-09-14T14:38:54+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5248,0.4495,sensitivity ttm,a36513de6ddf,41aa868,diagnostic,1,,7e882171beb1
+2026-09-14T14:38:55+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1382,0.0623,sensitivity ttm,a36513de6ddf,41aa868,diagnostic,1,,a4c2eedfe044
+2026-09-14T14:38:55+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,sensitivity jaccard,449338b228ac,41aa868,diagnostic,1,jaccard,ed98307e3733
+2026-09-14T14:38:56+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1600,0.0733,sensitivity cw,5e89f4b663e7,41aa868,diagnostic,1,,e3a17ef90969
+2026-09-14T14:38:57+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3374,0.2929,sensitivity cw,5e89f4b663e7,41aa868,diagnostic,1,,3feac58a46ac
+2026-09-14T14:38:57+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4522,0.4074,sensitivity cw,5e89f4b663e7,41aa868,diagnostic,1,,d05cbb141431
+2026-09-14T14:38:58+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1068,-0.1342,sensitivity cw,5e89f4b663e7,41aa868,diagnostic,1,,c9319216a165
+2026-09-14T14:38:59+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3716,0.3357,sensitivity cw,5e89f4b663e7,41aa868,diagnostic,1,,11eb14bd4264
+2026-09-14T14:38:59+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1443,-0.2164,sensitivity cw,5e89f4b663e7,41aa868,diagnostic,1,cosine,b6d8698cf952
+2026-09-14T14:39:00+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2371,0.1821,sensitivity hold3,9402e45cf80b,41aa868,diagnostic,1,,d047c10ba628
+2026-09-14T14:39:00+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.5652,0.5158,sensitivity hold3,9402e45cf80b,41aa868,diagnostic,1,,5b6aaf96f687
+2026-09-14T14:39:01+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2381,0.1872,sensitivity hold3,9402e45cf80b,41aa868,diagnostic,1,,6583374b89b0
+2026-09-14T14:39:01+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2261,-0.2476,sensitivity hold3,9402e45cf80b,41aa868,diagnostic,1,,97cbf721f4ea
+2026-09-14T14:39:02+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.4135,0.3764,sensitivity hold3,9402e45cf80b,41aa868,diagnostic,1,,bd7435321e26
+2026-09-14T14:39:02+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0814,-0.1763,sensitivity hold3,9402e45cf80b,41aa868,diagnostic,1,cosine,917bb027a47f
+2026-09-14T14:39:03+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2144,0.1759,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic,1,,e497bd02ee71
+2026-09-14T14:39:03+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5923,0.5542,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic,1,,afe6e8fff9f7
+2026-09-14T14:39:04+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2411,0.1981,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic,1,,2b15ed2ba07e
+2026-09-14T14:39:04+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2126,-0.2295,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic,1,,7ed4007a7735
+2026-09-14T14:39:05+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5325,0.5056,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic,1,,b554993e435c
+2026-09-14T14:39:05+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.0497,-0.1270,sensitivity hold6,fe2d2b901be6,41aa868,diagnostic,1,cosine,3893775dfd0f
+2026-09-14T14:39:06+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2525,0.2264,sensitivity hold12,0e72153c1e13,41aa868,diagnostic,1,,681877591e5c
+2026-09-14T14:39:06+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5308,0.5036,sensitivity hold12,0e72153c1e13,41aa868,diagnostic,1,,fbbeb771155c
+2026-09-14T14:39:07+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0801,0.0487,sensitivity hold12,0e72153c1e13,41aa868,diagnostic,1,,b9ff0dedce09
+2026-09-14T14:39:07+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1366,-0.1491,sensitivity hold12,0e72153c1e13,41aa868,diagnostic,1,,690560a85177
+2026-09-14T14:39:08+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5332,0.5168,sensitivity hold12,0e72153c1e13,41aa868,diagnostic,1,,f8c3c6139540
+2026-09-14T14:39:08+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0116,-0.0435,sensitivity hold12,0e72153c1e13,41aa868,diagnostic,1,cosine,8961af95dc43
+2026-09-14T14:39:09+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic,0,,f687c63dac95
+2026-09-14T14:39:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5632,0.5089,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic,0,,d3ab650d96ed
+2026-09-14T14:39:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2648,0.2115,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic,0,,fd7153743456
+2026-09-14T14:39:11+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic,0,,9a9c3767b81a
+2026-09-14T14:39:11+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3083,0.2529,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic,0,,05b01c88f94b
+2026-09-14T14:39:12+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0330,-0.0287,sensitivity nosector no-sector,a36513de6ddf,41aa868,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-14T14:39:13+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1377,0.0431,sensitivity terminal,a36513de6ddf,41aa868,diagnostic,1,terminal,13eb0be01d0a
+2026-09-14T14:39:14+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5561,0.4856,sensitivity terminal,a36513de6ddf,41aa868,diagnostic,1,terminal,6404b81f7ea9
+2026-09-14T14:39:14+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,sensitivity terminal,a36513de6ddf,41aa868,diagnostic,1,terminal,827f4ff687eb
+2026-09-14T14:39:15+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2124,-0.2434,sensitivity terminal,a36513de6ddf,41aa868,diagnostic,1,terminal,379edba5451f
+2026-09-14T14:39:15+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3853,0.3202,sensitivity terminal,a36513de6ddf,41aa868,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-14T14:39:16+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0157,-0.1398,sensitivity terminal,a36513de6ddf,41aa868,diagnostic,1,terminal,54b3f399dd6a
+2026-09-14T14:40:13+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1258,0.0259,"sensitivity jaccard (rerun: row 130 was cosine, raw_signal ignored the passed config)",449338b228ac,41aa868,diagnostic,1,jaccard,ed98307e3733
+2026-09-14T14:55:08+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base after asof tie rule,a36513de6ddf,c153738,candidate,1,,4ada42335a50
+2026-09-14T14:55:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5348,0.4647,base after asof tie rule,a36513de6ddf,c153738,candidate,1,,d6ae39269d9e
+2026-09-14T14:55:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,base after asof tie rule,a36513de6ddf,c153738,candidate,1,,2b08bbb50803
+2026-09-14T14:55:10+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base after asof tie rule,a36513de6ddf,c153738,candidate,1,,b7b95235bbe1
+2026-09-14T14:55:11+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3877,0.3226,base after asof tie rule,a36513de6ddf,c153738,candidate,1,,2754ddc70899
+2026-09-14T14:55:12+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,base after asof tie rule,a36513de6ddf,c153738,candidate,1,cosine,733ce05c16ac
+2026-09-14T15:00:05+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1397,0.0450,base quarter-wins shares rule,a36513de6ddf,c153738,candidate,1,,4ada42335a50
+2026-09-14T15:00:05+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5547,0.4842,base quarter-wins shares rule,a36513de6ddf,c153738,candidate,1,,d6ae39269d9e
+2026-09-14T15:00:06+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,base quarter-wins shares rule,a36513de6ddf,c153738,candidate,1,,2b08bbb50803
+2026-09-14T15:00:06+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2154,-0.2463,base quarter-wins shares rule,a36513de6ddf,c153738,candidate,1,,b7b95235bbe1
+2026-09-14T15:00:07+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3825,0.3175,base quarter-wins shares rule,a36513de6ddf,c153738,candidate,1,,2754ddc70899
+2026-09-14T15:00:08+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0216,-0.1459,base quarter-wins shares rule,a36513de6ddf,c153738,candidate,1,cosine,733ce05c16ac
+2026-09-14T15:00:08+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.0837,0.0618,French replication no-sector,b2f34ce17f5d,c153738,diagnostic,0,,5261a1d682a0
+2026-09-14T15:00:09+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.4314,0.4040,French replication no-sector,b2f34ce17f5d,c153738,diagnostic,0,,3c5ec2a28d4d
+2026-09-14T15:00:09+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5258,0.4507,sensitivity ttm,a36513de6ddf,c153738,diagnostic,1,,7e882171beb1
+2026-09-14T15:00:10+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1382,0.0623,sensitivity ttm,a36513de6ddf,c153738,diagnostic,1,,a4c2eedfe044
+2026-09-14T15:00:10+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1258,0.0259,sensitivity jaccard,449338b228ac,c153738,diagnostic,1,jaccard,ed98307e3733
+2026-09-14T15:00:11+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3484,-0.3823,base,a36513de6ddf,c153738,candidate,1,,e1d918b6038f
+2026-09-14T15:00:13+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1602,0.0734,sensitivity cw,5e89f4b663e7,c153738,diagnostic,1,,e3a17ef90969
+2026-09-14T15:00:13+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3379,0.2934,sensitivity cw,5e89f4b663e7,c153738,diagnostic,1,,3feac58a46ac
+2026-09-14T15:00:14+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.4518,0.4070,sensitivity cw,5e89f4b663e7,c153738,diagnostic,1,,d05cbb141431
+2026-09-14T15:00:15+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1065,-0.1340,sensitivity cw,5e89f4b663e7,c153738,diagnostic,1,,c9319216a165
+2026-09-14T15:00:15+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3710,0.3352,sensitivity cw,5e89f4b663e7,c153738,diagnostic,1,,11eb14bd4264
+2026-09-14T15:00:16+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1443,-0.2164,sensitivity cw,5e89f4b663e7,c153738,diagnostic,1,cosine,b6d8698cf952
+2026-09-14T15:00:17+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2371,0.1821,sensitivity hold3,9402e45cf80b,c153738,diagnostic,1,,d047c10ba628
+2026-09-14T15:00:17+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.5743,0.5250,sensitivity hold3,9402e45cf80b,c153738,diagnostic,1,,5b6aaf96f687
+2026-09-14T15:00:18+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2381,0.1872,sensitivity hold3,9402e45cf80b,c153738,diagnostic,1,,6583374b89b0
+2026-09-14T15:00:18+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2261,-0.2476,sensitivity hold3,9402e45cf80b,c153738,diagnostic,1,,97cbf721f4ea
+2026-09-14T15:00:19+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.4135,0.3764,sensitivity hold3,9402e45cf80b,c153738,diagnostic,1,,bd7435321e26
+2026-09-14T15:00:20+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0814,-0.1763,sensitivity hold3,9402e45cf80b,c153738,diagnostic,1,cosine,917bb027a47f
+2026-09-14T15:00:20+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2144,0.1759,sensitivity hold6,fe2d2b901be6,c153738,diagnostic,1,,e497bd02ee71
+2026-09-14T15:00:21+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5879,0.5500,sensitivity hold6,fe2d2b901be6,c153738,diagnostic,1,,afe6e8fff9f7
+2026-09-14T15:00:22+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2411,0.1981,sensitivity hold6,fe2d2b901be6,c153738,diagnostic,1,,2b15ed2ba07e
+2026-09-14T15:00:22+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2126,-0.2295,sensitivity hold6,fe2d2b901be6,c153738,diagnostic,1,,7ed4007a7735
+2026-09-14T15:00:23+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.5325,0.5056,sensitivity hold6,fe2d2b901be6,c153738,diagnostic,1,,b554993e435c
+2026-09-14T15:00:24+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.0497,-0.1270,sensitivity hold6,fe2d2b901be6,c153738,diagnostic,1,cosine,3893775dfd0f
+2026-09-14T15:00:24+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2525,0.2264,sensitivity hold12,0e72153c1e13,c153738,diagnostic,1,,681877591e5c
+2026-09-14T15:00:25+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5336,0.5065,sensitivity hold12,0e72153c1e13,c153738,diagnostic,1,,fbbeb771155c
+2026-09-14T15:00:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0801,0.0487,sensitivity hold12,0e72153c1e13,c153738,diagnostic,1,,b9ff0dedce09
+2026-09-14T15:00:26+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1366,-0.1491,sensitivity hold12,0e72153c1e13,c153738,diagnostic,1,,690560a85177
+2026-09-14T15:00:27+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.5332,0.5168,sensitivity hold12,0e72153c1e13,c153738,diagnostic,1,,f8c3c6139540
+2026-09-14T15:00:27+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0116,-0.0435,sensitivity hold12,0e72153c1e13,c153738,diagnostic,1,cosine,8961af95dc43
+2026-09-14T15:00:28+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic,0,,f687c63dac95
+2026-09-14T15:00:29+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5672,0.5128,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic,0,,d3ab650d96ed
+2026-09-14T15:00:29+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2648,0.2115,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic,0,,fd7153743456
+2026-09-14T15:00:30+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic,0,,9a9c3767b81a
+2026-09-14T15:00:31+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3098,0.2543,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic,0,,05b01c88f94b
+2026-09-14T15:00:31+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0330,-0.0287,sensitivity nosector no-sector,a36513de6ddf,c153738,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-14T15:00:33+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1377,0.0431,sensitivity terminal,a36513de6ddf,c153738,diagnostic,1,terminal,13eb0be01d0a
+2026-09-14T15:00:34+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.5547,0.4842,sensitivity terminal,a36513de6ddf,c153738,diagnostic,1,terminal,6404b81f7ea9
+2026-09-14T15:00:34+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2266,0.1567,sensitivity terminal,a36513de6ddf,c153738,diagnostic,1,terminal,827f4ff687eb
+2026-09-14T15:00:35+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2124,-0.2434,sensitivity terminal,a36513de6ddf,c153738,diagnostic,1,terminal,379edba5451f
+2026-09-14T15:00:36+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3825,0.3175,sensitivity terminal,a36513de6ddf,c153738,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-14T15:00:36+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0157,-0.1398,sensitivity terminal,a36513de6ddf,c153738,diagnostic,1,terminal,54b3f399dd6a
+2026-09-15T12:29:29+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1359,0.0398,base post-F3,a36513de6ddf,788662c,candidate,1,,4ada42335a50
+2026-09-15T12:29:30+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,base post-F3,a36513de6ddf,788662c,candidate,1,,d6ae39269d9e
+2026-09-15T12:29:30+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,base post-F3,a36513de6ddf,788662c,candidate,1,,2b08bbb50803
+2026-09-15T12:29:31+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2393,-0.2709,base post-F3,a36513de6ddf,788662c,candidate,1,,b7b95235bbe1
+2026-09-15T12:29:33+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,base post-F3,a36513de6ddf,788662c,candidate,1,,2754ddc70899
+2026-09-15T12:29:34+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0438,-0.1703,base post-F3,a36513de6ddf,788662c,candidate,1,cosine,733ce05c16ac
+2026-09-15T12:29:35+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3628,-0.3970,base post-F3,a36513de6ddf,788662c,candidate,1,,e1d918b6038f
+2026-09-15T12:29:36+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1393,-0.2105,sensitivity ttm post-F3,a36513de6ddf,788662c,diagnostic,1,,7e882171beb1
+2026-09-15T12:29:37+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0656,-0.0098,sensitivity ttm post-F3,a36513de6ddf,788662c,diagnostic,1,,a4c2eedfe044
+2026-09-15T12:29:38+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1559,0.0541,sensitivity jaccard post-F3,449338b228ac,788662c,diagnostic,1,jaccard,ed98307e3733
+2026-09-15T12:29:39+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3234,0.2422,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic,1,,e3a17ef90969
+2026-09-15T12:29:40+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1582,-0.1906,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic,1,,3feac58a46ac
+2026-09-15T12:29:40+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3498,0.3004,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic,1,,d05cbb141431
+2026-09-15T12:29:42+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3717,-0.3959,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic,1,,c9319216a165
+2026-09-15T12:29:43+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0403,-0.0947,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic,1,,11eb14bd4264
+2026-09-15T12:29:44+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2336,-0.3030,sensitivity cw post-F3,5e89f4b663e7,788662c,diagnostic,1,cosine,b6d8698cf952
+2026-09-15T12:29:45+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2450,0.1895,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic,1,,d047c10ba628
+2026-09-15T12:29:46+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1598,-0.2018,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic,1,,5b6aaf96f687
+2026-09-15T12:29:46+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.1362,0.0849,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic,1,,6583374b89b0
+2026-09-15T12:29:47+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2180,-0.2395,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic,1,,97cbf721f4ea
+2026-09-15T12:29:49+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2764,-0.3185,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic,1,,bd7435321e26
+2026-09-15T12:29:50+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0978,-0.1938,sensitivity hold3 post-F3,9402e45cf80b,788662c,diagnostic,1,cosine,917bb027a47f
+2026-09-15T12:29:51+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2402,0.2012,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic,1,,e497bd02ee71
+2026-09-15T12:29:52+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1878,-0.2198,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic,1,,afe6e8fff9f7
+2026-09-15T12:29:52+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1166,0.0736,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic,1,,2b15ed2ba07e
+2026-09-15T12:29:53+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2108,-0.2279,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic,1,,7ed4007a7735
+2026-09-15T12:29:55+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1094,-0.1396,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic,1,,b554993e435c
+2026-09-15T12:29:56+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0206,-0.0565,sensitivity hold6 post-F3,fe2d2b901be6,788662c,diagnostic,1,cosine,3893775dfd0f
+2026-09-15T12:29:56+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2582,0.2316,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic,1,,681877591e5c
+2026-09-15T12:29:57+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1275,-0.1509,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic,1,,fbbeb771155c
+2026-09-15T12:29:58+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0522,0.0199,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic,1,,b9ff0dedce09
+2026-09-15T12:29:59+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1406,-0.1533,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic,1,,690560a85177
+2026-09-15T12:30:01+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1320,-0.1518,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic,1,,f8c3c6139540
+2026-09-15T12:30:02+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.0070,-0.0633,sensitivity hold12 post-F3,0e72153c1e13,788662c,diagnostic,1,cosine,8961af95dc43
+2026-09-15T12:30:03+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic,0,,f687c63dac95
+2026-09-15T12:30:04+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0585,-0.1028,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic,0,,d3ab650d96ed
+2026-09-15T12:30:04+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2193,0.1668,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic,0,,fd7153743456
+2026-09-15T12:30:05+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic,0,,9a9c3767b81a
+2026-09-15T12:30:07+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1823,-0.2417,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic,0,,05b01c88f94b
+2026-09-15T12:30:08+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0595,-0.0035,sensitivity nosector post-F3 no-sector,a36513de6ddf,788662c,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-15T12:30:09+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic,1,terminal,13eb0be01d0a
+2026-09-15T12:30:10+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic,1,terminal,6404b81f7ea9
+2026-09-15T12:30:11+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic,1,terminal,827f4ff687eb
+2026-09-15T12:30:12+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic,1,terminal,379edba5451f
+2026-09-15T12:30:13+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-15T12:30:14+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3,a36513de6ddf,788662c,diagnostic,1,terminal,54b3f399dd6a
+2026-09-15T12:30:15+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 no-sector,b2f34ce17f5d,788662c,diagnostic,0,,5261a1d682a0
+2026-09-15T12:30:16+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 no-sector,b2f34ce17f5d,788662c,diagnostic,0,,3c5ec2a28d4d
+2026-09-15T15:44:43+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1359,0.0398,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,,4ada42335a50
+2026-09-15T15:44:44+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,,d6ae39269d9e
+2026-09-15T15:44:45+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,,2b08bbb50803
+2026-09-15T15:44:46+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2393,-0.2709,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,,b7b95235bbe1
+2026-09-15T15:44:48+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,,2754ddc70899
+2026-09-15T15:44:50+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0438,-0.1703,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,cosine,733ce05c16ac
+2026-09-15T15:44:52+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3628,-0.3970,base post-F3 ingest v2,a36513de6ddf,788662c,candidate,1,,e1d918b6038f
+2026-09-15T15:44:54+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1393,-0.2105,sensitivity ttm post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,,7e882171beb1
+2026-09-15T15:44:55+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0656,-0.0098,sensitivity ttm post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,,a4c2eedfe044
+2026-09-15T15:44:57+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1559,0.0541,sensitivity jaccard post-F3 ingest v2,449338b228ac,788662c,diagnostic,1,jaccard,ed98307e3733
+2026-09-15T15:44:58+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3234,0.2422,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic,1,,e3a17ef90969
+2026-09-15T15:45:00+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1582,-0.1906,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic,1,,3feac58a46ac
+2026-09-15T15:45:01+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3498,0.3004,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic,1,,d05cbb141431
+2026-09-15T15:45:03+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3717,-0.3959,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic,1,,c9319216a165
+2026-09-15T15:45:05+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0403,-0.0947,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic,1,,11eb14bd4264
+2026-09-15T15:45:06+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2336,-0.3030,sensitivity cw post-F3 ingest v2,5e89f4b663e7,788662c,diagnostic,1,cosine,b6d8698cf952
+2026-09-15T15:45:08+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2450,0.1895,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic,1,,d047c10ba628
+2026-09-15T15:45:09+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1598,-0.2018,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic,1,,5b6aaf96f687
+2026-09-15T15:45:10+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.1362,0.0849,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic,1,,6583374b89b0
+2026-09-15T15:45:12+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2180,-0.2395,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic,1,,97cbf721f4ea
+2026-09-15T15:45:14+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2764,-0.3185,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic,1,,bd7435321e26
+2026-09-15T15:45:15+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0978,-0.1938,sensitivity hold3 post-F3 ingest v2,9402e45cf80b,788662c,diagnostic,1,cosine,917bb027a47f
+2026-09-15T15:45:16+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2402,0.2012,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic,1,,e497bd02ee71
+2026-09-15T15:45:18+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1878,-0.2198,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic,1,,afe6e8fff9f7
+2026-09-15T15:45:19+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1166,0.0736,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic,1,,2b15ed2ba07e
+2026-09-15T15:45:21+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2108,-0.2279,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic,1,,7ed4007a7735
+2026-09-15T15:45:23+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1094,-0.1396,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic,1,,b554993e435c
+2026-09-15T15:45:24+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0206,-0.0565,sensitivity hold6 post-F3 ingest v2,fe2d2b901be6,788662c,diagnostic,1,cosine,3893775dfd0f
+2026-09-15T15:45:25+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2582,0.2316,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic,1,,681877591e5c
+2026-09-15T15:45:27+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1275,-0.1509,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic,1,,fbbeb771155c
+2026-09-15T15:45:28+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0522,0.0199,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic,1,,b9ff0dedce09
+2026-09-15T15:45:30+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1406,-0.1533,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic,1,,690560a85177
+2026-09-15T15:45:32+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1320,-0.1518,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic,1,,f8c3c6139540
+2026-09-15T15:45:33+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.0070,-0.0633,sensitivity hold12 post-F3 ingest v2,0e72153c1e13,788662c,diagnostic,1,cosine,8961af95dc43
+2026-09-15T15:45:34+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic,0,,f687c63dac95
+2026-09-15T15:45:36+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0585,-0.1028,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic,0,,d3ab650d96ed
+2026-09-15T15:45:37+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2193,0.1668,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic,0,,fd7153743456
+2026-09-15T15:45:39+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic,0,,9a9c3767b81a
+2026-09-15T15:45:41+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1823,-0.2417,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic,0,,05b01c88f94b
+2026-09-15T15:45:43+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0595,-0.0035,sensitivity nosector post-F3 ingest v2 no-sector,a36513de6ddf,788662c,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-15T15:45:44+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,terminal,13eb0be01d0a
+2026-09-15T15:45:46+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,terminal,6404b81f7ea9
+2026-09-15T15:45:47+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,terminal,827f4ff687eb
+2026-09-15T15:45:49+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,terminal,379edba5451f
+2026-09-15T15:45:51+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-15T15:45:52+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3 ingest v2,a36513de6ddf,788662c,diagnostic,1,terminal,54b3f399dd6a
+2026-09-15T15:45:54+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 ingest v2 no-sector,b2f34ce17f5d,788662c,diagnostic,0,,5261a1d682a0
+2026-09-15T15:45:55+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 ingest v2 no-sector,b2f34ce17f5d,788662c,diagnostic,0,,3c5ec2a28d4d
+2026-09-15T16:03:10+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1359,0.0398,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,,4ada42335a50
+2026-09-15T16:03:11+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,,d6ae39269d9e
+2026-09-15T16:03:12+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,,2b08bbb50803
+2026-09-15T16:03:14+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2393,-0.2709,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,,b7b95235bbe1
+2026-09-15T16:03:16+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,,2754ddc70899
+2026-09-15T16:03:17+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0438,-0.1703,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,cosine,733ce05c16ac
+2026-09-15T16:03:20+00:00,beta,beta_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3628,-0.3970,base post-F3 first-filed tie,a36513de6ddf,788662c,candidate,1,,e1d918b6038f
+2026-09-15T16:03:21+00:00,value_ttm,book_to_price+earnings_yield_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1393,-0.2105,sensitivity ttm post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,,7e882171beb1
+2026-09-15T16:03:23+00:00,quality_ttm,gross_profitability_ttm+accruals_ttm,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0656,-0.0098,sensitivity ttm post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,,a4c2eedfe044
+2026-09-15T16:03:24+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1559,0.0541,sensitivity jaccard post-F3 first-filed tie,449338b228ac,788662c,diagnostic,1,jaccard,ed98307e3733
+2026-09-15T16:03:26+00:00,momentum,momentum_12_1,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3234,0.2422,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic,1,,e3a17ef90969
+2026-09-15T16:03:27+00:00,value,book_to_price+earnings_yield,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1582,-0.1906,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic,1,,3feac58a46ac
+2026-09-15T16:03:28+00:00,quality,gross_profitability+accruals,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3498,0.3004,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic,1,,d05cbb141431
+2026-09-15T16:03:30+00:00,low_vol,volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3717,-0.3959,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic,1,,c9319216a165
+2026-09-15T16:03:32+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0403,-0.0947,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic,1,,11eb14bd4264
+2026-09-15T16:03:34+00:00,text_change,doc_similarity,cw,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2336,-0.3030,sensitivity cw post-F3 first-filed tie,5e89f4b663e7,788662c,diagnostic,1,cosine,b6d8698cf952
+2026-09-15T16:03:35+00:00,momentum,momentum_12_1,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.2450,0.1895,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic,1,,d047c10ba628
+2026-09-15T16:03:36+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.1598,-0.2018,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic,1,,5b6aaf96f687
+2026-09-15T16:03:38+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,0.1362,0.0849,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic,1,,6583374b89b0
+2026-09-15T16:03:39+00:00,low_vol,volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2180,-0.2395,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic,1,,97cbf721f4ea
+2026-09-15T16:03:41+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.2764,-0.3185,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic,1,,bd7435321e26
+2026-09-15T16:03:43+00:00,text_change,doc_similarity,ew,10.0,1,M,3,0.01,0.99,10,2010-01-31,2026-08-31,-0.0978,-0.1938,sensitivity hold3 post-F3 first-filed tie,9402e45cf80b,788662c,diagnostic,1,cosine,917bb027a47f
+2026-09-15T16:03:44+00:00,momentum,momentum_12_1,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.2402,0.2012,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic,1,,e497bd02ee71
+2026-09-15T16:03:45+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1878,-0.2198,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic,1,,afe6e8fff9f7
+2026-09-15T16:03:46+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.1166,0.0736,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic,1,,2b15ed2ba07e
+2026-09-15T16:03:48+00:00,low_vol,volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.2108,-0.2279,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic,1,,7ed4007a7735
+2026-09-15T16:03:50+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,-0.1094,-0.1396,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic,1,,b554993e435c
+2026-09-15T16:03:51+00:00,text_change,doc_similarity,ew,10.0,1,M,6,0.01,0.99,10,2010-01-31,2026-08-31,0.0206,-0.0565,sensitivity hold6 post-F3 first-filed tie,fe2d2b901be6,788662c,diagnostic,1,cosine,3893775dfd0f
+2026-09-15T16:03:53+00:00,momentum,momentum_12_1,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.2582,0.2316,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic,1,,681877591e5c
+2026-09-15T16:03:54+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1275,-0.1509,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic,1,,fbbeb771155c
+2026-09-15T16:03:55+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,0.0522,0.0199,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic,1,,b9ff0dedce09
+2026-09-15T16:03:56+00:00,low_vol,volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1406,-0.1533,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic,1,,690560a85177
+2026-09-15T16:03:58+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.1320,-0.1518,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic,1,,f8c3c6139540
+2026-09-15T16:04:00+00:00,text_change,doc_similarity,ew,10.0,1,M,12,0.01,0.99,10,2010-01-31,2026-08-31,-0.0070,-0.0633,sensitivity hold12 post-F3 first-filed tie,0e72153c1e13,788662c,diagnostic,1,cosine,8961af95dc43
+2026-09-15T16:04:01+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0239,-0.0508,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic,0,,f687c63dac95
+2026-09-15T16:04:03+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0585,-0.1028,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic,0,,d3ab650d96ed
+2026-09-15T16:04:04+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.2193,0.1668,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic,0,,fd7153743456
+2026-09-15T16:04:06+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.3175,-0.3385,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic,0,,9a9c3767b81a
+2026-09-15T16:04:08+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.1823,-0.2417,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic,0,,05b01c88f94b
+2026-09-15T16:04:09+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.0595,-0.0035,sensitivity nosector post-F3 first-filed tie no-sector,a36513de6ddf,788662c,diagnostic,0,cosine,3a2c440dd5f1
+2026-09-15T16:04:11+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,terminal,13eb0be01d0a
+2026-09-15T16:04:13+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,terminal,6404b81f7ea9
+2026-09-15T16:04:14+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,terminal,827f4ff687eb
+2026-09-15T16:04:16+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,terminal,379edba5451f
+2026-09-15T16:04:18+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-15T16:04:20+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic,1,terminal,54b3f399dd6a
+2026-09-15T16:04:21+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 first-filed tie no-sector,b2f34ce17f5d,788662c,diagnostic,0,,5261a1d682a0
+2026-09-15T16:04:22+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 first-filed tie no-sector,b2f34ce17f5d,788662c,diagnostic,0,,3c5ec2a28d4d
+2026-09-15T16:58:23+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal,753b37e5fbd5,933407f,diagnostic,1,terminal,13eb0be01d0a
+2026-09-15T16:58:24+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal,753b37e5fbd5,933407f,diagnostic,1,terminal,6404b81f7ea9
+2026-09-15T16:58:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal,753b37e5fbd5,933407f,diagnostic,1,terminal,827f4ff687eb
+2026-09-15T16:58:27+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal,753b37e5fbd5,933407f,diagnostic,1,terminal,379edba5451f
+2026-09-15T16:58:29+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal,753b37e5fbd5,933407f,diagnostic,1,terminal,9a88cb76b6f4
+2026-09-15T16:58:30+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal,753b37e5fbd5,933407f,diagnostic,1,terminal,54b3f399dd6a

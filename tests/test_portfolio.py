@@ -191,7 +191,7 @@ def test_older_log_is_widened_without_losing_rows(cfg: config.Config) -> None:
     # A log written before config_hash and git_commit existed: two rows
     # under the 16-column header. Appending a third must keep both, keep
     # their values, and leave the new columns blank for them.
-    old_cols = portfolio.SPEC_COLUMNS[:-2]
+    old_cols = portfolio.SPEC_COLUMNS[:16]  # timestamp .. note
     cfg.specifications.parent.mkdir(parents=True, exist_ok=True)
     with open(cfg.specifications, "w", encoding="utf-8", newline="") as f:
         f.write(",".join(old_cols) + "\n")

@@ -152,7 +152,8 @@ def build(cfg: Config) -> None:
             "Statistics: Spearman IC by month and by horizon 1-12 with an exponential half-life; "
             "Fama-MacBeth premia with Newey-West errors (checked against statsmodels to 1e-9); "
             "attribution on Mkt-RF, HML, UMD, RMW; break-even cost; and the deflated Sharpe with N read "
-            f"from a specification log that every run appends to (N = {n_trials}).",
+            f"from a specification log that every run appends to (N = {n_trials} distinct "
+            f"specifications over {trials['rows']} logged runs).",
         ]
     )
 
@@ -244,8 +245,9 @@ def build(cfg: Config) -> None:
             f"{lva.betas['rmw']:.2f} (t {lva.beta_t['rmw']:.1f}), alpha {100 * lva.alpha_annual:.1f}% "
             f"(t {lva.alpha_t:.1f}): a short-beta position, and shorting beta lost for sixteen years. "
             f"The composite nets {co['sharpe_net']:.2f}.",
-            f"The deflated Sharpe of quality is {q['dsr']:.2f} against all {n_trials} logged rows and "
-            f"{q['dsr_candidates']:.2f} against the {trials['candidates'][0]} candidate rows: the "
+            f"The deflated Sharpe of quality is {q['dsr']:.2f} against all {n_trials} distinct "
+            f"specifications and {q['dsr_candidates']:.2f} against the {trials['candidates'][0]} "
+            "candidate ones: the "
             "probability that its Sharpe beats the best of that many random trials with the same "
             "dispersion. Nothing here is a 2.0 Sharpe.",
         ]

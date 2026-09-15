@@ -194,6 +194,7 @@ def run_factor(
     *,
     note: str = "",
     sector_neutral: bool = True,
+    variant: str = "",
 ) -> RunResult:
     inp = inp or load_inputs(cfg)
     spec = FACTORS[factor]
@@ -225,6 +226,8 @@ def run_factor(
         signal="+".join(spec["signals"]),
         caps=caps,
         note=(note + ("" if sector_neutral else " no-sector")).strip(),
+        sector_neutral=sector_neutral,
+        variant=variant,
     )
     validation = validate(result.long_short, inp.french, spec["french"])
     big = spec.get("big")
@@ -357,7 +360,9 @@ def delisting(
     inp.monthly = monthly
     out = {}
     for f in factors:
-        res = run_factor(cfg, f, inp, note=f"sensitivity terminal{suffix}")
+        res = run_factor(
+            cfg, f, inp, note=f"sensitivity terminal{suffix}", variant="terminal"
+        )
         save(res, cfg, tag="terminal")
         out[f] = res
         print("terminal", summary_line(res))

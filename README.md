@@ -52,9 +52,9 @@ outsider can verify, over 2010–2026?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the best line, quality at a net Sharpe of 0.24, deflates to a 6%
-probability of beating the best of 55 candidate specifications by luck,
-and 2% against all 329 logged rows. Value, which the first version of this
+of 1; the best line, quality at a net Sharpe of 0.24, deflates to a 39%
+probability of beating the best of 8 candidate specifications by luck,
+and 9% against all 58 distinct specifications tried. Value, which the first version of this
 README reported at 0.48, was a market-cap bug (Results, below).
 
 ## Results
@@ -65,10 +65,10 @@ every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Momentum 12-1 | 2.1% | 0.6% | 15.5% | 0.04 | 0.00 | 0.01 | −56% | 0.62 | 0.006 | 0.6 | 14 bp |
-| Value (B/P, E/P) | −1.1% | −1.8% | 11.0% | −0.16 | 0.00 | 0.00 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) |
-| Quality (GP/A, accruals) | 2.7% | 2.1% | 8.8% | 0.24 | 0.02 | 0.06 | −24% | 0.25 | 0.008 | 1.4 | 45 bp |
-| Low volatility | −4.5% | −5.1% | 18.6% | −0.27 | 0.00 | 0.00 | −74% | 0.25 | 0.003 | 0.2 | none (loses gross) |
+| Momentum 12-1 | 2.1% | 0.6% | 15.5% | 0.04 | 0.02 | 0.14 | −56% | 0.62 | 0.006 | 0.6 | 14 bp |
+| Value (B/P, E/P) | −1.1% | −1.8% | 11.0% | −0.16 | 0.00 | 0.03 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) |
+| Quality (GP/A, accruals) | 2.7% | 2.1% | 8.8% | 0.24 | 0.09 | 0.39 | −24% | 0.25 | 0.008 | 1.4 | 45 bp |
+| Low volatility | −4.5% | −5.1% | 18.6% | −0.27 | 0.00 | 0.01 | −74% | 0.25 | 0.003 | 0.2 | none (loses gross) |
 | Composite | −3.6% | −4.7% | 14.1% | −0.33 | 0.00 | 0.00 | −66% | 0.45 | −0.002 | −0.2 | none (loses gross) |
 
 Price history covers 85.4% of member-months; the missing names are
@@ -78,11 +78,17 @@ disproportionately those that left the index. See Data.
 that the net Sharpe exceeds the expected maximum of *N* random trials with
 the same dispersion, adjusted for skew and kurtosis. *N* is read from
 [reports/specifications.csv](reports/specifications.csv), where every run is
-logged: **DSR (all)** counts all 329 rows (base, sensitivity, diagnostic,
-the two broken first attempts at momentum, and the 144 reruns after the
-data fixes of September 2026); **DSR (cand.)** counts the 55 rows whose
-`kind` is `candidate`, a specification that could have been reported,
-rather than a sensitivity, a replication or a diagnostic. **Break-even
+logged (335 rows). A trial is a distinct specification key: factor,
+signal, weighting, cost, lag, holding period, winsorisation, deciles,
+sector flag, window and variant (`spec_key` in the log); re-running one
+after a code fix is the same trial, so the 144 reruns after the data
+fixes of September 2026 are not new trials. **DSR (all)** counts the 58
+distinct specifications (base, sensitivity, diagnostic, the two broken
+first attempts at momentum); **DSR (cand.)** counts the 8 whose `kind`
+is `candidate`, a specification that could have been reported, rather
+than a sensitivity, a replication or a diagnostic
+([decisions/g2_trial_count.md](decisions/g2_trial_count.md) has every
+DSR before and after this definition). **Break-even
 cost** is the one-way cost at which the mean net return is zero.
 
 **These are the numbers after the data fixes** ([FIX_PLAN.md](FIX_PLAN.md)
@@ -113,8 +119,8 @@ What the table says, factor by factor:
   from 2015-12 where the price gap is under 20%, −0.19 against −0.16 on all
   months, so the missing delisted names are not hiding a premium.
 - **Quality** is the only positive line: net Sharpe 0.24, 0.30 cap-weighted,
-  0.38 on the well-covered months, Fama-MacBeth t 1.4, DSR 0.06 against the
-  55 candidates. Accruals carry it. Gross profitability is computed on the
+  0.38 on the well-covered months, Fama-MacBeth t 1.4, DSR 0.39 against the
+  8 candidates. Accruals carry it. Gross profitability is computed on the
   67–71% of non-financial members that report a cost-of-goods line
   ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md)) and
   excludes financials by rule, as Novy-Marx does. A net Sharpe of 0.24 with
@@ -155,7 +161,7 @@ same columns:
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.00 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) |
+| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.03 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) |
 
 **10-K text similarity**, long the names whose annual report changed
   least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
@@ -368,6 +374,14 @@ what each of those commits changed, from its body, below a marker.
   one filing (the larger wins, as a rule), then a third in `first_filed`
   between an FSDS row and the SEC API's fallback row for one filing (the
   FSDS row wins, as a rule). N 233 → 329.
+- **The deflated Sharpe was counting reruns as trials.** N was the row
+  count of the specification log, and three reruns of the same 48
+  specifications after the September data fixes had pushed it from 185
+  to 329 without a single new strategy being tried. A trial is now a
+  distinct specification key; the log has 58 of them across 335 rows,
+  8 of them candidates. Every DSR rose (quality's from 0.06 to 0.39
+  against the candidates) and none clears 0.5
+  ([decisions/g2_trial_count.md](decisions/g2_trial_count.md)).
 - **One specification row is mislabelled, and it stays.** Row 94 says
   "sensitivity jaccard" and is a cosine run: `raw_signal` read the scorer
   from the inputs' config rather than the run's, so a shared `Inputs`
