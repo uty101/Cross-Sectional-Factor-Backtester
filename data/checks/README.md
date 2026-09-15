@@ -19,6 +19,7 @@ files, `membership_overrides.csv` and `membership_spotcheck.csv`.
 | `price_cleaning.csv` | Per ticker: dropped for having no history inside membership (first print after removal: a reused symbol or a delisting stub), bad prints removed, or dropped as corrupt |
 | `price_coverage_monthly.csv` / `_summary.csv` / `_missing_tickers.csv` | Members with a price at each month-end; the gap as a share of universe-months; which names lose the most months |
 | `cik_map.csv` | Every universe ticker's CIK and how it was found: the constituents table, an exact or prefix name match to its own filings, or unmatched |
+| `cik_audit_2015.csv` / `cik_audit_summary.csv` | FIX_PLAN F1: every member with no total assets at 2011-12, 2015-12 and 2022-12, the CIK the map gave it, the filer a name search over the full index finds, and a class (`map_wrong`, `foreign_filer`, `no_xbrl`, `other`); the summary counts each class per month. Written by `scripts/audit_cik_map.py` |
 | `tag_coverage.csv` | Per concept and fiscal year: share of universe CIKs with a 10-K value and the tag that supplied it |
 | `fundamentals_coverage.csv` | Per month: members with each concept available as-of, and with a market cap |
 | `market_cap_dropped.csv` | Names whose price x shares came out under $1bn (a units error) and were excluded |

@@ -3,6 +3,7 @@
     fetch            the quarterly zips, 2009q1 onward, never overwritten
     ingest           sub.txt + num.txt of every zip -> one long parquet of the
                      concepts in tag_map.toml (DuckDB does the reading)
+    ingest_sub       sub.txt of every zip, every form -> the filer index
     first_filed      per (cik, concept, period, qtrs) keep the earliest filing
                      (invariant 2): amendments and later comparatives do not
                      rewrite history
@@ -268,6 +269,68 @@ def candidate_tags(
         .sort("n_ciks", descending=True)
         .head(limit)
     )
+
+
+SUB_SCHEMA = {
+    "adsh": pl.Utf8,
+    "cik": pl.Int64,
+    "name": pl.Utf8,
+    "form": pl.Utf8,
+    "filed": pl.Date,
+    "sic": pl.Int32,
+    "countryba": pl.Utf8,
+}
+
+
+def ingest_sub(cfg: Config) -> pl.DataFrame:
+    """Every filing in every quarterly zip, all forms -> data/interim/
+    sec_sub.parquet. The num cache keeps 10-K/10-Q rows for mapped tags
+    only; this is the full filer index the CIK audit needs, because a
+    member with no row there is either a foreign filer (20-F, 40-F) or
+    a name the map placed on the wrong CIK, and only sub.txt can say.
+    """
+    import duckdb
+
+    zips = sorted((cfg.data / "raw" / "sec").glob("*.zip"))
+    tmp = cfg.data / "raw" / "sec" / "_tmp"
+    tmp.mkdir(exist_ok=True)
+    frames = []
+    for z in zips:
+        sub_p = tmp / f"{z.stem}_sub.txt"
+        with zipfile.ZipFile(z) as zf:
+            sub_p.write_bytes(zf.read("sub.txt"))
+        try:
+            con = duckdb.connect()
+            df = con.execute(
+                f"""
+                SELECT adsh, cik, name, form, filed, sic, countryba
+                FROM read_csv('{sub_p.as_posix()}', delim='	', header=true,
+                              quote='', all_varchar=true, ignore_errors=true)
+                """
+            ).pl()
+        finally:
+            sub_p.unlink(missing_ok=True)
+        frames.append(
+            df.select(
+                "adsh",
+                pl.col("cik").cast(pl.Int64, strict=False),
+                "name",
+                "form",
+                pl.col("filed").str.strptime(pl.Date, "%Y%m%d", strict=False),
+                pl.col("sic").cast(pl.Int32, strict=False),
+                "countryba",
+            ).drop_nulls(["cik", "filed"])
+        )
+    out = pl.concat(frames).sort("cik", "filed")
+    out.with_columns(pl.lit(zips[-1].stem).alias("as_of")).write_parquet(
+        cfg.data / "interim" / "sec_sub.parquet"
+    )
+    return out
+
+
+def load_sub(cfg: Config) -> pl.DataFrame:
+    cached = cfg.data / "interim" / "sec_sub.parquet"
+    return pl.read_parquet(cached) if cached.exists() else ingest_sub(cfg)
 
 
 def ingest(cfg: Config) -> pl.DataFrame:
