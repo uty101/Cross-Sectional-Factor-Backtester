@@ -37,6 +37,33 @@ STEPS = {
 UNIMPLEMENTED: dict[str, str] = {}
 
 
+def secrets_report(root: str = ".") -> list[str]:
+    """One line per key in ``config.SECRET_NAMES``, ``set`` or ``missing``,
+    then whether ``gh auth status`` succeeds. No value, and no prefix of
+    one, is ever printed: this is FIX_PLAN_2 A7, run before G6."""
+    import shutil
+    import subprocess
+
+    lines = []
+    for name in config.SECRET_NAMES:
+        state = "set" if config.secret(name, root) else "missing"
+        lines.append(f"{name}: {state} (Part A step {config.SECRET_STEPS[name]})")
+    gh = shutil.which("gh")
+    if gh is None:
+        lines.append("gh auth status: gh not installed (Part A step A5)")
+    else:
+        ok = (
+            subprocess.run(
+                [gh, "auth", "status"], capture_output=True, timeout=30
+            ).returncode
+            == 0
+        )
+        lines.append(
+            "gh auth status: ok" if ok else "gh auth status: not logged in (A5)"
+        )
+    return lines
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="backtester")
     parser.add_argument("--config", default="config.toml", help="path to config.toml")
@@ -58,6 +85,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     run.add_argument("--note", default="")
     run.add_argument("--no-sector", action="store_true", help="plain cross-sectional z")
     sub.add_parser("report", help="charts and tables into reports/")
+    sub.add_parser("secrets", help="which API keys are set (never prints a value)")
     sub.add_parser("run-all", help="base run of every reported factor")
     sub.add_parser("sensitivities", help="weighting and holding-period variants")
     sub.add_parser("delisting", help="the terminal-return delisting sensitivity")
@@ -98,6 +126,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         out = STEPS[args.step][1](cfg)
         rows = sum(o.height for o in out) if isinstance(out, tuple) else out.height
         print(f"built {args.step}: {rows} rows")
+        return 0
+
+    if args.command == "secrets":
+        for line in secrets_report():
+            print(line)
         return 0
 
     if args.command == "run":

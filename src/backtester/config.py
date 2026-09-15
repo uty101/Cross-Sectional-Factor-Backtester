@@ -153,6 +153,26 @@ def load(path: str | Path = "config.toml") -> Config:
     )
 
 
+# Every key the pipeline can read, with the FIX_PLAN_2 Part A step that
+# obtains it. ``backtester secrets`` reports each as set or missing.
+SECRET_NAMES: tuple[str, ...] = (
+    "SEC_USER_AGENT",
+    "TIINGO_API_KEY",
+    "ALPHAVANTAGE_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "FB_AGENT_MODEL",
+    "NASDAQ_DATA_LINK_API_KEY",
+)
+SECRET_STEPS: dict[str, str] = {
+    "SEC_USER_AGENT": "A1",
+    "TIINGO_API_KEY": "A2",
+    "ALPHAVANTAGE_API_KEY": "A3",
+    "ANTHROPIC_API_KEY": "A4",
+    "FB_AGENT_MODEL": "A4",
+    "NASDAQ_DATA_LINK_API_KEY": "A6",
+}
+
+
 def secret(name: str, root: str | Path = ".") -> str | None:
     """An API key from the environment, else from a ``.env`` file in
     ``root`` (KEY=value lines; gitignored). None when neither has it: the
@@ -172,3 +192,16 @@ def secret(name: str, root: str | Path = ".") -> str | None:
         if k.strip() == name:
             return v.strip().strip('"').strip("'") or None
     return None
+
+
+def require(name: str, root: str | Path = ".") -> str:
+    """``secret`` that raises when the key is absent, naming the FIX_PLAN_2
+    Part A step that supplies it. For the steps that cannot skip (G6+)."""
+    value = secret(name, root)
+    if value is None:
+        step = SECRET_STEPS.get(name, "A1")
+        raise RuntimeError(
+            f"{name} is not set: see FIX_PLAN_2.md Part A, step {step} "
+            "(environment or .env in the repo root)"
+        )
+    return value
