@@ -233,3 +233,36 @@ def test_a_month_below_min_names_forms_no_portfolio(cfg: config.Config) -> None:
     )
     res = portfolio.backtest(z, rets, thin, factor="test")
     assert res.long_short["month"].to_list() == [M1]  # February had 4 names
+
+
+def test_specification_kind_is_read_off_the_note_and_backfilled(
+    cfg: config.Config,
+) -> None:
+    """FIX_PLAN F4: every row is a candidate or a diagnostic; a log written
+    before the column existed is classified the same way when widened."""
+    z = pl.DataFrame(
+        {"month": [M1] * 4, "ticker": list("ABCD"), "z": [-1.0, -0.5, 0.5, 1.0]}
+    )
+    rets = pl.DataFrame(
+        {"month": [M1] * 4, "ticker": list("ABCD"), "ret_fwd": [0.0, 0.02, 0.04, 0.06]}
+    )
+    for note in ("base", "sensitivity cw", "French replication", "diagnostic bp"):
+        portfolio.backtest(z, rets, cfg, factor="test", note=note)
+    log = pl.read_csv(cfg.specifications)
+    assert log["kind"].to_list() == ["candidate"] + ["diagnostic"] * 3
+    assert portfolio.count_specifications(cfg.specifications) == 4
+    assert portfolio.count_specifications(cfg.specifications, "candidate") == 1
+    # An old log without the column: the widening fills kind from the note.
+    old = cfg.specifications.read_text(encoding="utf-8").splitlines()
+    head = old[0].rsplit(",kind", 1)[0]
+    body = [line.rsplit(",", 1)[0] for line in old[1:]]
+    cfg.specifications.write_text("\n".join([head, *body]) + "\n", encoding="utf-8")
+    portfolio.backtest(z, rets, cfg, factor="test", note="post-F3")
+    log = pl.read_csv(cfg.specifications)
+    assert log["kind"].to_list() == [
+        "candidate",
+        "diagnostic",
+        "diagnostic",
+        "diagnostic",
+        "candidate",
+    ]

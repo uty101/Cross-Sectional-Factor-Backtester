@@ -333,6 +333,37 @@ def load_sub(cfg: Config) -> pl.DataFrame:
     return pl.read_parquet(cached) if cached.exists() else ingest_sub(cfg)
 
 
+# Bump when the ingest's own rules change (what it keeps, how it breaks a
+# tie): the cache stamp covers the rules as well as the tag map.
+INGEST_VERSION = "2"
+
+
+def tag_map_hash(path: Path = TAG_MAP) -> str:
+    """sha256 of tag_map.toml and INGEST_VERSION, stamped on the num cache
+    so a cache built under an older map or older rules is re-ingested
+    rather than silently missing the tags added since (CLAUDE.md:
+    "otherwise new tags silently come back empty"; the 2026-09-15
+    recompute found exactly that)."""
+    import hashlib
+
+    return hashlib.sha256(path.read_bytes() + INGEST_VERSION.encode()).hexdigest()[:16]
+
+
+def load_num(cfg: Config, reingest: bool = False) -> pl.DataFrame:
+    """The num cache, re-ingested when absent, asked for, or built under
+    a different tag map."""
+    cached = cfg.data / "interim" / "sec_num.parquet"
+    if reingest or not cached.exists():
+        return ingest(cfg)
+    stamp = pl.read_parquet(cached, n_rows=1)
+    if (
+        "tag_map_hash" not in stamp.columns
+        or stamp["tag_map_hash"][0] != tag_map_hash()
+    ):
+        return ingest(cfg)
+    return pl.read_parquet(cached)
+
+
 def ingest(cfg: Config) -> pl.DataFrame:
     """All quarters -> data/interim/sec_num.parquet, concept-labelled."""
     tag_map = load_tag_map()
@@ -342,10 +373,18 @@ def ingest(cfg: Config) -> pl.DataFrame:
     frames = [ingest_quarter(z, tags) for z in zips]
     df = pl.concat(frames).join(prio, on="tag", how="inner")
     # Within one filing and (concept, ddate, qtrs), the highest-priority tag
-    # that is present is the concept's value.
+    # that is present is the concept's value. A filing can carry the same
+    # tag twice for the same period without a segment (a share count for
+    # the total and for a class, both bare); the larger value wins, as a
+    # rule, because the sort's tie order is not one: the 2026-09-15
+    # recompute differed from the incremental build by exactly that row.
     df = (
-        df.sort("priority")
-        .unique(subset=["adsh", "concept", "ddate", "qtrs"], keep="first")
+        df.sort(["priority", "value"], descending=[False, True])
+        .unique(
+            subset=["adsh", "concept", "ddate", "qtrs"],
+            keep="first",
+            maintain_order=True,
+        )
         .select(
             "adsh",
             "cik",
@@ -364,7 +403,10 @@ def ingest(cfg: Config) -> pl.DataFrame:
         .sort("cik", "concept", "ddate", "filed")
     )
     out = cfg.data / "interim" / "sec_num.parquet"
-    df.with_columns(pl.lit(zips[-1].stem).alias("as_of")).write_parquet(out)
+    df.with_columns(
+        pl.lit(zips[-1].stem).alias("as_of"),
+        pl.lit(tag_map_hash()).alias("tag_map_hash"),
+    ).write_parquet(out)
     return df
 
 
@@ -377,9 +419,20 @@ def first_filed(num: pl.DataFrame) -> pl.DataFrame:
     A 10-K/A that restates, and next year's 10-K that carries last year as
     a comparative column, both come later and both lose.
     """
+    # Two rows of one filing for one period can carry different values:
+    # the FSDS row and the SEC API's fallback row (tag "companyconcept",
+    # shares.load_api) for a weighted average the filer reported twice.
+    # The tie is a rule, not the sort's whim: tag, then the larger value,
+    # so the FSDS row (an upper-case us-gaap tag) beats the API's. The
+    # 2026-09-15 recompute differed by ten such rows before this.
+    keys = ["filed", "adsh"] + (["tag"] if "tag" in num.columns else []) + ["value"]
     return (
-        num.sort("filed", "adsh")
-        .unique(subset=["cik", "concept", "ddate", "qtrs"], keep="first")
+        num.sort(keys, descending=[False] * (len(keys) - 1) + [True])
+        .unique(
+            subset=["cik", "concept", "ddate", "qtrs"],
+            keep="first",
+            maintain_order=True,
+        )
         .sort("cik", "concept", "ddate")
     )
 
@@ -752,18 +805,30 @@ def market_caps(
 # --- pipeline entry -----------------------------------------------------
 
 
-def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
-    """ingest -> cik map -> monthly as-of panel -> caps; writes the checks."""
+def build_map(cfg: Config, num: pl.DataFrame) -> tuple[pl.DataFrame, pl.DataFrame]:
+    """The CIK map and the sector table: (ciks, log), with sectors.parquet
+    and data/checks/cik_map.csv written. Called by ``build`` and by
+    ``shares.build``, which needs the universe CIKs before the panel
+    exists; both must see the same map (recompute check, 2026-09-15)."""
     from backtester import sectors
 
-    cached = cfg.data / "interim" / "sec_num.parquet"
-    num = ingest(cfg) if reingest or not cached.exists() else pl.read_parquet(cached)
     membership = pl.read_parquet(cfg.data / "interim" / "membership.parquet")
     constituents = pl.read_parquet(cfg.data / "interim" / "sp500_constituents.parquet")
     ciks, cik_log = sectors.cik_map(
         membership, constituents, num, sec_tickers(cfg), sectors.load_overrides(cfg)
     )
     sectors.build(cfg, num, ciks)
+    (cfg.data / "checks").mkdir(parents=True, exist_ok=True)
+    cik_log.write_csv(cfg.data / "checks" / "cik_map.csv")
+    return ciks, cik_log
+
+
+def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
+    """ingest -> cik map -> monthly as-of panel -> caps; writes the checks."""
+
+    num = load_num(cfg, reingest)
+    membership = pl.read_parquet(cfg.data / "interim" / "membership.parquet")
+    ciks, cik_log = build_map(cfg, num)
 
     monthly = pl.read_parquet(cfg.data / "processed" / "returns_monthly.parquet")
     daily = pl.read_parquet(cfg.data / "interim" / "prices_daily.parquet")
@@ -834,7 +899,6 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     caps.with_columns(stamp).write_parquet(processed / "market_cap.parquet")
 
     checks = cfg.data / "checks"
-    cik_log.write_csv(checks / "cik_map.csv")
     implausible.write_csv(checks / "market_cap_dropped.csv")
     tag_coverage(num, ciks, cfg).write_csv(checks / "tag_coverage.csv")
     concept_coverage(panel, membership, cfg, caps).write_csv(

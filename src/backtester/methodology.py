@@ -13,10 +13,9 @@ from datetime import date
 import polars as pl
 from fpdf import FPDF
 
-from backtester import portfolio
 from backtester.config import Config
 from backtester.report import LABELS, factor_report, load_inputs
-from backtester.run import REPORTED
+from backtester.run import REPORTED, validate, validation_table
 
 
 def _clean(s: str) -> str:
@@ -80,12 +79,11 @@ def _f(x: float, nd: int = 2, pct: bool = False) -> str:
 
 def build(cfg: Config) -> None:
     inp = load_inputs(cfg)
-    n_trials = portfolio.count_specifications(cfg.specifications)
-    log = pl.read_csv(cfg.specifications)
-    s = log["sharpe_net"].cast(pl.Float64, strict=False).drop_nulls()
-    sr_var = float((s / math.sqrt(12)).var()) if s.len() > 1 else 0.0
-    reports = [factor_report(cfg, f, inp, n_trials, sr_var) for f in REPORTED]
-    dsr_c = next(r.row["dsr"] for r in reports if r.factor == "composite")
+    from backtester.report import trial_counts
+
+    trials = trial_counts(cfg)
+    n_trials = trials["all"][0]
+    reports = [factor_report(cfg, f, inp, trials) for f in REPORTED]
     cov = pl.read_csv(cfg.data / "checks" / "price_coverage_summary.csv")
     gap = float(cov.filter(pl.col("metric") == "gap_pct")["value"][0])
     uni = pl.read_csv(cfg.data / "checks" / "membership_summary.csv")
@@ -197,34 +195,59 @@ def build(cfg: Config) -> None:
     pdf.table(header, rows, widths)
 
     pdf.h2("Validation")
+    val = {r.factor: r.validation for r in reports}
+    att = {r.factor: r.attribution for r in reports}
+    rows_by = {r.factor: r.row for r in reports}
+    vt = validation_table(cfg, inp)
+    corr = dict(zip(vt["series"], vt["correlation"], strict=True))
+    big = {}
+    for f, leg in (("hml_replica", "big_hml"), ("rmw_replica", "big_rmw")):
+        path = cfg.data / "processed" / f"long_short_{f}.parquet"
+        if path.exists() and leg in inp.french.columns:
+            ls = pl.read_parquet(path)
+            big[f] = validate(ls, inp.french, leg)["corr"]
+            big[f + "_2016"] = validate(
+                ls.filter(pl.col("month") >= date(2016, 1, 1)), inp.french, leg
+            )["corr"]
+    m_umd = val["momentum"]["corr"]
     pdf.p(
-        "Momentum long-short correlates 0.79 with UMD (0.85 without sector neutralisation) and loads on "
-        "it with beta 0.91, R-squared 0.66: it is UMD, and UMD earned nothing in this window. The "
-        "reported value and quality factors are sector-neutral composites and correlate 0.25 and 0.07 "
-        "with HML and RMW, which is construction, not a join error. The join is tested by replicating "
-        "French's construction (one signal, no sector neutralisation, cap-weighted terciles) against the "
-        "big-cap half of his factor: the B/P replication correlates 0.74 with the big-cap HML leg over "
-        "the window and 0.89 from 2016. The profitability replication reaches 0.44, rising from 0.07 in "
-        "2010-12 to 0.74 in 2019-21 as XBRL coverage does; it is reported as a fail."
+        f"Momentum long-short correlates {m_umd:.2f} with UMD and loads on it with beta "
+        f"{att['momentum'].betas['umd']:.2f}, R-squared {att['momentum'].r2:.2f}: it is UMD, and UMD "
+        f"earned nothing in this window. The reported value and quality factors are sector-neutral "
+        f"composites and correlate {val['value']['corr']:.2f} and {val['quality']['corr']:.2f} with HML "
+        f"and RMW, which is construction, not a join error. The join is tested by replicating French's "
+        f"construction (one signal, no sector neutralisation, cap-weighted terciles) against the big-cap "
+        f"half of his factor: the B/P replication correlates {big.get('hml_replica', float('nan')):.2f} "
+        f"with the big-cap HML leg over the window and {big.get('hml_replica_2016', float('nan')):.2f} "
+        f"from 2016 ({corr.get('hml_replica', float('nan')):.2f} against full HML). The profitability "
+        f"replication reaches {big.get('rmw_replica', float('nan')):.2f} against the big-cap leg and "
+        f"{corr.get('rmw_replica', float('nan')):.2f} against full RMW, a fail against the 0.6 bar; "
+        "its early-years weakness was the ticker-to-CIK map (decisions/cik_audit.md), not XBRL coverage."
     )
 
     pdf.h2("What the numbers mean")
+    v, q, mo, lv, co = (
+        rows_by[k] for k in ("value", "quality", "momentum", "low_vol", "composite")
+    )
+    lva = att["low_vol"]
     pdf.bullets(
         [
-            "Value worked (net Sharpe 0.50, Fama-MacBeth t 3.2, break-even 80 bp). Its 4.9% attribution "
-            "alpha is the number to distrust first: sector-neutral B/P alone has 4.5% (t 2.3) with an HML "
-            "loading of 0.26, so the alpha is what sector neutralisation leaves after a factor that is not "
-            "sector-neutral. Cap-weighted it is 0.30; on the well-covered months from 2015-12 it is 0.48.",
-            "Momentum is marginal after costs (0.05; break-even 15 bp at 0.62 monthly turnover) and better "
-            "held 3-12 months (0.18-0.23). Quality is small (0.17; 0.42 cap-weighted). Low volatility "
-            "loses as a long-short: beta -0.65 (t -10.5), RMW 0.94 (t 8.2), alpha 1.1% (t 0.4) - it is a "
-            "short-beta position and shorting beta lost for sixteen years.",
-            "Signal decay: momentum's IC halves in about 15 months; value, quality and the composite do "
-            "not decay within 12 months, so holding them 6-12 months keeps the return and cuts most of "
-            "the turnover (composite: 0.34 monthly, 0.64 at 12 months).",
-            f"The deflated Sharpe of the composite is {dsr_c:.2f}: a {100 * dsr_c:.0f}% probability that "
-            f"its Sharpe beats the best of {n_trials} random trials with the same dispersion. Nothing here "
-            "is a 2.0 Sharpe.",
+            f"Value nets {v['sharpe_net']:.2f} and loads {att['value'].betas['hml']:.2f} on HML "
+            f"(t {att['value'].beta_t['hml']:.1f}) with an alpha of {100 * att['value'].alpha_annual:.1f}% "
+            f"(t {att['value'].alpha_t:.1f}): large-cap value earned nothing over the window. The 0.48 "
+            "an earlier version of this note reported was a market-cap bug: split-adjusted prices met "
+            "unadjusted share counts, so pre-split winners sat in the value long leg (decisions/f2_shares.md).",
+            f"Momentum is marginal after costs ({mo['sharpe_net']:.2f}; break-even {mo['breakeven_bps']:.0f} bp "
+            f"at {mo['turnover']:.2f} monthly turnover). Quality is the only positive line "
+            f"({q['sharpe_net']:.2f}; IC t {q['ic_t']:.1f}), carried by accruals. Low volatility loses as a "
+            f"long-short: beta {lva.betas['mkt_rf']:.2f} (t {lva.beta_t['mkt_rf']:.1f}), RMW "
+            f"{lva.betas['rmw']:.2f} (t {lva.beta_t['rmw']:.1f}), alpha {100 * lva.alpha_annual:.1f}% "
+            f"(t {lva.alpha_t:.1f}): a short-beta position, and shorting beta lost for sixteen years. "
+            f"The composite nets {co['sharpe_net']:.2f}.",
+            f"The deflated Sharpe of quality is {q['dsr']:.2f} against all {n_trials} logged rows and "
+            f"{q['dsr_candidates']:.2f} against the {trials['candidates'][0]} candidate rows: the "
+            "probability that its Sharpe beats the best of that many random trials with the same "
+            "dispersion. Nothing here is a 2.0 Sharpe.",
         ]
     )
 
@@ -237,8 +260,12 @@ def build(cfg: Config) -> None:
             "prints. Delisted names remain the survivorship that is left, and it is quantified.",
             "The first momentum run correlated 0.04 with UMD: uncleaned prices and a validation join off "
             "by one month. Both runs stay in the specification log.",
-            "Wikipedia's CIK for ExxonMobil is a 2026 entity; some filers report share counts in the wrong "
-            "units; OperatingIncomeLoss is not reported by banks. Each has a logged rule.",
+            "Wikipedia's CIK for ExxonMobil is a 2026 entity; OperatingIncomeLoss is not reported by "
+            "banks. Each has a logged rule.",
+            "The ticker-to-CIK map left 18% of members without filings (successor registrants, name "
+            "collisions); 93 hand-verified override rows with a CIK per era fixed it. Market caps met a "
+            "split-adjusted price with an unadjusted count; the value premium the first version reported "
+            "was that bug. Both found by the September 2026 review, both in decisions/.",
         ],
         size=8.6,
     )

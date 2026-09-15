@@ -52,8 +52,10 @@ outsider can verify, over 2010–2026?
 - How much of the result is multiple-testing luck, once N is counted honestly?
 
 **The expected answer was modest, and it is.** No factor gets near a Sharpe
-of 1; the composite's net Sharpe of 0.32 deflates to a 5% probability of
-beating the best of 185 logged trials by luck.
+of 1; the best line, quality at a net Sharpe of 0.24, deflates to a 6%
+probability of beating the best of 55 candidate specifications by luck,
+and 2% against all 329 logged rows. Value, which the first version of this
+README reported at 0.48, was a market-cap bug (Results, below).
 
 ## Results
 
@@ -61,62 +63,77 @@ Window 2010-01 to 2026-08, 200 monthly formations. Equal-weighted deciles,
 signals z-scored within sector, 1-day execution lag, **10 bp one-way cost on
 every dollar bought or sold**. Long–short is decile 10 minus decile 1.
 
-| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
-|---|---|---|---|---|---|---|---|---|---|---|
-| Momentum 12-1 | 2.2% | 0.7% | 15.8% | 0.05 | 0.00 | −56% | 0.62 | 0.007 | 0.6 | 15 bp |
-| Value (B/P, E/P) | 5.1% | 4.4% | 9.1% | 0.48 | 0.17 | −22% | 0.27 | 0.011 | 1.4 | 79 bp |
-| Quality (GP/A, accruals) | 1.9% | 1.3% | 8.5% | 0.16 | 0.01 | −24% | 0.25 | 0.009 | 1.5 | 32 bp |
-| Low volatility | −4.1% | −4.7% | 18.9% | −0.25 | 0.00 | −71% | 0.24 | 0.003 | 0.2 | none (loses gross) |
-| Composite | 5.5% | 4.6% | 14.4% | 0.32 | 0.05 | −28% | 0.39 | 0.018 | 1.9 | 59 bp |
-| 10-K text similarity | −0.1% | −0.8% | 5.7% | −0.15 | 0.00 | −27% | 0.30 | 0.003 | 0.6 | none (loses gross) |
+| Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Momentum 12-1 | 2.1% | 0.6% | 15.5% | 0.04 | 0.00 | 0.01 | −56% | 0.62 | 0.006 | 0.6 | 14 bp |
+| Value (B/P, E/P) | −1.1% | −1.8% | 11.0% | −0.16 | 0.00 | 0.00 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) |
+| Quality (GP/A, accruals) | 2.7% | 2.1% | 8.8% | 0.24 | 0.02 | 0.06 | −24% | 0.25 | 0.008 | 1.4 | 45 bp |
+| Low volatility | −4.5% | −5.1% | 18.6% | −0.27 | 0.00 | 0.00 | −74% | 0.25 | 0.003 | 0.2 | none (loses gross) |
+| Composite | −3.6% | −4.7% | 14.1% | −0.33 | 0.00 | 0.00 | −66% | 0.45 | −0.002 | −0.2 | none (loses gross) |
+| 10-K text similarity | −0.2% | −1.0% | 5.6% | −0.17 | 0.00 | 0.00 | −27% | 0.30 | 0.004 | 0.9 | none (loses gross) |
+
+Price history covers 85.4% of member-months; the missing names are
+disproportionately those that left the index. See Data.
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
 that the net Sharpe exceeds the expected maximum of *N* random trials with
-the same dispersion, adjusted for skew and kurtosis. *N* = 185 is the row
-count of [reports/specifications.csv](reports/specifications.csv), where
-every run is logged: base, sensitivity, diagnostic, and the two broken
-first attempts at momentum. **Break-even cost** is the one-way cost at which
-the mean net return is zero.
+the same dispersion, adjusted for skew and kurtosis. *N* is read from
+[reports/specifications.csv](reports/specifications.csv), where every run is
+logged: **DSR (all)** counts all 329 rows (base, sensitivity, diagnostic,
+the two broken first attempts at momentum, and the 144 reruns after the
+data fixes of September 2026); **DSR (cand.)** counts the 55 rows whose
+`kind` is `candidate`, a specification that could have been reported,
+rather than a sensitivity, a replication or a diagnostic. **Break-even
+cost** is the one-way cost at which the mean net return is zero.
+
+**These are the numbers after the data fixes** ([FIX_PLAN.md](FIX_PLAN.md)
+F1–F3, [decisions/f4_before_after.md](decisions/f4_before_after.md)). The
+previous README reported value at a net Sharpe of 0.48 with a 4.7% alpha
+(t 2.3) after HML, and called it the factor that worked. It was not. The
+market caps behind B/P and E/P met a split-adjusted yfinance price with an
+unadjusted SEC share count, so every name that later split (Chipotle
+50-for-1, Deckers 6-for-1, Super Micro 10-for-1) carried a cap 6 to 50
+times too small for its whole pre-split history, a book-to-price 6 to 50
+times too large, and sat in the value long leg. Those are the decade's
+winners. The "value alpha" was a momentum position that a $1bn size floor
+had been quietly trimming rather than diagnosing. With the count in the
+price basis the factor loads 0.42 on HML (t 7.7, R² 0.52, alpha −1.5%,
+t −0.7), correlates 0.56 with HML instead of 0.25, and earns what large-cap
+value earned over 2010–2026: nothing.
 
 What the table says, factor by factor:
 
-- **Momentum** is UMD (β 0.91, t 15.7, R² 0.66) and UMD earned nothing in
-  this window. Turnover of 0.62 a month puts its break-even at 15 bp.
-  Holding for 3–12 months instead of 1 raises the net Sharpe to 0.18–0.23
+- **Momentum** is UMD (β 0.87, t 15.0, R² 0.65) and UMD earned nothing in
+  this window. Turnover of 0.62 a month puts its break-even at 14 bp.
+  Holding for 3–12 months instead of 1 raises the net Sharpe to 0.19–0.23
   by cutting turnover, at the price of tracking UMD less closely.
-- **Value** is the one that worked, and not the way the brief expected. Net
-  Sharpe 0.48, Fama-MacBeth t 3.2, break-even 79 bp. Its attribution alpha
-  of 4.7% (t 2.3) after Mkt, HML, UMD and RMW is the number to distrust
-  first. It is not the earnings-yield half: sector-neutral B/P on its own
-  has an alpha of 4.5% (t 2.3) with an HML loading of only 0.26, and
-  sector-neutral E/P 4.6% (t 1.9) with an HML loading of −0.12. The "alpha"
-  is what sector neutralisation leaves after HML, which is not
-  sector-neutral: a within-sector value premium that the French factor
-  does not price, or a data-coverage artefact in the early years; the
-  coverage split below says 0.49 on the well-covered months against 0.48
-  on all, which argues for the former. Cap-weighted it drops to 0.29.
-- **Quality** is small (net Sharpe 0.16) and 0.41 cap-weighted; accruals
-  carry it, gross profitability alone is negative in this universe.
-- **Low volatility** loses 4.1% a year gross as a long–short. Its
-  attribution is the brief's prediction: market beta −0.65 (t −10.5) and
-  RMW 0.94 (t 8.2), with alpha of 1.1% (t 0.4). It is a short-beta,
+  Cap-weighted it is 0.24.
+- **Value** loses 1.8% a year net. Sector-neutral B/P and E/P on S&P 500
+  names is a large-cap HML position (loading 0.42) and HML was flat to
+  negative over most of the window. Cap-weighted −0.19; on the 129 months
+  from 2015-12 where the price gap is under 20%, −0.19 against −0.16 on all
+  months, so the missing delisted names are not hiding a premium.
+- **Quality** is the only positive line: net Sharpe 0.24, 0.30 cap-weighted,
+  0.38 on the well-covered months, Fama-MacBeth t 1.4, DSR 0.06 against the
+  55 candidates. Accruals carry it. Gross profitability is computed on the
+  67–71% of non-financial members that report a cost-of-goods line
+  ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md)) and
+  excludes financials by rule, as Novy-Marx does. A net Sharpe of 0.24 with
+  an IC t-stat of 1.4 is not evidence of much.
+- **Low volatility** loses 4.5% a year gross as a long–short. Its
+  attribution is the brief's prediction: market beta −0.65 (t −10.7) and
+  RMW 0.92 (t 8.1), with alpha of 0.8% (t 0.3). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
-- **Composite** (all six signals) nets 0.32, 0.52 held for 12 months. The
-  12-month hold is fragile to its calendar: dropping the thin January 2010
-  formation (below) moved the annual rebalance from January to February and
-  took quality's 12-month Sharpe from 0.23 to 0.05 and the composite's from
-  0.64 to 0.52. A hold that long has only sixteen rebalances to average
-  over.
+- **Composite** (all six signals) nets −0.33, and −0.09 cap-weighted: with
+  value and low volatility both negative there is nothing for the
+  composite to average.
 - **10-K text similarity**, long the names whose annual report changed
   least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
-  nothing here: −0.1% gross, −0.8% net, alpha 0.0% (t 0.0), R² 0.04 on the
-  four French factors, so it is at least not a repackaging of them. Jaccard
-  instead of cosine gives 0.03 net; every variant is within ±0.2 of zero.
-  Its first four months had two to five names and one of them printed +18%
-  on a single stock. The anomaly detector caught it, and the 50-name
-  minimum cross-section (below) now removes such months for every factor.
-  The paper's effect sits in small caps and in the short leg, and
-  this is an S&P 500 long-short over 2010-2026. It is in the table because
+  nothing here: −0.2% gross, −1.0% net, alpha −0.5% (t −0.4), R² 0.03 on
+  the four French factors, so it is at least not a repackaging of them.
+  Jaccard instead of cosine gives 0.05 net; every variant is within ±0.3
+  of zero. The paper's effect sits in small caps and in the short leg, and
+  this is an S&P 500 long-short over 2010–2026. It is in the table because
   the point of building it was the data path (next section), not the return.
 
 Four charts, from [reports/figures/](reports/figures/):
@@ -126,13 +143,14 @@ Four charts, from [reports/figures/](reports/figures/):
 ![IC decay](reports/figures/chart3_ic_decay.png)
 ![Sharpe vs cost](reports/figures/chart4_sharpe_vs_cost.png)
 
-Signal decay: momentum's IC halves in about 15 months on the exponential
-fit but is small at every horizon; value, quality and the composite do not
-decay within 12 months at all (their IC at h=12 is as high as at h=1),
-which is why holding them for 6–12 months costs nothing in return and
-saves most of the turnover. The full tables, including net Sharpe at 0, 5,
-10, 25 and 50 bp, the cap-weighted and holding-period variants, and the
-Fama-MacBeth premia, are in [reports/results.md](reports/results.md).
+Signal decay: momentum's IC is small at every horizon and the exponential
+fit halves it in about 27 months; quality's IC at h=12 is as high as at
+h=1, which is why holding it for 6–12 months costs nothing in return and
+saves most of the turnover (though its 3–12 month holds net 0.02–0.08
+against 0.24 monthly, the difference being which calendar months form the
+portfolio). The full tables, including net Sharpe at 0, 5, 10, 25 and 50 bp,
+the cap-weighted and holding-period variants, and the Fama-MacBeth premia,
+are in [reports/results.md](reports/results.md).
 
 ## Validation bar
 
@@ -140,8 +158,8 @@ The pipeline is considered wrong until the long–short series clear this:
 
 | Series | Must correlate with | Threshold | Result |
 |---|---|---|---|
-| Momentum long–short | French **UMD** | > 0.7 | **0.79** pass (0.85 without sector neutralisation) |
-| Value long–short | French **HML** | > 0.7 | 0.25 fail as reported; see below |
+| Momentum long–short | French **UMD** | > 0.7 | **0.78** pass (0.85 without sector neutralisation) |
+| Value long–short | French **HML** | > 0.7 | 0.56 fail as reported (0.25 before the market-cap fix); see below |
 | Quality long–short | French **RMW** | > 0.7 | 0.07 fail as reported; see below |
 | Low beta long–short | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
 
@@ -156,23 +174,26 @@ leg correlates only 0.92 with full HML over the window).
 
 | Replication | vs full factor | vs big-cap leg | from 2016 |
 |---|---|---|---|
-| B/P, cap-weighted terciles | 0.65 | **0.74** | **0.89** |
-| Pre-tax income / FY book equity, cap-weighted terciles | 0.28 | 0.48 | 0.63 |
+| B/P, cap-weighted terciles | 0.72 | **0.78** | **0.90** |
+| Pre-tax income / FY book equity, cap-weighted terciles | 0.44 | 0.62 | 0.64 |
 
 The book-equity join clears the bar against the like-for-like series. The
-profitability replication does not, and the by-period numbers say why: it
-is 0.07 in 2010–12, 0.31 in 2013–15, 0.67 in 2016–18 and 0.74 in 2019–21,
-tracking XBRL coverage (FY2009 10-Ks cover 41% of the universe; a
-profitability line that banks and insurers report is missing until the
-pre-tax income fallback). That is a data-coverage failure in the early
-years, not a join error, and it is left as a fail rather than tuned.
+profitability replication does not, and the by-period numbers no longer
+say what the previous README said. Before the CIK fix it was 0.07 in
+2010–12, rising with XBRL coverage; now it is 0.69 in 2010–12, 0.38 in
+2013–15, 0.83 in 2016–18, 0.62 in 2019–21 and 0.61 from 2022. The early
+weakness was the ticker-to-CIK map (18% of members had no filings attached,
+[decisions/cik_audit.md](decisions/cik_audit.md)), not XBRL coverage; what
+is left is a 2013–15 trough that is not understood and is reported, not
+tuned.
 
 ## Data
 
 | Need | Source | Note |
 |---|---|---|
 | Universe history | Wikipedia constituents + changes tables | Membership intervals per ticker; cross-checked month by month against the [fja05680/sp500](https://github.com/fja05680/sp500) daily list, 98.4% agreement |
-| Fundamentals | SEC Financial Statement Data Sets | 70 quarterly zips 2009q1–2026q2; **filing date is the key**; 16 concepts via an ordered tag map |
+| Fundamentals | SEC Financial Statement Data Sets | 70 quarterly zips 2009q1–2026q2; **filing date is the key**; 18 concepts via an ordered tag map that only grows; a ticker maps to a CIK per era ([data/checks/cik_overrides.csv](data/checks/cik_overrides.csv)) |
+| Shares outstanding | SEC companyconcept API; yfinance split events | The cover-page count (FSDS `num.txt` does not carry it), then the balance-sheet count, then the diluted weighted average, each **scaled by every split after its filing date** so it meets yfinance's split-adjusted close; a plausibility guard drops the filings in thousands ([decisions/f2_shares.md](decisions/f2_shares.md)) |
 | Prices | yfinance | Stooq is behind a JavaScript wall as of 2026-09. Delisted names are absent: **14.6% of universe-months**, 31% in 2010 falling to 0% |
 | Sector map | SIC from the filings | 11 GICS-like buckets by hand; 84.5% agreement with Wikipedia's GICS on current members |
 | Benchmarks | Ken French data library | Mkt, SMB, HML, RMW, CMA, UMD, and the six size × B/M and size × OP portfolios for the big-cap legs |
@@ -186,10 +207,12 @@ the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
 yfinance, and that is the survivorship that remains: the "with and without"
 table in `results.md` gives every factor on the 129 months from 2015-12
-where the price gap is under 20%: value 0.49 against 0.48 on all months,
-quality 0.34 against 0.16, momentum −0.03 against 0.05. Fundamentals coverage is 39% of members in 2010 and 86%
-in 2023. A Russell 3000 version needs paid coverage of delisted names and
-their filings.
+where the price gap is under 20%: value −0.19 against −0.16 on all months,
+quality 0.38 against 0.24, momentum −0.03 against 0.04. Total assets cover
+98% of members from 2011 and a market cap 97% of the members with a price;
+the cap-weighted runs hold 39% of members in 2010 and 86% in 2023 because
+the rest have no price. A Russell 3000 version needs paid coverage of
+delisted names and their filings.
 
 Every hand-verified thing lives in [data/checks/](data/checks/README.md)
 with its evidence in the row.
@@ -246,14 +269,29 @@ what each of those commits changed, from its body, below a marker.
   instead of Times Mirror. It now applies to current members only,
   500 of 500, all agreeing with Wikipedia's CIK, and removed names keep
   the name match. Every method is in `data/checks/cik_map.csv`.
-- **A few large filers report the balance-sheet share count in the wrong
-  units** (RTX, CMG), and Berkshire reports class-A equivalents against a
-  class-B price. Market cap uses the diluted weighted-average count; a cap
-  under a billion dollars is dropped and listed.
+- **The market caps were wrong by the split ratio, and the value premium
+  was that.** yfinance's close is split-adjusted and an SEC share count
+  is not, so every name that later split carried a cap too small by the
+  ratio for its whole pre-split history; a $1bn floor trimmed the worst
+  of it and was read as a units error (RTX, CMG). Fixed in
+  [decisions/f2_shares.md](decisions/f2_shares.md): the cover-page count
+  from the SEC API, scaled by every split after its filing date, with a
+  plausibility guard for the filings that report counts in thousands
+  (Garmin, EchoStar) and the merger shells that report 1 share. Value
+  went from 0.48 to −0.16 net and from 0.25 to 0.56 correlated with HML.
+- **The ticker-to-CIK map left 18% of members without filings.** Removed
+  names whose SEC name carries a suffix (`AETNA INC /PA/`) or collides
+  with a second registrant (`ALCOA`), and current names whose
+  `company_tickers.json` CIK is a successor entity (Disney 2019,
+  BlackRock 2024) or an acquirer that took the symbol (CB, JCI). 93
+  hand-verified rows in `data/checks/cik_overrides.csv`, a CIK per era,
+  resolved per month; total assets went from 87–91% to 98% of members
+  ([decisions/cik_audit.md](decisions/cik_audit.md)).
 - **`OperatingIncomeLoss` is not reported by banks or insurers**, which
   left profitability without financials and its French replication at 0.31.
-  Pre-tax income over fiscal-year book equity is the closest reported line and lifted it to 0.48, still
-  short, for the coverage reasons above.
+  Pre-tax income over fiscal-year book equity is the closest reported
+  line and lifted it to 0.48 against the big-cap leg, and the CIK fix to
+  0.62; the early years were the map, not the coverage.
 - **Value and quality do not validate against HML and RMW as reported**, and
   the fix was not to change the reported factors until they did; it was to
   replicate French separately and say which half of the gap is
@@ -278,12 +316,11 @@ what each of those commits changed, from its body, below a marker.
 - **Trailing-twelve-month flows from 10-Qs change nothing you can see.**
   Built as BUILD_PLAN step 4.5 (`fundamentals.ttm`: YTD + last annual −
   prior-year YTD, stamped with the latest of the three filing dates) and
-  run as logged sensitivities: value with TTM earnings yield nets 0.45
-  against 0.48 annual and correlates 0.24 with HML against 0.25; quality
-  with TTM gross profit and accruals nets 0.06 against 0.16 and
-  correlates 0.09 with RMW against 0.07. Coverage is 79.2% of
-  member-months against 79.7%. The reported factors keep the annual
-  convention.
+  run as logged sensitivities: after the data fixes, value with TTM
+  earnings yield nets −0.21 against −0.16 annual and correlates 0.57
+  with HML against 0.56; quality with TTM gross profit and accruals nets
+  −0.01 against 0.24 and correlates 0.08 with RMW against 0.07. The
+  reported factors keep the annual convention.
 - **The first month of the window had fifteen names, and one of them was a
   factor return.** Fundamentals arrive with the FY2009 10-Ks in February
   and March 2010, so January 2010 had 15–23 names with a value or quality
@@ -305,7 +342,14 @@ what each of those commits changed, from its body, below a marker.
   date, and which one became market cap was luck. The rule is now the
   shorter, more recent window; it moved value's net Sharpe from 0.49 to
   0.48 and 820 share counts. Every specification was re-run (N 131 →
-  185). The second run matched to 1e-10, and the job runs weekly.
+  185). The second run matched to 1e-10, and the job runs weekly. It
+  earned its keep again in September 2026: after the data fixes it
+  found the recompute tree's num cache had been built under the old tag
+  map (the cache is now stamped with the map's hash and re-ingests
+  itself) and one more sort-order tie, two bare rows of one share tag in
+  one filing (the larger wins, as a rule), then a third in `first_filed`
+  between an FSDS row and the SEC API's fallback row for one filing (the
+  FSDS row wins, as a rule). N 233 → 329.
 - **One specification row is mislabelled, and it stays.** Row 94 says
   "sensitivity jaccard" and is a cosine run: `raw_signal` read the scorer
   from the inputs' config rather than the run's, so a shared `Inputs`

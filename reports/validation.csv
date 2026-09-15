@@ -1,7 +1,7 @@
 series,benchmark,correlation,months,threshold,passed
-momentum,umd,0.7934,198,0.7,true
-value,hml,0.2447,197,0.7,false
-quality,rmw,0.0705,197,0.7,false
-hml_replica,hml,0.6481,198,0.6,true
-rmw_replica,rmw,0.2809,197,0.6,false
-beta,bab,0.42,197,0.5,false
+momentum,umd,0.7842,198,0.7,true
+value,hml,0.5562,197,0.7,false
+quality,rmw,0.0701,197,0.7,false
+hml_replica,hml,0.722,198,0.6,true
+rmw_replica,rmw,0.4365,197,0.6,false
+beta,bab,0.4184,197,0.5,false

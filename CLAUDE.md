@@ -68,14 +68,22 @@ uv run python -c "from backtester import config, recompute; print(recompute.full
 **All phases are built and run** (2026-09-11). The state of the data on
 disk: 70 SEC zips (2009q1-2026q2, ~2.5 GB) under `data/raw/sec`, 679
 yfinance price files, the French zips, all in `data/raw/manifest.json`.
-`data/interim/sec_num.parquet` is the cached ingest (13M rows); pass
-`reingest=True` to `fundamentals.build` after changing `tag_map.toml`,
-otherwise new tags silently come back empty.
+`data/interim/sec_num.parquet` is the cached ingest (16.6M rows). It is
+stamped with a hash of `tag_map.toml` and `INGEST_VERSION`, and
+`fundamentals.load_num` re-ingests (about 5 minutes) when either
+changes; before 2026-09-15 a stale cache silently came back without the
+new tags, and the recompute check caught it. Also on disk since F2:
+`data/raw/sec/companyconcept/` (share counts from the SEC API, 2,520
+files) and `data/raw/prices/yfinance_splits/` (858 files).
 
-Every backtest appends to `reports/specifications.csv`; N is 185 as of the
-last report. Each row carries `config_hash` and `git_commit` (blank for
-rows logged before 2026-09-14; not backfilled). **Do not delete rows from it**, including the diagnostic runs
-and the two broken first momentum attempts; the deflated Sharpe reads it.
+Every backtest appends to `reports/specifications.csv`; N is 329 as of the
+last report (144 of them are the September 2026 reruns after the data
+fixes and two tie rules the recompute found). Each row carries `config_hash`, `git_commit` (blank
+for rows logged before 2026-09-14; not backfilled) and `kind`
+(`candidate` or `diagnostic`, read off the note; the report shows a
+deflated Sharpe against each count). **Do not delete rows from it**,
+including the diagnostic runs and the two broken first momentum attempts;
+the deflated Sharpe reads it.
 
 `make check` is the gate (lint + tests). **There is no `make` on this
 laptop**; run the two commands above instead. Python is pinned to 3.12.
@@ -115,12 +123,21 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
 
 ### Things a future session should know
 
-- **Validation status.** Momentum vs UMD 0.79 (pass). Value and quality as
-  reported are sector-neutral composites and score 0.25 / 0.07 vs HML / RMW;
-  the join is validated by `run.replicate`: B/P cap-weighted terciles vs the
-  big-cap HML leg 0.74 (0.89 from 2016). The RMW replication is 0.45 and
-  that is a *coverage* limit of the XBRL data before 2013, documented, not
-  fixed. Do not tune the reported factors to raise these numbers.
+- **Validation status** (after FIX_PLAN F1-F4, 2026-09-15). Momentum vs
+  UMD 0.78 (pass). Value and quality as reported are sector-neutral
+  composites and score 0.56 / 0.07 vs HML / RMW (value was 0.25 before
+  the market-cap fix); the join is validated by `run.replicate`: B/P
+  cap-weighted terciles vs the big-cap HML leg 0.78 (0.90 from 2016),
+  0.72 vs full HML. The RMW replication is 0.44 vs full RMW and 0.62 vs
+  the big-cap leg; its early-years weakness was the CIK map, not XBRL
+  coverage (2010-12 went from 0.07 to 0.69), and a 2013-15 trough of
+  0.38 is not understood. Do not tune the reported factors to raise
+  these numbers.
+- **Value's old net Sharpe of 0.48 was a market-cap bug**, not a premium:
+  split-adjusted prices met unadjusted share counts, so pre-split
+  winners (CMG, DECK, SMCI) sat in the value long leg with a B/P 6-50x
+  too large. After F2 value is -0.16 net and loads 0.42 on HML.
+  `decisions/f4_before_after.md` has every factor before and after.
 - **Cost convention** differs from the brief on purpose: every dollar
   traded pays c, `ret_net = ret_gross - 2c * turnover`.
 - **The full recompute must match to 1e-10 before a report is trusted.**

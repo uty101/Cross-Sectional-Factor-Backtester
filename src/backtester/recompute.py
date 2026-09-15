@@ -72,6 +72,9 @@ def rebuild(cfg: Config) -> Config:
     universe.build(c)
     prices.build(c)
     benchmarks.build(c)
+    # shares.build regenerates the CIK map from the (tag-map-stamped) num
+    # cache before it lists the universe, so the map, the cover counts
+    # and the panel are one consistent build.
     shares.build(c)
     fundamentals.build(c)
     text.build(c)

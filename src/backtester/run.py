@@ -300,10 +300,13 @@ def run_all(
     return out
 
 
-def sensitivities(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunResult]:
+def sensitivities(
+    cfg: Config, factors: list[str] = REPORTED, suffix: str = ""
+) -> dict[str, RunResult]:
     """Weighting and holding-period variants, each one logged and saved with
     a tag. Cost is not looped: net returns at any cost follow from gross
     returns and turnover, and stats.sharpe_by_cost does that analytically.
+    ``suffix`` is appended to every note (a rerun after a data fix says so).
     """
     inp = load_inputs(cfg)
     out = {}
@@ -319,7 +322,11 @@ def sensitivities(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunRe
             if tag == "cw" and inp.caps is None:
                 continue
             res = run_factor(
-                c, f, inp, note=f"sensitivity {tag}", sector_neutral=(tag != "nosector")
+                c,
+                f,
+                inp,
+                note=f"sensitivity {tag}{suffix}",
+                sector_neutral=(tag != "nosector"),
             )
             save(res, c, tag=tag)
             out[f"{f}_{tag}"] = res
@@ -327,7 +334,9 @@ def sensitivities(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunRe
     return out
 
 
-def delisting(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunResult]:
+def delisting(
+    cfg: Config, factors: list[str] = REPORTED, suffix: str = ""
+) -> dict[str, RunResult]:
     """Every reported factor under the 'terminal' delisting convention
     (BUILD_PLAN 8.2), saved with the tag and logged. The names touched are
     written to data/checks/delisting_terminal.csv."""
@@ -342,14 +351,16 @@ def delisting(cfg: Config, factors: list[str] = REPORTED) -> dict[str, RunResult
     inp.monthly = monthly
     out = {}
     for f in factors:
-        res = run_factor(cfg, f, inp, note="sensitivity terminal")
+        res = run_factor(cfg, f, inp, note=f"sensitivity terminal{suffix}")
         save(res, cfg, tag="terminal")
         out[f] = res
         print("terminal", summary_line(res))
     return out
 
 
-def replicate(cfg: Config, inp: Inputs | None = None) -> dict[str, RunResult]:
+def replicate(
+    cfg: Config, inp: Inputs | None = None, suffix: str = ""
+) -> dict[str, RunResult]:
     """Validate the fundamentals join by building the French factors the
     way French does, as nearly as this universe allows: one raw signal, no
     sector neutralisation, cap-weighted, top third minus bottom third."""
@@ -357,11 +368,37 @@ def replicate(cfg: Config, inp: Inputs | None = None) -> dict[str, RunResult]:
     c = cfg.with_(weighting="cw", n_deciles=3)
     out = {}
     for f in ("hml_replica", "rmw_replica"):
-        res = run_factor(c, f, inp, note="French replication", sector_neutral=False)
+        res = run_factor(
+            c, f, inp, note=f"French replication{suffix}", sector_neutral=False
+        )
         save(res, c)
         out[f] = res
         print(summary_line(res))
     return out
+
+
+def rerun(cfg: Config, suffix: str) -> None:
+    """Every specification the report reads, again, each note carrying
+    ``suffix`` (FIX_PLAN F4: "post-F3"). The base run of every reported
+    factor and of beta (validated against BAB), the sensitivities, the
+    delisting convention, the French replications, the TTM variants and
+    the Jaccard text scorer. Each is a logged row; N grows by 62."""
+    run_all(cfg, note=f"base{suffix}")
+    inp = load_inputs(cfg)
+    res = run_factor(cfg, "beta", inp, note=f"base{suffix}")
+    save(res, cfg)
+    print(summary_line(res))
+    for f in ("value_ttm", "quality_ttm"):
+        res = run_factor(cfg, f, inp, note=f"sensitivity ttm{suffix}")
+        save(res, cfg)
+        print(summary_line(res))
+    c = cfg.with_(text_similarity="jaccard")
+    res = run_factor(c, "text_change", inp, note=f"sensitivity jaccard{suffix}")
+    save(res, c, tag="jaccard")
+    print("jaccard", summary_line(res))
+    sensitivities(cfg, suffix=suffix)
+    delisting(cfg, suffix=suffix)
+    replicate(cfg, suffix=suffix)
 
 
 def validation_table(cfg: Config, inp: Inputs | None = None) -> pl.DataFrame:

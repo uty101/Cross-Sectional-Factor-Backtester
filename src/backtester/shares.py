@@ -76,7 +76,14 @@ RATIO_BAND = (0.5, 2.0)
 # --- fetch --------------------------------------------------------------
 
 
-def _universe_ciks(cfg: Config) -> list[int]:
+def _universe_ciks(cfg: Config, rebuild_map: bool = False) -> list[int]:
+    """Every CIK in the map. ``rebuild_map`` regenerates sectors.parquet
+    from the num cache and the overrides first, so a build never reads a
+    map older than the one the panel will use."""
+    from backtester import fundamentals
+
+    if rebuild_map or not (cfg.data / "interim" / "sectors.parquet").exists():
+        fundamentals.build_map(cfg, fundamentals.load_num(cfg))
     sectors = pl.read_parquet(cfg.data / "interim" / "sectors.parquet")
     return sorted(set(int(c) for c in sectors["cik"].to_list()))
 
@@ -236,7 +243,8 @@ def build(cfg: Config) -> tuple[pl.DataFrame, pl.DataFrame]:
     """Latest raw file per CIK and per ticker -> the two interim tables."""
     root = cfg.data / "raw"
     frames = []
-    for cik in _universe_ciks(cfg):
+    ciks = _universe_ciks(cfg, rebuild_map=True)
+    for cik in ciks:
         try:
             p = raw.latest(
                 root,
@@ -249,7 +257,7 @@ def build(cfg: Config) -> tuple[pl.DataFrame, pl.DataFrame]:
         "cik", "filed", "ddate"
     )
     fallback = []
-    for cik in _universe_ciks(cfg):
+    for cik in ciks:
         for concept, tag in FALLBACK_TAGS.items():
             try:
                 p = raw.latest(root, f"sec/companyconcept/{cik}_{tag}_*.json")

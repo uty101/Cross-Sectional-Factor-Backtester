@@ -105,3 +105,27 @@ def test_gross_profitability_excludes_financials() -> None:
     out = fx.signal("gross_profitability", panel, None, None)
     assert out["ticker"].to_list() == ["MFR"]
     assert out["value"][0] == pytest.approx(70.0 / 500.0)
+
+
+def test_num_cache_built_under_another_tag_map_is_reingested(
+    tmp_path, monkeypatch
+) -> None:
+    """The cache carries the tag map's hash; a different hash means the
+    tags added since are missing from it, so it is rebuilt (what the
+    2026-09-15 recompute tripped over)."""
+    from backtester import config
+
+    cfg = config.load().with_(data=tmp_path)
+    (tmp_path / "interim").mkdir()
+    pl.DataFrame({"cik": [1], "tag_map_hash": ["stale"]}).write_parquet(
+        tmp_path / "interim" / "sec_num.parquet"
+    )
+    calls = []
+    monkeypatch.setattr(fx, "ingest", lambda c: calls.append(c) or pl.DataFrame())
+    fx.load_num(cfg)
+    assert len(calls) == 1
+    pl.DataFrame({"cik": [1], "tag_map_hash": [fx.tag_map_hash()]}).write_parquet(
+        tmp_path / "interim" / "sec_num.parquet"
+    )
+    fx.load_num(cfg)
+    assert len(calls) == 1  # the current hash: read, not re-ingested

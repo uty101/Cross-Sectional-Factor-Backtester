@@ -56,7 +56,18 @@ SPEC_COLUMNS = [
     "note",
     "config_hash",
     "git_commit",
+    "kind",
 ]
+# A row is a candidate (something that could be reported) or a diagnostic
+# (a sensitivity, a replication, a check). The deflated Sharpe is reported
+# with both counts (FIX_PLAN F4); the kind is read off the note so the
+# rows logged before the column existed are classified the same way.
+DIAGNOSTIC_PREFIXES = ("diagnostic", "sensitivity", "french replication")
+
+
+def spec_kind(note: str | None) -> str:
+    n = (note or "").strip().lower()
+    return "diagnostic" if n.startswith(DIAGNOSTIC_PREFIXES) else "candidate"
 
 
 @dataclass
@@ -301,6 +312,7 @@ def log_specification(path: Path, cfg: Config, **fields: object) -> None:
         "note": fields.get("note", ""),
         "config_hash": config_hash(cfg),
         "git_commit": git_commit(),
+        "kind": fields.get("kind") or spec_kind(str(fields.get("note", ""))),
     }
     new = not path.exists() or path.stat().st_size == 0
     if not new:
@@ -334,8 +346,10 @@ def _widen_columns(path: Path) -> None:
 
     Columns are only ever appended, so every existing row keeps its
     values and gets blanks for the new ones; the row count is unchanged.
-    Rows logged before a column existed are not backfilled: the commit a
-    2026-09-11 run was made under is not known, and is not guessed.
+    Rows logged before a column existed are not backfilled, with one
+    exception: ``kind`` is a function of the note and is filled for
+    every row (FIX_PLAN F4). The commit a 2026-09-11 run was made under
+    is not known, and is not guessed.
     """
     with open(path, encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
@@ -348,7 +362,9 @@ def _widen_columns(path: Path) -> None:
         w = csv.DictWriter(f, fieldnames=SPEC_COLUMNS)
         w.writeheader()
         for r in rows:
-            w.writerow({c: r.get(c, "") for c in SPEC_COLUMNS})
+            row = {c: r.get(c, "") for c in SPEC_COLUMNS}
+            row["kind"] = row["kind"] or spec_kind(row["note"])
+            w.writerow(row)
 
 
 def _fmt(x: object) -> str:
@@ -357,9 +373,15 @@ def _fmt(x: object) -> str:
     return "" if x is None else str(x)
 
 
-def count_specifications(path: Path) -> int:
-    """The N for the deflated Sharpe: rows in the log, never an argument."""
+def count_specifications(path: Path, kind: str | None = None) -> int:
+    """The N for the deflated Sharpe: rows in the log, never an argument.
+    With ``kind`` only the rows of that kind (``candidate`` rows for
+    dsr_candidates); a row logged before the column existed is
+    classified by its note."""
     if not path.exists():
         return 0
-    with open(path, encoding="utf-8") as f:
-        return max(0, sum(1 for _ in f) - 1)
+    with open(path, encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    if kind is None:
+        return len(rows)
+    return sum(1 for r in rows if (r.get("kind") or spec_kind(r.get("note"))) == kind)

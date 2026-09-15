@@ -61,6 +61,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     sub.add_parser("run-all", help="base run of every reported factor")
     sub.add_parser("sensitivities", help="weighting and holding-period variants")
     sub.add_parser("delisting", help="the terminal-return delisting sensitivity")
+    rerun = sub.add_parser(
+        "rerun", help="every specification again, with a note suffix (F4)"
+    )
+    rerun.add_argument(
+        "--note", required=True, help='appended to every note, e.g. " post-F3"'
+    )
     sub.add_parser(
         "research-log", help="reports/what_did_not_work.md from the spec log and git"
     )
@@ -141,6 +147,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             f"{rec['agent']}: {len(rec['tool_calls'])} tool calls, {rec['stop_reason']}"
         )
         print(rec["final_output"])
+        return 0
+    if args.command == "rerun":
+        from backtester import run as runner
+
+        runner.rerun(cfg, args.note)
         return 0
     if args.command == "delisting":
         from backtester import run as runner
