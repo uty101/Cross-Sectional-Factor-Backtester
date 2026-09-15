@@ -495,10 +495,28 @@ def assert_point_in_time(df: pl.DataFrame, col: str = "available_from") -> None:
 # --- monthly panel and signals ------------------------------------------
 
 
+SHARE_CONCEPTS = ("shares", "shares_wavg", "shares_cover")
+# A share count is carried up to 18 months, not 9: a few filers (General
+# Dynamics, PPG, Humana) reach the panel only through the balance-sheet
+# count of their 10-K, and the next 10-K is due within 12 months. A
+# quarterly filer's count is refreshed long before that.
+SHARE_MAX_AGE_MONTHS = 18
+
+
 def monthly_panel(
-    cfg: Config, num: pl.DataFrame, ciks: pl.DataFrame, months: list[date]
+    cfg: Config,
+    num: pl.DataFrame,
+    ciks: pl.DataFrame,
+    months: list[date],
+    cover: pl.DataFrame | None = None,
+    extra_num: pl.DataFrame | None = None,
 ) -> pl.DataFrame:
     """Frame[month, ticker, cik, <concept>..., <concept>_period_end].
+
+    ``cover`` (shares.build output: cik, ddate, filed, value) is joined
+    as-of like a stock concept into ``shares_cover``. The three share
+    concepts also keep ``<concept>_filed``, the filing date, because a
+    split after that date changes the basis of the count (shares.py).
 
     Flow concepts from annual 10-K values (qtrs = 4); stock concepts from
     any 10-K/10-Q (qtrs = 0). ``ciks`` is Frame[ticker, cik, start, end]
@@ -509,6 +527,10 @@ def monthly_panel(
     from backtester.sectors import cik_at
 
     tag_map = load_tag_map()
+    if extra_num is not None and extra_num.height:
+        # Share counts the FSDS is missing for a few filers, from the SEC
+        # API (shares.load_api); same first-filed rule as everything else.
+        num = pl.concat([num.select(extra_num.columns), extra_num])
     ff = first_filed(num)
     base = cik_at(ciks, months)
     out = base
@@ -541,25 +563,13 @@ def monthly_panel(
             )
         else:
             vals = ff.filter((pl.col("concept") == concept) & (pl.col("qtrs") == 0))
-        j = asof_join(base, vals, cfg.asof_buffer_days)
-        # A value is carried forward only while it is current: a name that
-        # has stopped filing must not keep its last 10-K forever.
         max_age = MAX_AGE_MONTHS[spec["kind"]]
-        j = j.with_columns(
-            pl.when(
-                pl.col("period_end") < pl.col("month").dt.offset_by(f"-{max_age}mo")
-            )
-            .then(None)
-            .otherwise(pl.col("value"))
-            .alias("value")
-        )
-        out = out.join(
-            j.rename({"value": concept, "period_end": f"{concept}_period_end"}).drop(
-                "available_from"
-            ),
-            on=["month", "cik"],
-            how="left",
-        )
+        if concept in SHARE_CONCEPTS:
+            max_age = max(max_age, SHARE_MAX_AGE_MONTHS)
+        out = _join_concept(out, base, vals, concept, max_age, cfg)
+    if cover is not None and cover.height:
+        vals = cover.select("cik", "ddate", "filed", "value")
+        out = _join_concept(out, base, vals, "shares_cover", SHARE_MAX_AGE_MONTHS, cfg)
     # Trailing twelve months of every flow concept, alongside the annual.
     trailing = ttm(ff.filter(pl.col("concept").is_in(_flow_concepts(tag_map))))
     for concept in _flow_concepts(tag_map):
@@ -580,6 +590,33 @@ def monthly_panel(
             how="left",
         )
     return out
+
+
+def _join_concept(
+    out: pl.DataFrame,
+    base: pl.DataFrame,
+    vals: pl.DataFrame,
+    concept: str,
+    max_age: int,
+    cfg: Config,
+) -> pl.DataFrame:
+    j = asof_join(base, vals, cfg.asof_buffer_days)
+    # A value is carried forward only while it is current: a name that
+    # has stopped filing must not keep its last 10-K forever.
+    j = j.with_columns(
+        pl.when(pl.col("period_end") < pl.col("month").dt.offset_by(f"-{max_age}mo"))
+        .then(None)
+        .otherwise(pl.col("value"))
+        .alias("value")
+    )
+    j = j.rename({"value": concept, "period_end": f"{concept}_period_end"})
+    if concept in SHARE_CONCEPTS:
+        j = j.with_columns(
+            (pl.col("available_from") - timedelta(days=cfg.asof_buffer_days)).alias(
+                f"{concept}_filed"
+            )
+        )
+    return out.join(j.drop("available_from"), on=["month", "cik"], how="left")
 
 
 def _flow_concepts(tag_map: dict[str, dict]) -> list[str]:
@@ -667,39 +704,43 @@ def signal(
     raise KeyError(name)
 
 
-def market_caps(fundamentals: pl.DataFrame, monthly: pl.DataFrame) -> pl.DataFrame:
-    """Frame[month, ticker, cap, shares_source]: unadjusted month-end price x
-    shares outstanding as of the latest filing (point in time, like everything
-    else). The diluted weighted-average count first: it is the per-share
-    denominator every filer reports and gets the units right; the
-    balance-sheet count, which a few large filers mis-scale (RTX, CMG), only
-    where that is missing."""
-    sh = fundamentals.select(
-        "month",
-        "ticker",
-        pl.coalesce("shares_wavg", "shares").alias("n_shares"),
-        pl.when(pl.col("shares_wavg").is_not_null())
-        .then(pl.lit("weighted_average"))
-        .when(pl.col("shares").is_not_null())
-        .then(pl.lit("balance_sheet"))
-        .otherwise(pl.lit(None))
-        .alias("shares_source"),
+def market_caps(
+    fundamentals: pl.DataFrame,
+    monthly: pl.DataFrame,
+    splits: pl.DataFrame | None = None,
+    overrides: pl.DataFrame | None = None,
+) -> pl.DataFrame:
+    """Frame[month, ticker, cap, shares_source, split_factor]: month-end
+    close x shares outstanding as of the latest filing (point in time,
+    like everything else), the count scaled by every split after its
+    filing date so it is in the basis of the split-adjusted price
+    (FIX_PLAN F2, shares.py). The cover-page count first, then the
+    balance-sheet count, then the diluted weighted average; a ticker in
+    ``overrides`` is pinned to one source or, if ``unresolved``, dropped.
+    Nothing else is dropped: the old 1bn floor was catching the split
+    mismatch, not a units error."""
+    from backtester import shares
+
+    if "shares_cover" not in fundamentals.columns:
+        fundamentals = fundamentals.with_columns(
+            pl.lit(None, dtype=pl.Float64).alias("shares_cover")
+        )
+    sh = shares.resolve(
+        fundamentals, splits, overrides, monthly.select("month", "ticker", "px_me_raw")
     )
-    caps = (
+    return (
         monthly.select("month", "ticker", "px_me_raw")
         .join(sh, on=["month", "ticker"], how="inner")
         .filter((pl.col("n_shares") > 0) & (pl.col("px_me_raw") > 0))
         .select(
             "month",
             "ticker",
-            (pl.col("px_me_raw") * pl.col("n_shares")).alias("cap"),
+            (pl.col("px_me_raw") * pl.col("n_basis")).alias("cap"),
             "shares_source",
+            "split_factor",
+            "implausible",
         )
     )
-    # A member of the S&P 500 is never worth less than a billion dollars. A
-    # cap below that is a share count in the wrong units: Berkshire reports
-    # class-A equivalents against a class-B price. Dropped, and listed.
-    return caps.filter(pl.col("cap") >= MIN_CAP)
 
 
 # --- pipeline entry -----------------------------------------------------
@@ -721,7 +762,10 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     monthly = pl.read_parquet(cfg.data / "processed" / "returns_monthly.parquet")
     daily = pl.read_parquet(cfg.data / "interim" / "prices_daily.parquet")
     months = sorted(monthly.get_column("month").unique().to_list())
-    panel = monthly_panel(cfg, num, ciks, months)
+    from backtester import shares
+
+    cover, splits = shares.load(cfg)
+    panel = monthly_panel(cfg, num, ciks, months, cover, shares.load_api(cfg))
 
     # Unadjusted month-end close for market cap: shares outstanding are not
     # split-adjusted, and neither should the price be.
@@ -731,22 +775,43 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
         right_on=["date", "ticker"],
         how="left",
     )
-    caps = market_caps(panel, px_raw)
-    implausible = (
-        monthly.select("month", "ticker", "t")
-        .join(px_raw.select("month", "ticker", "px_me_raw"), on=["month", "ticker"])
-        .join(
-            panel.select("month", "ticker", "shares", "shares_wavg"),
-            on=["month", "ticker"],
-        )
-        .with_columns(
-            (pl.col("px_me_raw") * pl.coalesce("shares_wavg", "shares")).alias("cap")
-        )
-        .filter(pl.col("cap").is_not_null() & (pl.col("cap") < MIN_CAP))
-        .group_by("ticker")
-        .agg(pl.len().alias("months"), pl.col("cap").median().alias("median_cap"))
-        .sort("months", descending=True)
-    )
+    share_overrides = shares.load_overrides(cfg)
+    caps = market_caps(panel, px_raw, splits, share_overrides)
+    # The dropped list: member-months whose count is out of line with the
+    # ticker's neighbouring months (dropped) and member-months that still
+    # come out under 1bn (kept, listed): the residual the split factor
+    # and the cover count did not explain, mostly reused symbols whose
+    # yfinance history is another company's (COL, EP) and names that
+    # were small when they left the index.
+    from backtester.universe import members_at
+
+    member_rows = pl.concat(
+        [
+            pl.DataFrame(
+                {
+                    "month": [m] * len(members_at(membership, m)),
+                    "ticker": members_at(membership, m),
+                }
+            )
+            for m in months
+        ]
+    ).with_columns(pl.col("month").cast(pl.Date))
+    member_caps = caps.join(member_rows, on=["month", "ticker"], how="inner")
+    implausible = pl.concat(
+        [
+            member_caps.filter(pl.col("implausible"))
+            .group_by("ticker")
+            .agg(pl.len().alias("months"), pl.col("cap").median().alias("median_cap"))
+            .with_columns(
+                pl.lit("count out of line with neighbours; dropped").alias("reason")
+            ),
+            member_caps.filter(~pl.col("implausible") & (pl.col("cap") < MIN_CAP))
+            .group_by("ticker")
+            .agg(pl.len().alias("months"), pl.col("cap").median().alias("median_cap"))
+            .with_columns(pl.lit("under 1bn; kept").alias("reason")),
+        ]
+    ).sort("reason", "months", descending=[False, True])
+    caps = caps.filter(~pl.col("implausible")).drop("implausible")
 
     processed = cfg.data / "processed"
     stamp = pl.lit(num["as_of"][0] if "as_of" in num.columns else "").alias("as_of")

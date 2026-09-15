@@ -11,7 +11,9 @@ def test_definitions_load_with_every_asset_and_check() -> None:
     for name in (
         "wikipedia_html",
         "sec_zips",
+        "share_counts",
         "edgar_10k_documents",
+        "cover_shares",
         "universe_monthly",
         "prices_daily",
         "french_monthly",
@@ -43,7 +45,7 @@ def test_dependencies_follow_the_data_flow() -> None:
         return {k.to_user_string() for k in graph.get(key).parent_keys}
 
     assert "wikipedia_html" in deps("universe_monthly")
-    assert {"sec_zips", "prices_daily", "universe_monthly"} <= deps(
+    assert {"sec_zips", "prices_daily", "universe_monthly", "cover_shares"} <= deps(
         "fundamentals_monthly"
     )
     assert "fundamentals_monthly" in deps("factor_value")

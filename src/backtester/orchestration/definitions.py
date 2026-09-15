@@ -3,9 +3,9 @@
 Assets are the stored tables, in the data-flow order the CLI runs them:
 
     raw fetches         wikipedia_html, price_pulls, benchmark_files,
-                        sec_zips, edgar_10k_documents
+                        sec_zips, share_counts, edgar_10k_documents
     interim/processed   universe_monthly, prices_daily, french_monthly,
-                        fundamentals_monthly, text_similarity
+                        cover_shares, fundamentals_monthly, text_similarity
     runs                factor_<name> for every reported factor,
                         sensitivities, delisting
     reports             results, research_log
@@ -55,7 +55,15 @@ from dagster import (
     Config as OpConfig,
 )
 
-from backtester import benchmarks, config, fundamentals, prices, text, universe
+from backtester import (
+    benchmarks,
+    config,
+    fundamentals,
+    prices,
+    shares,
+    text,
+    universe,
+)
 from backtester.run import REPORTED
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -96,6 +104,18 @@ def sec_zips() -> MaterializeResult:
     return MaterializeResult(metadata={"files": len(stored)})
 
 
+@asset(group_name="raw", deps=[sec_zips, price_pulls])
+def share_counts() -> MaterializeResult:
+    """Cover-page counts (SEC companyconcept) and splits (yfinance), F2."""
+    c = cfg()
+    stored = (
+        shares.fetch_cover(c, date.today())
+        + shares.fetch_fallback(c, date.today())
+        + shares.fetch_splits(c, date.today())
+    )
+    return MaterializeResult(metadata={"files": len(stored)})
+
+
 @asset(group_name="raw", deps=[sec_zips])
 def edgar_10k_documents() -> MaterializeResult:
     stored = text.fetch(cfg(), date.today())
@@ -126,7 +146,19 @@ def french_monthly() -> MaterializeResult:
     return MaterializeResult(metadata={"months": out.height})
 
 
-@asset(group_name="tables", deps=[sec_zips, prices_daily, universe_monthly])
+@asset(group_name="tables", deps=[share_counts, prices_daily, universe_monthly])
+def cover_shares() -> MaterializeResult:
+    c = cfg()
+    cover, splits = shares.build(c)
+    return MaterializeResult(
+        metadata={"cover_rows": cover.height, "splits": splits.height}
+    )
+
+
+@asset(
+    group_name="tables",
+    deps=[sec_zips, prices_daily, universe_monthly, cover_shares],
+)
 def fundamentals_monthly() -> MaterializeResult:
     c = cfg()
     out = fundamentals.build(c)
@@ -520,10 +552,12 @@ defs = Definitions(
         price_pulls,
         benchmark_files,
         sec_zips,
+        share_counts,
         edgar_10k_documents,
         universe_monthly,
         prices_daily,
         french_monthly,
+        cover_shares,
         fundamentals_monthly,
         text_similarity,
         *factor_assets,

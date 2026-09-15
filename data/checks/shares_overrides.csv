@@ -1,0 +1,6 @@
+ticker,source,reason
+BRK.B,unresolved,cross-check ratio 0.0008: every SEC count is class-A equivalents (1.6m) against a class-B price; the per-class cover counts are dimensional facts the API omits
+COL,unresolved,"member-month median cap 8.8m: yfinance's COL history 2012-2020 is a different company's (closes of 0.50 while Rockwell Collins traded at 60-140); a price defect for F6, not a count; all three counts agree at 132m"
+GR,unresolved,member-month median cap 388m: yfinance's GR history is a different company's (closes of 4 while Goodrich traded above 70); a price defect for F6; the counts agree at 125m
+EP,unresolved,member-month median cap 42m: yfinance's EP history is a different company's (closes of 2.40 while El Paso traded at 10-20); a price defect for F6; the cover count is 769m
+VMRK,cover,cross-check ratio 0.48 against yfinance for the 2026 rename of Equity Residential; cover page and balance sheet and weighted average all say 375m and no filing supports 774m; kept on the SEC count

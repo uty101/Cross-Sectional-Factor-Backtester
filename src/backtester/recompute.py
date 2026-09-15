@@ -33,6 +33,7 @@ HAND_WRITTEN = (
     "membership_overrides.csv",
     "membership_spotcheck.csv",
     "cik_overrides.csv",
+    "shares_overrides.csv",
 )
 TOLERANCE = 1e-10
 
@@ -53,7 +54,7 @@ def _link_raw(real: Path, link: Path) -> None:
 
 def rebuild(cfg: Config) -> Config:
     """Run every build and every base run under data/recompute/."""
-    from backtester import benchmarks, fundamentals, prices, run, text, universe
+    from backtester import benchmarks, fundamentals, prices, run, shares, text, universe
 
     root = cfg.data / "recompute"
     _link_raw((cfg.data / "raw").resolve(), root / "raw")
@@ -71,6 +72,7 @@ def rebuild(cfg: Config) -> Config:
     universe.build(c)
     prices.build(c)
     benchmarks.build(c)
+    shares.build(c)
     fundamentals.build(c)
     text.build(c)
     run.run_all(c, note="recompute check")

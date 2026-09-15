@@ -52,7 +52,7 @@ Everything goes through `uv`; the lockfile is the environment.
 uv sync                                    # once, and after pyproject changes
 uv run pytest                              # 117 tests, ~6 s
 uv run ruff check . && uv run ruff format --check .
-uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|text> --as-of YYYY-MM-DD
+uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|shares|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
 uv run backtester run --factor momentum [--no-sector] [--note "..."]
 uv run backtester run-all                  # the five reported factors, base spec
@@ -141,10 +141,20 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   (`stats.to_month_earned`, `run.validate`). Getting this wrong was the
   0.04-correlation bug.
 - **Wikipedia's CIK can be a brand-new entity** (XOM); `sectors.cik_map`
-  falls back to the name when a CIK has no filings.
-- **Market cap** uses weighted-average diluted shares first; balance-sheet
-  counts are mis-scaled for some filers. Caps under $1bn are dropped
-  (`data/checks/market_cap_dropped.csv`).
+  falls back to the name when a CIK has no filings. **A ticker can have
+  more than one CIK over time** (Disney 2019, JCI and CB 2016):
+  `data/checks/cik_overrides.csv` holds the eras and `sectors.cik_at`
+  resolves one per month. See `decisions/cik_audit.md`.
+- **yfinance's Close is split-adjusted; SEC share counts are not.** A
+  count is multiplied by every split after its filing date
+  (`shares.split_factor`, `data/interim/splits.parquet`) before it meets
+  a price; without that Chipotle's cap was 50 times too small before
+  2024, which is what the old $1bn floor was catching. The count is the
+  cover-page `dei:EntityCommonStockSharesOutstanding` from the SEC
+  companyconcept API (FSDS num.txt does not carry it), then the
+  balance-sheet count, then the diluted weighted average
+  (`shares.select`). Nothing is dropped by size any more;
+  `market_cap_dropped.csv` lists what still comes out under $1bn.
 - **Text comes from EDGAR, never from company websites.** The 10-K
   primary documents live under `data/raw/edgar/10k/<cik>/<adsh>.htm.gz`,
   one per original filing, indexed from `sub.txt` in the FSDS zips so the

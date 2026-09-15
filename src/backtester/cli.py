@@ -11,7 +11,7 @@ import sys
 from collections.abc import Sequence
 from datetime import date
 
-from backtester import benchmarks, config, fundamentals, prices, text, universe
+from backtester import benchmarks, config, fundamentals, prices, shares, text, universe
 
 # step name -> (fetch, build). Phases add themselves here as they land.
 STEPS = {
@@ -23,6 +23,16 @@ STEPS = {
         fundamentals.build,
     ),
     "text": (lambda cfg, as_of: text.fetch(cfg, as_of), text.build),
+    # Cover-page share counts (SEC companyconcept) and splits (yfinance);
+    # build --step fundamentals reads both if present.
+    "shares": (
+        lambda cfg, as_of: (
+            shares.fetch_cover(cfg, as_of)
+            + shares.fetch_fallback(cfg, as_of)
+            + shares.fetch_splits(cfg, as_of)
+        ),
+        shares.build,
+    ),
 }
 UNIMPLEMENTED: dict[str, str] = {}
 
@@ -79,7 +89,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
     if args.command == "build":
         out = STEPS[args.step][1](cfg)
-        print(f"built {args.step}: {out.height} rows")
+        rows = sum(o.height for o in out) if isinstance(out, tuple) else out.height
+        print(f"built {args.step}: {rows} rows")
         return 0
 
     if args.command == "run":
