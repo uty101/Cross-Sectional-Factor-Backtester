@@ -30,7 +30,9 @@ and `shares_overrides.csv`.
 | `shares_crosscheck.csv` | FIX_PLAN F2: every current member's SEC share count (in the price basis) against yfinance's current count and market cap; `flag` when the ratio is outside [0.5, 2]. Written by `scripts/crosscheck_shares.py` |
 | `shares_overrides.csv` | **Hand-written** (FIX_PLAN F2). Tickers pinned to one share-count source (`cover`, `balance_sheet`, `weighted_average`) or marked `unresolved` and dropped from market cap, with the reason from the cross-check |
 | `sec_amendments_by_year.csv` | 10-K/A and 10-Q/A as a share of filings: the size of the first-filed choice |
-| `delisting_terminal.csv` | The removed names whose last print is within 45 days of removal: the only ones the `terminal` delisting sensitivity touches |
+| `delisting_terminal.csv` | The removed names whose last print is within 45 days of removal: the only ones the `terminal` delisting sensitivity touches, with the delisting date and class (`acquired` / `failed` / `unknown`) from `delistings.csv` (FIX_PLAN F6) |
+| `delistings.csv` | FIX_PLAN F6: Alpha Vantage's delisted-symbol list filtered to the universe (ticker, name, exchange, delisting_date). Absent until `ALPHAVANTAGE_API_KEY` is set and `fetch --step prices` runs |
+| `price_conflicts.csv` | FIX_PLAN F6: months where yfinance's and Tiingo's returns differ by more than `config.toml [prices] conflict_threshold`; Tiingo wins those months. Empty until `TIINGO_API_KEY` is set |
 | `text_coverage.csv` | Per filing year: universe 10-Ks in the FSDS index, primary documents fetched from EDGAR, documents over `min_words`, and pairs with a prior 10-K; median words |
 | `text_short_documents.csv` | 10-Ks under `min_words`: wrappers whose annual report is an exhibit. Treated as missing, not parsed further |
 | `text_fetch_missing.csv` | Filings in the index the submissions API did not list a primary document for, or that EDGAR refused |

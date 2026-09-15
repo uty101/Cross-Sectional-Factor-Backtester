@@ -101,6 +101,9 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
     pl.DataFrame(
         missing, schema={"ticker": pl.Utf8, "yahoo": pl.Utf8, "reason": pl.Utf8}
     ).write_csv(checks / "price_fetch_missing.csv")
+    from backtester import sources
+
+    stored += sources.fetch_tiingo(cfg, as_of) + sources.fetch_delistings(cfg, as_of)
     return stored
 
 
@@ -474,10 +477,20 @@ def build(cfg: Config) -> pl.DataFrame:
     as_of = daily["date"].max()
     market = daily.filter(pl.col("ticker") == MARKET)
     daily, clean_log = clean_daily(daily.filter(pl.col("ticker") != MARKET), membership)
-    daily = pl.concat([daily, market]).sort("ticker", "date")
     checks = cfg.data / "checks"
     checks.mkdir(parents=True, exist_ok=True)
     clean_log.write_csv(checks / "price_cleaning.csv")
+    # A second source, where fetched (FIX_PLAN F6): yfinance where the two
+    # agree, Tiingo where they conflict or where only it has the name.
+    from backtester import sources
+
+    daily, conflicts = sources.merge(
+        daily, sources.load_tiingo(cfg), cfg.price_conflict_threshold
+    )
+    conflicts.write_csv(checks / "price_conflicts.csv")
+    daily = pl.concat(
+        [daily, market.with_columns(pl.lit("yfinance").alias("source"))]
+    ).sort("ticker", "date")
 
     interim = cfg.data / "interim"
     processed = cfg.data / "processed"
@@ -503,6 +516,13 @@ def build(cfg: Config) -> pl.DataFrame:
     summary = {
         "as_of": as_of,
         "tickers_with_prices": stocks["ticker"].n_unique(),
+        "tickers_from_tiingo": stocks.filter(pl.col("source") == "tiingo")[
+            "ticker"
+        ].n_unique(),
+        "conflict_months": conflicts.height,
+        "conflict_pct_of_ticker_months": round(
+            100 * conflicts.height / max(monthly.height, 1), 3
+        ),
         "tickers_in_universe": membership["ticker"].n_unique(),
         "universe_months": total,
         "priced_months": per_month["n_priced"].sum(),
@@ -532,6 +552,7 @@ def terminal_returns(
     daily: pl.DataFrame,
     shock: float,
     grace_days: int = 45,
+    delistings: pl.DataFrame | None = None,
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
     """The 'terminal' delisting convention (BUILD_PLAN 8.2).
 
@@ -542,7 +563,16 @@ def terminal_returns(
     the last priced month-end earns ``shock`` instead. Names that keep
     trading after removal, and names with no prices at all, are
     unchanged. Returns the modified frame and the list of names touched.
+
+    With ``delistings`` (FIX_PLAN F6, data/checks/delistings.csv) each
+    touched name is classed by sources.classify_removed: ``acquired``
+    (a delisting date on record and a last close within 20% of the prior
+    month-end) earns its last actual return, which is nothing further
+    after the last print, so 0 rather than the shock; ``failed`` and
+    ``unknown`` earn the shock. The class is in the returned log.
     """
+    from backtester import sources
+
     last_px = daily.group_by("ticker").agg(pl.col("date").max().alias("last_px"))
     removed = (
         membership.filter(pl.col("end").is_not_null())
@@ -557,15 +587,23 @@ def terminal_returns(
         .agg(pl.col("month").max())
         .join(removed.select("ticker", "end", "last_px"), on="ticker", how="inner")
     )
-    touched = last_month.select("ticker", "end", "last_px", "month").sort("end")
+    classes = sources.classify_removed(membership, daily, delistings, grace_days)
+    touched = (
+        last_month.select("ticker", "end", "last_px", "month")
+        .join(
+            classes.select("ticker", "delisting_date", "class"), on="ticker", how="left"
+        )
+        .with_columns(pl.col("class").fill_null("unknown"))
+        .sort("end")
+    )
     out = monthly.join(
-        last_month.select("ticker", "month", pl.lit(True).alias("_terminal")),
+        touched.select("ticker", "month", pl.lit(True).alias("_terminal"), "class"),
         on=["ticker", "month"],
         how="left",
     ).with_columns(
         pl.when(pl.col("_terminal") & pl.col("ret_fwd").is_null())
-        .then(pl.lit(shock))
+        .then(pl.when(pl.col("class") == "acquired").then(0.0).otherwise(pl.lit(shock)))
         .otherwise(pl.col("ret_fwd"))
         .alias("ret_fwd")
     )
-    return out.drop("_terminal"), touched
+    return out.drop("_terminal", "class"), touched

@@ -27,6 +27,12 @@ sensitivity_bps = [5, 10, 25]
 # last print, instead of leaving the portfolio at that print.
 terminal_return = -0.30
 
+[prices]
+# Cross-source reconcile (FIX_PLAN F6): a month where yfinance's and
+# Tiingo's returns differ by more than this is a conflict, logged to
+# data/checks/price_conflicts.csv; Tiingo wins the month.
+conflict_threshold = 0.01
+
 [signals]
 winsor = [0.01, 0.99]
 momentum_window = [12, 1]   # months back, months skipped

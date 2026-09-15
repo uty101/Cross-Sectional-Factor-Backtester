@@ -39,6 +39,8 @@ class Config:
     sensitivity_bps: tuple[float, ...]
     # delisting
     delisting_terminal_return: float
+    # prices: a month where two sources' returns differ by more is a conflict
+    price_conflict_threshold: float
     # signals
     winsor: tuple[float, float]
     momentum_window: tuple[int, int]
@@ -130,6 +132,9 @@ def load(path: str | Path = "config.toml") -> Config:
         base_bps=float(costs["base_bps"]),
         sensitivity_bps=tuple(float(c) for c in costs["sensitivity_bps"]),
         delisting_terminal_return=float(raw["delisting"]["terminal_return"]),
+        price_conflict_threshold=float(
+            raw.get("prices", {}).get("conflict_threshold", 0.01)
+        ),
         winsor=(float(signals["winsor"][0]), float(signals["winsor"][1])),
         momentum_window=(
             int(signals["momentum_window"][0]),
@@ -146,3 +151,24 @@ def load(path: str | Path = "config.toml") -> Config:
         reports=Path(paths["reports"]),
         specifications=Path(paths["specifications"]),
     )
+
+
+def secret(name: str, root: str | Path = ".") -> str | None:
+    """An API key from the environment, else from a ``.env`` file in
+    ``root`` (KEY=value lines; gitignored). None when neither has it: the
+    fetch that needs it says so and skips, and nothing else changes."""
+    import os
+
+    if os.environ.get(name):
+        return os.environ[name]
+    env = Path(root) / ".env"
+    if not env.exists():
+        return None
+    for line in env.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        if k.strip() == name:
+            return v.strip().strip('"').strip("'") or None
+    return None

@@ -1,6 +1,9 @@
 metric,value
 as_of,2026-09-10
 tickers_with_prices,631
+tickers_from_tiingo,0
+conflict_months,0
+conflict_pct_of_ticker_months,0.0
 tickers_in_universe,858
 universe_months,100344
 priced_months,85655

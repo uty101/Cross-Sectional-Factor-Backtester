@@ -344,8 +344,14 @@ def delisting(
 
     inp = load_inputs(cfg)
     daily = pl.read_parquet(cfg.data / "interim" / "prices_daily.parquet")
+    from backtester import sources
+
     monthly, touched = prices.terminal_returns(
-        inp.monthly, inp.membership, daily, cfg.delisting_terminal_return
+        inp.monthly,
+        inp.membership,
+        daily,
+        cfg.delisting_terminal_return,
+        delistings=sources.load_delistings(cfg),
     )
     touched.write_csv(cfg.data / "checks" / "delisting_terminal.csv")
     inp.monthly = monthly

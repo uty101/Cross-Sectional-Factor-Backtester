@@ -328,3 +328,9 @@ timestamp,factor,signal,weighting,cost_bps,lag_days,rebalance,holding_months,win
 2026-09-15T16:04:20+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal post-F3 first-filed tie,a36513de6ddf,788662c,diagnostic
 2026-09-15T16:04:21+00:00,hml_replica,book_to_price,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,-0.1382,-0.1551,French replication post-F3 first-filed tie no-sector,b2f34ce17f5d,788662c,diagnostic
 2026-09-15T16:04:22+00:00,rmw_replica,operating_profitability,cw,10.0,1,M,1,0.01,0.99,3,2010-01-31,2026-08-31,0.2361,0.2148,French replication post-F3 first-filed tie no-sector,b2f34ce17f5d,788662c,diagnostic
+2026-09-15T16:58:23+00:00,momentum,momentum_12_1,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.1339,0.0378,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
+2026-09-15T16:58:24+00:00,value,book_to_price+earnings_yield,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0987,-0.1640,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
+2026-09-15T16:58:25+00:00,quality,gross_profitability+accruals,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,0.3050,0.2378,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
+2026-09-15T16:58:27+00:00,low_vol,volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2363,-0.2679,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
+2026-09-15T16:58:29+00:00,composite,momentum_12_1+book_to_price+earnings_yield+gross_profitability+accruals+volatility_252,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.2552,-0.3320,sensitivity terminal,753b37e5fbd5,933407f,diagnostic
+2026-09-15T16:58:30+00:00,text_change,doc_similarity,ew,10.0,1,M,1,0.01,0.99,10,2010-01-31,2026-08-31,-0.0379,-0.1643,sensitivity terminal,753b37e5fbd5,933407f,diagnostic

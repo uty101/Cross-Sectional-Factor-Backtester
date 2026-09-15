@@ -99,6 +99,7 @@ src/backtester/
   raw.py, tables.py      write-once raw store + manifest; HTML table reader
   universe.py            S&P 500 membership, cross-check, overrides
   prices.py              yfinance pull, three cleaning rules, monthly returns with lag
+  sources.py             Tiingo second source, Alpha Vantage delistings, reconcile/merge (F6; needs keys in .env)
   benchmarks.py          French factors + big-cap HML/RMW legs, FRED
   fundamentals.py        SEC FSDS via DuckDB, first_filed, asof_join, caps
   tag_map.toml           18 concepts, ordered XBRL tags (only ever added to)
@@ -198,6 +199,10 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   The manifest that records what was fetched is.
 - Datacentre IPs get rate-limited harder than laptops by SEC and yfinance;
   prefer copying `data/raw` between machines to re-fetching.
+- API keys come from the environment or a gitignored `.env` at the repo
+  root (`config.secret`). FIX_PLAN F6 (Tiingo, Alpha Vantage), F7
+  (Sharadar) and F9 (Anthropic, gh) are built or pending against keys
+  that are not on this machine; each fetch says so and skips.
 - Tickers: current members carry their current ticker back through
   history, removed names the ticker they were removed under. Renames the
   universe walk detects are in `data/interim/ticker_renames.parquet`.
