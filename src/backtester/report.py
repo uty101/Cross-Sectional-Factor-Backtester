@@ -2,7 +2,11 @@
 
 Writes reports/results.md and reports/figures/. The README is updated by
 hand from results.md so that every number is looked at before it is
-published; no number in the README is typed from memory.
+published; no number in the README is typed from memory. The exception
+is the price-coverage figures in the README's prose and the answer
+paragraph, which sit between ``<!--cov:key-->`` and ``<!--/cov-->``
+markers and are filled by ``build`` from data/checks (J3a; they were
+typed from the report's outputs and drifted once).
 
     chart 1   cumulative log returns of deciles 1-10, one panel per factor
     chart 2   rolling 36-month IC, zero line, shaded recessions
@@ -16,6 +20,7 @@ function of saved runs and the specification log.
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass
 from datetime import date
 
@@ -58,6 +63,80 @@ def recession_spans(cfg: Config) -> list[tuple[date, date]]:
 
 
 HORIZONS = [1, 2, 3, 6, 12]
+# The "with and without the badly covered months" split: a month is well
+# covered when under this share of members has no price.
+COVERAGE_MAX_GAP_PCT = 20.0
+
+# --- placeholders (J3a) -------------------------------------------------
+
+PLACEHOLDER = re.compile(r"<!--cov:(\w+)-->(.*?)<!--/cov-->")
+PLACEHOLDER_FILES = ("README.md", "reports/answer.md")
+
+
+def coverage_figures(
+    cfg: Config, max_gap_pct: float = COVERAGE_MAX_GAP_PCT
+) -> dict[str, str]:
+    """The coverage figures the README and the answer quote, as printed.
+
+    ``gap_pct`` and ``covered_pct`` are the summary's ``gap_pct`` and its
+    complement (price_coverage_summary.csv); ``good_months`` and
+    ``first_good_month`` are the count and the first of the months in the
+    monthly check with a gap at or under ``max_gap_pct``, which is the
+    month count the coverage-split table prints.
+    """
+    checks = cfg.data / "checks"
+    summary = pl.read_csv(checks / "price_coverage_summary.csv")
+    gap = float(summary.filter(pl.col("metric") == "gap_pct")["value"][0])
+    monthly = pl.read_csv(checks / "price_coverage_monthly.csv", try_parse_dates=True)
+    good = monthly.filter(pl.col("gap_pct") <= max_gap_pct)["month"]
+    return {
+        "gap_pct": f"{gap:.1f}%",
+        "covered_pct": f"{100 - gap:.1f}%",
+        "good_months": str(good.len()),
+        "first_good_month": good.min().strftime("%Y-%m") if good.len() else "n/a",
+    }
+
+
+def fill_placeholders(text: str, values: dict[str, str]) -> str:
+    """Every ``<!--cov:key-->old<!--/cov-->`` becomes the key's value,
+    markers kept so the next fill finds it. An unknown key is an error:
+    a figure nothing computes is a figure typed from memory."""
+
+    def sub(m: re.Match) -> str:
+        key = m.group(1)
+        if key not in values:
+            raise KeyError(f"placeholder cov:{key} has no value")
+        return f"<!--cov:{key}-->{values[key]}<!--/cov-->"
+
+    return PLACEHOLDER.sub(sub, text)
+
+
+def strip_placeholders(text: str) -> str:
+    """The text with the markers removed and the figures kept."""
+    return PLACEHOLDER.sub(lambda m: m.group(2), text)
+
+
+def fill_files(cfg: Config, root=None) -> dict[str, int]:
+    """Fill the placeholders in ``PLACEHOLDER_FILES`` under ``root`` (the
+    repo root; the README is not under ``cfg.reports``). Returns the
+    number of placeholders per file; a file that is not there is skipped."""
+    from pathlib import Path
+
+    root = Path(root) if root is not None else Path(".")
+    values = coverage_figures(cfg)
+    out = {}
+    for rel in PLACEHOLDER_FILES:
+        path = root / rel
+        if not path.exists():
+            continue
+        text = path.read_text(encoding="utf-8")
+        filled = fill_placeholders(text, values)
+        if filled != text:
+            path.write_text(filled, encoding="utf-8", newline="\n")
+        out[rel] = len(PLACEHOLDER.findall(text))
+    return out
+
+
 COST_GRID = list(range(0, 101, 1))
 # The cost table's columns; results.csv and the site read the same ones.
 COST_TABLE_BPS = [0, 5, 10, 25, 50]
@@ -508,7 +587,7 @@ def exclusions_frame(cfg: Config, inp, months: list[date]) -> pl.DataFrame:
 
 
 def coverage_split_table(
-    cfg: Config, reports: list[FactorReport], max_gap_pct: float = 20.0
+    cfg: Config, reports: list[FactorReport], max_gap_pct: float = COVERAGE_MAX_GAP_PCT
 ) -> str:
     """Net Sharpe on all months and on the months where price coverage is good."""
     cov = pl.read_csv(
@@ -826,6 +905,7 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
     weighting_gap_table(cfg, [r.factor for r in reports], inp).write_csv(
         cfg.reports / "weighting_gap.csv"
     )
+    fill_files(cfg)
     return text
 
 

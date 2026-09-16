@@ -57,7 +57,7 @@ outsider can verify, over 2010–2026?
 **The answer** ([reports/answer.md](reports/answer.md); every number in it
 is in a table on this page or in [reports/results.md](reports/results.md)):
 
-Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.06 against all 61 specifications (0.38 against the 8 candidates, a floor), on a net Sharpe of 0.22, an IC t-stat of 1.2, and 69% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.9% and −0.19. The data cannot say what the 14.7% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
+Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.06 against all 61 specifications (0.38 against the 8 candidates, a floor), on a net Sharpe of 0.22, an IC t-stat of 1.2, and 69% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.9% and −0.19. The data cannot say what the <!--cov:gap_pct-->14.7%<!--/cov--> of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
 
 ## Results
 
@@ -75,13 +75,13 @@ deflated Sharpe or an IC t-stat of 1.96; quality is the closest on both.
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Momentum 12-1 | 2.8% | 1.3% | 15.6% | 0.08 | 0.02 | 0.19 | −56% | 0.62 | 0.006 | 0.5 | 19 bp | 87% |
 | Value (B/P, E/P) | −1.4% | −2.1% | 11.0% | −0.19 | 0.00 | 0.02 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) | 84% |
-| Quality (GP/A, accruals) | 2.5% | 1.9% | 8.8% | 0.22 | 0.06 | 0.38 | −23% | 0.25 | 0.007 | 1.2 | 43 bp | 69% of non-fin.¹ |
+| Quality (GP/A, accruals) | 2.6% | 2.0% | 8.8% | 0.22 | 0.06 | 0.38 | −23% | 0.25 | 0.007 | 1.2 | 43 bp | 69% of non-fin.¹ |
 | Low volatility | −4.3% | −4.9% | 18.8% | −0.26 | 0.00 | 0.01 | −74% | 0.24 | 0.002 | 0.1 | none (loses gross) | 87% |
 | Composite | −3.3% | −4.4% | 14.3% | −0.31 | 0.00 | 0.01 | −65% | 0.45 | −0.002 | −0.2 | none (loses gross) | 52% |
 
 ¹ Quality is computed on 69% of non-financial members in a typical month: gross profitability needs a cost-of-goods line and the rest do not tag one (decisions/tag_coverage_f3.md); financials are excluded by rule, as in Novy-Marx. Coverage is the median across months of the share of members with a signal.
 
-Price history covers 85.3% of member-months; the missing names are
+Price history covers <!--cov:covered_pct-->85.3%<!--/cov--> of member-months; the missing names are
 disproportionately those that left the index. See Data.
 
 **DSR** is the deflated Sharpe of Bailey and López de Prado: the probability
@@ -141,8 +141,8 @@ What the table says, factor by factor:
   Cap-weighted it is 0.20.
 - **Value** loses 2.1% a year net. Sector-neutral B/P and E/P on S&P 500
   names is a large-cap HML position (loading 0.42) and HML was flat to
-  negative over most of the window. Cap-weighted −0.45; on the 128 months
-  from 2015-12 where the price gap is under 20%, −0.19 against −0.19 on all
+  negative over most of the window. Cap-weighted −0.45; on the <!--cov:good_months-->128<!--/cov--> months
+  from <!--cov:first_good_month-->2015-12<!--/cov--> where the price gap is under 20%, −0.19 against −0.19 on all
   months, so the missing delisted names are not hiding a premium.
 - **Quality** is the only positive line: net Sharpe 0.22, 0.27 cap-weighted,
   0.34 on the well-covered months, Fama-MacBeth t 1.2, DSR 0.06 against all
@@ -252,7 +252,7 @@ not tuned.
 | Universe history | Wikipedia constituents + changes tables | Membership intervals per ticker; cross-checked month by month against the [fja05680/sp500](https://github.com/fja05680/sp500) daily list, 98.4% agreement |
 | Fundamentals | SEC Financial Statement Data Sets | 70 quarterly zips 2009q1–2026q2; **filing date is the key**; 19 concepts via an ordered tag map that only grows; a ticker maps to a CIK per era ([data/checks/cik_overrides.csv](data/checks/cik_overrides.csv)) |
 | Shares outstanding | SEC companyconcept API; yfinance split events | The cover-page count (FSDS `num.txt` does not carry it), then the balance-sheet count, then the diluted weighted average, each **scaled by every split after its filing date** so it meets yfinance's split-adjusted close; a plausibility guard drops the filings in thousands ([decisions/f2_shares.md](decisions/f2_shares.md)) |
-| Prices | yfinance | Stooq is behind a JavaScript wall as of 2026-09. Delisted names are absent: **14.7% of universe-months**, 31% in 2010 falling to 0%. Every price is checked against the filer's own market value (the 10-K's `EntityPublicFloat`) and every removed name's symbol against what yfinance says it is now: 280 member-months over 11 names are excluded ([data/checks/price_identity_exclusions.csv](data/checks/price_identity_exclusions.csv)) |
+| Prices | yfinance | Stooq is behind a JavaScript wall as of 2026-09. Delisted names are absent: **<!--cov:gap_pct-->14.7%<!--/cov--> of universe-months**, 31% in 2010 falling to 0%. Every price is checked against the filer's own market value (the 10-K's `EntityPublicFloat`) and every removed name's symbol against what yfinance says it is now: 280 member-months over 11 names are excluded ([data/checks/price_identity_exclusions.csv](data/checks/price_identity_exclusions.csv)) |
 | Sector map | SIC from the filings | 11 GICS-like buckets by hand; 84.5% agreement with Wikipedia's GICS on current members |
 | Benchmarks | Ken French data library | Mkt, SMB, HML, RMW, CMA, UMD, and the six size × B/M and size × OP portfolios for the big-cap legs |
 | Risk-free | French RF; FRED DGS1MO kept | Long–short spreads need none |
@@ -264,7 +264,7 @@ unique names over the window (the brief's ~1,100 was high). Survivorship in
 the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
 yfinance, and that is the survivorship that remains: the "with and without"
-table in `results.md` gives every factor on the 128 months from 2015-12
+table in `results.md` gives every factor on the <!--cov:good_months-->128<!--/cov--> months from <!--cov:first_good_month-->2015-12<!--/cov-->
 where the price gap is under 20%: value −0.19 against −0.19 on all months,
 quality 0.34 against 0.22, momentum −0.06 against 0.08. Total assets cover
 98% of members from 2011 and a market cap 97% of the members with a price;

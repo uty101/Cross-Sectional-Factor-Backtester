@@ -5,7 +5,10 @@ The caveats sit next to the numbers (FIX_PLAN_2 G3)."""
 import re
 from pathlib import Path
 
-from backtester import report
+import polars as pl
+import pytest
+
+from backtester import config, report
 
 HEADER = "| Factor | Gross ann. |"
 
@@ -82,3 +85,56 @@ def test_every_number_in_the_answer_is_in_a_table(repo_root: Path) -> None:
     backed = (results + tables).replace("−", "-")
     for n in set(re.findall(r"\d+(?:\.\d+)?", answer)):
         assert re.search(rf"(?<![\d.]){re.escape(n)}(?![\d])", backed), n
+
+
+def test_coverage_figures_in_the_readme_and_answer_are_the_checks(
+    repo_root: Path,
+) -> None:
+    """J3a: the price-coverage figures in the README's prose and the answer
+    paragraph sit in ``<!--cov:key-->`` placeholders that ``report.build``
+    fills from data/checks; each must already carry the value the checks
+    give, and every key the prose uses must be one the report computes.
+    The six that were typed (14.7% twice, 85.3%, 128 twice, and the
+    answer's 14.7%) drifted once (review/j2c.md)."""
+    cfg = config.load(repo_root / "config.toml")
+    values = report.coverage_figures(cfg)
+    seen: dict[str, int] = {}
+    for rel in report.PLACEHOLDER_FILES:
+        text = (repo_root / rel).read_text(encoding="utf-8")
+        found = report.PLACEHOLDER.findall(text)
+        assert found, f"{rel}: no placeholders"
+        for key, value in found:
+            assert key in values, (rel, key)
+            assert value == values[key], (rel, key, value, values[key])
+            seen[key] = seen.get(key, 0) + 1
+        assert report.fill_placeholders(text, values) == text
+    # the six typed figures, and the month the count starts from
+    assert seen == {
+        "gap_pct": 3,
+        "covered_pct": 1,
+        "good_months": 2,
+        "first_good_month": 2,
+    }, seen
+    # the same figures the report prints
+    summary = pl.read_csv(
+        repo_root / cfg.data / "checks" / "price_coverage_summary.csv"
+    )
+    gap = float(summary.filter(pl.col("metric") == "gap_pct")["value"][0])
+    assert values["gap_pct"] == f"{gap:.1f}%"
+    assert values["covered_pct"] == f"{100 - gap:.1f}%"
+    results = (repo_root / "reports" / "results.md").read_text(encoding="utf-8")
+    assert f"Price history covers {values['covered_pct']} of member-months" in results
+    assert f"(from {values['first_good_month']}-31) |" in results, (
+        "the coverage-split header does not start where the placeholder says"
+    )
+
+
+def test_placeholders_are_filled_in_place_and_stripped_for_the_page() -> None:
+    text = "gap <!--cov:gap_pct-->1.0%<!--/cov--> on <!--cov:good_months-->3<!--/cov-->"
+    filled = report.fill_placeholders(text, {"gap_pct": "14.7%", "good_months": "128"})
+    assert filled == (
+        "gap <!--cov:gap_pct-->14.7%<!--/cov--> on <!--cov:good_months-->128<!--/cov-->"
+    )
+    assert report.strip_placeholders(filled) == "gap 14.7% on 128"
+    with pytest.raises(KeyError):
+        report.fill_placeholders("<!--cov:made_up-->9<!--/cov-->", {})

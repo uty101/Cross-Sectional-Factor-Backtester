@@ -25,7 +25,12 @@ import polars as pl
 
 from backtester import speclog
 from backtester.config import Config
-from backtester.report import COST_TABLE_BPS, HORIZONS, NOT_A_JOIN_TEST
+from backtester.report import (
+    COST_TABLE_BPS,
+    HORIZONS,
+    NOT_A_JOIN_TEST,
+    strip_placeholders,
+)
 
 REPO = "uty101/Cross-Sectional-Factor-Backtester"
 REPO_URL = f"https://github.com/{REPO}"
@@ -197,7 +202,7 @@ def _bullets(readme: Path, n: int = 5) -> list[str]:
         if ln.startswith("## "):
             break
         if ln.startswith("- "):
-            bullets.append(ln[2:].strip())
+            bullets.append(strip_placeholders(ln[2:]).strip())
         elif bullets and ln.startswith("  "):
             bullets[-1] += " " + ln.strip()
         if len(bullets) > n:
@@ -273,7 +278,9 @@ def data(cfg: Config, root: Path = Path(".")) -> dict:
         "n_specs": speclog.count_trials(spec),
         "n_candidates": speclog.count_trials(spec, "candidate"),
         "recompute": _recompute(root),
-        "answer": (rep / "answer.md").read_text(encoding="utf-8").strip(),
+        "answer": strip_placeholders(
+            (rep / "answer.md").read_text(encoding="utf-8")
+        ).strip(),
         "factors": cards,
         "cost_bps": COST_TABLE_BPS,
         "cost_curve": {

@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 190 tests, ~10 s
+uv run pytest                              # 193 tests, ~10 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|shares|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -77,10 +77,10 @@ new tags, and the recompute check caught it. Also on disk since F2:
 `data/raw/sec/companyconcept/` (share counts from the SEC API, 2,520
 files) and `data/raw/prices/yfinance_splits/` (858 files).
 
-Every backtest appends to `reports/specifications.csv`; 436 rows as of the
-last report (240 of them are the September 2026 reruns after the data
-fixes, two tie rules the recompute found, and the H3 price-identity
-exclusions). The same key at the same commit under the same note is
+Every backtest appends to `reports/specifications.csv`; 484 rows as of the
+last report (288 of them are the September 2026 reruns after the data
+fixes, two tie rules the recompute found, the H3 price-identity
+exclusions, and the J3a last-month rule). The same key at the same commit under the same note is
 logged once (`speclog.DUPLICATE_FIELDS`, FIX_PLAN_3 H4). **N in the deflated Sharpe
 is the number of distinct `spec_key` values** (61, of which 8 candidates;
 FIX_PLAN_2 G2, `speclog.py`), not the row count: re-running a
