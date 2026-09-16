@@ -235,6 +235,35 @@ def test_a_month_below_min_names_forms_no_portfolio(cfg: config.Config) -> None:
     assert res.long_short["month"].to_list() == [M1]  # February had 4 names
 
 
+def test_a_month_with_no_forward_return_forms_no_portfolio(
+    cfg: config.Config,
+) -> None:
+    """The window's last month-end has a signal and no next month: the
+    engine used to form a portfolio there, pay the rebalance, and earn
+    exactly zero. It forms none, the way a thin month forms none."""
+    z = pl.DataFrame(
+        {
+            "month": [M1] * 4 + [M2] * 4 + [M3] * 4,
+            "ticker": list("ABCD") * 3,
+            "z": [-1.0, -0.5, 0.5, 1.0] + [1.0, 0.5, -0.5, -1.0] * 2,
+        }
+    )
+    rets = pl.DataFrame(
+        {
+            "month": [M1] * 4 + [M2] * 4 + [M3] * 4,
+            "ticker": list("ABCD") * 3,
+            "ret_fwd": [0.01, 0.02, 0.03, 0.04] * 2 + [None] * 4,
+        }
+    )
+    res = portfolio.backtest(z, rets, cfg, factor="test")
+    assert res.long_short["month"].to_list() == [M1, M2]
+    assert res.deciles["month"].unique().sort().to_list() == [M1, M2]
+    assert res.weights["month"].unique().sort().to_list() == [M1, M2]
+    # January forms from cash (0.5 a leg), February reverses every rank
+    # (1.0 a leg); March's would have been paid and is not.
+    assert res.long_short["turnover"].to_list() == [1.0, 2.0]
+
+
 def test_specification_kind_is_read_off_the_note_and_backfilled(
     cfg: config.Config,
 ) -> None:

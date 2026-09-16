@@ -150,6 +150,11 @@ def backtest(
     # portfolio at all: the first months of a new data source can have a
     # handful of names, and a decile of them is one stock's return.
     z = z.filter(pl.len().over("month") >= cfg.min_names)
+    # A month-end with no forward return for any name forms no portfolio
+    # either: the window's last month-end has a signal and nothing to earn,
+    # so a row there is a rebalance paid for and never evaluated.
+    priced = returns.filter(pl.col("ret_fwd").is_not_null()).select("month").unique()
+    z = z.join(priced, on="month", how="semi")
     dec = assign_deciles(z, n)
     target = weights(dec, caps, cfg.weighting)
     months = sorted(returns.select("month").unique().get_column("month").to_list())
