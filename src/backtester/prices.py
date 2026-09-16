@@ -857,10 +857,13 @@ def sec_names_by_ticker(cfg: Config) -> pl.DataFrame | None:
     from backtester import fundamentals
 
     sectors_p = cfg.data / "interim" / "sectors.parquet"
-    sub_p = cfg.data / "interim" / "sec_sub.parquet"
-    if not sectors_p.exists() or not sub_p.exists():
+    if not sectors_p.exists():
         return None
     ciks = pl.read_parquet(sectors_p).select("ticker", "cik").unique()
+    # load_sub ingests the filer index when the cache is absent, so a
+    # fresh tree (the recompute) sees the same names as the incremental
+    # one; without this the 2026-09-16 recompute flagged eight names
+    # (AIV, ATI, BEAM, CNX, OI, PCG, Q, VFC) the EDGAR name had cleared.
     names = (
         fundamentals.load_sub(cfg)
         .select("cik", "name")

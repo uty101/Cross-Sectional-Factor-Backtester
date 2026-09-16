@@ -253,3 +253,42 @@ def test_flagged_names_are_excluded_for_their_whole_membership(tmp_path) -> None
     out = identity.write_exclusions(cfg, None, rows)
     assert (tmp_path / "checks" / identity.EXCLUSIONS).exists()
     assert identity.load_exclusions(cfg).equals(out)
+
+
+def test_the_cross_section_drops_excluded_ticker_months_and_logs_them(tmp_path) -> None:
+    from backtester import config, run
+
+    cfg = config.load("config.toml").with_(data=tmp_path)
+    membership = pl.DataFrame(
+        {
+            "ticker": ["A", "HAR"],
+            "start": [date(2000, 1, 1)] * 2,
+            "end": [None, date(2017, 3, 15)],
+        },
+        schema={"ticker": pl.Utf8, "start": pl.Date, "end": pl.Date},
+    )
+    exclusions = pl.DataFrame(
+        {
+            "ticker": ["HAR"],
+            "start": [date(2013, 1, 1)],
+            "end": [date(2013, 12, 31)],
+            "reason": ["test"],
+            "source_check": ["identity"],
+        },
+        schema=identity.EXCLUSION_SCHEMA,
+    )
+    inp = run.Inputs(
+        cfg, membership, None, None, None, None, None, None, None, exclusions
+    )
+    months = [date(2012, 12, 31), date(2013, 6, 30), date(2014, 1, 31)]
+    got = run.cross_section(inp, months, cfg)
+    assert got.filter(pl.col("ticker") == "A").height == 3
+    assert got.filter(pl.col("ticker") == "HAR")["month"].to_list() == [
+        date(2012, 12, 31),
+        date(2014, 1, 31),
+    ]
+    log = pl.read_csv(tmp_path / "checks" / "exclusions_applied.csv")
+    assert log.to_dicts() == [{"month": "2013-06-30", "dropped": 1, "tickers": "HAR"}]
+    # No exclusion list: the plain member panel, and no log.
+    inp.exclusions = None
+    assert run.cross_section(inp, months, cfg).height == 6

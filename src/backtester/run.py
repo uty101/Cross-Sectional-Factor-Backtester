@@ -5,7 +5,8 @@
 Every factor is a list of signals averaged into a composite z, a French
 factor to validate against, and nothing else; adding one is a dict entry.
 The cross-section at month t is restricted to index members on t
-(invariant 3) before anything is ranked.
+(invariant 3), less the price-identity exclusions (FIX_PLAN_3), before
+anything is ranked.
 """
 
 from __future__ import annotations
@@ -15,7 +16,7 @@ from datetime import date
 
 import polars as pl
 
-from backtester import portfolio, signals, stats, universe
+from backtester import identity, portfolio, signals, stats, universe
 from backtester.config import Config
 
 FACTORS: dict[str, dict] = {
@@ -84,6 +85,9 @@ class Inputs:
     fundamentals: pl.DataFrame | None  # month, ticker, concept columns (phase 5)
     caps: pl.DataFrame | None  # month, ticker, cap
     text: pl.DataFrame | None = None  # text.build output: cik, period, filed, scores
+    # data/checks/price_identity_exclusions.csv (FIX_PLAN_3 H1/H2): the
+    # ticker-months no signal or portfolio may use
+    exclusions: pl.DataFrame | None = None
 
 
 @dataclass
@@ -131,7 +135,21 @@ def load_inputs(cfg: Config) -> Inputs:
         fundamentals,
         caps,
         text,
+        identity.load_exclusions(cfg),
     )
+
+
+def cross_section(inp: Inputs, months: list[date], cfg: Config) -> pl.DataFrame:
+    """Frame[month, ticker]: the index members at each month-end less the
+    price-identity exclusions (FIX_PLAN_3 H3), applied before any signal
+    is computed so an excluded name is neither ranked nor held. The count
+    dropped per month goes to data/checks/exclusions_applied.csv."""
+    members = member_panel(inp.membership, months)
+    if inp.exclusions is None or not inp.exclusions.height:
+        return members
+    log = cfg.data / "checks" / "exclusions_applied.csv"
+    log.parent.mkdir(parents=True, exist_ok=True)
+    return identity.apply(members, inp.exclusions, log)
 
 
 def member_panel(membership: pl.DataFrame, months: list[date]) -> pl.DataFrame:
@@ -203,7 +221,7 @@ def run_factor(
         for m in inp.monthly.get_column("month").unique().to_list()
         if cfg.start <= m <= cfg.end
     )
-    members = member_panel(inp.membership, months)
+    members = cross_section(inp, months, cfg)
     sectors = inp.sectors if sector_neutral else None
 
     zs = []
