@@ -5,11 +5,11 @@ tickers_from_tiingo,0
 conflict_months,0
 conflict_pct_of_ticker_months,0.0
 tickers_in_universe,858
-universe_months,100344
-priced_months,85655
-gap_pct,14.64
+universe_months,99841
+priced_months,85152
+gap_pct,14.71
 gap_pct_max_month,30.85
-gap_pct_min_month,0.0
+gap_pct_min_month,0.2
 partial_returns,66
 tickers_dropped_no_history,43
 tickers_dropped_corrupt,5

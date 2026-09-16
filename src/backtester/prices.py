@@ -18,7 +18,7 @@ import io
 import json
 import re
 import warnings
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import polars as pl
@@ -511,7 +511,15 @@ def coverage_report(
     membership: pl.DataFrame, monthly: pl.DataFrame, start: date, end: date
 ) -> tuple[pl.DataFrame, pl.DataFrame]:
     """Per month: members, members with a month-end price, members with a
-    forward return. Per ticker: universe-months lost to missing prices."""
+    forward return. Per ticker: universe-months lost to missing prices.
+
+    The check ends at the last month-end that has a forward return, not
+    the last one with a price. A portfolio formed at the window's final
+    month-end earns nothing (its forward return needs the month after
+    ``end``), so a coverage figure for that month measures nothing and
+    would read as a full month of data where no trade is possible; the
+    check covers the months a portfolio can be formed on. The summary's
+    ``gap_pct`` is over the same months."""
     from backtester.universe import members_at, month_ends
 
     rows = []
@@ -522,7 +530,8 @@ def coverage_report(
         m: set(g["ticker"].to_list()) for (m,), g in priced.group_by("month")
     }
     by_month_fwd = {m: set(g["ticker"].to_list()) for (m,), g in fwd.group_by("month")}
-    for me in month_ends(start, end):
+    last_fwd = fwd["month"].max() if fwd.height else start - timedelta(days=1)
+    for me in month_ends(start, min(end, last_fwd)):
         members = set(members_at(membership, me))
         have_px = members & by_month_px.get(me, set())
         have_fwd = members & by_month_fwd.get(me, set())

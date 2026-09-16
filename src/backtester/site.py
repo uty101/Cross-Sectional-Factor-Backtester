@@ -159,11 +159,13 @@ def _validation(path: Path) -> tuple[list[list], dict[str, str]]:
 
 def _gap_by_year(path: Path) -> tuple[list[int], list[float]]:
     """One bar per year from price_coverage_monthly.csv: December's gap
-    for every complete year, and for the final, partial year the latest
-    month the check has (the window ends in August 2026, so a December
-    bar would not exist; FIX_PLAN_4 J2 said December). A complete year
-    whose last month is not December is a truncated check file, and the
-    bar would be mislabelled, so that raises."""
+    for every complete year, and for the final, partial year the check's
+    last month, which is the last month with a forward return (the
+    check ends there, prices.coverage_report; the window's final
+    month-end can form no portfolio). FIX_PLAN_4 J2 said December; the
+    current year has none. A complete year whose last month is not
+    December is a truncated check file, and the bar would be
+    mislabelled, so that raises."""
     cov = pl.read_csv(path, try_parse_dates=True).sort("month")
     last = (
         cov.with_columns(pl.col("month").dt.year().alias("year"))
@@ -211,21 +213,26 @@ def _bullets(readme: Path, n: int = 5) -> list[str]:
 def _history(spec_path: Path) -> dict:
     """The quality base specification's net Sharpe at each code version:
     one point per distinct git_commit among its candidate rows, the last
-    row logged under that commit. Rows logged before the commit column
-    existed (blank) each stand alone."""
+    row logged under that commit, labelled by the short hash. A row
+    logged before the commit column existed (blank; the first two, from
+    2026-09-11, predate run.py's first commit) stands alone and is
+    labelled by its spec-log row number, the way CLAUDE.md cites rows."""
     rows = [
-        r
-        for r in speclog.read(spec_path, "candidate")
-        if r["factor"] == "quality" and r["sector_neutral"] == "1" and not r["variant"]
+        (n, r)
+        for n, r in enumerate(speclog.read(spec_path), start=1)
+        if r["kind"] == "candidate"
+        and r["factor"] == "quality"
+        and r["sector_neutral"] == "1"
+        and not r["variant"]
     ]
     points: dict[str, dict] = {}
-    for i, r in enumerate(rows):
-        points[r["git_commit"] or f"row{i}"] = r
-    dates, values = [], []
-    for r in points.values():
-        dates.append(r["timestamp"][5:10])
-        values.append(_r(float(r["sharpe_net"]), 2))
-    return {"label": HISTORY_LABEL, "dates": dates, "values": values}
+    for n, r in rows:
+        points[r["git_commit"][:7] or f"row {n}"] = r
+    return {
+        "label": HISTORY_LABEL,
+        "commits": list(points),
+        "values": [_r(float(r["sharpe_net"]), 2) for r in points.values()],
+    }
 
 
 def _recompute(root: Path) -> str:

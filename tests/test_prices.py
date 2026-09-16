@@ -183,3 +183,33 @@ def test_terminal_return_replaces_only_the_last_print_of_a_delisted_name() -> No
     assert got[("GONE", m2)] == -0.30  # the last priced month earns the shock
     assert got[("GONE", m1)] == -0.1  # earlier months untouched
     assert got[("STAY", m3)] is None  # still trading: unchanged
+
+
+def test_coverage_check_ends_at_the_last_month_with_a_forward_return() -> None:
+    """The window's final month-end has a price for every member and a
+    forward return for none: no portfolio can be formed on it, so it is
+    not a row. The check ends at the last month a forward return exists."""
+    from backtester import prices as px
+
+    m1, m2, m3 = date(2020, 1, 31), date(2020, 2, 29), date(2020, 3, 31)
+    monthly = pl.DataFrame(
+        {
+            "month": [m1, m2, m3, m1, m2, m3],
+            "ticker": ["A"] * 3 + ["B"] * 3,
+            "px_me": [10.0, 9.0, 8.0, None, 5.5, 6.0],
+            "ret_fwd": [-0.1, -0.11, None, None, 0.09, None],
+        }
+    )
+    membership = pl.DataFrame(
+        {"ticker": ["A", "B"], "start": [m1, m1], "end": [None, None]},
+        schema={"ticker": pl.Utf8, "start": pl.Date, "end": pl.Date},
+    )
+    per_month, per_ticker = px.coverage_report(membership, monthly, m1, m3)
+    assert per_month["month"].to_list() == [m1, m2]  # March, priced, is not a row
+    assert per_month["n_priced"].to_list() == [1, 2]
+    assert per_month["n_fwd_return"].to_list() == [1, 2]
+    assert per_month["gap_pct"].to_list() == [50.0, 0.0]
+    assert per_ticker.to_dicts() == [{"ticker": "B", "months_missing": 1}]
+    # No forward return anywhere: nothing to cover.
+    none = monthly.with_columns(pl.lit(None, dtype=pl.Float64).alias("ret_fwd"))
+    assert px.coverage_report(membership, none, m1, m3)[0].height == 0

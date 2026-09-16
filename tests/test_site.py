@@ -141,16 +141,30 @@ def test_trial_counts_are_the_spec_log_not_an_argument(cfg, repo_root: Path, dat
     assert data["n_specs"] > data["n_candidates"] > 0
 
 
-def test_history_is_one_point_per_code_version(data):
+def test_history_is_one_point_per_code_version_labelled_by_commit(cfg, repo_root, data):
+    """A point per distinct commit, labelled by its short hash; a row
+    logged before the commit column existed is labelled by its spec-log
+    row number (1-based, the header not counted, as CLAUDE.md cites)."""
+    from backtester import speclog
+
     h = data["history"]
     assert h["label"] == site.HISTORY_LABEL
-    assert len(h["dates"]) == len(h["values"]) >= 2
-    assert all(re.fullmatch(r"\d{2}-\d{2}", d) for d in h["dates"])
+    assert len(h["commits"]) == len(h["values"]) >= 2
+    assert len(set(h["commits"])) == len(h["commits"])
+    rows = speclog.read(repo_root / cfg.specifications)
+    for label in h["commits"]:
+        if m := re.fullmatch(r"row (\d+)", label):
+            r = rows[int(m.group(1)) - 1]
+            assert r["factor"] == "quality" and r["git_commit"] == ""
+        else:
+            assert re.fullmatch(r"[0-9a-f]{7}", label), label
+            assert any(r["git_commit"].startswith(label) for r in rows)
 
 
 def test_gap_is_one_bar_per_year(cfg, repo_root: Path, data):
-    """December for every complete year; the latest month the coverage
-    check has for the current one."""
+    """December for every complete year; for the current one the coverage
+    check's last month, which is the last month with a forward return,
+    not the window's end."""
     assert data["gap_years"][0] == cfg.start.year
     assert data["gap_years"][-1] == cfg.end.year
     assert len(data["gap_years"]) == len(data["gap_pct"])
@@ -163,7 +177,7 @@ def test_gap_is_one_bar_per_year(cfg, repo_root: Path, data):
         dec = cov.filter(pl.col("month") == pl.date(year, 12, 31))
         assert dec.height == 1 and gap == round(dec["gap_pct"][0], 1)
     last = cov.row(-1, named=True)
-    assert last["month"] == cfg.end
+    assert last["month"] < cfg.end and last["n_fwd_return"] > 0
     assert data["gap_pct"][-1] == round(last["gap_pct"], 1)
 
 

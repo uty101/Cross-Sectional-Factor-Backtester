@@ -46,6 +46,6 @@ const DATA = {
     "Wikipedia's 'date added' is a corporate-event date for long-standing members; trusted only before 2010.",
     "January 2010 had 15 names with a signal and one of them was a factor return; months under 50 names now form no portfolio."
   ],
-  history:{label:"Value net Sharpe across candidate runs",dates:["09-11","09-11","09-14"],values:[0.50,0.50,0.48]},
+  history:{label:"Quality net Sharpe across code versions",commits:["row 5","row 34","41aa868"],values:[0.07,0.17,0.16]},
   links:{repo:"https://github.com/uty101/Cross-Sectional-Factor-Backtester",methodology:"methodology.pdf",results:"results.md"}
 };

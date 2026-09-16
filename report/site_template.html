@@ -86,7 +86,7 @@
 </div>
 
 <div class="grid g32" style="margin-top:12px">
-  <div class="panel"><h2>Where the data is thin<small>% of index members with no usable price; December of each year, the latest month for the current one</small></h2><div id="ch_gap"></div><div class="hist" id="gap_note"></div><div class="hist" id="excl_note"></div></div>
+  <div class="panel"><h2>Where the data is thin<small>% of index members with no usable price; December of each year, the last month with a forward return for the current one</small></h2><div id="ch_gap"></div><div class="hist" id="gap_note"></div><div class="hist" id="excl_note"></div></div>
   <div class="panel"><h2>What did not work<small>full log in reports/what_did_not_work.md</small></h2><ul class="tight" id="wdnw"></ul></div>
 </div>
 
@@ -155,7 +155,7 @@ $("tb_val").innerHTML=`<table><tr><th>Series</th><th>Benchmark</th><th>ρ</th><t
  s+="</svg>";$("ch_gap").innerHTML=s;$("gap_note").textContent=DATA.gap_note;$("excl_note").textContent=DATA.exclusions||"";})();
 
 $("wdnw").innerHTML=DATA.wdnw.map(t=>`<li>${t}</li>`).join("");
-$("foot").innerHTML=`<span>${DATA.history.label}: ${DATA.history.dates.map((d,i)=>`${d} ${DATA.history.values[i].toFixed(2)}`).join(" → ")}</span><a href="${DATA.links.repo}">repository</a><a href="${DATA.links.methodology}">methodology (2 pp)</a><a href="${DATA.links.results}">full tables</a><span>Cost 10 bp one-way on every dollar traded · lag 1 day · 10 deciles · 50-name minimum</span>`;
+$("foot").innerHTML=`<span>${DATA.history.label}: ${DATA.history.commits.map((c,i)=>`${c} ${DATA.history.values[i].toFixed(2)}`).join(" → ")}</span><a href="${DATA.links.repo}">repository</a><a href="${DATA.links.methodology}">methodology (2 pp)</a><a href="${DATA.links.results}">full tables</a><span>Cost 10 bp one-way on every dollar traded · lag 1 day · 10 deciles · 50-name minimum</span>`;
 $("img_deciles").src=IMG_DECILES; $("img_ic").src=IMG_IC;
 </script>
 </body>
