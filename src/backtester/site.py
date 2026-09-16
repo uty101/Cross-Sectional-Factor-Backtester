@@ -25,7 +25,7 @@ import polars as pl
 
 from backtester import speclog
 from backtester.config import Config
-from backtester.report import COST_TABLE_BPS, HORIZONS
+from backtester.report import COST_TABLE_BPS, HORIZONS, NOT_A_JOIN_TEST
 
 REPO = "uty101/Cross-Sectional-Factor-Backtester"
 REPO_URL = f"https://github.com/{REPO}"
@@ -134,8 +134,12 @@ def _factor_cards(res: pl.DataFrame, verdicts: dict[str, str]) -> list[dict]:
 
 
 def _validation(path: Path) -> tuple[list[list], dict[str, str]]:
-    """Every row of validation.csv as [series, benchmark, corr, bar] and
-    the pass/fail verdict by series."""
+    """Every row of validation.csv as [series, benchmark, corr, bar, kind]
+    and the pass/fail verdict by series. ``kind`` is ``join`` for a row
+    that tests the pipeline against the factor it rebuilds and ``info``
+    for the composites report.NOT_A_JOIN_TEST names; the template draws a
+    verdict for the first and "n/a" for the second. Join rows keep the
+    file's order and the info rows follow them."""
     v = pl.read_csv(path)
     rows, verdicts = [], {}
     for r in v.iter_rows(named=True):
@@ -145,21 +149,30 @@ def _validation(path: Path) -> tuple[list[list], dict[str, str]]:
                 BENCHMARK_LABELS.get(r["benchmark"], r["benchmark"]),
                 _r(r["correlation"], 2),
                 _r(r["threshold"], 2),
+                "info" if r["series"] in NOT_A_JOIN_TEST else "join",
             ]
         )
         verdicts[r["series"]] = "pass" if r["passed"] else "fail"
+    rows.sort(key=lambda row: row[4] == "info")  # stable: info last
     return rows, verdicts
 
 
 def _gap_by_year(path: Path) -> tuple[list[int], list[float]]:
-    """The last month of each year (December, or the latest month the
-    window has for the current year) from price_coverage_monthly.csv."""
+    """One bar per year from price_coverage_monthly.csv: December's gap
+    for every complete year, and for the final, partial year the latest
+    month the check has (the window ends in August 2026, so a December
+    bar would not exist; FIX_PLAN_4 J2 said December). A complete year
+    whose last month is not December is a truncated check file, and the
+    bar would be mislabelled, so that raises."""
     cov = pl.read_csv(path, try_parse_dates=True).sort("month")
     last = (
         cov.with_columns(pl.col("month").dt.year().alias("year"))
         .group_by("year", maintain_order=True)
-        .last()
+        .agg(pl.col("month").last(), pl.col("gap_pct").last())
     )
+    complete = last["month"][:-1].dt.month().to_list()
+    if any(m != 12 for m in complete):
+        raise ValueError(f"{path}: a year before the last does not end in December")
     return last["year"].to_list(), [_r(x, 1) for x in last["gap_pct"].to_list()]
 
 

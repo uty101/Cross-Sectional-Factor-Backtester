@@ -35,6 +35,7 @@
   .card .row b{color:var(--ink);font-weight:500}
   .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
   .pass{background:var(--pass)} .fail{background:var(--fail)} .warn{background:var(--warn)}
+  .na{font:11px var(--mono);color:var(--ink2);margin-right:5px}
   table{border-collapse:collapse;width:100%;font:11.5px var(--mono)}
   th{font:600 11px var(--sans);text-align:right;color:var(--ink2);padding:2px 6px;border-bottom:1px solid var(--rule)}
   th:first-child,td:first-child{text-align:left;font-family:var(--sans)}
@@ -85,7 +86,7 @@
 </div>
 
 <div class="grid g32" style="margin-top:12px">
-  <div class="panel"><h2>Where the data is thin<small>% of index members with no usable price, by year</small></h2><div id="ch_gap"></div><div class="hist" id="gap_note"></div><div class="hist" id="excl_note"></div></div>
+  <div class="panel"><h2>Where the data is thin<small>% of index members with no usable price; December of each year, the latest month for the current one</small></h2><div id="ch_gap"></div><div class="hist" id="gap_note"></div><div class="hist" id="excl_note"></div></div>
   <div class="panel"><h2>What did not work<small>full log in reports/what_did_not_work.md</small></h2><ul class="tight" id="wdnw"></ul></div>
 </div>
 
@@ -115,7 +116,7 @@ $("cards").innerHTML=DATA.factors.map(f=>`
   <div class="row"><span>max DD · turnover</span><b>${f.mdd}% · ${f.to.toFixed(2)}</b></div>
   <div class="row"><span>IC (t)</span><b>${f.ic.toFixed(3)} (${f.ict})</b></div>
   <div class="row"><span>DSR (all trials)</span><b>${f.dsr.toFixed(2)}</b></div>
-  <div class="row"><span><i class="dot ${f.val==="pass"?"pass":f.val==="fail"?"fail":"warn"}"></i>vs French</span><b>${f.val}</b></div>
+  <div class="row"><span><i class="dot ${f.val==="pass"?"pass":f.val==="fail"?"fail":"warn"}"></i>join test</span><b>${f.val}</b></div>
  </div>`).join("");
 
 function lineChart(id,xs,series,opts){
@@ -144,7 +145,7 @@ $("tb_var").innerHTML=`<table><tr><th></th>${DATA.variant_cols.map(c=>`<th>${c}<
  DATA.variants.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(v=>cell(v,-0.6,0.6,2)).join("")}</tr>`).join("")+"</table>";
 
 $("tb_val").innerHTML=`<table><tr><th>Series</th><th>Benchmark</th><th>ρ</th><th>bar</th></tr>`+
- DATA.validation.map(r=>`<tr><td><i class="dot ${r[2]>=r[3]?"pass":"fail"}"></i>${r[0]}</td><td style="text-align:left;font-family:var(--sans)">${r[1]}</td><td><b>${r[2].toFixed(2)}</b></td><td>${r[3].toFixed(2)}</td></tr>`).join("")+"</table>"+
+ DATA.validation.map(r=>`<tr><td>${r[4]==="join"?`<i class="dot ${r[2]>=r[3]?"pass":"fail"}"></i>`:`<span class="na">n/a</span>`}${r[0]}</td><td style="text-align:left;font-family:var(--sans)">${r[1]}</td><td><b>${r[2].toFixed(2)}</b></td><td>${r[3].toFixed(2)}</td></tr>`).join("")+"</table>"+
  `<div class="hist">The value and quality composites are sector-neutral blends of two signals against a one-signal factor: not a join test. The join is tested by rebuilding the factor the way French builds it, the cap-weighted terciles.</div>`;
 
 (function(){const W=560,H=120,L=28,B=18,T=6;const n=DATA.gap_years.length,bw=(W-L-8)/n;const mx=35;

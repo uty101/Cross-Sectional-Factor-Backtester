@@ -29,10 +29,12 @@ const DATA = {
     ["Composite",.32,.34,.38,.51,.52,.25,.32]
   ],
   validation:[
-    ["Momentum long–short","French UMD",0.79,0.70],
-    ["B/P, cap-wt terciles","French HML, big-cap leg",0.74,0.70],
-    ["Pre-tax profit / book, cap-wt terciles","French RMW, big-cap leg",0.48,0.70],
-    ["Low beta long–short","AQR BAB (US)",0.42,0.50]
+    ["Momentum long–short","French UMD",0.79,0.70,"join"],
+    ["B/P, cap-wt terciles","French HML, big-cap leg",0.74,0.70,"join"],
+    ["Pre-tax profit / book, cap-wt terciles","French RMW, big-cap leg",0.48,0.70,"join"],
+    ["Low beta long–short","AQR BAB (US)",0.42,0.50,"join"],
+    ["Value composite (not a join test)","French HML",0.55,0.70,"info"],
+    ["Quality composite (not a join test)","French RMW",0.07,0.70,"info"]
   ],
   gap_years:[2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],
   gap_pct:[30.9,29.9,28.1,25.5,23.5,22.4,19.5,16.1,13.5,12.9,10.3,8.5,7.1,4.6,3.4,2.4,1.0],

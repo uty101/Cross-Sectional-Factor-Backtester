@@ -61,6 +61,10 @@ HORIZONS = [1, 2, 3, 6, 12]
 COST_GRID = list(range(0, 101, 1))
 # The cost table's columns; results.csv and the site read the same ones.
 COST_TABLE_BPS = [0, 5, 10, 25, 50]
+# Validation rows that are not join tests: the reported composites, two
+# sector-neutral signals against a raw one-signal French factor. The
+# results table marks them and the site renders them as information.
+NOT_A_JOIN_TEST = frozenset({"value", "quality"})
 # Saved variants of every reported factor: the long_short_<factor>_<tag>
 # parquet each sensitivity run writes, and the column it is printed under.
 VARIANTS = [
@@ -295,30 +299,16 @@ def validation_table(cfg: Config, inp) -> str:
 
     bars = dict(cfg.validation)
     rows = [
-        ("momentum", "", "umd", "UMD", bars.get("momentum"), True),
-        (
-            "hml_replica",
-            "",
-            "big_hml",
-            "HML, big-cap leg",
-            bars.get("hml_replica"),
-            True,
-        ),
-        (
-            "rmw_replica",
-            "",
-            "big_rmw",
-            "RMW, big-cap leg",
-            bars.get("rmw_replica"),
-            True,
-        ),
-        ("beta", "", "bab", "BAB (AQR)", bars.get("beta"), True),
-        ("beta", "hedged", "bab", "BAB (AQR)", bars.get("beta_hedged"), True),
-        ("value", "", "hml", "HML", bars.get("value"), False),
-        ("quality", "", "rmw", "RMW", bars.get("quality"), False),
+        ("momentum", "", "umd", "UMD", bars.get("momentum")),
+        ("hml_replica", "", "big_hml", "HML, big-cap leg", bars.get("hml_replica")),
+        ("rmw_replica", "", "big_rmw", "RMW, big-cap leg", bars.get("rmw_replica")),
+        ("beta", "", "bab", "BAB (AQR)", bars.get("beta")),
+        ("beta", "hedged", "bab", "BAB (AQR)", bars.get("beta_hedged")),
+        ("value", "", "hml", "HML", bars.get("value")),
+        ("quality", "", "rmw", "RMW", bars.get("quality")),
     ]
     out = "| Series | Against | Correlation | Months | Bar | |\n|---|---|---|---|---|---|\n"
-    for f, tag, col, name, bar, join_test in rows:
+    for f, tag, col, name, bar in rows:
         sfx = f"_{tag}" if tag else ""
         path = cfg.data / "processed" / f"long_short_{f}{sfx}.parquet"
         if not path.exists() or col not in inp.french.columns:
@@ -337,7 +327,7 @@ def validation_table(cfg: Config, inp) -> str:
             verdict = "pass" if v["corr"] >= bar else "**fail**"
         note = (
             verdict
-            if join_test
+            if f not in NOT_A_JOIN_TEST
             else "not a join test: a two-signal sector-neutral composite against a raw one-signal factor"
         )
         out += (
