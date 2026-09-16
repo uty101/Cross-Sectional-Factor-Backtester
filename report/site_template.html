@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cross-Sectional Factor Backtester — results</title>
+<style>
+  :root{
+    --ink:#161512; --ink2:#5b5850; --rule:#d9d5cc; --paper:#faf8f3; --panel:#fffdf9;
+    --pass:#1f6b3a; --fail:#a8412b; --warn:#9a6b12;
+    --m:#2b4c7e; --v:#8a3b12; --q:#3d6b2f; --l:#7a4a8c; --c:#111;
+    --mono:"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:13px/1.45 var(--sans)}
+  .wrap{max-width:1140px;margin:0 auto;padding:22px 20px 40px}
+  h1{font-size:19px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .meta{font:11.5px var(--mono);color:var(--ink2);margin-top:4px}
+  .meta b{color:var(--ink);font-weight:500}
+  .answer{margin:16px 0 14px;font-size:14.5px;max-width:78ch}
+  .grid{display:grid;gap:12px}
+  .g5{grid-template-columns:repeat(5,1fr)}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  .g32{grid-template-columns:3fr 2fr}
+  .panel{background:var(--panel);border:1px solid var(--rule);padding:10px 12px}
+  .panel h2{font-size:12px;font-weight:600;margin:0 0 6px;color:var(--ink)}
+  .panel h2 small{font-weight:400;color:var(--ink2);margin-left:6px}
+  .card{background:var(--panel);border:1px solid var(--rule);border-top:3px solid var(--acc);padding:9px 11px 8px}
+  .card .name{font-size:12.5px;font-weight:600}
+  .card .big{font:500 30px/1 var(--mono);margin:6px 0 2px;letter-spacing:-.02em}
+  .card .big span{font-size:11px;color:var(--ink2);letter-spacing:0;margin-left:4px;font-family:var(--sans)}
+  .card .row{display:flex;justify-content:space-between;font:11.5px var(--mono);color:var(--ink2);margin-top:2px}
+  .card .row b{color:var(--ink);font-weight:500}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  .pass{background:var(--pass)} .fail{background:var(--fail)} .warn{background:var(--warn)}
+  table{border-collapse:collapse;width:100%;font:11.5px var(--mono)}
+  th{font:600 11px var(--sans);text-align:right;color:var(--ink2);padding:2px 6px;border-bottom:1px solid var(--rule)}
+  th:first-child,td:first-child{text-align:left;font-family:var(--sans)}
+  td{text-align:right;padding:3px 6px;border-bottom:1px solid #eeeae2}
+  td.neg{color:var(--fail)} td.pos{color:var(--pass)}
+  .bar{display:inline-block;height:9px;vertical-align:middle;background:var(--ink)}
+  .cell{position:relative}
+  .cell i{position:absolute;left:0;top:0;bottom:0;background:rgba(31,107,58,.14)}
+  .cell i.n{background:rgba(168,65,43,.16)}
+  .cell b{position:relative;font-weight:500}
+  img{width:100%;display:block}
+  svg{width:100%;height:auto;display:block}
+  .legend{font:11px var(--mono);color:var(--ink2);display:flex;gap:12px;flex-wrap:wrap;margin-top:4px}
+  .legend i{display:inline-block;width:14px;height:2px;vertical-align:middle;margin-right:4px}
+  ul.tight{margin:4px 0 0;padding-left:16px}
+  ul.tight li{margin:3px 0;max-width:90ch}
+  .foot{font:11px var(--mono);color:var(--ink2);margin-top:14px;display:flex;gap:18px;flex-wrap:wrap}
+  .foot a{color:var(--ink2)}
+  .hist{font:11px var(--mono);color:var(--ink2);margin-top:3px}
+  @media (max-width:860px){.g5{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g32{grid-template-columns:1fr}}
+  @media print{body{background:#fff}.wrap{padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Cross-Sectional Factor Backtester</h1>
+<div class="meta" id="meta"></div>
+
+<p class="answer" id="answer"></p>
+
+<div class="grid g5" id="cards"></div>
+
+<div class="grid g2" style="margin-top:12px">
+  <div class="panel"><h2>Cumulative return by decile<small>log scale, equal weight, gross</small></h2><img id="img_deciles" alt="cumulative return by decile"></div>
+  <div class="panel"><h2>Rolling 36-month mean IC<small>shaded: NBER recessions</small></h2><img id="img_ic" alt="rolling IC"></div>
+</div>
+
+<div class="grid g3" style="margin-top:12px">
+  <div class="panel"><h2>Net Sharpe vs one-way cost<small>bp, charged on every dollar traded</small></h2><div id="ch_cost"></div><div class="legend" id="lg1"></div></div>
+  <div class="panel"><h2>IC by horizon<small>months ahead</small></h2><div id="ch_decay"></div></div>
+  <div class="panel"><h2>Attribution<small>long–short on Mkt-RF, HML, UMD, RMW</small></h2><div id="tb_attr"></div></div>
+</div>
+
+<div class="grid g32" style="margin-top:12px">
+  <div class="panel"><h2>Net Sharpe under other choices<small>base = equal weight, 1-month hold, sector neutral, 10 bp</small></h2><div id="tb_var"></div></div>
+  <div class="panel"><h2>Validation against published factors<small>correlation of monthly long–short returns</small></h2><div id="tb_val"></div></div>
+</div>
+
+<div class="grid g32" style="margin-top:12px">
+  <div class="panel"><h2>Where the data is thin<small>% of index members with no usable price, by year</small></h2><div id="ch_gap"></div><div class="hist" id="gap_note"></div><div class="hist" id="excl_note"></div></div>
+  <div class="panel"><h2>What did not work<small>full log in reports/what_did_not_work.md</small></h2><ul class="tight" id="wdnw"></ul></div>
+</div>
+
+<div class="foot" id="foot"></div>
+</div>
+
+<script>
+// ---- DATA: written by `backtester site` from results.csv, validation.csv, price_coverage_monthly.csv, specifications.csv ----
+const DATA = __DATA_JSON__;
+const IMG_DECILES = "__IMG_DECILES__";
+const IMG_IC = "__IMG_IC__";
+
+// ---- render ----
+const col={m:"var(--m)",v:"var(--v)",q:"var(--q)",l:"var(--l)",c:"var(--c)"};
+const f2=x=>(x>=0?"+":"")+x.toFixed(2), f1=x=>(x>=0?"+":"")+x.toFixed(1);
+const $=id=>document.getElementById(id);
+
+$("meta").innerHTML=`Window <b>${DATA.window[0]} → ${DATA.window[1]}</b> · ${DATA.universe} · last run <b>${DATA.last_run}</b> · specifications logged <b>N = ${DATA.n_specs}</b> (${DATA.n_candidates} candidates) · full recompute ${DATA.recompute}`;
+$("answer").textContent=DATA.answer;
+
+$("cards").innerHTML=DATA.factors.map(f=>`
+ <div class="card" style="--acc:${col[f.key]}">
+  <div class="name">${f.name}</div>
+  <div class="big">${f2(f.sharpe)}<span>net Sharpe</span></div>
+  <div class="row"><span>ann. return</span><b>${f1(f.gross)}% → ${f1(f.net)}%</b></div>
+  <div class="row"><span>break-even</span><b>${f.be}</b></div>
+  <div class="row"><span>max DD · turnover</span><b>${f.mdd}% · ${f.to.toFixed(2)}</b></div>
+  <div class="row"><span>IC (t)</span><b>${f.ic.toFixed(3)} (${f.ict})</b></div>
+  <div class="row"><span>DSR (all trials)</span><b>${f.dsr.toFixed(2)}</b></div>
+  <div class="row"><span><i class="dot ${f.val==="pass"?"pass":f.val==="fail"?"fail":"warn"}"></i>vs French</span><b>${f.val}</b></div>
+ </div>`).join("");
+
+function lineChart(id,xs,series,opts){
+  const W=360,H=190,L=34,R=8,T=8,B=22;
+  const all=Object.values(series).flat();
+  let y0=Math.min(0,...all),y1=Math.max(0,...all); const pad=(y1-y0)*.08; y0-=pad;y1+=pad;
+  const x=i=>L+(W-L-R)*(opts.cat?i/(xs.length-1):(xs[i]-xs[0])/(xs[xs.length-1]-xs[0]));
+  const y=v=>T+(H-T-B)*(1-(v-y0)/(y1-y0));
+  let s=`<svg viewBox="0 0 ${W} ${H}" font-family="var(--mono)" font-size="9.5" fill="var(--ink2)">`;
+  const ticks=opts.ticks||4;
+  for(let k=0;k<=ticks;k++){const v=y0+(y1-y0)*k/ticks; s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e6e2d9"/><text x="${L-4}" y="${y(v)+3}" text-anchor="end">${v.toFixed(opts.dec)}</text>`;}
+  s+=`<line x1="${L}" x2="${W-R}" y1="${y(0)}" y2="${y(0)}" stroke="var(--ink2)" stroke-width=".8"/>`;
+  xs.forEach((v,i)=>s+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle">${v}</text>`);
+  for(const k in series){const d=series[k].map((v,i)=>`${i?"L":"M"}${x(i)},${y(v)}`).join(""); s+=`<path d="${d}" fill="none" stroke="${col[k]}" stroke-width="1.8"/>`+series[k].map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="2.2" fill="${col[k]}"/>`).join("");}
+  s+="</svg>"; $(id).innerHTML=s;
+}
+lineChart("ch_cost",DATA.cost_bps,DATA.cost_curve,{dec:1});
+lineChart("ch_decay",DATA.horizons,DATA.ic_decay,{dec:3,cat:true});
+$("lg1").innerHTML=DATA.factors.map(f=>`<span><i style="background:${col[f.key]}"></i>${f.name.split(" (")[0]}</span>`).join("");
+
+function cell(v,lo,hi,dec){const w=Math.min(100,Math.abs(v)/Math.max(Math.abs(lo),Math.abs(hi))*100);return `<td class="cell"><i class="${v<0?"n":""}" style="width:${w}%"></i><b>${v.toFixed(dec)}</b></td>`;}
+$("tb_attr").innerHTML=`<table><tr><th></th><th>α ann.</th><th>t</th><th>Mkt</th><th>HML</th><th>UMD</th><th>RMW</th><th>R²</th></tr>`+
+ DATA.attribution.map(r=>`<tr><td>${r[0]}</td><td class="${r[1]<0?"neg":"pos"}">${f1(r[1])}%</td><td>${r[2].toFixed(1)}</td>${[3,4,5,6].map(i=>cell(r[i],-1,1,2)).join("")}<td>${r[7].toFixed(2)}</td></tr>`).join("")+"</table>";
+
+$("tb_var").innerHTML=`<table><tr><th></th>${DATA.variant_cols.map(c=>`<th>${c}</th>`).join("")}</tr>`+
+ DATA.variants.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(v=>cell(v,-0.6,0.6,2)).join("")}</tr>`).join("")+"</table>";
+
+$("tb_val").innerHTML=`<table><tr><th>Series</th><th>Benchmark</th><th>ρ</th><th>bar</th></tr>`+
+ DATA.validation.map(r=>`<tr><td><i class="dot ${r[2]>=r[3]?"pass":"fail"}"></i>${r[0]}</td><td style="text-align:left;font-family:var(--sans)">${r[1]}</td><td><b>${r[2].toFixed(2)}</b></td><td>${r[3].toFixed(2)}</td></tr>`).join("")+"</table>"+
+ `<div class="hist">Composites (value, quality) are sector-neutral blends of two signals; they are not a join test and are not listed. The join is tested by rebuilding the factor the way French builds it.</div>`;
+
+(function(){const W=560,H=120,L=28,B=18,T=6;const n=DATA.gap_years.length,bw=(W-L-8)/n;const mx=35;
+ let s=`<svg viewBox="0 0 ${W} ${H}" font-family="var(--mono)" font-size="9.5" fill="var(--ink2)">`;
+ [0,10,20,30].forEach(v=>{const y=T+(H-T-B)*(1-v/mx);s+=`<line x1="${L}" x2="${W-6}" y1="${y}" y2="${y}" stroke="#e6e2d9"/><text x="${L-4}" y="${y+3}" text-anchor="end">${v}%</text>`;});
+ DATA.gap_pct.forEach((v,i)=>{const h=(H-T-B)*v/mx;s+=`<rect x="${L+i*bw+2}" y="${H-B-h}" width="${bw-4}" height="${h}" fill="${v>20?"var(--fail)":v>10?"var(--warn)":"var(--ink2)"}" opacity=".85"/>`;if(i%2==0)s+=`<text x="${L+i*bw+bw/2}" y="${H-5}" text-anchor="middle">${String(DATA.gap_years[i]).slice(2)}</text>`;});
+ s+="</svg>";$("ch_gap").innerHTML=s;$("gap_note").textContent=DATA.gap_note;$("excl_note").textContent=DATA.exclusions||"";})();
+
+$("wdnw").innerHTML=DATA.wdnw.map(t=>`<li>${t}</li>`).join("");
+$("foot").innerHTML=`<span>${DATA.history.label}: ${DATA.history.dates.map((d,i)=>`${d} ${DATA.history.values[i].toFixed(2)}`).join(" → ")}</span><a href="${DATA.links.repo}">repository</a><a href="${DATA.links.methodology}">methodology (2 pp)</a><a href="${DATA.links.results}">full tables</a><span>Cost 10 bp one-way on every dollar traded · lag 1 day · 10 deciles · 50-name minimum</span>`;
+$("img_deciles").src=IMG_DECILES; $("img_ic").src=IMG_IC;
+</script>
+</body>
+</html>

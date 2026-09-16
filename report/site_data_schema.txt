@@ -1,0 +1,49 @@
+const DATA = {
+  window:["2010-01-31","2026-08-31"], universe:"S&P 500, point-in-time membership",
+  last_run:"2026-09-14", n_specs:185, n_candidates:38, recompute:"match 1e-10 (2026-09-14)",
+  answer:"Value survives realistic costs (net Sharpe 0.48, break-even 79 bp). Quality is marginal. Momentum, low volatility and a naive composite do not earn their turnover in this universe and window. Nothing here is a fund; the point is the pipeline that produced the numbers and the tests behind it.",
+  factors:[
+    {key:"m",name:"Momentum 12-1",gross:2.2,net:0.7,vol:15.8,sharpe:0.05,dsr:0.00,mdd:-56,to:0.62,ic:0.007,ict:0.6,be:"15 bp",val:"pass"},
+    {key:"v",name:"Value (B/P, E/P)",gross:5.1,net:4.4,vol:9.1,sharpe:0.48,dsr:0.17,mdd:-22,to:0.27,ic:0.011,ict:1.4,be:"79 bp",val:"pass"},
+    {key:"q",name:"Quality (GP/A, accruals)",gross:1.9,net:1.3,vol:8.5,sharpe:0.16,dsr:0.01,mdd:-24,to:0.25,ic:0.009,ict:1.5,be:"32 bp",val:"fail"},
+    {key:"l",name:"Low volatility",gross:-4.1,net:-4.7,vol:18.9,sharpe:-0.25,dsr:0.00,mdd:-71,to:0.24,ic:0.003,ict:0.2,be:"none",val:"fail"},
+    {key:"c",name:"Composite",gross:5.5,net:4.6,vol:14.4,sharpe:0.32,dsr:0.05,mdd:-28,to:0.39,ic:0.018,ict:1.9,be:"59 bp",val:"n/a"}
+  ],
+  cost_bps:[0,5,10,25,50],
+  cost_curve:{m:[.14,.09,.05,-.10,-.33],v:[.55,.52,.48,.38,.20],q:[.23,.19,.16,.05,-.12],l:[-.22,-.23,-.25,-.29,-.37],c:[.38,.35,.32,.22,.06]},
+  horizons:[1,2,3,6,12],
+  ic_decay:{m:[.008,.004,.005,.007,.003],v:[.010,.013,.014,.010,.015],q:[.009,.010,.009,.011,.012],l:[.001,.001,.002,-.001,.002],c:[.018,.018,.021,.023,.028]},
+  attribution:[
+    ["Momentum 12-1",-0.3,-0.1,-0.06,-0.23,0.91,-0.08,0.66],
+    ["Value",4.7,2.3,0.08,0.10,-0.26,0.21,0.25],
+    ["Quality",2.1,1.0,-0.05,-0.11,0.10,0.10,0.07],
+    ["Low volatility",1.1,0.4,-0.65,-0.11,0.43,0.94,0.61],
+    ["Composite",6.7,2.4,-0.28,-0.17,0.39,0.60,0.39]
+  ],
+  variant_cols:["Base","Cap-wt","Hold 3m","Hold 6m","Hold 12m","No sector","Delist −30%"],
+  variants:[
+    ["Momentum 12-1",.05,.07,.18,.18,.23,-.05,.04],
+    ["Value",.48,.29,.52,.55,.51,.51,.48],
+    ["Quality",.16,.41,.19,.20,.05,.21,.16],
+    ["Low volatility",-.25,-.13,-.25,-.23,-.15,-.34,-.24],
+    ["Composite",.32,.34,.38,.51,.52,.25,.32]
+  ],
+  validation:[
+    ["Momentum long–short","French UMD",0.79,0.70],
+    ["B/P, cap-wt terciles","French HML, big-cap leg",0.74,0.70],
+    ["Pre-tax profit / book, cap-wt terciles","French RMW, big-cap leg",0.48,0.70],
+    ["Low beta long–short","AQR BAB (US)",0.42,0.50]
+  ],
+  gap_years:[2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],
+  gap_pct:[30.9,29.9,28.1,25.5,23.5,22.4,19.5,16.1,13.5,12.9,10.3,8.5,7.1,4.6,3.4,2.4,1.0],
+  gap_note:"14.6% of member-months overall. The missing names are disproportionately the ones that left the index, so early-window results carry survivorship bias in a direction the data cannot currently sign.",
+  wdnw:[
+    "The brief's cost formula charged half the cost; net returns now pay c on every dollar bought and sold.",
+    "Filtering out filings that were later amended uses knowledge of the future. First-filed value wins instead.",
+    "yfinance stitches an acquired company's history onto whoever reused the symbol; 43 tickers dropped, 413 bad prints removed.",
+    "Wikipedia's 'date added' is a corporate-event date for long-standing members; trusted only before 2010.",
+    "January 2010 had 15 names with a signal and one of them was a factor return; months under 50 names now form no portfolio."
+  ],
+  history:{label:"Value net Sharpe across candidate runs",dates:["09-11","09-11","09-14"],values:[0.50,0.50,0.48]},
+  links:{repo:"https://github.com/uty101/Cross-Sectional-Factor-Backtester",methodology:"methodology.pdf",results:"results.md"}
+};
