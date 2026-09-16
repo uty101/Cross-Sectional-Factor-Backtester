@@ -81,7 +81,7 @@ Half-life is n/a where the h=1 IC t-stat is under 1.96 in absolute value: there 
 | Composite | -0.31 | -0.18 | -0.31 | -0.10 | -0.18 | -0.25 | -0.31 | n/a |
 
 
-Cap-weighted runs hold only the names with a market cap (39% of members in 2010, 86% in 2023); the equal-weighted base holds every name with a signal.
+Cap-weighted runs hold only the names with a market cap (61% of members in 2010, 95% in 2023); the equal-weighted base holds every name with a signal.
 
 
 ## Beta-hedged low volatility and low beta

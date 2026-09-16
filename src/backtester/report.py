@@ -2,11 +2,13 @@
 
 Writes reports/results.md and reports/figures/. The README is updated by
 hand from results.md so that every number is looked at before it is
-published; no number in the README is typed from memory. The exception
-is the price-coverage figures in the README's prose and the answer
-paragraph, which sit between ``<!--cov:key-->`` and ``<!--/cov-->``
-markers and are filled by ``build`` from data/checks (J3a; they were
-typed from the report's outputs and drifted once).
+published; no number in the README is typed from memory. The figures
+the README's prose and the answer paragraph quote (coverage, turnovers,
+loadings, the cap-weighted shares) sit between ``<!--cov:key-->`` and
+``<!--/cov-->`` markers and are filled by ``build`` from data/checks and
+the report's own csv outputs (``prose_figures``; J3a and J3b, after the
+typed coverage figures drifted once and the cap-weighted shares stayed
+at their 11 September values through the F2 fix).
 
     chart 1   cumulative log returns of deciles 1-10, one panel per factor
     chart 2   rolling 36-month IC, zero line, shaded recessions
@@ -97,6 +99,78 @@ def coverage_figures(
     }
 
 
+MINUS = "\u2212"  # the README's minus sign
+
+
+def _signed(x: float, nd: int, pct: bool = False) -> str:
+    return _f(x, nd, pct).replace("-", MINUS)
+
+
+def cap_shares(cfg: Config) -> dict[str, str]:
+    """``cap_share_<year>``: the mean over that year's month-ends of the
+    share of members with a market cap (fundamentals_coverage.csv), which
+    is what a cap-weighted run can hold. The variants note in results.md
+    and the README's Data section quote two of them."""
+    cov = pl.read_csv(
+        cfg.data / "checks" / "fundamentals_coverage.csv", try_parse_dates=True
+    )
+    by_year = (
+        cov.with_columns(
+            pl.col("month").dt.year().alias("year"),
+            (pl.col("market_cap") / pl.col("n_members")).alias("share"),
+        )
+        .group_by("year")
+        .agg(pl.col("share").mean())
+    )
+    return {f"cap_share_{y}": f"{100 * share:.0f}%" for y, share in by_year.iter_rows()}
+
+
+def prose_figures(cfg: Config) -> dict[str, str]:
+    """Every figure the README's prose may quote, keyed, as printed (J3b).
+
+    On top of ``coverage_figures``: ``gap_first`` and ``gap_last``, the
+    price gap at the window's first month-end and at the last with a
+    forward return (the Data row's "31% in 2010 falling to 0%");
+    ``cap_shares``; per reported factor, from results.csv,
+    ``gross_ann_<f>`` and ``net_ann_<f>``, ``turnover_<f>`` (mean
+    monthly), ``breakeven_<f>``,
+    ``sharpe_net_<f>``, ``alpha_<f>`` and ``alpha_t_<f>``,
+    ``beta_<k>_<f>`` and ``t_<k>_<f>`` for each French factor k, and
+    ``r2_<f>``; and ``corr_<series>_<benchmark>`` from validation.csv.
+    Formats are the tables': two decimals for a loading, one for a
+    t-stat, a percentage to one decimal for an alpha, and the README's
+    minus sign.
+    """
+    checks = cfg.data / "checks"
+    out = coverage_figures(cfg)
+    monthly = pl.read_csv(checks / "price_coverage_monthly.csv", try_parse_dates=True)
+    if monthly.height:
+        out["gap_first"] = f"{monthly['gap_pct'][0]:.0f}%"
+        out["gap_last"] = f"{monthly['gap_pct'][-1]:.0f}%"
+    out.update(cap_shares(cfg))
+    results = cfg.reports / "results.csv"
+    if results.exists():
+        for r in pl.read_csv(results).iter_rows(named=True):
+            f = r["key"]
+            out[f"gross_ann_{f}"] = _signed(r["gross_ann"], 1, True)
+            out[f"net_ann_{f}"] = _signed(r["net_ann"], 1, True)
+            out[f"turnover_{f}"] = _f(r["turnover"], 2)
+            out[f"breakeven_{f}"] = _be(r["breakeven_bps"]).replace("-", MINUS)
+            out[f"sharpe_net_{f}"] = _signed(r["sharpe_net"], 2)
+            out[f"alpha_{f}"] = _signed(r["alpha_ann"], 1, True)
+            out[f"alpha_t_{f}"] = _signed(r["alpha_t"], 1)
+            out[f"r2_{f}"] = _f(r["r2"], 2)
+            for k in ("mkt_rf", "hml", "umd", "rmw"):
+                out[f"beta_{k}_{f}"] = _signed(r[f"beta_{k}"], 2)
+                if f"t_{k}" in r:  # a results.csv from before J3b has no t
+                    out[f"t_{k}_{f}"] = _signed(r[f"t_{k}"], 1)
+    validation = cfg.reports / "validation.csv"
+    if validation.exists():
+        for r in pl.read_csv(validation).iter_rows(named=True):
+            out[f"corr_{r['series']}_{r['benchmark']}"] = _signed(r["correlation"], 2)
+    return out
+
+
 def fill_placeholders(text: str, values: dict[str, str]) -> str:
     """Every ``<!--cov:key-->old<!--/cov-->`` becomes the key's value,
     markers kept so the next fill finds it. An unknown key is an error:
@@ -123,7 +197,7 @@ def fill_files(cfg: Config, root=None) -> dict[str, int]:
     from pathlib import Path
 
     root = Path(root) if root is not None else Path(".")
-    values = coverage_figures(cfg)
+    values = prose_figures(cfg)
     out = {}
     for rel in PLACEHOLDER_FILES:
         path = root / rel
@@ -543,6 +617,7 @@ def results_frame(cfg: Config, reports: list[FactorReport]) -> pl.DataFrame:
                 "alpha_ann": a.alpha_annual,
                 "alpha_t": a.alpha_t,
                 **{f"beta_{k}": a.betas[k] for k in ("mkt_rf", "hml", "umd", "rmw")},
+                **{f"t_{k}": a.beta_t[k] for k in ("mkt_rf", "hml", "umd", "rmw")},
                 "r2": a.r2,
                 **{f"ic_h{h}": ics[h] for h in HORIZONS},
                 **{
@@ -817,6 +892,9 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
     appendix = [r for r in reports if r.factor == "text_change"]
     cov = pl.read_csv(cfg.data / "checks" / "price_coverage_summary.csv")
     gap = float(cov.filter(pl.col("metric") == "gap_pct")["value"][0])
+    # The cap-weighted sentence's two shares were typed here (39%, 86%)
+    # on 2026-09-11 and never regenerated; they are 61% and 95% after F2.
+    cap = cap_shares(cfg)
     figs = cfg.reports / "figures"
     figs.mkdir(parents=True, exist_ok=True)
     chart_deciles(headline, figs / "chart1_deciles.png")
@@ -859,8 +937,9 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
         cost_table(headline, COST_TABLE_BPS),
         "\n## Variants (net Sharpe)\n",
         variant_table(cfg, [r.factor for r in headline], tags),
-        "\nCap-weighted runs hold only the names with a market cap (39% of members in "
-        "2010, 86% in 2023); the equal-weighted base holds every name with a signal.\n",
+        f"\nCap-weighted runs hold only the names with a market cap ({cap['cap_share_2010']} "
+        f"of members in 2010, {cap['cap_share_2023']} in 2023); the equal-weighted base "
+        "holds every name with a signal.\n",
         "\n## Beta-hedged low volatility and low beta\n",
         hedge_table(cfg, inp),
         "\nThe hedge is the rolling 36-month beta to Mkt-RF estimated on months strictly before the "
@@ -897,7 +976,9 @@ def build(cfg: Config, factors: list[str] = REPORTED) -> str:
     from backtester.run import validation_table as validation_csv
 
     validation_csv(cfg, inp).write_csv(cfg.reports / "validation.csv")
-    results_frame(cfg, headline).write_csv(cfg.reports / "results.csv")
+    # The appendix row is in results.csv too (the site keeps to the
+    # headline keys); the README's text bullet quotes its attribution.
+    results_frame(cfg, headline + appendix).write_csv(cfg.reports / "results.csv")
     months = sorted(
         m for m in inp.monthly["month"].unique().to_list() if cfg.start <= m <= cfg.end
     )

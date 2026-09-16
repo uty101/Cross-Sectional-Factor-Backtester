@@ -76,6 +76,29 @@ def test_to_words_drops_markup_numbers_and_the_inline_xbrl_header() -> None:
     ]
 
 
+def test_word_counts_in_a_spawned_pool_match_the_sequential_count(
+    tmp_path,
+) -> None:
+    """J3b: the pool path (50 documents and up) counts what the in-process
+    path counts, through the spawn context and a per-chunk timeout that
+    a chunk of tiny documents is well inside."""
+    import gzip
+
+    paths = []
+    for i in range(52):
+        doc = f"<p>Revenue rose. Cash fell {i} times. Word{i % 5} again.</p>"
+        q = tmp_path / f"{i:010d}-24-{i:06d}.htm.gz"
+        q.write_bytes(gzip.compress(doc.encode()))
+        paths.append(q)
+    sequential = dict(text._count(q) for q in paths)
+    pooled = text.word_counts(paths, workers=2, timeout=120.0)
+    assert pooled == sequential
+    assert len(pooled) == 52
+    assert pooled["0000000003-24-000003"] == Counter(
+        {"revenue": 1, "rose": 1, "cash": 1, "fell": 1, "times": 1, "word": 1}
+    )
+
+
 def test_scorer_has_no_model_and_no_network() -> None:
     # Invariant 10, the static half: the module that scores a document
     # imports nothing that could call a language model or the web at

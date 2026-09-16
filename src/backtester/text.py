@@ -46,6 +46,7 @@ import gzip
 import html
 import json
 import math
+import multiprocessing
 import re
 import threading
 import time
@@ -411,12 +412,54 @@ def _count(path: Path) -> tuple[str, Counter]:
     return path.name.split(".")[0], Counter(words)
 
 
-def word_counts(paths: list[Path], workers: int | None = None) -> dict[str, Counter]:
-    """adsh -> term counts, one process per core."""
+def _count_many(paths: list[Path]) -> list[tuple[str, Counter]]:
+    return [_count(p) for p in paths]
+
+
+# One chunk of documents per future, and how long the parent waits for it.
+WORD_COUNT_CHUNK = 8
+WORD_COUNT_TIMEOUT_S = 600.0
+
+
+def word_counts(
+    paths: list[Path],
+    workers: int | None = None,
+    timeout: float = WORD_COUNT_TIMEOUT_S,
+) -> dict[str, Counter]:
+    """adsh -> term counts, one process per core.
+
+    The pool uses the ``spawn`` start context explicitly and each chunk of
+    ``WORD_COUNT_CHUNK`` documents is its own future, waited on for at most
+    ``timeout`` seconds. On 2026-09-16 (review/j3a.md) a recompute run in
+    the background sat here for two hours: every worker had finished its
+    ~70 s of counting and every thread in the parent was waiting, with
+    the default ``pool.map`` and no timeout to say so. A chunk that is
+    not back in time raises ``TimeoutError`` naming it, the pending
+    futures are cancelled and the pool is shut down without waiting for
+    the workers, so the caller sees a failure and not a silent hang.
+    """
     if len(paths) < 50:
         return dict(_count(p) for p in paths)
-    with ProcessPoolExecutor(workers) as pool:
-        return dict(pool.map(_count, paths, chunksize=8))
+    chunks = [
+        paths[i : i + WORD_COUNT_CHUNK] for i in range(0, len(paths), WORD_COUNT_CHUNK)
+    ]
+    pool = ProcessPoolExecutor(workers, mp_context=multiprocessing.get_context("spawn"))
+    out: dict[str, Counter] = {}
+    try:
+        futures = [pool.submit(_count_many, chunk) for chunk in chunks]
+        for i, f in enumerate(futures):
+            try:
+                out.update(f.result(timeout=timeout))
+            except TimeoutError as e:
+                raise TimeoutError(
+                    f"word_counts: chunk {i + 1} of {len(chunks)} "
+                    f"({chunks[i][0].name} ...) not back after {timeout:.0f} s"
+                ) from e
+    except BaseException:
+        pool.shutdown(wait=False, cancel_futures=True)
+        raise
+    pool.shutdown(wait=True)
+    return out
 
 
 def score(

@@ -49,7 +49,10 @@ def page(cfg: config.Config, repo_root: Path, tmp_path_factory) -> Path:
 def test_every_reported_factor_is_a_card(cfg: config.Config, repo_root: Path, data):
     res = pl.read_csv(repo_root / cfg.reports / "results.csv")
     names = {r["name"] for r in data["factors"]}
-    assert names == set(res["factor"].to_list())
+    # results.csv carries the appendix row too (J3b); the cards are the headline
+    headline = res.filter(pl.col("key").is_in(list(site.KEYS)))
+    assert names == set(headline["factor"].to_list())
+    assert "10-K text similarity" not in names
     assert [f["key"] for f in data["factors"]] == ["m", "v", "q", "l", "c"]
 
 

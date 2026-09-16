@@ -116,16 +116,16 @@ times too small for its whole pre-split history, a book-to-price 6 to 50
 times too large, and sat in the value long leg. Those are the decade's
 winners. The "value alpha" was a momentum position that a $1bn size floor
 had been quietly trimming rather than diagnosing. With the count in the
-price basis the factor loads 0.42 on HML (t 7.7, R² 0.52, alpha −1.9%,
-t −0.9), correlates 0.55 with HML instead of 0.25, and earns what large-cap
+price basis the factor loads <!--cov:beta_hml_value-->0.42<!--/cov--> on HML (t <!--cov:t_hml_value-->7.7<!--/cov-->, R² <!--cov:r2_value-->0.52<!--/cov-->, alpha <!--cov:alpha_value-->−1.9%<!--/cov-->,
+t <!--cov:alpha_t_value-->−0.9<!--/cov-->), correlates <!--cov:corr_value_hml-->0.55<!--/cov--> with HML instead of 0.25, and earns what large-cap
 value earned over 2010–2026: nothing.
 
 | Value (B/P, E/P), sector-neutral | before F2 (unadjusted count) | after F2 (count in the price basis) |
 |---|---|---|
-| Net Sharpe | 0.48 | −0.19 |
-| Alpha after Mkt-RF, HML, UMD, RMW (t) | 4.7% (2.3) | −1.9% (−0.9) |
-| Loading on HML (t) | 0.10 | 0.42 (7.7) |
-| Correlation with HML | 0.25 | 0.55 |
+| Net Sharpe | 0.48 | <!--cov:sharpe_net_value-->−0.19<!--/cov--> |
+| Alpha after Mkt-RF, HML, UMD, RMW (t) | 4.7% (2.3) | <!--cov:alpha_value-->−1.9%<!--/cov--> (<!--cov:alpha_t_value-->−0.9<!--/cov-->) |
+| Loading on HML (t) | 0.10 | <!--cov:beta_hml_value-->0.42<!--/cov--> (<!--cov:t_hml_value-->7.7<!--/cov-->) |
+| Correlation with HML | 0.25 | <!--cov:corr_value_hml-->0.55<!--/cov--> |
 
 The before column is the previous README as quoted in
 [decisions/f4_before_after.md](decisions/f4_before_after.md); the after
@@ -134,13 +134,13 @@ column is the attribution and validation tables in
 
 What the table says, factor by factor:
 
-- **Momentum** is UMD (β 0.90, t 15.9, R² 0.67) and UMD earned nothing in
-  this window. Turnover of 0.62 a month puts its break-even at 19 bp.
+- **Momentum** is UMD (β <!--cov:beta_umd_momentum-->0.90<!--/cov-->, t <!--cov:t_umd_momentum-->15.9<!--/cov-->, R² <!--cov:r2_momentum-->0.67<!--/cov-->) and UMD earned nothing in
+  this window. Turnover of <!--cov:turnover_momentum-->0.62<!--/cov--> a month puts its break-even at <!--cov:breakeven_momentum-->19 bp<!--/cov-->.
   Holding for 3–12 months instead of 1 raises the net Sharpe to 0.19–0.26
   by cutting turnover, at the price of tracking UMD less closely.
   Cap-weighted it is 0.20.
 - **Value** loses 2.1% a year net. Sector-neutral B/P and E/P on S&P 500
-  names is a large-cap HML position (loading 0.42) and HML was flat to
+  names is a large-cap HML position (loading <!--cov:beta_hml_value-->0.42<!--/cov-->) and HML was flat to
   negative over most of the window. Cap-weighted −0.45; on the <!--cov:good_months-->128<!--/cov--> months
   from <!--cov:first_good_month-->2015-12<!--/cov--> where the price gap is under 20%, −0.19 against −0.19 on all
   months, so the missing delisted names are not hiding a premium.
@@ -153,8 +153,8 @@ What the table says, factor by factor:
   financials are excluded by rule, as Novy-Marx does. A net Sharpe of 0.22 with
   an IC t-stat of 1.2 is not evidence of much.
 - **Low volatility** loses 4.3% a year gross as a long–short. Its
-  attribution is the brief's prediction: market beta −0.67 (t −11.3) and
-  RMW 0.93 (t 8.2), with alpha of 1.0% (t 0.4). It is a short-beta,
+  attribution is the brief's prediction: market beta <!--cov:beta_mkt_rf_low_vol-->−0.67<!--/cov--> (t <!--cov:t_mkt_rf_low_vol-->−11.3<!--/cov-->) and
+  RMW <!--cov:beta_rmw_low_vol-->0.93<!--/cov--> (t <!--cov:t_rmw_low_vol-->8.2<!--/cov-->), with alpha of <!--cov:alpha_low_vol-->1.0%<!--/cov--> (t <!--cov:alpha_t_low_vol-->0.4<!--/cov-->). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
   With the rolling market beta hedged out (`portfolio.beta_hedge`,
   estimated only on months before formation) it nets 0.39, and the low
@@ -193,9 +193,9 @@ same columns:
 
 **10-K text similarity**, long the names whose annual report changed
   least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
-  nothing here: −0.2% gross, −1.0% net, alpha −0.5% (t −0.4), R² 0.03 on
+  nothing here: <!--cov:gross_ann_text_change-->0.1%<!--/cov--> gross, <!--cov:net_ann_text_change-->−0.6%<!--/cov--> net, alpha <!--cov:alpha_text_change-->−0.2%<!--/cov--> (t <!--cov:alpha_t_text_change-->−0.2<!--/cov-->), R² <!--cov:r2_text_change-->0.04<!--/cov--> on
   the four French factors, so it is at least not a repackaging of them.
-  Jaccard instead of cosine gives 0.05 net; every variant is within ±0.3
+  Jaccard instead of cosine gives 0.01 net; every variant is within ±0.35
   of zero. The paper's effect sits in small caps and in the short leg, and
   this is an S&P 500 long-short over 2010–2026. It is in the table because
   the point of building it was the data path (next section), not the return.
@@ -252,7 +252,7 @@ not tuned.
 | Universe history | Wikipedia constituents + changes tables | Membership intervals per ticker; cross-checked month by month against the [fja05680/sp500](https://github.com/fja05680/sp500) daily list, 98.4% agreement |
 | Fundamentals | SEC Financial Statement Data Sets | 70 quarterly zips 2009q1–2026q2; **filing date is the key**; 19 concepts via an ordered tag map that only grows; a ticker maps to a CIK per era ([data/checks/cik_overrides.csv](data/checks/cik_overrides.csv)) |
 | Shares outstanding | SEC companyconcept API; yfinance split events | The cover-page count (FSDS `num.txt` does not carry it), then the balance-sheet count, then the diluted weighted average, each **scaled by every split after its filing date** so it meets yfinance's split-adjusted close; a plausibility guard drops the filings in thousands ([decisions/f2_shares.md](decisions/f2_shares.md)) |
-| Prices | yfinance | Stooq is behind a JavaScript wall as of 2026-09. Delisted names are absent: **<!--cov:gap_pct-->14.7%<!--/cov--> of universe-months**, 31% in 2010 falling to 0%. Every price is checked against the filer's own market value (the 10-K's `EntityPublicFloat`) and every removed name's symbol against what yfinance says it is now: 280 member-months over 11 names are excluded ([data/checks/price_identity_exclusions.csv](data/checks/price_identity_exclusions.csv)) |
+| Prices | yfinance | Stooq is behind a JavaScript wall as of 2026-09. Delisted names are absent: **<!--cov:gap_pct-->14.7%<!--/cov--> of universe-months**, <!--cov:gap_first-->31%<!--/cov--> in 2010 falling to <!--cov:gap_last-->0%<!--/cov-->. Every price is checked against the filer's own market value (the 10-K's `EntityPublicFloat`) and every removed name's symbol against what yfinance says it is now: 280 member-months over 11 names are excluded ([data/checks/price_identity_exclusions.csv](data/checks/price_identity_exclusions.csv)) |
 | Sector map | SIC from the filings | 11 GICS-like buckets by hand; 84.5% agreement with Wikipedia's GICS on current members |
 | Benchmarks | Ken French data library | Mkt, SMB, HML, RMW, CMA, UMD, and the six size × B/M and size × OP portfolios for the big-cap legs |
 | Risk-free | French RF; FRED DGS1MO kept | Long–short spreads need none |
@@ -268,7 +268,7 @@ table in `results.md` gives every factor on the <!--cov:good_months-->128<!--/co
 where the price gap is under 20%: value −0.19 against −0.19 on all months,
 quality 0.34 against 0.22, momentum −0.06 against 0.08. Total assets cover
 98% of members from 2011 and a market cap 97% of the members with a price;
-the cap-weighted runs hold 39% of members in 2010 and 86% in 2023 because
+the cap-weighted runs hold <!--cov:cap_share_2010-->61%<!--/cov--> of members in 2010 and <!--cov:cap_share_2023-->95%<!--/cov--> in 2023 because
 the rest have no price. A Russell 3000 version needs paid coverage of
 delisted names and their filings.
 
