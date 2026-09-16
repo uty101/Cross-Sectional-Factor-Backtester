@@ -59,6 +59,7 @@ uv run backtester run-all                  # the five reported factors, base spe
 uv run backtester sensitivities            # cw, hold 3/6/12, no-sector: 25 logged runs
 uv run backtester delisting                # terminal-return convention, 6 logged runs
 uv run backtester report                   # results.md, 4 charts, methodology.pdf
+uv run backtester site                     # docs/index.html from the report's outputs; committed, Pages deploys it
 uv run backtester research-log             # reports/what_did_not_work.md from the spec log + git
 uv run backtester agent research_log       # needs ANTHROPIC_API_KEY and gh; logs to decisions/
 uv run dagster dev                         # assets, checks, schedules (backtester.orchestration)
@@ -121,12 +122,15 @@ src/backtester/
   run.py                 FACTORS registry, run_factor, run_all, sensitivities, replicate
   report.py              tables + 4 charts -> reports/results.md
   methodology.py         the 2-page PDF from the same numbers
+  site.py                docs/index.html: report/site_template.html + results.csv, validation.csv, spec log
   cli.py
 decisions/               agent run logs and decision records; BUILD_PLAN.md is the spec
 tests/                   one file per module; invariants named in test names
 data/raw|interim|processed   gitignored except raw/manifest.json
 data/checks/             committed evidence; README.md there lists every file
 reports/                 figures, results.md, methodology.pdf, specifications.csv
+report/                  site_template.html and site_data_schema.txt (J2; the schema is the key list)
+docs/                    the built page; .github/workflows/pages.yml deploys it on push to main
 ```
 
 ### Things a future session should know

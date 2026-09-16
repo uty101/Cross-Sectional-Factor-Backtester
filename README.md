@@ -3,10 +3,13 @@
 Point-in-time equity factor research for US large caps, 2010–2026, with
 costs, signal decay and overfitting control.
 
-> **Status: built and run.** Every number below comes from
-> `reports/results.md`, which `uv run backtester report` writes from saved
-> runs and the specification log; nothing is typed from memory. The brief
-> is [here](Project%20Outline/01_Factor_Backtester.docx).
+> **Status: built and run.** Results page:
+> <https://uty101.github.io/Cross-Sectional-Factor-Backtester/> (`docs/`,
+> written by `uv run backtester site` from the report's outputs). Every
+> number below comes from `reports/results.md`, which
+> `uv run backtester report` writes from saved runs and the specification
+> log; nothing is typed from memory. The brief is
+> [here](Project%20Outline/01_Factor_Backtester.docx).
 
 ## The test that matters
 
@@ -474,6 +477,7 @@ uv run backtester build --step universe && uv run backtester build --step prices
 uv run backtester build --step benchmarks && uv run backtester build --step fundamentals
 uv run backtester build --step text && uv run backtester run --factor text_change
 uv run backtester run-all && uv run backtester sensitivities && uv run backtester report
+uv run backtester site                          # docs/index.html from the report's outputs
 uv run dagster dev                              # the same pipeline as assets, with checks and schedules
 ```
 
@@ -496,8 +500,11 @@ src/backtester/
   stats.py                     IC, decay, Fama-MacBeth, Newey-West, DSR, attribution
   run.py                       one factor end to end; the loops; French replications
   report.py                    four charts and results.md
+  site.py                      docs/index.html from results.csv, validation.csv and the spec log
 data/checks/                   committed evidence, one file per question
-reports/figures, reports/results.md, reports/specifications.csv, reports/methodology.pdf
+reports/figures, reports/results.md + results.csv, reports/specifications.csv, reports/methodology.pdf
+report/site_template.html      the results page; site_data_schema.txt is the DATA it renders
+docs/                          the built page, deployed to GitHub Pages on push (.github/workflows/pages.yml)
 ```
 
 Build order was momentum first, since it needs no fundamentals, validated

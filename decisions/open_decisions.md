@@ -48,12 +48,20 @@ above).
 **Recommendation:** (a) if the keys are more than a few days away, (b)
 otherwise; either way the cross-check is the same code.
 
-## 2. H5 (was G7) needs `report/site_template.html`
+## 2. H5 (was G7) needs `report/site_template.html` — resolved 2026-09-16
 
-The plan says "from the file supplied on 2026-09-15". It is not in the
-repo, not in any commit, and not on this machine; `FIX_PLAN.md` has no
-F10 section describing it either. Push the template (or say to build the
-page from scratch) and G7 can run without any key.
+The template and `report/site_data_schema.txt` were pasted on
+2026-09-16 and committed verbatim (03b9512); FIX_PLAN_4 J2 is built:
+`backtester site` writes `docs/index.html` from `reports/results.csv`
+(new, written by `report`), `validation.csv`, `exclusions.csv`, the
+spec log and the coverage check. Two readings of the plan are
+recorded in `site.py`: the "what did not work" bullets come from the
+README's section, not `reports/what_did_not_work.md` (that file is the
+uninterpreted log; its first five lines are the day-one momentum
+reruns), and the schema example's `history` (value) is the plan text's
+(quality). One thing still needs the owner: enable GitHub Pages once,
+Settings > Pages, source "GitHub Actions"; the workflow is
+`.github/workflows/pages.yml`.
 
 ## 3. Part A keys (H6 = G6, H7 = G8 and G9)
 

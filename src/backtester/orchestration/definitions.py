@@ -8,7 +8,7 @@ Assets are the stored tables, in the data-flow order the CLI runs them:
                         cover_shares, fundamentals_monthly, text_similarity
     runs                factor_<name> for every reported factor,
                         sensitivities, delisting
-    reports             results, research_log
+    reports             results, research_log, site
 
 Every materialisation of a factor asset is a backtest and therefore a
 row in the specification log (invariant 8); that is by design, and the
@@ -235,6 +235,39 @@ def results() -> MaterializeResult:
             "validation_rows": v.height,
         }
     )
+
+
+@asset(group_name="reports", deps=[results])
+def site() -> MaterializeResult:
+    """docs/index.html from the report's outputs (FIX_PLAN_4 J2). It sits
+    downstream of ``results`` (the figures and validation.csv), so a
+    blocking check that fails upstream stops it; it also refuses to
+    publish a page whose numbers a failed check would contradict."""
+    from backtester import report
+
+    failed = _failed_checks()
+    if failed:
+        raise RuntimeError(f"site not built: checks failed: {', '.join(failed)}")
+    out = report.site(cfg(), ROOT)
+    return MaterializeResult(metadata={"path": str(out), "bytes": out.stat().st_size})
+
+
+def _failed_checks() -> list[str]:
+    """The asset checks on the data tables, re-evaluated in process, so the
+    site cannot be built by hand around a red pipeline."""
+    out = []
+    for check in (
+        universe_count_in_range,
+        recent_price_gap_is_small,
+        recent_fundamentals_coverage,
+    ):
+        try:
+            res = check()
+        except FileNotFoundError:
+            continue  # no data volume here: nothing to contradict
+        if not res.passed:
+            out.append(check.check_key.name)
+    return out
 
 
 @asset(group_name="reports", deps=[results])
@@ -565,6 +598,7 @@ defs = Definitions(
         delisting,
         results,
         research_log,
+        site,
     ],
     asset_checks=[
         universe_count_in_range,

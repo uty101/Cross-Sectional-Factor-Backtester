@@ -145,7 +145,7 @@ $("tb_var").innerHTML=`<table><tr><th></th>${DATA.variant_cols.map(c=>`<th>${c}<
 
 $("tb_val").innerHTML=`<table><tr><th>Series</th><th>Benchmark</th><th>ρ</th><th>bar</th></tr>`+
  DATA.validation.map(r=>`<tr><td><i class="dot ${r[2]>=r[3]?"pass":"fail"}"></i>${r[0]}</td><td style="text-align:left;font-family:var(--sans)">${r[1]}</td><td><b>${r[2].toFixed(2)}</b></td><td>${r[3].toFixed(2)}</td></tr>`).join("")+"</table>"+
- `<div class="hist">Composites (value, quality) are sector-neutral blends of two signals; they are not a join test and are not listed. The join is tested by rebuilding the factor the way French builds it.</div>`;
+ `<div class="hist">The value and quality composites are sector-neutral blends of two signals against a one-signal factor: not a join test. The join is tested by rebuilding the factor the way French builds it, the cap-weighted terciles.</div>`;
 
 (function(){const W=560,H=120,L=28,B=18,T=6;const n=DATA.gap_years.length,bw=(W-L-8)/n;const mx=35;
  let s=`<svg viewBox="0 0 ${W} ${H}" font-family="var(--mono)" font-size="9.5" fill="var(--ink2)">`;

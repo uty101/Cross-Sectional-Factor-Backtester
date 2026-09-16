@@ -1,4 +1,4 @@
-"""``backtester fetch | build | run | report``.
+"""``backtester fetch | build | run | report | site``.
 
 Thin by design: each subcommand is one function call into the package, so
 the pipeline can be driven from a notebook or a test the same way.
@@ -86,6 +86,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     run.add_argument("--note", default="")
     run.add_argument("--no-sector", action="store_true", help="plain cross-sectional z")
     sub.add_parser("report", help="charts and tables into reports/")
+    sub.add_parser("site", help="docs/index.html from the report (FIX_PLAN_4 J2)")
     sub.add_parser("secrets", help="which API keys are set (never prints a value)")
     sub.add_parser("run-all", help="base run of every reported factor")
     sub.add_parser("sensitivities", help="weighting and holding-period variants")
@@ -214,6 +215,11 @@ def main(argv: Sequence[str] | None = None) -> int:
 
         methodology.build(cfg)
         print(f"wrote {cfg.reports / 'results.md'} and methodology.pdf")
+        return 0
+    if args.command == "site":
+        from backtester import report
+
+        print(f"wrote {report.site(cfg)}")
         return 0
     print(f"{args.command}: unknown", file=sys.stderr)
     return 2
