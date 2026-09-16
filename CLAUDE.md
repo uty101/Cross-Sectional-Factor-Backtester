@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 166 tests, ~8 s
+uv run pytest                              # 171 tests, ~8 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|shares|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -192,6 +192,16 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   the float comes from the companyconcept API, not the FSDS. Exelon's
   XBRL float is twice its cover text for four years and is excluded by
   the rule; `review/h1.md` has every flagged row.
+- **A removed name's symbol is asked what it is** (FIX_PLAN_3 H2,
+  `prices.identity_check`, `data/checks/yf_identity.csv`). yfinance keys
+  history by symbol, and Yahoo files every delisted symbol as exchange
+  `YHD`, quote type `MUTUALFUND`, a number for a name: that code says
+  nothing (Aetna, Time Warner, Express Scripts sit under it at the right
+  price). What separates the wrong series is the price level, close x
+  cover count over the float: 5 of 113 measurable removed names are
+  outside [0.5, 20] (COL, EP, GR, GENZ, HAR) and the other 108 are in
+  [0.9, 2.1]. 42 names are flagged, 11 of them with priced member-months
+  (280 in all with H1); each is excluded for its whole membership.
 - **Text comes from EDGAR, never from company websites.** The 10-K
   primary documents live under `data/raw/edgar/10k/<cik>/<adsh>.htm.gz`,
   one per original filing, indexed from `sub.txt` in the FSDS zips so the

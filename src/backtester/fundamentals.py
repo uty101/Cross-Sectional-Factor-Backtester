@@ -1180,6 +1180,12 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     public_float_summary(float_check, membership, cfg).write_csv(
         checks / "public_float_summary.csv"
     )
+    # Symbol identity for every removed name (H2), here because it needs
+    # the floats, the cover counts and the CIK map, which the prices
+    # build precedes.
+    ident = identity_build(cfg, num, ciks, membership, daily)
+    if ident is not None:
+        ident.write_csv(checks / identity.IDENTITY)
     identity.write_exclusions(cfg, float_check, identity.load_identity_flags(cfg))
     tag_coverage(num, ciks, cfg).write_csv(checks / "tag_coverage.csv")
     concept_coverage(panel, membership, cfg, caps).write_csv(
@@ -1187,6 +1193,40 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
     )
     amendments(num).write_csv(checks / "sec_amendments_by_year.csv")
     return panel
+
+
+def identity_build(
+    cfg: Config,
+    num: pl.DataFrame,
+    ciks: pl.DataFrame,
+    membership: pl.DataFrame,
+    daily: pl.DataFrame,
+) -> pl.DataFrame | None:
+    """``prices.identity_check`` over every removed name, or None before
+    ``fetch --step prices`` has stored a yf_info file."""
+    from backtester import prices, shares
+
+    info = prices.load_info(cfg)
+    if info is None:
+        return None
+    cover, splits = shares.load(cfg)
+    levels = prices.price_levels(
+        load_floats(cfg, num),
+        cover if cover is not None else pl.DataFrame(schema=shares.COVER_SCHEMA),
+        splits,
+        ciks,
+        daily,
+        membership,
+    )
+    first = daily.group_by("ticker").agg(pl.col("date").min().alias("first_price"))
+    return prices.identity_check(
+        membership,
+        info,
+        first,
+        prices.sec_names_by_ticker(cfg),
+        levels,
+        band=float_thresholds(cfg),
+    )
 
 
 def bank_revenue(panel: pl.DataFrame) -> pl.DataFrame:

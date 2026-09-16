@@ -1,4 +1,46 @@
 ticker,start,end,reason,source_check
+AV,1900-01-01,2007-10-25,name overlap 0.00; quote type ETF,identity
+AVB,2007-01-10,2026-08-17,first price 2026-07-17 is over 24 months after membership start 2008-01-01,identity
+CAM,1900-01-01,2016-04-03,name overlap 0.00; quote type ETF,identity
+COL,1900-01-01,2018-12-02,"no_info; price level 0.0007981 outside [0.5, 20]; first price 2012-08-02 is over 24 months after membership start 2008-01-01",identity
+CPWR,1998-12-11,2011-12-30,name overlap 0.00; exchange OID,identity
+CSC,1900-01-01,2015-11-30,name overlap 0.00,identity
+CSRA,2015-12-01,2018-04-03,name overlap 0.00,identity
+DV,1900-01-01,2012-09-30,name overlap 0.00,identity
+DYN,1900-01-01,2009-12-17,name overlap 0.00,identity
+EA,1900-01-01,2026-08-04,first price 2026-07-17 is over 24 months after membership start 2008-01-01,identity
+EMC,1900-01-01,2016-09-07,name overlap 0.00; quote type ETF,identity
+EP,1900-01-01,2012-05-16,"name overlap 0.00; price level 0.006501 outside [0.5, 20]",identity
+FOX,2015-09-18,2019-03-18,first price 2019-03-13 is over 24 months after membership start 2015-09-18,identity
+FOXA,1900-01-01,2019-03-18,first price 2019-03-12 is over 24 months after membership start 2008-01-01,identity
+GENZ,1900-01-01,2011-03-31,"name overlap 0.00; price level 0.4216 outside [0.5, 20]",identity
+GR,1900-01-01,2012-07-30,"price level 0.07094 outside [0.5, 20]",identity
+GRN,1900-01-01,1998-12-10,name overlap 0.00; quote type ETF,identity
+HAR,1900-01-01,2017-03-15,"price level 83.85 outside [0.5, 20]; first price 2013-01-17 is over 24 months after membership start 2008-01-01",identity
+HNG,1900-01-01,1976-06-30,quote type ECNQUOTE,identity
+INFO,2017-06-02,2022-03-01,name overlap 0.00; quote type ETF,identity
+KG,1900-01-01,2010-12-16,name overlap 0.00,identity
+MHS,1900-01-01,2012-04-02,name overlap 0.00,identity
+MI,1900-01-01,2011-07-04,name overlap 0.00,identity
+MMI,2011-01-03,2012-05-20,name overlap 0.00,identity
+NFX,2010-12-17,2019-02-14,name overlap 0.00; quote type ETF,identity
+NSM,1900-01-01,2011-09-22,name overlap 0.00,identity
+NYX,1900-01-01,2013-11-12,name overlap 0.00; exchange NAS,identity
+PCL,1900-01-01,2016-02-21,name overlap 0.00; quote type ETF,identity
+PCS,2009-06-29,2013-04-29,name overlap 0.00; quote type ETF,identity
+POM,1900-01-01,2016-03-29,name overlap 0.00,identity
+S,1900-01-01,2013-07-07,name overlap 0.00,identity
+SE,1900-01-01,2017-02-27,name overlap 0.00,identity
+SGP,1900-01-01,2009-11-02,name overlap 0.00,identity
+SHLD,1900-01-01,2012-09-04,name overlap 0.00; quote type ETF,identity
+SII,1900-01-01,2010-08-25,name overlap 0.00; first price 2010-02-22 is over 24 months after membership start 2008-01-01,identity
+SLE,1900-01-01,2012-06-28,name overlap 0.00,identity
+SPLS,1900-01-01,2017-09-17,name overlap 0.00; quote type ETF,identity
+STI,1900-01-01,2019-12-08,name overlap 0.00,identity
+SUN,1900-01-01,2012-10-09,first price 2012-09-20 is over 24 months after membership start 2008-01-01,identity
+TMC,1900-01-01,2000-06-11,name overlap 0.00,identity
+USL,1900-01-01,1997-06-16,name overlap 0.00; quote type ETF,identity
+WB,1900-01-01,2008-12-30,name overlap 0.00,identity
 AA,2025-06-30,2026-06-30,"FY2025 cap/float 0.1588 (low, other): close 29.51 x shares 403674062.0 = 11912421662.0 against float 75000000000.0",public_float
 EXC,2010-12-31,2011-12-31,"FY2010 cap/float 0.4661 (low, near_split): close 29.7 x shares 927301494.0 = 27541251273.0 against float 59092745316.0",public_float
 EXC,2011-12-31,2012-12-31,"FY2011 cap/float 0.4866 (low, near_split): close 30.93 x shares 929543675.0 = 28754856877.0 against float 59092745316.0",public_float

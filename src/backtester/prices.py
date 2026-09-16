@@ -15,6 +15,8 @@ execution close to the next month's execution close.
 from __future__ import annotations
 
 import io
+import json
+import re
 import warnings
 from datetime import date
 from pathlib import Path
@@ -104,6 +106,7 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
     from backtester import sources
 
     stored += sources.fetch_tiingo(cfg, as_of) + sources.fetch_delistings(cfg, as_of)
+    stored.append(fetch_info(cfg, as_of))
     return stored
 
 
@@ -465,6 +468,412 @@ def coverage_report(
         schema={"ticker": pl.Utf8, "months_missing": pl.Int64},
     ).sort("months_missing", "ticker", descending=[True, False])
     return per_month, per_ticker
+
+
+# --- symbol identity (FIX_PLAN_3 H2) ------------------------------------
+
+# yfinance keys history by symbol and a symbol outlives its company: HAR
+# resolves today to a "YHD" fund quoted at $5,000-$34,000, EP to Empire
+# Petroleum on NYSE American, COL to nothing. The cleaning rule above
+# catches a reused symbol whose new series starts after the name left the
+# index; this check asks yfinance what the symbol *is* and compares.
+INFO_FIELDS = (
+    "longName",
+    "shortName",
+    "exchange",
+    "fullExchangeName",
+    "quoteType",
+    "currency",
+    "firstTradeDateMilliseconds",
+)
+# yfinance exchange codes for NYSE, Nasdaq (GS, GM, CM), NYSE American,
+# NYSE Arca and Cboe BZX: the venues an S&P 500 member trades on.
+US_EXCHANGES = frozenset({"NYQ", "NMS", "NGM", "NCM", "ASE", "PCX", "BTS", "NYS"})
+NAME_STOP = frozenset(
+    {
+        "inc",
+        "incorporated",
+        "corp",
+        "corporation",
+        "co",
+        "company",
+        "companies",
+        "ltd",
+        "limited",
+        "plc",
+        "holdings",
+        "holding",
+        "group",
+        "the",
+        "and",
+        "of",
+        "llc",
+        "lp",
+        "nv",
+        "sa",
+        "ag",
+        "class",
+        "common",
+        "stock",
+    }
+)
+IDENTITY_OVERLAP = 0.5
+IDENTITY_LATE_MONTHS = 24
+# A float date needs a cover count within this many days to give a level.
+LEVEL_MAX_GAP_DAYS = 200
+# Yahoo's own codes for a symbol it no longer quotes: every delisted name
+# is filed as exchange YHD, quote type MUTUALFUND, with a number for a
+# short name, or as quote type NONE with nothing else. The history kept
+# under such a symbol is usually the company's (Aetna, Time Warner,
+# Express Scripts read 0.9-1.1 on the level test) and sometimes not
+# (HAR, GR); the code itself says nothing about which.
+PLACEHOLDER_EXCHANGES = frozenset({"YHD"})
+PLACEHOLDER_TYPES = frozenset({"MUTUALFUND", "NONE"})
+IDENTITY_SCHEMA = {
+    "ticker": pl.Utf8,
+    "wiki_name": pl.Utf8,
+    "sec_name": pl.Utf8,
+    "yf_name": pl.Utf8,
+    "overlap": pl.Float64,
+    "exchange": pl.Utf8,
+    "currency": pl.Utf8,
+    "quote_type": pl.Utf8,
+    "first_price": pl.Date,
+    "member_start": pl.Date,
+    "member_end": pl.Date,
+    "level": pl.Float64,
+    "n_levels": pl.Int64,
+    "flag": pl.Boolean,
+    "reason": pl.Utf8,
+}
+LEVEL_SCHEMA = {
+    "ticker": pl.Utf8,
+    "level": pl.Float64,
+    "level_min": pl.Float64,
+    "level_max": pl.Float64,
+    "n_levels": pl.Int64,
+}
+
+
+def fetch_info(cfg: Config, as_of: date, tickers: list[str] | None = None) -> Path:
+    """yfinance ``info`` (INFO_FIELDS only) for every ticker that ever left
+    the index, one JSON keyed by ticker under data/raw/yf_info_<date>.json,
+    never overwritten; a symbol yfinance does not know is stored as an
+    empty object so the answer is on record."""
+    import yfinance as yf
+
+    root = cfg.data / "raw"
+    rel = f"yf_info_{as_of.isoformat()}.json"
+    if (root / rel).exists():
+        return root / rel
+    if tickers is None:
+        membership = pl.read_parquet(cfg.data / "interim" / "membership.parquet")
+        tickers = sorted(
+            set(membership.filter(pl.col("end").is_not_null())["ticker"].to_list())
+        )
+    out: dict[str, dict] = {}
+    for t in tickers:
+        try:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                info = yf.Ticker(to_yahoo(t)).info or {}
+        except Exception:  # noqa: BLE001 - a 404 or a parse error is "no info"
+            info = {}
+        out[t] = {k: info.get(k) for k in INFO_FIELDS if info.get(k) is not None}
+    body = json.dumps(out, indent=1, sort_keys=True).encode()
+    return raw.store_raw(root, rel, body, "yfinance:Ticker.info")
+
+
+def load_info(cfg: Config) -> dict[str, dict] | None:
+    """The latest yf_info_*.json, or None before ``fetch --step prices``
+    has stored one."""
+    try:
+        p = raw.latest(cfg.data / "raw", "yf_info_*.json")
+    except FileNotFoundError:
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def name_tokens(name: str | None) -> set[str]:
+    """Lower-case word tokens of a company name without the corporate
+    suffixes (Inc, Corp, Co, Ltd, plc, Holdings, Group, The, ...)."""
+    if not name:
+        return set()
+    words = re.findall(r"[a-z0-9]+", name.lower().replace("&", " and "))
+    return {w for w in words if w not in NAME_STOP}
+
+
+def name_overlap(a: str | None, b: str | None) -> float | None:
+    """Overlap coefficient of the two names' tokens: shared over the
+    smaller set, so "Harman International" against "Harman International
+    Industries" is 1.0. None when either side has no tokens."""
+    ta, tb = name_tokens(a), name_tokens(b)
+    if not ta or not tb:
+        return None
+    return len(ta & tb) / min(len(ta), len(tb))
+
+
+def is_real_name(name: str | None) -> bool:
+    """Yahoo's delisted placeholders carry a number for a name (906601)."""
+    return bool(name) and bool(re.search(r"[a-z]", name.lower()))
+
+
+def price_levels(
+    floats: pl.DataFrame,
+    cover: pl.DataFrame,
+    splits: pl.DataFrame | None,
+    ciks: pl.DataFrame,
+    daily: pl.DataFrame,
+    intervals: pl.DataFrame,
+    max_gap_days: int = LEVEL_MAX_GAP_DAYS,
+) -> pl.DataFrame:
+    """LEVEL_SCHEMA rows: for every removed name, the median over the
+    float dates inside its membership of
+
+        close x cover count (in the price basis) / EntityPublicFloat
+
+    the H1 ratio with the count taken straight from the cover page: no
+    share override, no plausibility guard, so a name whose count was
+    marked unresolved *because* its price was wrong (COL, EP, GR) is
+    measured rather than skipped. ``floats`` and ``cover`` are the
+    first-filed tables (shares.FLOAT_SCHEMA, COVER_SCHEMA); the count is
+    the one dated nearest the float date within ``max_gap_days``, scaled
+    by the splits after its filing date (shares.split_factor); the close
+    is the last on or before the float date, within 40 days."""
+    from backtester import shares
+    from backtester.fundamentals import first_filed
+    from backtester.sectors import cik_at
+
+    if not floats.height or not cover.height:
+        return pl.DataFrame(schema=LEVEL_SCHEMA)
+    removed = (
+        intervals.filter(pl.col("end").is_not_null())
+        .group_by("ticker")
+        .agg(pl.col("start").min().alias("_ms"), pl.col("end").max().alias("_me"))
+    )
+    stamp = [pl.lit("x").alias("concept"), pl.lit(0, dtype=pl.Int32).alias("qtrs")]
+    ff = first_filed(floats.with_columns(stamp)).select(
+        "cik", pl.col("ddate").alias("float_date"), pl.col("value").alias("float")
+    )
+    cv = first_filed(cover.with_columns(stamp)).select(
+        "cik",
+        pl.col("ddate").alias("_cd"),
+        pl.col("filed").alias("cover_filed"),
+        pl.col("value").alias("count"),
+    )
+    j = (
+        ff.join(cv, on="cik", how="inner")
+        .with_columns(
+            (pl.col("_cd") - pl.col("float_date")).dt.total_days().abs().alias("_gap")
+        )
+        .filter(pl.col("_gap") <= max_gap_days)
+        .sort("_gap", "_cd")
+        .unique(subset=["cik", "float_date"], keep="first", maintain_order=True)
+        .with_columns(pl.col("float_date").dt.month_end().alias("month"))
+    )
+    if not j.height:
+        return pl.DataFrame(schema=LEVEL_SCHEMA)
+    who = cik_at(ciks, sorted(j.get_column("month").unique().to_list()))
+    j = (
+        j.join(who, on=["month", "cik"], how="inner")
+        .join(removed, on="ticker", how="inner")
+        .filter(
+            (pl.col("float_date") >= pl.col("_ms"))
+            & (pl.col("float_date") <= pl.col("_me"))
+        )
+    )
+    j = shares.split_factor(j, splits, basis_col="cover_filed")
+    px = (
+        daily.select("date", "ticker", "close")
+        .join(j.select("ticker", "float_date").unique(), on="ticker", how="inner")
+        .filter(pl.col("date") <= pl.col("float_date"))
+        .sort("date")
+        .group_by("ticker", "float_date")
+        .agg(pl.col("close").last(), pl.col("date").last().alias("_pxd"))
+    )
+    j = (
+        j.join(px, on=["ticker", "float_date"], how="inner")
+        .filter(pl.col("_pxd") >= pl.col("float_date").dt.offset_by("-40d"))
+        .with_columns(
+            (
+                pl.col("close")
+                * pl.col("count")
+                * pl.col("split_factor")
+                / pl.col("float")
+            ).alias("_level")
+        )
+    )
+    return (
+        j.group_by("ticker")
+        .agg(
+            pl.col("_level").median().alias("level"),
+            pl.col("_level").min().alias("level_min"),
+            pl.col("_level").max().alias("level_max"),
+            pl.len().cast(pl.Int64).alias("n_levels"),
+        )
+        .select(list(LEVEL_SCHEMA))
+        .sort("ticker")
+    )
+
+
+def identity_check(
+    intervals: pl.DataFrame,
+    info: dict[str, dict],
+    first_prices: pl.DataFrame,
+    sec_names: pl.DataFrame | None = None,
+    levels: pl.DataFrame | None = None,
+    band: tuple[float, float] = (0.5, 20.0),
+    history_start: date = HISTORY_START,
+) -> pl.DataFrame:
+    """IDENTITY_SCHEMA rows, one per ticker that ever left the index.
+
+    ``intervals`` is the membership table (ticker, security, start, end);
+    a removed name is one with an end. ``info`` is ``load_info`` output;
+    ``first_prices`` is Frame[ticker, first_price] from the daily series.
+    ``sec_names`` (ticker, sec_name: the registrant's names in its own
+    filings, "|"-joined) is a second reference for the name test, so a
+    company that renamed itself is not a mismatch; the overlap kept is
+    the larger. ``levels`` is ``price_levels`` output and ``band`` the
+    public-float band from config.
+
+    Flagged, with the reason naming which:
+      name    yfinance carries a real name and its overlap with every
+              reference is under IDENTITY_OVERLAP
+      quote   a live quote (not a placeholder) in a currency other than
+              USD, of a type other than EQUITY (an ETF now holds the
+              symbol), or on an exchange outside US_EXCHANGES when the
+              name does not confirm the company (a name that matches
+              and now trades over the counter is the company, delisted)
+      level   the median price level over the membership is outside
+              ``band``: the series is not at that filer's price
+      late    the first price is more than IDENTITY_LATE_MONTHS after
+              the later of the membership start and the history start,
+              and inside the membership, and no level inside the band
+              says the short series is merely truncated (HOT, SCG)
+    A symbol yfinance has no ``info`` for is ``no_info``, recorded and
+    not flagged on that account; the level and late tests still apply.
+    A placeholder quote (PLACEHOLDER_EXCHANGES / PLACEHOLDER_TYPES) is
+    treated the same way for the quote test.
+    """
+    lo, hi = band
+    removed = (
+        intervals.filter(pl.col("end").is_not_null())
+        .group_by("ticker")
+        .agg(
+            pl.col("security")
+            .unique(maintain_order=True)
+            .str.join("|")
+            .alias("wiki_name"),
+            pl.col("start").min().alias("member_start"),
+            pl.col("end").max().alias("member_end"),
+        )
+        .join(first_prices.select("ticker", "first_price"), on="ticker", how="left")
+        .sort("ticker")
+    )
+    if levels is not None and levels.height:
+        removed = removed.join(
+            levels.select("ticker", "level", "n_levels"), on="ticker", how="left"
+        )
+    else:
+        removed = removed.with_columns(
+            pl.lit(None, dtype=pl.Float64).alias("level"),
+            pl.lit(None, dtype=pl.Int64).alias("n_levels"),
+        )
+    sec = {}
+    if sec_names is not None and sec_names.height:
+        sec = dict(zip(sec_names["ticker"], sec_names["sec_name"], strict=True))
+    rows = []
+    for r in removed.to_dicts():
+        t = r["ticker"]
+        i = info.get(t) or {}
+        yf_name = i.get("longName") or i.get("shortName")
+        candidates = r["wiki_name"].split("|") + (sec.get(t) or "").split("|")
+        overlaps = [name_overlap(c, yf_name) for c in candidates if c]
+        overlaps = [o for o in overlaps if o is not None]
+        overlap = max(overlaps) if overlaps and is_real_name(yf_name) else None
+        placeholder = (
+            i.get("exchange") in PLACEHOLDER_EXCHANGES
+            or i.get("quoteType") in PLACEHOLDER_TYPES
+        )
+        level = r["level"]
+        in_band = level is not None and lo <= level <= hi
+        name_ok = overlap is not None and overlap >= IDENTITY_OVERLAP
+        reasons = []
+        if not i:
+            reasons.append("no_info")
+        else:
+            if overlap is not None and not name_ok:
+                reasons.append(f"name overlap {overlap:.2f}")
+            if not placeholder:
+                if i.get("currency") and i["currency"] != "USD":
+                    reasons.append(f"currency {i['currency']}")
+                # Where the symbol trades now says whose it is only when
+                # the name does not: Signature Bank's matches and it is
+                # quoted on the pink sheets since it failed.
+                if (
+                    i.get("exchange")
+                    and i["exchange"] not in US_EXCHANGES
+                    and not name_ok
+                ):
+                    reasons.append(f"exchange {i['exchange']}")
+                if i.get("quoteType") and i["quoteType"] != "EQUITY":
+                    reasons.append(f"quote type {i['quoteType']}")
+        if level is not None and not in_band:
+            reasons.append(f"price level {level:.4g} outside [{lo:g}, {hi:g}]")
+        since = max(r["member_start"], history_start)
+        late = pl.Series([since]).dt.offset_by(f"{IDENTITY_LATE_MONTHS}mo").item()
+        fp = r["first_price"]
+        if fp is not None and late < fp <= r["member_end"] and not in_band:
+            reasons.append(
+                f"first price {fp} is over {IDENTITY_LATE_MONTHS} months after "
+                f"membership start {since}"
+            )
+        flag = any(x != "no_info" for x in reasons)
+        rows.append(
+            {
+                "ticker": t,
+                "wiki_name": r["wiki_name"],
+                "sec_name": sec.get(t),
+                "yf_name": yf_name,
+                "overlap": overlap,
+                "exchange": i.get("exchange"),
+                "currency": i.get("currency"),
+                "quote_type": i.get("quoteType"),
+                "first_price": fp,
+                "member_start": r["member_start"],
+                "member_end": r["member_end"],
+                "level": level,
+                "n_levels": r["n_levels"],
+                "flag": flag,
+                "reason": "; ".join(reasons),
+            }
+        )
+    return pl.DataFrame(rows, schema=IDENTITY_SCHEMA)
+
+
+def sec_names_by_ticker(cfg: Config) -> pl.DataFrame | None:
+    """Frame[ticker, sec_name]: every name the ticker's registrant(s) filed
+    under, "|"-joined, from the CIK map and the filer index."""
+    from backtester import fundamentals
+
+    sectors_p = cfg.data / "interim" / "sectors.parquet"
+    sub_p = cfg.data / "interim" / "sec_sub.parquet"
+    if not sectors_p.exists() or not sub_p.exists():
+        return None
+    ciks = pl.read_parquet(sectors_p).select("ticker", "cik").unique()
+    names = (
+        fundamentals.load_sub(cfg)
+        .select("cik", "name")
+        .unique()
+        .group_by("cik")
+        .agg(pl.col("name").sort().str.join("|").alias("sec_name"))
+    )
+    return (
+        ciks.join(names, on="cik", how="inner")
+        .group_by("ticker")
+        .agg(pl.col("sec_name").str.join("|"))
+        .sort("ticker")
+    )
 
 
 # --- pipeline entry -----------------------------------------------------
