@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 171 tests, ~8 s
+uv run pytest                              # 173 tests, ~8 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|shares|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -76,9 +76,11 @@ new tags, and the recompute check caught it. Also on disk since F2:
 `data/raw/sec/companyconcept/` (share counts from the SEC API, 2,520
 files) and `data/raw/prices/yfinance_splits/` (858 files).
 
-Every backtest appends to `reports/specifications.csv`; 340 rows as of the
-last report (144 of them are the September 2026 reruns after the data
-fixes and two tie rules the recompute found). **N in the deflated Sharpe
+Every backtest appends to `reports/specifications.csv`; 388 rows as of the
+last report (192 of them are the September 2026 reruns after the data
+fixes, two tie rules the recompute found, and the H3 price-identity
+exclusions). The same key at the same commit under the same note is
+logged once (`speclog.DUPLICATE_FIELDS`, FIX_PLAN_3 H4). **N in the deflated Sharpe
 is the number of distinct `spec_key` values** (61, of which 8 candidates;
 FIX_PLAN_2 G2, `speclog.py`), not the row count: re-running a
 specification after a code fix is the same trial. Each row carries
@@ -129,15 +131,17 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
 
 ### Things a future session should know
 
-- **Validation status** (after FIX_PLAN F1-F4, 2026-09-15). Momentum vs
-  UMD 0.78 (pass). Value and quality as reported are sector-neutral
-  composites and score 0.56 / 0.07 vs HML / RMW (value was 0.25 before
+- **Validation status** (after FIX_PLAN_3 H1-H3, 2026-09-16). Momentum vs
+  UMD 0.80 (pass). Value and quality as reported are sector-neutral
+  composites and score 0.55 / 0.07 vs HML / RMW (value was 0.25 before
   the market-cap fix); the join is validated by `run.replicate`: B/P
-  cap-weighted terciles vs the big-cap HML leg 0.78 (0.90 from 2016),
-  0.72 vs full HML. The RMW replication is 0.62 vs the big-cap leg (0.44
-  vs full RMW); its early-years weakness was the CIK map, not XBRL
-  coverage (2010-12 went from 0.07 to 0.69), and a 2013-15 trough of
-  0.38 is not understood. `reports/validation.csv` judges the two
+  cap-weighted terciles vs the big-cap HML leg 0.89 (0.85-0.92 in every
+  3-year block; it was 0.78 with "0.90 from 2016" until the reused
+  symbols were excluded), 0.83 vs full HML. The RMW replication is 0.64
+  vs the big-cap leg (0.44 vs full RMW); its early-years weakness was the
+  CIK map, not XBRL coverage (2010-12 went from 0.07 to 0.69), and the
+  2013-15 trough was HAR's series (0.38, now 0.59; `decisions/g5_rmw_trough.md`,
+  `review/h3.md`). `reports/validation.csv` judges the two
   replications against the big-cap legs (bar 0.6) and the reported
   factors against the full factors (bar 0.7); the text factor is an
   appendix, not a headline row (F8). Do not tune the reported factors to raise

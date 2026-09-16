@@ -1,9 +1,20 @@
-# Open decisions for the owner (2026-09-15, after G1–G5)
+# Open decisions for the owner (2026-09-16, after H1–H4)
 
-Each item blocks a step of `FIX_PLAN_2.md`. Answer by editing the plan or
+Each item blocks a step of `FIX_PLAN_3.md`. Answer by editing the plan or
 this file; the next Claude Code session reads both after `git pull`.
 
-## 1. Reused yfinance symbols: fix now, or with G6?
+**Resolved by FIX_PLAN_3 H1–H3 (2026-09-16):** item 1 below was taken as
+option (a). The public-float check (`data/checks/public_float.csv`) and
+the identity check (`yf_identity.csv`) are rules; 280 member-months over
+11 names are excluded (`price_identity_exclusions.csv`), every
+specification is rerun, the recompute matches, and the B/P replication
+went from 0.78 to 0.89 against the big-cap HML leg, the RMW one from
+0.62 to 0.64. `review/h1.md`–`h4.md` and `decisions/h3_before_after.md`.
+Items 2 and 3 stand, renumbered by the plan as H5 (site) and H6–H7
+(keys); H5 also needs the `DATA.exclusions` line the plan describes,
+which is one number from `price_identity_exclusions.csv` (55 rows).
+
+## 1. Reused yfinance symbols: fix now, or with G6? (resolved: (a), see above)
 
 **What.** G5 found three removed names whose yfinance symbol now
 resolves to a different security, with the wrong series overlapping the
@@ -37,16 +48,16 @@ above).
 **Recommendation:** (a) if the keys are more than a few days away, (b)
 otherwise; either way the cross-check is the same code.
 
-## 2. G7 needs `report/site_template.html`
+## 2. H5 (was G7) needs `report/site_template.html`
 
 The plan says "from the file supplied on 2026-09-15". It is not in the
 repo, not in any commit, and not on this machine; `FIX_PLAN.md` has no
 F10 section describing it either. Push the template (or say to build the
 page from scratch) and G7 can run without any key.
 
-## 3. Part A keys (G6, G8, G9)
+## 3. Part A keys (H6 = G6, H7 = G8 and G9)
 
-`uv run backtester secrets` on this machine, 2026-09-15:
+`uv run backtester secrets` on this machine, 2026-09-16, unchanged since 2026-09-15:
 
 ```
 SEC_USER_AGENT: missing (Part A step A1)
