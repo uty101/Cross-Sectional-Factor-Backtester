@@ -54,16 +54,18 @@ outsider can verify, over 2010–2026?
 **The answer** ([reports/answer.md](reports/answer.md); every number in it
 is in a table on this page or in [reports/results.md](reports/results.md)):
 
-Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.38 against the 8 candidate specifications and 0.06 against all 61, on a net Sharpe of 0.22, an IC t-stat of 1.2, and 69% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.8% and −0.19. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
+Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.06 against all 61 specifications (0.38 against the 8 candidates, a floor), on a net Sharpe of 0.22, an IC t-stat of 1.2, and 69% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.8% and −0.19. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
 
 ## Results
 
 The table is what the five factors the brief asked for earned over 2010-01
 to 2026-08 (200 monthly formations) as equal-weighted long–short deciles,
 signals z-scored within sector, 1-day execution lag, **10 bp one-way cost
-on every dollar bought or sold**. Read the DSR (cand.) and Coverage
+on every dollar bought or sold**. Read the DSR (all) and Coverage
 columns first: one says how much of each Sharpe is selection, the other
-how much of the index the signal exists for. No line clears either the
+how much of the index the signal exists for. The candidate count is a
+floor, because the diagnostic runs informed which specifications became
+candidates, so the all-trials column is the one to cite. No line clears either the
 deflated Sharpe or an IC t-stat of 1.96; quality is the closest on both.
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |
@@ -91,7 +93,9 @@ fixes of September 2026 are not new trials. **DSR (all)** counts the 61
 distinct specifications (base, sensitivity, diagnostic, the two broken
 first attempts at momentum); **DSR (cand.)** counts the 8 whose `kind`
 is `candidate`, a specification that could have been reported, rather
-than a sensitivity, a replication or a diagnostic
+than a sensitivity, a replication or a diagnostic. The candidate count
+is a floor, not the number of strategies tried: the diagnostic runs
+informed which specifications became candidates
 ([decisions/g2_trial_count.md](decisions/g2_trial_count.md) has every
 DSR before and after this definition). **Break-even
 cost** is the one-way cost at which the mean net return is zero.
@@ -138,8 +142,8 @@ What the table says, factor by factor:
   from 2015-12 where the price gap is under 20%, −0.19 against −0.19 on all
   months, so the missing delisted names are not hiding a premium.
 - **Quality** is the only positive line: net Sharpe 0.22, 0.26 cap-weighted,
-  0.34 on the well-covered months, Fama-MacBeth t 1.2, DSR 0.38 against the
-  8 candidates. Accruals carry it. The Coverage column is the caveat: the signal
+  0.34 on the well-covered months, Fama-MacBeth t 1.2, DSR 0.06 against all
+  61 specifications and 0.38 against the 8 candidates. Accruals carry it. The Coverage column is the caveat: the signal
   exists for 69% of non-financial members in a typical month, because
   gross profitability needs a cost-of-goods line and the rest do not tag
   one ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md));

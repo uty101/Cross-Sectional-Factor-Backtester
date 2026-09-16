@@ -1,6 +1,7 @@
 """The specification log and the trial count it yields.
 
-    log_specification(path, cfg, **fields)   append one row (invariant 8)
+    log_specification(path, cfg, **fields)   append one row (invariant 8);
+                                              the same run twice is one row
     spec_key(row) -> str                      what makes a row a distinct trial
     count_specifications(path, kind) -> int   rows logged
     count_trials(path, kind) -> int           distinct spec keys
@@ -80,6 +81,9 @@ KEY_FIELDS = (
 # with both counts (FIX_PLAN F4); the kind is read off the note so the
 # rows logged before the column existed are classified the same way.
 DIAGNOSTIC_PREFIXES = ("diagnostic", "sensitivity", "french replication")
+# The same specification, at the same commit, under the same note, is
+# the same run: logged once (FIX_PLAN_3 H4).
+DUPLICATE_FIELDS = ("spec_key", "git_commit", "note")
 TEXT_SIGNAL = "doc_similarity"
 
 
@@ -128,8 +132,13 @@ def _fmt(x: object) -> str:
     return "" if x is None else str(x)
 
 
-def log_specification(path: Path, cfg: Config, **fields: object) -> None:
-    """Append one row to the specifications log (invariant 8)."""
+def log_specification(path: Path, cfg: Config, **fields: object) -> dict[str, str]:
+    """Append one row to the specifications log (invariant 8) and return
+    it. A row whose ``spec_key``, ``git_commit`` and ``note`` all match
+    one already in the log is the same run made twice (a diagnostic
+    script run to completion twice, FIX_PLAN_3 H4); it is not appended
+    and the existing row is returned instead. A rerun after a code change
+    has a new commit and is appended, as before."""
     path.parent.mkdir(parents=True, exist_ok=True)
     note = str(fields.get("note", ""))
     signal = str(fields.get("signal", ""))
@@ -163,11 +172,16 @@ def log_specification(path: Path, cfg: Config, **fields: object) -> None:
     new = not path.exists() or path.stat().st_size == 0
     if not new:
         upgrade(path)
+        for existing in read(path):
+            if all(existing[k] == row[k] for k in DUPLICATE_FIELDS):
+                return existing
+    out = {k: "" if v is None else str(v) for k, v in row.items()}  # as csv writes
     with open(path, "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=SPEC_COLUMNS)
         if new:
             w.writeheader()
-        w.writerow(row)
+        w.writerow(out)
+    return out
 
 
 def git_commit() -> str:

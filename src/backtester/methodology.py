@@ -247,9 +247,9 @@ def build(cfg: Config) -> None:
             f"The composite nets {co['sharpe_net']:.2f}.",
             f"The deflated Sharpe of quality is {q['dsr']:.2f} against all {n_trials} distinct "
             f"specifications and {q['dsr_candidates']:.2f} against the {trials['candidates'][0]} "
-            "candidate ones: the "
-            "probability that its Sharpe beats the best of that many random trials with the same "
-            "dispersion. Nothing here is a 2.0 Sharpe.",
+            "candidate ones (a floor: the diagnostic runs informed which specifications became "
+            "candidates): the probability that its Sharpe beats the best of that many random "
+            "trials with the same dispersion. Nothing here is a 2.0 Sharpe.",
         ]
     )
 

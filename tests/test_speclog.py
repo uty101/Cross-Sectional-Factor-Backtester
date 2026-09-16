@@ -125,3 +125,21 @@ def test_the_real_log_has_far_fewer_trials_than_rows() -> None:
     rows, trials = speclog.count_specifications(log), speclog.count_trials(log)
     assert 0 < trials < rows
     assert speclog.count_trials(log, "candidate") <= trials
+
+
+def test_the_same_run_twice_is_one_row(tmp_path: Path, monkeypatch) -> None:
+    # FIX_PLAN_3 H4: same key, same commit, same note -> the existing row
+    # comes back and nothing is appended. A new note or a new commit is a
+    # new row, as before.
+    cfg = config.load("config.toml").with_(specifications=tmp_path / "s.csv")
+    log = cfg.specifications
+    monkeypatch.setattr(speclog, "git_commit", lambda: "abc1234")
+    first = speclog.log_specification(log, cfg, factor="value", signal="bp", note="x")
+    again = speclog.log_specification(log, cfg, factor="value", signal="bp", note="x")
+    assert again == first and speclog.count_specifications(log) == 1
+    speclog.log_specification(log, cfg, factor="value", signal="bp", note="x again")
+    assert speclog.count_specifications(log) == 2
+    monkeypatch.setattr(speclog, "git_commit", lambda: "def5678")
+    speclog.log_specification(log, cfg, factor="value", signal="bp", note="x")
+    assert speclog.count_specifications(log) == 3
+    assert speclog.count_trials(log) == 1
