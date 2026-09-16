@@ -126194,5 +126194,19 @@
     "sha256": "fbdb0d8bb139743a1514262182346941fbf731125c0e582551920ffe2704f0b1",
     "bytes": 54011,
     "fetched_at": "2026-09-15T21:58:21+00:00"
+  },
+  {
+    "path": "prices/yfinance_stubs/AVB_2026-09-16.csv",
+    "url": "yfinance:AVB",
+    "sha256": "e80f6a0a175d4a5cdd862513bdaebcbdd03fc9309db8393cb0f2c25bf893947c",
+    "bytes": 3014,
+    "fetched_at": "2026-09-16T11:15:32+00:00"
+  },
+  {
+    "path": "prices/yfinance_stubs/EA_2026-09-16.csv",
+    "url": "yfinance:EA",
+    "sha256": "d50f8a47e0f8c366035a5f8ab93fe6130dbafb3e6c28fb966b07a85457ba5836",
+    "bytes": 195,
+    "fetched_at": "2026-09-16T11:15:33+00:00"
   }
 ]

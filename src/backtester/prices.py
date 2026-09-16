@@ -110,6 +110,81 @@ def fetch(cfg: Config, as_of: date) -> list[Path]:
     return stored
 
 
+# Fewer daily rows than this for a name that was a member for years is a
+# stub, not a history: yfinance keeps a few weeks for a recent delisting.
+STUB_ROWS = 250
+
+
+def refetch(cfg: Config, tickers: list[str], as_of: date) -> list[Path]:
+    """One more pull of ``tickers`` under a fresh as-of date (FIX_PLAN_4
+    J1: AVB and EA came back as 27- and 6-row stubs). A full history is
+    stored under prices/yfinance/ and becomes the latest file; a stub is
+    stored under prices/yfinance_stubs/ so the answer is on record and
+    the manifest has it, without displacing the file the build reads,
+    and is logged to price_fetch_missing.csv with its row count."""
+    import yfinance as yf
+
+    root = cfg.data / "raw"
+    checks = cfg.data / "checks"
+    log = checks / "price_fetch_missing.csv"
+    missing = (
+        pl.read_csv(
+            log,
+            schema_overrides={"ticker": pl.Utf8, "yahoo": pl.Utf8, "reason": pl.Utf8},
+        )
+        if log.exists()
+        else pl.DataFrame(
+            schema={"ticker": pl.Utf8, "yahoo": pl.Utf8, "reason": pl.Utf8}
+        )
+    )
+    stored: list[Path] = []
+    rows = []
+    for t in tickers:
+        y = to_yahoo(t)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            sub = yf.download(
+                y,
+                start=HISTORY_START.isoformat(),
+                end=as_of.isoformat(),
+                auto_adjust=False,
+                actions=False,
+                progress=False,
+            )
+        sub = sub.dropna(how="all") if sub is not None else sub
+        n = 0 if sub is None or sub.empty else len(sub)
+        buf = io.StringIO()
+        if n:
+            sub.to_csv(buf)
+        stub = n < STUB_ROWS
+        folder = "yfinance_stubs" if stub else "yfinance"
+        rel = f"prices/{folder}/{_raw_name(t)}_{as_of}.csv"
+        try:
+            stored.append(
+                raw.store_raw(root, rel, buf.getvalue().encode(), f"yfinance:{y}")
+            )
+        except FileExistsError:
+            stored.append(root / rel)
+        if stub:
+            span = (
+                f"{sub.index.min().date()} to {sub.index.max().date()}"
+                if n
+                else "no data"
+            )
+            rows.append(
+                {
+                    "ticker": t,
+                    "yahoo": y,
+                    "reason": f"stub: {n} rows ({span}) on refetch {as_of}; in the gap",
+                }
+            )
+    if rows:
+        checks.mkdir(parents=True, exist_ok=True)
+        keep = missing.filter(~pl.col("ticker").is_in([r["ticker"] for r in rows]))
+        pl.concat([keep, pl.DataFrame(rows, schema=missing.schema)]).write_csv(log)
+    return stored
+
+
 # --- parse --------------------------------------------------------------
 
 
@@ -873,9 +948,9 @@ def sec_names_by_ticker(cfg: Config) -> pl.DataFrame | None:
     )
     return (
         ciks.join(names, on="cik", how="inner")
-        .group_by("ticker")
+        .sort("ticker", "cik")
+        .group_by("ticker", maintain_order=True)
         .agg(pl.col("sec_name").str.join("|"))
-        .sort("ticker")
     )
 
 

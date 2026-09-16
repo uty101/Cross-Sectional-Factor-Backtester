@@ -54,7 +54,7 @@ outsider can verify, over 2010–2026?
 **The answer** ([reports/answer.md](reports/answer.md); every number in it
 is in a table on this page or in [reports/results.md](reports/results.md)):
 
-Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.06 against all 61 specifications (0.38 against the 8 candidates, a floor), on a net Sharpe of 0.22, an IC t-stat of 1.2, and 69% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.8% and −0.19. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
+Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the highest is quality's 0.06 against all 61 specifications (0.38 against the 8 candidates, a floor), on a net Sharpe of 0.22, an IC t-stat of 1.2, and 69% of non-financial members. The largest correction was the market cap: split-adjusted prices met unadjusted share counts, and value reported a 4.7% alpha after HML and a 0.48 net Sharpe; with the count in the price basis it is −1.9% and −0.19. The data cannot say what the 14.6% of member-months without a price history earned; they are disproportionately names that left the index, so every series here is the survivors' until a delisting source is added.
 
 ## Results
 
@@ -70,10 +70,10 @@ deflated Sharpe or an IC t-stat of 1.96; quality is the closest on both.
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Momentum 12-1 | 2.7% | 1.2% | 15.6% | 0.08 | 0.02 | 0.19 | −56% | 0.62 | 0.006 | 0.5 | 18 bp | 87% |
-| Value (B/P, E/P) | −1.3% | −2.0% | 11.0% | −0.19 | 0.00 | 0.03 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) | 84% |
-| Quality (GP/A, accruals) | 2.5% | 1.9% | 8.8% | 0.22 | 0.06 | 0.38 | −24% | 0.25 | 0.007 | 1.2 | 42 bp | 69% of non-fin.¹ |
-| Low volatility | −4.2% | −4.8% | 18.8% | −0.26 | 0.00 | 0.01 | −74% | 0.24 | 0.002 | 0.1 | none (loses gross) | 87% |
+| Momentum 12-1 | 2.8% | 1.3% | 15.6% | 0.08 | 0.02 | 0.19 | −56% | 0.62 | 0.006 | 0.5 | 19 bp | 87% |
+| Value (B/P, E/P) | −1.4% | −2.1% | 11.0% | −0.19 | 0.00 | 0.02 | −50% | 0.30 | −0.004 | −0.5 | none (loses gross) | 84% |
+| Quality (GP/A, accruals) | 2.5% | 1.9% | 8.8% | 0.22 | 0.06 | 0.38 | −23% | 0.25 | 0.007 | 1.2 | 43 bp | 69% of non-fin.¹ |
+| Low volatility | −4.3% | −4.9% | 18.8% | −0.26 | 0.00 | 0.01 | −74% | 0.24 | 0.002 | 0.1 | none (loses gross) | 87% |
 | Composite | −3.3% | −4.4% | 14.3% | −0.31 | 0.00 | 0.01 | −65% | 0.45 | −0.002 | −0.2 | none (loses gross) | 52% |
 
 ¹ Quality is computed on 69% of non-financial members in a typical month: gross profitability needs a cost-of-goods line and the rest do not tag one (decisions/tag_coverage_f3.md); financials are excluded by rule, as in Novy-Marx. Coverage is the median across months of the share of members with a signal.
@@ -85,10 +85,10 @@ disproportionately those that left the index. See Data.
 that the net Sharpe exceeds the expected maximum of *N* random trials with
 the same dispersion, adjusted for skew and kurtosis. *N* is read from
 [reports/specifications.csv](reports/specifications.csv), where every run is
-logged (388 rows). A trial is a distinct specification key: factor,
+logged (436 rows). A trial is a distinct specification key: factor,
 signal, weighting, cost, lag, holding period, winsorisation, deciles,
 sector flag, window and variant (`spec_key` in the log); re-running one
-after a code fix is the same trial, so the 192 reruns after the data
+after a code fix is the same trial, so the 240 reruns after the data
 fixes of September 2026 are not new trials. **DSR (all)** counts the 61
 distinct specifications (base, sensitivity, diagnostic, the two broken
 first attempts at momentum); **DSR (cand.)** counts the 8 whose `kind`
@@ -113,14 +113,14 @@ times too small for its whole pre-split history, a book-to-price 6 to 50
 times too large, and sat in the value long leg. Those are the decade's
 winners. The "value alpha" was a momentum position that a $1bn size floor
 had been quietly trimming rather than diagnosing. With the count in the
-price basis the factor loads 0.42 on HML (t 7.7, R² 0.52, alpha −1.8%,
+price basis the factor loads 0.42 on HML (t 7.7, R² 0.52, alpha −1.9%,
 t −0.9), correlates 0.55 with HML instead of 0.25, and earns what large-cap
 value earned over 2010–2026: nothing.
 
 | Value (B/P, E/P), sector-neutral | before F2 (unadjusted count) | after F2 (count in the price basis) |
 |---|---|---|
 | Net Sharpe | 0.48 | −0.19 |
-| Alpha after Mkt-RF, HML, UMD, RMW (t) | 4.7% (2.3) | −1.8% (−0.9) |
+| Alpha after Mkt-RF, HML, UMD, RMW (t) | 4.7% (2.3) | −1.9% (−0.9) |
 | Loading on HML (t) | 0.10 | 0.42 (7.7) |
 | Correlation with HML | 0.25 | 0.55 |
 
@@ -132,16 +132,16 @@ column is the attribution and validation tables in
 What the table says, factor by factor:
 
 - **Momentum** is UMD (β 0.90, t 15.9, R² 0.67) and UMD earned nothing in
-  this window. Turnover of 0.62 a month puts its break-even at 18 bp.
-  Holding for 3–12 months instead of 1 raises the net Sharpe to 0.18–0.25
+  this window. Turnover of 0.62 a month puts its break-even at 19 bp.
+  Holding for 3–12 months instead of 1 raises the net Sharpe to 0.19–0.26
   by cutting turnover, at the price of tracking UMD less closely.
-  Cap-weighted it is 0.19.
-- **Value** loses 2.0% a year net. Sector-neutral B/P and E/P on S&P 500
+  Cap-weighted it is 0.20.
+- **Value** loses 2.1% a year net. Sector-neutral B/P and E/P on S&P 500
   names is a large-cap HML position (loading 0.42) and HML was flat to
   negative over most of the window. Cap-weighted −0.45; on the 129 months
   from 2015-12 where the price gap is under 20%, −0.19 against −0.19 on all
   months, so the missing delisted names are not hiding a premium.
-- **Quality** is the only positive line: net Sharpe 0.22, 0.26 cap-weighted,
+- **Quality** is the only positive line: net Sharpe 0.22, 0.27 cap-weighted,
   0.34 on the well-covered months, Fama-MacBeth t 1.2, DSR 0.06 against all
   61 specifications and 0.38 against the 8 candidates. Accruals carry it. The Coverage column is the caveat: the signal
   exists for 69% of non-financial members in a typical month, because
@@ -149,15 +149,15 @@ What the table says, factor by factor:
   one ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md));
   financials are excluded by rule, as Novy-Marx does. A net Sharpe of 0.22 with
   an IC t-stat of 1.2 is not evidence of much.
-- **Low volatility** loses 4.2% a year gross as a long–short. Its
+- **Low volatility** loses 4.3% a year gross as a long–short. Its
   attribution is the brief's prediction: market beta −0.67 (t −11.3) and
-  RMW 0.93 (t 8.1), with alpha of 1.1% (t 0.4). It is a short-beta,
+  RMW 0.93 (t 8.2), with alpha of 1.0% (t 0.4). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
   With the rolling market beta hedged out (`portfolio.beta_hedge`,
   estimated only on months before formation) it nets 0.39, and the low
-  beta long–short 0.27: what is left once the short-beta drag is removed,
+  beta long–short 0.28: what is left once the short-beta drag is removed,
   reported as variants, not headline rows.
-- **Composite** (all six signals) nets −0.31, and −0.19 cap-weighted: with
+- **Composite** (all six signals) nets −0.31, and −0.18 cap-weighted: with
   value and low volatility both negative there is nothing for the
   composite to average.
 Four charts, from [reports/figures/](reports/figures/):
@@ -186,7 +186,7 @@ same columns:
 
 | Factor | Gross ann. | Net ann. | Vol | Sharpe (net) | DSR (all) | DSR (cand.) | Max DD | Turnover | Mean IC | IC t-stat | Break-even cost | Coverage |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 10-K text similarity | 0.2% | −0.5% | 5.5% | −0.09 | 0.00 | 0.06 | −26% | 0.29 | 0.003 | 0.6 | 3 bp | 96% |
+| 10-K text similarity | 0.1% | −0.6% | 5.5% | −0.11 | 0.00 | 0.05 | −27% | 0.29 | 0.003 | 0.6 | 1 bp | 96% |
 
 **10-K text similarity**, long the names whose annual report changed
   least year on year (Cohen, Malloy and Nguyen's "Lazy Prices"), earns
@@ -207,7 +207,7 @@ The pipeline is considered wrong until the long–short series clear this:
 | B/P, cap-weighted terciles, French's construction | French **HML, big-cap leg** | > 0.6 | **0.89** pass (0.83 vs full HML; 0.85–0.92 in every 3-year block) |
 | Pre-tax income / FY equity, cap-weighted terciles, French's construction | French **RMW, big-cap leg** | > 0.6 | **0.64** pass (0.44 vs full RMW) |
 | Low beta long–short, raw | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
-| Low beta long–short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.81 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.10 after, still short |
+| Low beta long–short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.82 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.10 after, still short |
 | Value and quality long–short, as reported | French **HML** / **RMW** | > 0.7 | 0.55 / 0.07; not a join test: two-signal sector-neutral composites against raw one-signal factors (value was 0.25 before the market-cap fix) |
 
 The first three rows test the fundamentals join. The brief's bar of 0.7 on
@@ -330,7 +330,16 @@ what each of those commits changed, from its body, below a marker.
   placeholder code, so what a symbol trades as now says nothing about
   whose history it carries, and only the price level does. The B/P
   replication went from 0.78 to 0.89 against the big-cap HML leg
-  ([decisions/h3_before_after.md](decisions/h3_before_after.md)).
+  ([decisions/h3_before_after.md](decisions/h3_before_after.md)). One
+  name the rule excluded for four years was the filer's error, not the
+  pipeline's: Exelon's XBRL float is $59.09bn in four consecutive 10-Ks
+  whose cover text says $25–32bn, and the pipeline's cap is within 0.1%
+  of the text; the text values are an evidenced override
+  (`data/checks/public_float_overrides.csv`) and Exelon is back. A
+  window now closes at the first later filing whose count puts the
+  ratio back in band, so Prologis (AMB's count for two months after the
+  merger) is out for three month-ends, not twelve
+  ([decisions/j1_before_after.md](decisions/j1_before_after.md)).
 - **The first momentum run correlated 0.04 with UMD.** Uncleaned prices
   (above) and a validation join that compared the formation month with the
   same month's UMD, when the return is earned the month after. Both runs
@@ -431,7 +440,7 @@ what each of those commits changed, from its body, below a marker.
   specifications after the September data fixes had pushed it from 185
   to 329 without a single new strategy being tried. A trial is now a
   distinct specification key; the log had 61 of them across 340 rows
-  (388 after the H3 reruns), 8 of them candidates. Every DSR rose (quality's from 0.06 to 0.39
+  (436 after the H3 and J1 reruns), 8 of them candidates. Every DSR rose (quality's from 0.06 to 0.39
   against the candidates) and none clears 0.5
   ([decisions/g2_trial_count.md](decisions/g2_trial_count.md)).
 - **One specification row is mislabelled, and it stays.** Row 94 says

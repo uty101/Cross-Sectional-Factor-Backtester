@@ -50,7 +50,7 @@ Everything goes through `uv`; the lockfile is the environment.
 
 ```bash
 uv sync                                    # once, and after pyproject changes
-uv run pytest                              # 173 tests, ~8 s
+uv run pytest                              # 176 tests, ~8 s
 uv run ruff check . && uv run ruff format --check .
 uv run backtester fetch --step <universe|prices|benchmarks|fundamentals|shares|text> --as-of YYYY-MM-DD
 uv run backtester build --step <same>      # raw -> interim/processed + data/checks
@@ -76,8 +76,8 @@ new tags, and the recompute check caught it. Also on disk since F2:
 `data/raw/sec/companyconcept/` (share counts from the SEC API, 2,520
 files) and `data/raw/prices/yfinance_splits/` (858 files).
 
-Every backtest appends to `reports/specifications.csv`; 388 rows as of the
-last report (192 of them are the September 2026 reruns after the data
+Every backtest appends to `reports/specifications.csv`; 436 rows as of the
+last report (240 of them are the September 2026 reruns after the data
 fixes, two tie rules the recompute found, and the H3 price-identity
 exclusions). The same key at the same commit under the same note is
 logged once (`speclog.DUPLICATE_FIELDS`, FIX_PLAN_3 H4). **N in the deflated Sharpe
@@ -194,8 +194,10 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   the filer's own float in thousands or billions (GE 2011, eBay 2019),
   49 of the 62, where the pipeline is right. Like the cover share count,
   the float comes from the companyconcept API, not the FSDS. Exelon's
-  XBRL float is twice its cover text for four years and is excluded by
-  the rule; `review/h1.md` has every flagged row.
+  XBRL float is twice its cover text for four years; the text values are
+  an evidenced override (`data/checks/public_float_overrides.csv`, J1)
+  and a window closes at the next in-band filing. `review/h1.md` and
+  `review/j1.md` have every flagged row.
 - **A removed name's symbol is asked what it is** (FIX_PLAN_3 H2,
   `prices.identity_check`, `data/checks/yf_identity.csv`). yfinance keys
   history by symbol, and Yahoo files every delisted symbol as exchange
@@ -204,8 +206,8 @@ reports/                 figures, results.md, methodology.pdf, specifications.cs
   price). What separates the wrong series is the price level, close x
   cover count over the float: 5 of 113 measurable removed names are
   outside [0.5, 20] (COL, EP, GR, GENZ, HAR) and the other 108 are in
-  [0.9, 2.1]. 42 names are flagged, 11 of them with priced member-months
-  (280 in all with H1); each is excluded for its whole membership.
+  [0.9, 2.1]. 42 names are flagged, 10 of them with priced member-months
+  (221 in all with H1, after J1); each is excluded for its whole membership.
 - **Text comes from EDGAR, never from company websites.** The 10-K
   primary documents live under `data/raw/edgar/10k/<cik>/<adsh>.htm.gz`,
   one per original filing, indexed from `sub.txt` in the FSDS zips so the

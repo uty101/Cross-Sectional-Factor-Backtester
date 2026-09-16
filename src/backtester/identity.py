@@ -51,10 +51,15 @@ def float_windows(
     )
     if not flagged.height:
         return pl.DataFrame(schema=EXCLUSION_SCHEMA)
+    end = pl.col("float_date").dt.offset_by(f"{months}mo")
+    if "window_end" in flagged.columns:
+        # FIX_PLAN_4 J1: the window closes at the next filing whose count
+        # puts the ratio back in band, when there is one.
+        end = pl.coalesce("window_end", end)
     return flagged.select(
         "ticker",
         pl.col("float_date").alias("start"),
-        pl.col("float_date").dt.offset_by(f"{months}mo").alias("end"),
+        end.alias("end"),
         pl.format(
             "FY{} cap/float {} ({}, {}): close {} x shares {} = {} against float {}",
             "fy",

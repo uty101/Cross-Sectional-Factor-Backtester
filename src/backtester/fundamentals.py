@@ -821,7 +821,20 @@ FLOAT_CHECK_SCHEMA = {
     "ratio": pl.Float64,
     "flag": pl.Utf8,
     "reason": pl.Utf8,
+    "float_source": pl.Utf8,  # xbrl, or override (public_float_overrides.csv)
+    "window_end": pl.Date,  # a flagged row's exclusion ends here (identity.py)
 }
+# Hand-written (FIX_PLAN_4 J1): a float read from the 10-K cover text
+# where the XBRL value is wrong, with the filing URL as evidence.
+FLOAT_OVERRIDE_SCHEMA = {
+    "ticker": pl.Utf8,
+    "fy": pl.Int32,
+    "float_date": pl.Date,
+    "public_float": pl.Float64,
+    "source_url": pl.Utf8,
+    "note": pl.Utf8,
+}
+FLOAT_WINDOW_MONTHS = 12
 # ``float_scale`` is the filed float's own error, not the pipeline's: the
 # cap is inside the band against the ticker's float in a neighbouring
 # fiscal year (GE filed $201.5m for FY2011, in thousands; eBay 3e19 for
@@ -851,6 +864,8 @@ def public_float_check(
     lo: float,
     hi: float,
     splits: pl.DataFrame | None = None,
+    overrides: pl.DataFrame | None = None,
+    cover: pl.DataFrame | None = None,
 ) -> pl.DataFrame:
     """FLOAT_CHECK_SCHEMA rows: for every (ticker, fiscal year) with a
     public float, the pipeline's own market cap at the last month-end on
@@ -869,6 +884,15 @@ def public_float_check(
     price never excludes anything, only a bad ratio does. ``reason``
     names the size of a flagged ratio: near a split factor of the ticker
     (``splits``: ticker, date, ratio), near 1000, beyond 100x, or other.
+
+    ``overrides`` (FLOAT_OVERRIDE_SCHEMA) replaces the XBRL float, and
+    its date, for a (ticker, fy) before the ratio is computed;
+    ``float_source`` says which rows. ``cover`` (shares.COVER_SCHEMA, the
+    cover-page counts) sets ``window_end`` for a flagged row: the
+    earlier of FLOAT_WINDOW_MONTHS after the float date and the filing
+    date of the first later count that puts close x count / float back
+    inside [lo, hi] (FIX_PLAN_4 J1: Prologis' count caught up with the
+    AMB merger at its next 10-Q, two months after the float date).
     """
     from backtester.sectors import cik_at
 
@@ -886,17 +910,34 @@ def public_float_check(
         pl.col("value").alias("public_float"),
     )
     # The last month-end on or before the float date.
-    ff = ff.with_columns(
-        pl.when(pl.col("float_date") == pl.col("float_date").dt.month_end())
-        .then(pl.col("float_date"))
-        .otherwise(pl.col("float_date").dt.offset_by("-1mo").dt.month_end())
-        .alias("month")
-    )
+    ff = ff.with_columns(_month_on_or_before(pl.col("float_date")).alias("month"))
     months = sorted(ff.get_column("month").unique().to_list())
     who = cik_at(ciks, months)
+    ff = ff.join(who, on=["month", "cik"], how="inner").with_columns(
+        pl.lit("xbrl").alias("float_source")
+    )
+    if overrides is not None and overrides.height:
+        o = overrides.select(
+            "ticker",
+            "fy",
+            pl.col("float_date").alias("_od"),
+            pl.col("public_float").alias("_of"),
+        )
+        ff = (
+            ff.join(o, on=["ticker", "fy"], how="left")
+            .with_columns(
+                pl.when(pl.col("_of").is_not_null())
+                .then(pl.lit("override"))
+                .otherwise(pl.col("float_source"))
+                .alias("float_source"),
+                pl.coalesce("_of", "public_float").alias("public_float"),
+                pl.coalesce("_od", "float_date").alias("float_date"),
+            )
+            .drop("_od", "_of")
+            .with_columns(_month_on_or_before(pl.col("float_date")).alias("month"))
+        )
     out = (
-        ff.join(who, on=["month", "cik"], how="inner")
-        .join(
+        ff.join(
             px.select("month", "ticker", pl.col("px_me_raw").alias("close")),
             on=["month", "ticker"],
             how="left",
@@ -922,7 +963,89 @@ def public_float_check(
         )
     )
     out = _float_reason(out, splits, lo, hi)
+    out = _window_end(out, cover, splits, px, lo, hi)
     return out.select(list(FLOAT_CHECK_SCHEMA)).sort("ticker", "float_date")
+
+
+def _month_on_or_before(d: pl.Expr) -> pl.Expr:
+    """The last month-end on or before ``d``."""
+    return (
+        pl.when(d == d.dt.month_end())
+        .then(d)
+        .otherwise(d.dt.offset_by("-1mo").dt.month_end())
+    )
+
+
+def _window_end(
+    check: pl.DataFrame,
+    cover: pl.DataFrame | None,
+    splits: pl.DataFrame | None,
+    px: pl.DataFrame,
+    lo: float,
+    hi: float,
+) -> pl.DataFrame:
+    """``window_end`` for the flagged rows: FLOAT_WINDOW_MONTHS after the
+    float date, or the filing date of the first later cover count whose
+    close x count (split-scaled) / float is inside [lo, hi], whichever
+    is earlier. A row with no such filing, or no ``cover``, keeps the
+    full window. Unflagged rows are null."""
+    from backtester import shares
+
+    twelve = pl.col("float_date").dt.offset_by(f"{FLOAT_WINDOW_MONTHS}mo")
+    c = check.with_columns(
+        pl.when(pl.col("flag") != "").then(twelve).otherwise(None).alias("window_end")
+    )
+    flagged = c.filter(pl.col("flag") != "")
+    if cover is None or not cover.height or not flagged.height:
+        return c
+    counts = first_filed(
+        cover.with_columns(
+            pl.lit("c").alias("concept"), pl.lit(0, dtype=pl.Int32).alias("qtrs")
+        )
+    ).select("cik", pl.col("ddate").alias("_cd"), "filed", pl.col("value").alias("_n"))
+    j = (
+        flagged.select("ticker", "cik", "float_date", "public_float", "window_end")
+        .join(counts, on="cik", how="inner")
+        .filter(
+            (pl.col("_cd") > pl.col("float_date"))
+            & (pl.col("filed") <= pl.col("window_end"))
+        )
+        .with_columns(_month_on_or_before(pl.col("_cd")).alias("month"))
+        .join(
+            px.select("month", "ticker", pl.col("px_me_raw").alias("_px")),
+            on=["month", "ticker"],
+            how="inner",
+        )
+    )
+    if not j.height:
+        return c
+    j = shares.split_factor(j, splits, basis_col="filed").with_columns(
+        (
+            pl.col("_px")
+            * pl.col("_n")
+            * pl.col("split_factor")
+            / pl.col("public_float")
+        ).alias("_r")
+    )
+    ends = (
+        j.filter((pl.col("_r") >= lo) & (pl.col("_r") <= hi))
+        .group_by("ticker", "float_date")
+        .agg(pl.col("filed").min().alias("_end"))
+    )
+    return (
+        c.join(ends, on=["ticker", "float_date"], how="left")
+        .with_columns(pl.min_horizontal("window_end", "_end").alias("window_end"))
+        .drop("_end")
+    )
+
+
+def load_float_overrides(cfg: Config) -> pl.DataFrame:
+    path = cfg.data / "checks" / "public_float_overrides.csv"
+    if not path.exists():
+        return pl.DataFrame(schema=FLOAT_OVERRIDE_SCHEMA)
+    return pl.read_csv(path, schema_overrides=FLOAT_OVERRIDE_SCHEMA).select(
+        list(FLOAT_OVERRIDE_SCHEMA)
+    )
 
 
 def _near(x: pl.Expr, target: pl.Expr | float) -> pl.Expr:
@@ -1174,7 +1297,15 @@ def build(cfg: Config, reingest: bool = False) -> pl.DataFrame:
 
     lo, hi = float_thresholds(cfg)
     float_check = public_float_check(
-        load_floats(cfg, num), ciks, caps, px_raw, lo, hi, splits
+        load_floats(cfg, num),
+        ciks,
+        caps,
+        px_raw,
+        lo,
+        hi,
+        splits,
+        load_float_overrides(cfg),
+        cover,
     )
     float_check.write_csv(checks / "public_float.csv")
     public_float_summary(float_check, membership, cfg).write_csv(

@@ -193,3 +193,83 @@ def test_a_float_filed_in_thousands_is_the_filers_error_not_an_exclusion() -> No
     assert got["flag"].to_list() == ["high", "", "high"]
     assert got["reason"].to_list() == ["float_scale", "", "other"]
     assert identity.float_windows(got)["start"].to_list() == [date(2014, 6, 30)]
+
+
+def test_an_override_replaces_the_xbrl_float_and_says_so() -> None:
+    # FIX_PLAN_4 J1: Exelon's XBRL float is $59bn against a $25bn cover
+    # text; the override carries the text value and its June date.
+    caps, px = _caps_and_px()
+    floats = (
+        _floats()
+        .filter(pl.col("cik") == 1)
+        .with_columns(
+            pl.lit(2e12).alias("value")  # ratio 0.035 without the override
+        )
+    )
+    overrides = pl.DataFrame(
+        {
+            "ticker": ["A"],
+            "fy": [2013],
+            "float_date": [FLOAT_DATE],
+            "public_float": [50e9],
+            "source_url": ["https://www.sec.gov/Archives/edgar/data/1/x/"],
+            "note": ["cover text"],
+        },
+        schema=fx.FLOAT_OVERRIDE_SCHEMA,
+    )
+    bad = fx.public_float_check(floats, _ciks(), caps, px, 0.5, 20).row(0, named=True)
+    assert bad["flag"] == "low" and bad["float_source"] == "xbrl"
+    good = fx.public_float_check(
+        floats, _ciks(), caps, px, 0.5, 20, overrides=overrides
+    ).row(0, named=True)
+    assert good["flag"] == "" and good["float_source"] == "override"
+    assert good["public_float"] == 50e9 and abs(good["ratio"] - 1.4) < 1e-9
+    assert good["window_end"] is None
+
+
+def test_a_window_closes_at_the_next_filing_whose_count_is_in_band() -> None:
+    # PLD: AMB's count at the June float date, the merged count at the
+    # August 10-Q. The window ends at that filing, not twelve months on.
+    caps, px = _caps_and_px()
+    floats = _floats().filter(pl.col("cik") == 3)  # U, flagged low
+    cover = pl.DataFrame(
+        [
+            # a later count that is still wrong (thousands): stays out of band
+            (3, "u-q2", date(2013, 7, 31), date(2013, 8, 5), "10-Q", 1.05e6),
+            # the count that puts close x count back at the float: 1bn x $30
+            (3, "u-q3", date(2013, 10, 31), date(2013, 11, 6), "10-Q", 1.0e9),
+            # later still, irrelevant
+            (3, "u-k", date(2014, 2, 28), date(2014, 3, 1), "10-K", 1.0e9),
+        ],
+        schema={
+            "cik": pl.Int64,
+            "adsh": pl.Utf8,
+            "ddate": pl.Date,
+            "filed": pl.Date,
+            "form": pl.Utf8,
+            "value": pl.Float64,
+        },
+        orient="row",
+    )
+    # month-end closes for the months the later counts are dated in
+    px = pl.concat(
+        [
+            px,
+            pl.DataFrame(
+                {
+                    "month": [date(2013, 7, 31), date(2013, 10, 31)],
+                    "ticker": ["U", "U"],
+                    "px_me_raw": [30.0, 30.0],
+                },
+                schema={"month": pl.Date, "ticker": pl.Utf8, "px_me_raw": pl.Float64},
+            ),
+        ]
+    )
+    got = fx.public_float_check(floats, _ciks(), caps, px, 0.5, 20, cover=cover)
+    row = got.row(0, named=True)
+    assert row["flag"] == "low" and row["window_end"] == date(2013, 11, 6)
+    windows = identity.float_windows(got)
+    assert windows["end"].to_list() == [date(2013, 11, 6)]
+    # No later in-band count: the full twelve months.
+    got = fx.public_float_check(floats, _ciks(), caps, px, 0.5, 20, cover=cover.head(1))
+    assert got.row(0, named=True)["window_end"] == date(2014, 6, 30)

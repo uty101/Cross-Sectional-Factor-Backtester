@@ -1,0 +1,5 @@
+ticker,fy,float_date,public_float,source_url,note
+EXC,2010,2010-06-30,25082540918,https://www.sec.gov/Archives/edgar/data/1109357/000119312511030543/,"10-K FY2010 cover text: aggregate market value of common equity held by nonaffiliates as of June 30, 2010 was $25,082,540,918; XBRL EntityPublicFloat says 59,092,745,316 dated 2010-12-31 (review/h1.md)"
+EXC,2011,2011-06-30,28372622746,https://www.sec.gov/Archives/edgar/data/1109357/000119312512049043/,"10-K FY2011 cover text as of June 30, 2011: $28,372,622,746; XBRL says 59,092,745,316"
+EXC,2012,2012-06-30,32084086343,https://www.sec.gov/Archives/edgar/data/1109357/000119312513069749/,"10-K FY2012 cover text as of June 30, 2012: $32,084,086,343; XBRL says 59,092,745,316"
+EXC,2013,2013-06-30,26430683706,https://www.sec.gov/Archives/edgar/data/1109357/000119312514051838/,"10-K FY2013 cover text as of June 30, 2013: $26,430,683,706; XBRL says 59,092,745,316"

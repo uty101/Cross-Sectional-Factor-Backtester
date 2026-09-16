@@ -143,3 +143,18 @@ def test_the_same_run_twice_is_one_row(tmp_path: Path, monkeypatch) -> None:
     speclog.log_specification(log, cfg, factor="value", signal="bp", note="x")
     assert speclog.count_specifications(log) == 3
     assert speclog.count_trials(log) == 1
+
+
+def test_a_duplicate_says_so(tmp_path: Path, monkeypatch, capsys) -> None:
+    cfg = config.load("config.toml").with_(specifications=tmp_path / "s.csv")
+    monkeypatch.setattr(speclog, "git_commit", lambda: "abc1234")
+    first = speclog.log_specification(
+        cfg.specifications, cfg, factor="value", signal="bp", note="x"
+    )
+    assert capsys.readouterr().out == ""
+    speclog.log_specification(
+        cfg.specifications, cfg, factor="value", signal="bp", note="x"
+    )
+    assert capsys.readouterr().out.strip() == (
+        f"duplicate: {first['spec_key']} at abc1234 already logged, returning it"
+    )

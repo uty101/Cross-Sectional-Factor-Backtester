@@ -34,6 +34,7 @@ HAND_WRITTEN = (
     "membership_spotcheck.csv",
     "cik_overrides.csv",
     "shares_overrides.csv",
+    "public_float_overrides.csv",
 )
 TOLERANCE = 1e-10
 

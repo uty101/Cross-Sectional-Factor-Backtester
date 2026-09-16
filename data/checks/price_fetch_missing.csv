@@ -178,3 +178,5 @@ XL,XL,no data (retried twice)
 XLNX,XLNX,no data (retried twice)
 XTO,XTO,no data (retried twice)
 YHOO,YHOO,no data (retried twice)
+AVB,AVB,stub: 27 rows (2026-07-17 to 2026-08-24) on refetch 2026-09-16; in the gap
+EA,EA,stub: 1 rows (2026-08-04 to 2026-08-04) on refetch 2026-09-16; in the gap

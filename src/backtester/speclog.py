@@ -174,6 +174,10 @@ def log_specification(path: Path, cfg: Config, **fields: object) -> dict[str, st
         upgrade(path)
         for existing in read(path):
             if all(existing[k] == row[k] for k in DUPLICATE_FIELDS):
+                print(
+                    f"duplicate: {row['spec_key']} at {row['git_commit']} "
+                    "already logged, returning it"
+                )
                 return existing
     out = {k: "" if v is None else str(v) for k, v in row.items()}  # as csv writes
     with open(path, "a", newline="", encoding="utf-8") as f:
