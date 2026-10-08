@@ -1,9 +1,11 @@
 # Cross-Sectional Factor Backtester
 
-Point-in-time equity factor research for US large caps, 2010–2026, with
+Point-in-time equity factor research for US large caps, 2010 to 2026, with
 costs, signal decay and overfitting control.
 
-> **Status: built and run.** Results page:
+> **Status.** Pipeline, tests and results page are built and run.
+> The second price source, delisting dates and the agents are built but
+> have not run (no API keys yet). Results page:
 > <https://uty101.github.io/Cross-Sectional-Factor-Backtester/> (`docs/`,
 > written by `uv run backtester site` from the report's outputs). Every
 > number below comes from `reports/results.md`, which
@@ -41,14 +43,14 @@ test written before the code it guards.
 A monthly-rebalanced factor backtester that treats **data honesty as the
 deliverable, not the returns**. It takes point-in-time fundamentals from SEC
 filings, a reconstructed historical universe, and daily prices, and produces
-decile and long–short portfolios for value, momentum, quality and low
+decile and long-short portfolios for value, momentum, quality and low
 volatility, with costs, turnover and statistical tests on top. The engine
 takes any `(month, ticker, z)` frame, so a new signal is a dictionary entry.
 
 ## The question
 
 Do value, momentum, quality and low volatility earn a premium on a universe an
-outsider can verify, over 2010–2026?
+outsider can verify, over 2010 to 2026?
 
 - How much paper return survives turnover, spreads and a 1-day execution lag?
 - How fast does each signal decay, and what rebalance frequency follows?
@@ -62,7 +64,7 @@ Nothing survives. At 10 bp one-way, no factor clears the deflated Sharpe: the hi
 ## Results
 
 The table is what the five factors the brief asked for earned over 2010-01
-to 2026-08 (200 monthly formations) as equal-weighted long–short deciles,
+to 2026-08 (200 monthly formations) as equal-weighted long-short deciles,
 signals z-scored within sector, 1-day execution lag, **10 bp one-way cost
 on every dollar bought or sold**. Read the DSR (all) and Coverage
 columns first: one says how much of each Sharpe is selection, the other
@@ -104,8 +106,8 @@ DSR before and after this definition). **Break-even
 cost** is the one-way cost at which the mean net return is zero.
 
 **These are the numbers after the data fixes** ([FIX_PLAN.md](FIX_PLAN.md)
-F1–F3, [decisions/f4_before_after.md](decisions/f4_before_after.md); the
-price-identity exclusions of [FIX_PLAN_3.md](FIX_PLAN_3.md) H1–H3,
+F1 to F3, [decisions/f4_before_after.md](decisions/f4_before_after.md); the
+price-identity exclusions of [FIX_PLAN_3.md](FIX_PLAN_3.md) H1 to H3,
 [decisions/h3_before_after.md](decisions/h3_before_after.md)). The
 previous README reported value at a net Sharpe of 0.48 with a 4.7% alpha
 (t 2.3) after HML, and called it the factor that worked. It was not. The
@@ -118,7 +120,7 @@ winners. The "value alpha" was a momentum position that a $1bn size floor
 had been quietly trimming rather than diagnosing. With the count in the
 price basis the factor loads <!--cov:beta_hml_value-->0.42<!--/cov--> on HML (t <!--cov:t_hml_value-->7.7<!--/cov-->, R² <!--cov:r2_value-->0.52<!--/cov-->, alpha <!--cov:alpha_value-->−1.9%<!--/cov-->,
 t <!--cov:alpha_t_value-->−0.9<!--/cov-->), correlates <!--cov:corr_value_hml-->0.55<!--/cov--> with HML instead of 0.25, and earns what large-cap
-value earned over 2010–2026: nothing.
+value earned over 2010 to 2026: nothing.
 
 | Value (B/P, E/P), sector-neutral | before F2 (unadjusted count) | after F2 (count in the price basis) |
 |---|---|---|
@@ -136,7 +138,7 @@ What the table says, factor by factor:
 
 - **Momentum** is UMD (β <!--cov:beta_umd_momentum-->0.90<!--/cov-->, t <!--cov:t_umd_momentum-->15.9<!--/cov-->, R² <!--cov:r2_momentum-->0.67<!--/cov-->) and UMD earned nothing in
   this window. Turnover of <!--cov:turnover_momentum-->0.62<!--/cov--> a month puts its break-even at <!--cov:breakeven_momentum-->19 bp<!--/cov-->.
-  Holding for 3–12 months instead of 1 raises the net Sharpe to 0.19–0.26
+  Holding for 3 to 12 months instead of 1 raises the net Sharpe to 0.19 to 0.26
   by cutting turnover, at the price of tracking UMD less closely.
   Cap-weighted it is 0.20.
 - **Value** loses 2.1% a year net. Sector-neutral B/P and E/P on S&P 500
@@ -152,13 +154,13 @@ What the table says, factor by factor:
   one ([decisions/tag_coverage_f3.md](decisions/tag_coverage_f3.md));
   financials are excluded by rule, as Novy-Marx does. A net Sharpe of 0.22 with
   an IC t-stat of 1.2 is not evidence of much.
-- **Low volatility** loses 4.3% a year gross as a long–short. Its
+- **Low volatility** loses 4.3% a year gross as a long-short. Its
   attribution is the brief's prediction: market beta <!--cov:beta_mkt_rf_low_vol-->−0.67<!--/cov--> (t <!--cov:t_mkt_rf_low_vol-->−11.3<!--/cov-->) and
   RMW <!--cov:beta_rmw_low_vol-->0.93<!--/cov--> (t <!--cov:t_rmw_low_vol-->8.2<!--/cov-->), with alpha of <!--cov:alpha_low_vol-->1.0%<!--/cov--> (t <!--cov:alpha_t_low_vol-->0.4<!--/cov-->). It is a short-beta,
   long-profitability position, and shorting beta lost for sixteen years.
   With the rolling market beta hedged out (`portfolio.beta_hedge`,
   estimated only on months before formation) it nets 0.39, and the low
-  beta long–short 0.28: what is left once the short-beta drag is removed,
+  beta long-short 0.28: what is left once the short-beta drag is removed,
   reported as variants, not headline rows.
 - **Composite** (all six signals) nets −0.31, and −0.18 cap-weighted: with
   value and low volatility both negative there is nothing for the
@@ -173,9 +175,9 @@ Four charts, from [reports/figures/](reports/figures/):
 Signal decay: no half-life is printed, because no factor's h=1 IC t-stat
 reaches 1.96 and there is no IC to fit a decay to (the chart draws the
 points and no curve). Momentum's IC is small at every horizon; quality's
-IC at h=12 is as high as at h=1, which is why holding it for 6–12 months
-costs nothing in return and saves most of the turnover (though its 3–12
-month holds net −0.00–0.22 against 0.22 monthly, the difference being which
+IC at h=12 is as high as at h=1, which is why holding it for 6 to 12 months
+costs nothing in return and saves most of the turnover (though its 3 to 12
+month holds net −0.00 to 0.22 against 0.22 monthly, the difference being which
 calendar months form the portfolio). The full tables, including net Sharpe at 0, 5, 10, 25 and 50 bp,
 the cap-weighted and holding-period variants, and the Fama-MacBeth premia,
 are in [reports/results.md](reports/results.md).
@@ -197,21 +199,21 @@ same columns:
   the four French factors, so it is at least not a repackaging of them.
   Jaccard instead of cosine gives 0.01 net; every variant is within ±0.35
   of zero. The paper's effect sits in small caps and in the short leg, and
-  this is an S&P 500 long-short over 2010–2026. It is in the table because
+  this is an S&P 500 long-short over 2010 to 2026. It is in the table because
   the point of building it was the data path (next section), not the return.
 
 ## Validation bar
 
-The pipeline is considered wrong until the long–short series clear this:
+The pipeline is considered wrong until the long-short series clear this:
 
 | Series | Against | Threshold | Result |
 |---|---|---|---|
-| Momentum long–short | French **UMD** | > 0.7 | **0.80** pass (0.86 without sector neutralisation) |
-| B/P, cap-weighted terciles, French's construction | French **HML, big-cap leg** | > 0.6 | **0.89** pass (0.83 vs full HML; 0.85–0.92 in every 3-year block) |
+| Momentum long-short | French **UMD** | > 0.7 | **0.80** pass (0.86 without sector neutralisation) |
+| B/P, cap-weighted terciles, French's construction | French **HML, big-cap leg** | > 0.6 | **0.89** pass (0.83 vs full HML; 0.85 to 0.92 in every 3-year block) |
 | Pre-tax income / FY equity, cap-weighted terciles, French's construction | French **RMW, big-cap leg** | > 0.6 | **0.64** pass (0.44 vs full RMW) |
-| Low beta long–short, raw | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
-| Low beta long–short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.82 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.10 after, still short |
-| Value and quality long–short, as reported | French **HML** / **RMW** | > 0.7 | 0.55 / 0.07; not a join test: two-signal sector-neutral composites against raw one-signal factors (value was 0.25 before the market-cap fix) |
+| Low beta long-short, raw | AQR **BAB** (US) | > 0.5 | 0.42 fail; a 252-day beta on S&P 500 names against AQR's all-cap, leverage-adjusted factor |
+| Low beta long-short, beta-hedged | AQR **BAB** (US) | > 0.5 | 0.46 fail; the raw series carries a market beta of −0.82 and BAB is beta-neutral by construction, so the rolling 36-month beta (estimated on months before formation only) is hedged out first: beta 0.10 after, still short |
+| Value and quality long-short, as reported | French **HML** / **RMW** | > 0.7 | 0.55 / 0.07; not a join test: two-signal sector-neutral composites against raw one-signal factors (value was 0.25 before the market-cap fix) |
 
 The first three rows test the fundamentals join. The brief's bar of 0.7 on
 the reported value and quality factors stays in the table and is not that
@@ -232,17 +234,17 @@ fail, from `config.toml [validation]`.
 Both joins clear the 0.6 bar against the like-for-like series. The B/P
 replication read 0.78 over the window and 0.90 from 2016 until the
 price-identity exclusions ([FIX_PLAN_3.md](FIX_PLAN_3.md)): the early
-years were carrying a $0.4–2.3trn Harman International, the wrong series
+years were carrying a $0.4 to 2.3trn Harman International, the wrong series
 under a reused symbol in a cap-weighted tercile, and it now reads
-0.85–0.92 in every 3-year block. The profitability one was 0.07 in
-2010–12 before the CIK fix, rising with XBRL coverage; after it, 0.69 in
-2010–12, 0.38 in 2013–15, 0.83 in 2016–18, 0.62 in 2019–21 and 0.61 from
-2022, and the 2013–15 trough was the same symbol
+0.85 to 0.92 in every 3-year block. The profitability one was 0.07 in
+2010 to 2012 before the CIK fix, rising with XBRL coverage; after it, 0.69 in
+2010 to 2012, 0.38 in 2013 to 2015, 0.83 in 2016 to 2018, 0.62 in 2019 to 2021 and 0.61 from
+2022, and the 2013 to 2015 trough was the same symbol
 ([decisions/g5_rmw_trough.md](decisions/g5_rmw_trough.md)); with the
 exclusions it is 0.68, 0.59, 0.83, 0.63 and 0.61. The early weakness was
 the ticker-to-CIK map (18% of members had no filings attached,
 [decisions/cik_audit.md](decisions/cik_audit.md)), not XBRL coverage; the
-2013–15 block is still the lowest and the rest of that gap is reported,
+2013 to 2015 block is still the lowest and the rest of that gap is reported,
 not tuned.
 
 ## Data
@@ -250,16 +252,16 @@ not tuned.
 | Need | Source | Note |
 |---|---|---|
 | Universe history | Wikipedia constituents + changes tables | Membership intervals per ticker; cross-checked month by month against the [fja05680/sp500](https://github.com/fja05680/sp500) daily list, 98.4% agreement |
-| Fundamentals | SEC Financial Statement Data Sets | 70 quarterly zips 2009q1–2026q2; **filing date is the key**; 19 concepts via an ordered tag map that only grows; a ticker maps to a CIK per era ([data/checks/cik_overrides.csv](data/checks/cik_overrides.csv)) |
+| Fundamentals | SEC Financial Statement Data Sets | 70 quarterly zips 2009q1 to 2026q2; **filing date is the key**; 19 concepts via an ordered tag map that only grows; a ticker maps to a CIK per era ([data/checks/cik_overrides.csv](data/checks/cik_overrides.csv)) |
 | Shares outstanding | SEC companyconcept API; yfinance split events | The cover-page count (FSDS `num.txt` does not carry it), then the balance-sheet count, then the diluted weighted average, each **scaled by every split after its filing date** so it meets yfinance's split-adjusted close; a plausibility guard drops the filings in thousands ([decisions/f2_shares.md](decisions/f2_shares.md)) |
 | Prices | yfinance | Stooq is behind a JavaScript wall as of 2026-09. Delisted names are absent: **<!--cov:gap_pct-->14.7%<!--/cov--> of universe-months**, <!--cov:gap_first-->31%<!--/cov--> in 2010 falling to <!--cov:gap_last-->0%<!--/cov-->. Every price is checked against the filer's own market value (the 10-K's `EntityPublicFloat`) and every removed name's symbol against what yfinance says it is now: 280 member-months over 11 names are excluded ([data/checks/price_identity_exclusions.csv](data/checks/price_identity_exclusions.csv)) |
 | Sector map | SIC from the filings | 11 GICS-like buckets by hand; 84.5% agreement with Wikipedia's GICS on current members |
 | Benchmarks | Ken French data library | Mkt, SMB, HML, RMW, CMA, UMD, and the six size × B/M and size × OP portfolios for the big-cap legs |
-| Risk-free | French RF; FRED DGS1MO kept | Long–short spreads need none |
+| Risk-free | French RF; FRED DGS1MO kept | Long-short spreads need none |
 | 10-K text | EDGAR primary documents, indexed from the FSDS `sub.txt` | One gzip per original 10-K; **filing date is the SEC's**; scored by cosine/Jaccard against the prior year's filing (Cohen, Malloy and Nguyen 2020). Not company websites: no timestamp, restatements overwrite in place, delisted names vanish. Not transcripts: not filed, no point-in-time archive without a vendor. No language model: a model trained after the filing knows the outcome (invariant 10) |
 
 **Known limitations, stated up front.** The S&P 500 restriction is a
-compromise forced by free data: 496–504 names at every month-end and 818
+compromise forced by free data: 496 to 504 names at every month-end and 818
 unique names over the window (the brief's ~1,100 was high). Survivorship in
 the *universe* is handled by reconstructing membership month by month; the
 *prices* of names that were acquired or failed are largely missing from
@@ -315,8 +317,8 @@ what each of those commits changed, from its body, below a marker.
   can never exceed −100%.
 - **Three cleaning rules cannot see a reused symbol whose new series
   overlaps the membership.** yfinance's `HAR` is a fund quoted at
-  $5,000–$34,000 from 2013, which against Harman's 68m shares is a
-  $0.4–2.3trn market cap sitting in the short tercile of the RMW
+  $5,000 to $34,000 from 2013, which against Harman's 68m shares is a
+  $0.4 to 2.3trn market cap sitting in the short tercile of the RMW
   replication; `GR` is another company at $4, `COL` at $0.13, `EP` is
   Empire Petroleum, `GENZ` is at half Genzyme's price. Found by hand in
   the RMW trough ([decisions/g5_rmw_trough.md](decisions/g5_rmw_trough.md))
@@ -336,7 +338,7 @@ what each of those commits changed, from its body, below a marker.
   ([decisions/h3_before_after.md](decisions/h3_before_after.md)). One
   name the rule excluded for four years was the filer's error, not the
   pipeline's: Exelon's XBRL float is $59.09bn in four consecutive 10-Ks
-  whose cover text says $25–32bn, and the pipeline's cap is within 0.1%
+  whose cover text says $25 to 32bn, and the pipeline's cap is within 0.1%
   of the text; the text values are an evidenced override
   (`data/checks/public_float_overrides.csv`) and Exelon is back. A
   window now closes at the first later filing whose count puts the
@@ -373,7 +375,7 @@ what each of those commits changed, from its body, below a marker.
   `company_tickers.json` CIK is a successor entity (Disney 2019,
   BlackRock 2024) or an acquirer that took the symbol (CB, JCI). 93
   hand-verified rows in `data/checks/cik_overrides.csv`, a CIK per era,
-  resolved per month; total assets went from 87–91% to 98% of members
+  resolved per month; total assets went from 87 to 91% to 98% of members
   ([decisions/cik_audit.md](decisions/cik_audit.md)).
 - **`OperatingIncomeLoss` is not reported by banks or insurers**, which
   left profitability without financials and its French replication at 0.31.
@@ -411,7 +413,7 @@ what each of those commits changed, from its body, below a marker.
   reported factors keep the annual convention.
 - **The first month of the window had fifteen names, and one of them was a
   factor return.** Fundamentals arrive with the FY2009 10-Ks in February
-  and March 2010, so January 2010 had 15–23 names with a value or quality
+  and March 2010, so January 2010 had 15 to 23 names with a value or quality
   signal and value's +5.5% that month was one long against two shorts; the
   text factor's first four months had two to five names and printed +18%
   on one stock. The 4σ anomaly detector built for the triage agent
